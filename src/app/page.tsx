@@ -1,0 +1,39 @@
+//import BlogSample from "@/components/homepage_components/blogs_sample";
+import Advertisment_home from "@/components/homepage_components/advertisment_home";
+import BlogSample from "@/components/homepage_components/blogs_sample";
+import CoursesSampleNames from "@/components/homepage_components/couses_sample_names";
+import HomePageCover from "@/components/homepage_components/cover";
+import CoverHome from "@/components/homepage_components/cover_home";
+import Info from "@/components/homepage_components/info";
+import MockExamRendered from "@/components/homepage_components/mockexam_rendered";
+import MockexamSection from "@/components/homepage_components/mockexam_section";
+import PackageDiscountSlider from "@/components/homepage_components/package_discount_slider";
+import PackagesRenderd from "@/components/homepage_components/pakages_rendered";
+import SectionOne from "@/components/homepage_components/section_one";
+import WelcomeSection from "@/components/homepage_components/welcomesection";
+import ContactUs from "@/components/main_components/contact_us";
+import Footer from "@/components/main_components/footer";
+import PageBreaker from "@/components/main_components/pageBreaker";
+import Image from "next/image";
+
+export default function Home() {
+  return (
+    <div>
+      {/* <HomePageCover /> */}
+      <CoverHome />
+      <Info />
+      <WelcomeSection />
+      <MockExamRendered />
+      <Advertisment_home />
+      <CoursesSampleNames />
+      <PackageDiscountSlider />
+      <PackagesRenderd />
+      <PageBreaker />
+      <BlogSample />
+      {/* <MockexamSection /> */}
+      <SectionOne />
+      <ContactUs />
+      <Footer />
+    </div>
+  );
+}
