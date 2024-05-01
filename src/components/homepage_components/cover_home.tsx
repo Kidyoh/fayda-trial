@@ -22,7 +22,7 @@ export default function CoverHome() {
   const currentText = texts[currentTextIndex];
 
   return (
-    <div className=" ssmd:grid ssmd:grid-cols-3  h-92 pt-12 xl:pt-2 bg-gradient-to-r from-sky-400 via-blue-500 to-sky-200 ">
+    <div class="ssmd:grid ssmd:grid-cols-3 h-92 pt-12 xl:pt-2 bg-gradient-to-r from-primaryColor via-emerald-600 to-primaryColor">
       <div className="col-span-2 w-full  flex">
         <div className="mx-auto my-auto   px-5">
           <div className="mx-auto my-auto  text-3xl smd:text-4xl lg:text-5xl font-bold px-5">
@@ -45,7 +45,7 @@ export default function CoverHome() {
             </h1>
           </div>
           <div className="mt-20  pb-3 w-full flex">
-            <h1 className="bg-primaryColor mx-auto  ssmd:mx-10 text-white px-3 py-1 rounded-2xl w-fit cursor-pointer hover:scale-105 duration-100">
+            <h1 className="bg-secondaryColor mx-auto  ssmd:mx-10 text-white px-3 py-1 rounded-2xl w-fit cursor-pointer hover:scale-105 duration-100">
               Download App
             </h1>
           </div>

@@ -10,7 +10,7 @@ export default function WelcomeSection() {
     <div className="py-7">
       <div className="w-full flex">
         <div className=" w-full">
-          <h1 className="mx-auto w-fit text-2xl font-semibold text-primaryColor">
+          <h1 className="mx-auto w-fit text-2xl font-semibold text-fourthColor">
             Welcome To Fayida
           </h1>
           <h1 className="px-6 sm:px-12 smd:px-20 md:px-28 xmd:px-36 text-center text-sm font-semibold">
@@ -23,7 +23,7 @@ export default function WelcomeSection() {
       <div className="grid grid-cols-2 smd:grid-cols-4 gap-10 py-7 px-7">
         <div className=" rounded-lg w-full p-2  ">
           <div className="flex">
-            <div className="mx-auto text-primaryColor">
+            <div className="mx-auto text-fourthColor">
               <BookOpenCheck size={sizeOfIcons} />
             </div>
           </div>
@@ -39,7 +39,7 @@ export default function WelcomeSection() {
 
         <div className=" rounded-lg w-full p-2">
           <div className="flex">
-            <div className="mx-auto text-primaryColor">
+            <div className="mx-auto text-fourthColor">
               <Blocks size={sizeOfIcons} />
             </div>
           </div>
@@ -55,7 +55,7 @@ export default function WelcomeSection() {
 
         <div className=" rounded-lg w-full p-2">
           <div className="flex">
-            <div className="mx-auto text-primaryColor">
+            <div className="mx-auto text-fourthColor">
               <Blocks size={sizeOfIcons} />
             </div>
           </div>
@@ -71,7 +71,7 @@ export default function WelcomeSection() {
 
         <div className=" rounded-lg w-full p-2">
           <div className="flex">
-            <div className="mx-auto text-primaryColor ">
+            <div className="mx-auto text-fourthColor ">
               <Trophy size={sizeOfIcons} />
             </div>
           </div>
