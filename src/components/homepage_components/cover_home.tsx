@@ -55,7 +55,7 @@ export default function CoverHome() {
         {/* <img className="w-full " src="common_files/main/cover4.png" alt="" /> */}
         <div className="hidden ssmd:block right-0">
           <motion.img
-            src="common_files/main/cover4.png"
+            src="common_files/main/cover6.png"
             alt="Floating Image"
             animate={{
               y: [-20, 20, -20],
