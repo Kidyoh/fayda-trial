@@ -22,7 +22,7 @@ export default function CoverHome() {
   const currentText = texts[currentTextIndex];
 
   return (
-    <div class="ssmd:grid ssmd:grid-cols-3 h-92 pt-12 xl:pt-2 bg-gradient-to-r from-primaryColor via-emerald-600 to-primaryColor">
+    <div className="ssmd:grid ssmd:grid-cols-3 h-92 pt-12 xl:pt-2 bg-gradient-to-r from-primaryColor via-emerald-600 to-primaryColor">
       <div className="col-span-2 w-full  flex">
         <div className="mx-auto my-auto   px-5">
           <div className="mx-auto my-auto  text-3xl smd:text-4xl lg:text-5xl font-bold px-5">
