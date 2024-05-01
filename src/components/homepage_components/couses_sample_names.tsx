@@ -5,7 +5,7 @@ export default function CoursesSampleNames() {
     <div className="py-4">
       <div className="w-full flex">
         <h1 className="mx-auto text-xl font-semibold pb-4">
-          Explore Best Contet
+          Explore Best Content
         </h1>
       </div>
 
