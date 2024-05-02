@@ -59,7 +59,8 @@ export default function CheckPhoneNumber({ mockPackageId }: any) {
             setOpen(false);
             // push(`/mock_package/${MockPackageId}`);
             //  push(`/mock_package/free_mock_package/${MockPackageId}`);
-            push(`/mock_package/free_mock_package/${MockPackageId}`);
+            // push(`/mock_package/free_mock_package/${MockPackageId}`);
+            push("/mock_package/selectmainfolder");
           } else {
             console.log("It is false");
             setOpen(false);

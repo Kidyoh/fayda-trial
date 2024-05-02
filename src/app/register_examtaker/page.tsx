@@ -154,7 +154,8 @@ export default function RegisterExamTaker() {
           title: `Success!`,
           description: `You are Registered`,
         });
-        push("/mock_package");
+        push("/mock_package/selectmainfolder");
+        //push("/mock_package");
       })
       .catch((error) => {
         // Handle any errors during the request
