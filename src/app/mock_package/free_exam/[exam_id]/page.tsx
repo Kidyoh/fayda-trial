@@ -37,7 +37,7 @@ function AssessmentQuestions({ params }: any) {
       .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") // Matches **bold**
       .replace(/\*(.*?)\*/g, "<em>$1</em>") // Matches *italic*
       .replace(/_(.*?)_/g, "<u>$1</u>") // Matches _underline_
-      .replace(/\^(.*?)pi/g, "<sup>$1π</sup>");
+      .replace(/&&.*?pi/g, "π");
 
     const renderedHTML = (
       <div dangerouslySetInnerHTML={{ __html: formattedText }} />
@@ -47,7 +47,8 @@ function AssessmentQuestions({ params }: any) {
 
   useEffect(() => {
     if (MockPackage.id == undefined) {
-      push("/mock_package");
+      // push("/mock_package");
+      push("/mock_package/selectmainfolder");
     }
   }, []); // The empty dependency array ensures the effect runs only once
 

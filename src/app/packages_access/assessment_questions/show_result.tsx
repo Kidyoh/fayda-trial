@@ -23,7 +23,8 @@ export default function ShowResult({
       .replace(/\*\*\*(.*?)\*\*\*/g, "<sub>$1</sub>") // Matches ***subscript***
       .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") // Matches **bold**
       .replace(/\*(.*?)\*/g, "<em>$1</em>") // Matches *italic*
-      .replace(/_(.*?)_/g, "<u>$1</u>"); // Matches _underline_
+      .replace(/_(.*?)_/g, "<u>$1</u>")
+      .replace(/&&.*?pi/g, "π"); // Matches _underline_
 
     const renderedHTML = (
       <div dangerouslySetInnerHTML={{ __html: formattedText }} />
@@ -46,7 +47,8 @@ export default function ShowResult({
 
           <div className="w-full flex">
             <Link
-              href={"/mock_package"}
+              // href={"/mock_package"}
+              href={"/mock_package/selectmainfolder"}
               className="text-secondaryColor my-4 mx-auto w-fit "
             >
               Go back to Mock Exam Packages
