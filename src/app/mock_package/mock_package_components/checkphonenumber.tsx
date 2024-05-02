@@ -20,12 +20,14 @@ import useTemporaryPhonenumberStore from "@/app/store/temporaryphonenumberStore"
 
 import { useRouter } from "next/navigation";
 
-export default function CheckPhoneNumber({ mockPackageId }: any) {
+export default function CheckPhoneNumber({ mockPackageId, pushto }: any) {
   const [typedPhoneNumber, setTypedPhoneNumber] = useState("");
   const [open, setOpen] = useState(false);
   const { push } = useRouter();
   // const PushTo = pushto;
   const MockPackageId = mockPackageId;
+  const PushTo = pushto;
+  //let Stage = stage;
   const phoneNumber = useTemporaryPhonenumberStore(
     (state) => state.phoneNumber
   );
@@ -60,7 +62,12 @@ export default function CheckPhoneNumber({ mockPackageId }: any) {
             // push(`/mock_package/${MockPackageId}`);
             //  push(`/mock_package/free_mock_package/${MockPackageId}`);
             // push(`/mock_package/free_mock_package/${MockPackageId}`);
-            push("/mock_package/selectmainfolder");
+            push(PushTo);
+            // if (Stage == "0") {
+            //   push("/mock_package/selectmainfolder");
+            // } else if (Stage == "1") {
+            //   push(`/mock_package/free_mock_package/${MockPackageId}`);
+            // }
           } else {
             console.log("It is false");
             setOpen(false);

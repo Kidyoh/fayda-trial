@@ -121,6 +121,7 @@ export default function MockPackage({ params }: any) {
                     {" "}
                     <CheckPhoneNumber
                       mockPackageId={packagex.id}
+                      pushto={`/mock_package/free_mock_package/${packagex.id}`}
                       //type={"testtest"}
                     />
                   </button>
