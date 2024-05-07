@@ -79,7 +79,7 @@ export default function ContactUs() {
 
   return (
     <div className="mx-10 md:mx-0 mb-4 md:mb-0 rounded-2xl md:rounded-none overflow-hidden md:grid md:grid-cols-2">
-      <div className="w-full px-4 bg-secondaryColor text-white  col-span-1 flex pb-5 ">
+      <div className="w-full px-4 bg-fourthColor text-white  col-span-1 flex pb-5 ">
         <div className="w-full h-fit  mx-auto my-auto space-y-5">
           <div className="w-full flex">
             <h1 className="mx-auto text-xl font-semibold py-3 underline">
@@ -97,7 +97,7 @@ export default function ContactUs() {
                       <div className="flex">
                         <FormLabel className="my-auto">Name: </FormLabel>
                         <Input
-                          className=" border-b-2 w-3/4 mx-4 bg-secondaryColor border-white "
+                          className=" border-b-2 w-3/4 mx-4 bg-fourthColor border-white "
                           type="text"
                           {...field}
                         />
@@ -118,7 +118,7 @@ export default function ContactUs() {
                       <div className="flex">
                         <FormLabel className="my-auto">Email</FormLabel>
                         <Input
-                          className="border-b-2 w-3/4 mx-4 bg-secondaryColor border-white "
+                          className="border-b-2 w-3/4 mx-4 bg-fourthColor border-white "
                           type="text"
                           {...field}
                         />
@@ -142,7 +142,7 @@ export default function ContactUs() {
 
                         <div className=" mx-2">
                           <Input
-                            className="border-b-2 w-full bg-secondaryColor border-white  "
+                            className="border-b-2 w-full bg-fourthColor border-white  "
                             id="text"
                             {...field}
                           />

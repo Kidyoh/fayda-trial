@@ -74,9 +74,9 @@
     @apply bg-background text-foreground;
   }
   .nav_bar_hover {
-    @apply hover:text-secondaryColor duration-150 hover:shadow-md w-fit hover:shadow-secondaryColor px-2 rounded;
+    @apply hover:text-fourthColor duration-150 hover:shadow-md w-fit hover:shadow-fourthColor px-2 rounded;
   }
   .nav_bar_hover_dropdown {
-    @apply hover:text-secondaryColor duration-150;
+    @apply hover:text-fourthColor duration-150;
   }
 }

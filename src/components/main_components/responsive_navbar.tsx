@@ -93,7 +93,7 @@ export default function NavBarForMobile(props: any) {
                     className={
                       routerPathname == "/"
                         ? "text-primaryColor nav_bar_hover "
-                        : "text-secondaryColor nav_bar_hover "
+                        : "text-fourthColor nav_bar_hover "
                     }
                   >
                     <div className="flex space-x-2">
@@ -111,7 +111,7 @@ export default function NavBarForMobile(props: any) {
                         className={
                           routerPathname == "/packages_access/courses_list"
                             ? "text-primaryColor nav_bar_hover_dropdown "
-                            : "text-secondaryColor nav_bar_hover_dropdown "
+                            : "text-fourthColor nav_bar_hover_dropdown "
                         }
                       >
                         <div className="flex space-x-2">
@@ -132,7 +132,7 @@ export default function NavBarForMobile(props: any) {
                             "/packages_access/packages_list"
                           )
                             ? "text-primaryColor nav_bar_hover_dropdown "
-                            : "text-secondaryColor nav_bar_hover_dropdown "
+                            : "text-fourthColor nav_bar_hover_dropdown "
                         }
                       >
                         <div className="flex space-x-2">
@@ -150,7 +150,7 @@ export default function NavBarForMobile(props: any) {
                       className={
                         routerPathname.startsWith("/explore_packages")
                           ? "text-primaryColor nav_bar_hover_dropdown "
-                          : "text-secondaryColor nav_bar_hover_dropdown "
+                          : "text-fourthColor nav_bar_hover_dropdown "
                       }
                     >
                       <div className="flex space-x-2">
@@ -168,7 +168,7 @@ export default function NavBarForMobile(props: any) {
                       className={
                         routerPathname.startsWith("/blogs")
                           ? "text-primaryColor nav_bar_hover_dropdown "
-                          : "text-secondaryColor nav_bar_hover_dropdown "
+                          : "text-fourthColor nav_bar_hover_dropdown "
                       }
                     >
                       <div className="flex space-x-2">
@@ -185,7 +185,7 @@ export default function NavBarForMobile(props: any) {
                       className={
                         routerPathname == "/leaderboard"
                           ? "text-primaryColor nav_bar_hover_dropdown "
-                          : "text-secondaryColor nav_bar_hover_dropdown "
+                          : "text-fourthColor nav_bar_hover_dropdown "
                       }
                     >
                       <div className="flex space-x-2">
@@ -202,7 +202,7 @@ export default function NavBarForMobile(props: any) {
                       className={
                         routerPathname == "/about_us"
                           ? "text-primaryColor nav_bar_hover_dropdown "
-                          : "text-secondaryColor nav_bar_hover_dropdown "
+                          : "text-fourthColor nav_bar_hover_dropdown "
                       }
                     >
                       <div className="flex space-x-2">
@@ -214,7 +214,7 @@ export default function NavBarForMobile(props: any) {
               </div>
               <div>
                 <Link href={"notifications"}>
-                  <div className="relative text-secondaryColor  pr-2 nav_bar_hover">
+                  <div className="relative text-fourthColor  pr-2 nav_bar_hover">
                     <div className="my-auto">
                       <Bell />
                     </div>
@@ -227,7 +227,7 @@ export default function NavBarForMobile(props: any) {
                 </Link>
               </div>
               {data == "User not authenticated" ? (
-                <div className="mx-2 ">
+                <div className="mx-2 flex space-x-3">
                   <div>
                     <Link href={"/login"}>
                       <button className=" text-primaryColor  rounded-md font-semibold  ">
