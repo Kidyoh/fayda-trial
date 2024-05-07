@@ -45,7 +45,7 @@ export default function CoverHome() {
             </h1>
           </div>
           <div className="mt-20  pb-3 w-full flex">
-            <h1 className="bg-secondaryColor mx-auto  ssmd:mx-10 text-white px-3 py-1 rounded-2xl w-fit cursor-pointer hover:scale-105 duration-100">
+            <h1 className="bg-fourthColor mx-auto  ssmd:mx-10 text-white px-3 py-1 rounded-2xl w-fit cursor-pointer hover:scale-105 duration-100">
               Download App
             </h1>
           </div>
@@ -55,7 +55,7 @@ export default function CoverHome() {
         {/* <img className="w-full " src="common_files/main/cover4.png" alt="" /> */}
         <div className="hidden ssmd:block right-0">
           <motion.img
-            src="common_files/main/cover6.png"
+            src="common_files/main/22.png"
             alt="Floating Image"
             animate={{
               y: [-20, 20, -20],
@@ -65,7 +65,7 @@ export default function CoverHome() {
         </div>
         <div className="block ssmd:hidden mx-auto">
           <motion.img
-            src="common_files/main/cover5.png"
+            src="common_files/main/1.png"
             alt="Floating Image"
             animate={{
               y: [-20, 20, -20],
