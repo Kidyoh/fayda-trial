@@ -1,7 +1,7 @@
 "use client";
 
 import React, { FormEvent } from "react";
-import { BookOpenCheck, Blocks, Trophy } from "lucide-react";
+import { BookOpenCheck, Blocks, Trophy, Vote } from "lucide-react";
 import { apiUrl } from "@/apiConfig";
 
 export default function WelcomeSection() {
@@ -40,7 +40,7 @@ export default function WelcomeSection() {
         <div className=" rounded-lg w-full p-2">
           <div className="flex">
             <div className="mx-auto text-fourthColor">
-              <Blocks size={sizeOfIcons} />
+              <Vote size={sizeOfIcons} />
             </div>
           </div>
           <div className="w-full flex">

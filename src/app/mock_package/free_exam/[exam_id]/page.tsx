@@ -313,12 +313,15 @@ function AssessmentQuestions({ params }: any) {
                     </div>
 
                     <div>
-                      <img
-                        // src={`${apiUrl}/upload_assets/images/question_images/${ques.questionImage}`}
-                        src={ques?.questionImageUrl}
-                        alt="ThumbNail Image"
-                        className="  rounded-lg"
-                      />
+                      {/* <h1>{ques?.questionImage}</h1> */}
+                      {ques?.questionImage && (
+                        <img
+                          // src={`${apiUrl}/upload_assets/images/question_images/${ques.questionImage}`}
+                          src={ques?.questionImageUrl}
+                          alt="ThumbNail Image"
+                          className="  rounded-lg"
+                        />
+                      )}
                     </div>
                   </div>
                 ))}

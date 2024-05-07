@@ -34,10 +34,45 @@ export default function Footer() {
         <div>
           <h1 className="text-thirdColor font-semibold pb-2">Contact Us</h1>
           <div>
-            <h1>Facebook</h1>
-            <h1>Telegram</h1>
-            <h1>LinkedIn</h1>
-            <h1>Tweeter</h1>
+            <div className="hover:text-thirdColor">
+              <a target="_blank" href="https://www.fb.com/l/6lp1kJRRR">
+                Facebook
+              </a>
+            </div>
+            <div className="hover:text-thirdColor">
+              {" "}
+              <a
+                target="_blank"
+                href="https://www.instagram.com/fayidaacademy?igsh=MXBmdzhqcDEwMTd2NA=="
+              >
+                Instagram
+              </a>
+            </div>
+            <div className="hover:text-thirdColor">
+              <a
+                target="_blank"
+                href="https://www.tiktok.com/@fayidaacademy?_t=8m7lTj0C4kt&_r=1"
+              >
+                TikTok
+              </a>
+            </div>
+            <div className="hover:text-thirdColor">
+              <a
+                target="_blank"
+                href="https://www.linkedin.com/company/ethlook/"
+              >
+                Linked In
+              </a>
+            </div>
+            <div className="hover:text-thirdColor">
+              {" "}
+              <a target="_blank" href="https://t.me/fayidaacademy">
+                Telegram
+              </a>
+            </div>
+            <div>
+              <h1>+251915733163</h1>
+            </div>
           </div>
         </div>
       </div>
