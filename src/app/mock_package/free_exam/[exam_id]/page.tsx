@@ -230,29 +230,43 @@ function AssessmentQuestions({ params }: any) {
     <div className="my-5">
       {onExam && (
         <div className="mx-3">
-          <div>
+          <div className="py-4">
             {/* <h1>Questions : {AssessmentId}</h1> */}
-            <h1>Total Questions : {totalQuestionCounts}</h1>
-            <h1>Answerd Questions: {selectedAnswers.length}</h1>
-            <h1>Note: You should finish and submit your answer. </h1>
+            <h1>
+              <span className="text-primaryColor">Total Questions</span> :{" "}
+              {totalQuestionCounts}
+            </h1>
+            <h1>
+              <span className="text-primaryColor"> Answerd Questions:</span>{" "}
+              {selectedAnswers.length}
+            </h1>
+            <h1 className="">
+              <span className="text-primaryColor font-semibold"> Note:</span>{" "}
+              <span className="underline">
+                {" "}
+                You need to answer all the questions to submit your answer.
+              </span>{" "}
+            </h1>
           </div>
-          <div className="bg-primaryColor text-white flex justify-end mx-5 px-5">
+          <div className="bg-primaryColor text-white flex justify-end mx-5 px-5 py-3">
             <div className="justify-end">
-              <h1>Countdown Timer</h1>
               <h2>
                 Time Remaining:{" "}
-                <span className="text-blue-300">{formatTime(seconds)}</span>
+                <span className="text-thirdColor">{formatTime(seconds)}</span>
               </h2>
             </div>
           </div>
 
           <div>
             <form onSubmit={handleSubmit}>
-              <div>
+              <div className="md:mx-6">
                 {data?.question?.map((ques: any, index: any) => (
-                  <div key={ques?.id} className="my-3">
-                    <h2 className="flex gap-2">
-                      {index + 1} {`)`} {formatTextToHTML(ques?.question)}
+                  <div key={ques?.id} className="my-10">
+                    <h2 className="flex gap-2 py-2">
+                      <span className=" w-fit font-semibold  text-primaryColor">
+                        {index + 1 + `)`}
+                      </span>{" "}
+                      {formatTextToHTML(ques?.question)}
                     </h2>
 
                     <div>
@@ -326,7 +340,7 @@ function AssessmentQuestions({ params }: any) {
                   </div>
                 ))}
                 <button
-                  className="bg-blue-500 px-2 my-3 cursor-pointer hover:bg-opacity-80 rounded text-white"
+                  className="bg-primaryColor px-2 my-3 cursor-pointer hover:bg-opacity-80 rounded text-white"
                   type="submit"
                 >
                   Submit Answers
