@@ -70,7 +70,7 @@ export default function Footer() {
                 Telegram
               </a>
             </div>
-            <div>
+            <div className="hover:text-thirdColor">
               <a
                 target="_blank"
                 href="https://www.youtube.com/@FayidaAcademyOfficial"
