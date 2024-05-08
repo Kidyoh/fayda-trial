@@ -35,7 +35,7 @@ export default function Footer() {
           <h1 className="text-thirdColor font-semibold pb-2">Contact Us</h1>
           <div>
             <div className="hover:text-thirdColor">
-              <a target="_blank" href="https://www.fb.com/l/6lp1kJRRR">
+              <a target="_blank" href="https://www.facebook.com/profile.php?id=61557674511552&mibextid=LQQJ4d">
                 Facebook
               </a>
             </div>
