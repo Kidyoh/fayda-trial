@@ -71,6 +71,17 @@ export default function Footer() {
               </a>
             </div>
             <div>
+              <a
+                target="_blank"
+                href="https://www.youtube.com/@FayidaAcademyOfficial"
+              >
+                Youtube
+              </a>
+            </div>
+            <div>
+              <h1>fayidaacademy@gmail.com</h1>
+            </div>
+            <div>
               <h1>+251915733163</h1>
             </div>
           </div>

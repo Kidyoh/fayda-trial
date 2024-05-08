@@ -463,7 +463,7 @@ export default function ProfileDetails() {
               />
             </div>
             <div className="py-3 flex space-x-1">
-              <h1 className="font-semibold">Gread:</h1>
+              <h1 className="font-semibold">Grade:</h1>
               <h1 className="px-3">{gread}</h1>
 
               <EditCellDialog

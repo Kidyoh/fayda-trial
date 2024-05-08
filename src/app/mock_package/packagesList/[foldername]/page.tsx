@@ -53,7 +53,7 @@ export default function MockPackage({ params }: any) {
 
       {data?.map((packagex: any, index: number) => {
         return (
-          <div key={index} className="md:grid grid-cols-3 my-6 mx-2">
+          <div key={index} className="md:grid grid-cols-3 my-6 mx-2 ">
             <div className="w-full md:w-1/2 mx-auto">
               <img
                 // src={`${apiUrl}/upload_assets/images/mock_package_thumbnails/${packagex?.thumbnail}`}
@@ -63,9 +63,16 @@ export default function MockPackage({ params }: any) {
               />
             </div>
 
-            <div>
-              <h1>Package Title: {packagex?.title}</h1>
-              <h1>Description: {packagex?.description}</h1>
+            <div className="space-y-3 md:col-span-2 md:m-8 ">
+              <h1 className="py-3 mx-auto w-fit md:w-full ">
+                <span className="text-primaryColor"> Package Title: </span>{" "}
+                {packagex?.title}
+              </h1>
+              <h1 className="text-center bg-fourthColor bg-opacity-30 p-3 rounded-xl">
+                {" "}
+                <span className="text-primaryColor"> Description:</span>{" "}
+                {packagex?.description}
+              </h1>
               {/* <h1>
                 Price:{" "}
                 {packagex?.price == "0"
@@ -76,7 +83,7 @@ export default function MockPackage({ params }: any) {
               </h1> */}
 
               <h1>
-                Price:{" "}
+                <span className="text-primaryColor"> Price:</span>{" "}
                 {packagex?.price == "0" ? (
                   "Free"
                 ) : packagex?.discountStatus ? (
@@ -88,35 +95,45 @@ export default function MockPackage({ params }: any) {
                 ) : (
                   <span>{packagex?.price}</span>
                 )}
-                <span>{" Birr"}</span>
+                {/* <span>{" Birr"}</span> */}
               </h1>
-              <h1>Number of Exams included: {packagex?.Exams.length}</h1>
+              <h1>
+                <span className="text-primaryColor">
+                  {" "}
+                  Number of Exams included:{" "}
+                </span>
+                {packagex?.Exams.length}
+              </h1>
 
               {packagex?.Exams.map((exam: any, index: number) => {
                 return (
-                  <div key={index} className="flex gap-2">
-                    <h1>*</h1>
-                    <h1>{exam.assesmentTitle} ,</h1>
-                    <h1>{exam.assesmentDescription}</h1>
+                  <div key={index} className="">
+                    <h1>
+                      <span className="text-primaryColor">Exam Title: </span>
+                      {exam.assesmentTitle}
+                    </h1>
+                    <h1 className="pl-5 bg-fourthColor bg-opacity-30">
+                      {exam.assesmentDescription}
+                    </h1>
                   </div>
                 );
               })}
 
               {packagex.price != 0 ? (
-                <div className="my-3">
+                <div className="my-auto bg-yellow-200 w-full ">
                   <button
                     onClick={() => SetStorePackage(packagex)}
-                    className="bg-primaryColor rounded-lg p-1 text-white"
+                    className="bg-primaryColor rounded-lg p-1 text-white "
                   >
                     {" "}
                     <CheckPayment mock_package_id={packagex.id} />
                   </button>
                 </div>
               ) : (
-                <div className="my-3">
+                <div className="my-3 w-full flex ">
                   <button
                     onClick={() => SetStorePackage(packagex)}
-                    className="bg-primaryColor rounded-lg p-1 text-white"
+                    className="bg-primaryColor mx-auto md:mx-3 rounded-lg p-1 text-white"
                   >
                     {" "}
                     <CheckPhoneNumber

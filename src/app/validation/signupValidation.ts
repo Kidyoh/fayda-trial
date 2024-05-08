@@ -7,7 +7,7 @@ export const signUpInfoSchema: any = z
     schoolName: z.string(),
     grandName: z.string(),
     age: z.string().min(1, "Age is required"),
-    gread: z.string().min(1, "Gread is required"),
+    gread: z.string().min(1, "Grade is required"),
     city: z.string().min(1, "City is required"),
     region: z.string().min(1, "Region is required"),
 
