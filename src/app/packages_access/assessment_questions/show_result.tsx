@@ -59,12 +59,10 @@ export default function ShowResult({
 
         <DialogContent>
           <DialogHeader>
-            <DialogTitle className="text-center">
-              Yor Result Review{" "}
-            </DialogTitle>
-            <DialogDescription className="text-center">
+            <DialogTitle className="text-center">{Result} </DialogTitle>
+            {/* <DialogDescription className="text-center">
               {Result}
-            </DialogDescription>
+            </DialogDescription> */}
           </DialogHeader>
           <DialogFooter>
             {
