@@ -25,7 +25,7 @@ export default function Home() {
       <WelcomeSection />
       <MockExamRendered />
       <Advertisment_home />
-      <CoursesSampleNames />
+      {/* <CoursesSampleNames /> */}
       <PackageDiscountSlider />
       <PackagesRenderd />
       <PageBreaker />

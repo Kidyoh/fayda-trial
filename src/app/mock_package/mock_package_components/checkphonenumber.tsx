@@ -19,6 +19,7 @@ import { ScrollText } from "lucide-react";
 import useTemporaryPhonenumberStore from "@/app/store/temporaryphonenumberStore";
 
 import { useRouter } from "next/navigation";
+import useDrawerStatus from "@/app/store/navbarDrawerStore";
 
 export default function CheckPhoneNumber({ mockPackageId, pushto }: any) {
   const [typedPhoneNumber, setTypedPhoneNumber] = useState("");
@@ -43,6 +44,8 @@ export default function CheckPhoneNumber({ mockPackageId, pushto }: any) {
   const updatedData = {
     ["test"]: typedPhoneNumber,
   };
+  const setDrawerStatus = useDrawerStatus((state) => state.setDrawerStatus);
+  const drawerStatus = useDrawerStatus((state) => state.drawerStatus);
 
   // Handle errors
 
@@ -59,6 +62,7 @@ export default function CheckPhoneNumber({ mockPackageId, pushto }: any) {
           if (data) {
             console.log("it is true");
             setOpen(false);
+            setDrawerStatus(false);
             // push(`/mock_package/${MockPackageId}`);
             //  push(`/mock_package/free_mock_package/${MockPackageId}`);
             // push(`/mock_package/free_mock_package/${MockPackageId}`);
@@ -71,6 +75,7 @@ export default function CheckPhoneNumber({ mockPackageId, pushto }: any) {
           } else {
             console.log("It is false");
             setOpen(false);
+            setDrawerStatus(false);
 
             push("/register_examtaker");
           }
@@ -80,12 +85,16 @@ export default function CheckPhoneNumber({ mockPackageId, pushto }: any) {
       console.error("Error Updating file", error);
     }
   };
+  const handleKeyPress = (event: any) => {
+    if (event.key === "Enter") {
+      // Call the function that updates the phone number or triggers exam start (handleUpdate)
+      handleUpdate();
+    }
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className="hover:underline cursor-pointer">
-        Take Exam
-      </DialogTrigger>
+      <DialogTrigger className=" cursor-pointer">Take Exam</DialogTrigger>
 
       <DialogContent>
         <DialogHeader>
@@ -97,6 +106,7 @@ export default function CheckPhoneNumber({ mockPackageId, pushto }: any) {
           <Input
             onChange={handleInputChange}
             type="number"
+            onKeyPress={handleKeyPress}
             // defaultValue={phoneNumber}
           />
         </DialogHeader>

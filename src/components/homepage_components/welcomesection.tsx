@@ -11,7 +11,7 @@ export default function WelcomeSection() {
       <div className="w-full flex">
         <div className=" w-full">
           <h1 className="mx-auto w-fit text-2xl font-semibold text-fourthColor">
-            Welcome To Fayida
+            Welcome To Fayida Academy
           </h1>
           <h1 className="px-6 sm:px-12 smd:px-20 md:px-28 xmd:px-36 text-center text-sm font-semibold">
             Welcome to our online learning platform, where students can unlock

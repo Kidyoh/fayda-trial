@@ -22,6 +22,7 @@ import { stringify } from "querystring";
 import { usePathname } from "next/navigation";
 import NavBarForMobile from "./responsive_navbar";
 import axios from "axios";
+import CheckPhoneNumber from "@/app/mock_package/mock_package_components/checkphonenumber";
 
 export default function NavBar(response3: any) {
   const profile = response3;
@@ -115,7 +116,7 @@ export default function NavBar(response3: any) {
 
   return (
     <div className="">
-      <div className="hidden xmd:block fixed w-full top-0 z-50 bg-white bg-opacity-80 border-2">
+      <div className="hidden xxmd:block fixed w-full top-0 z-50 bg-white bg-opacity-80 border-2">
         <div className="flex justify-around text-sm px-3">
           <div>
             <Link href={"/"}>
@@ -214,6 +215,22 @@ export default function NavBar(response3: any) {
                 </h1>
               </div>
             </Link>
+
+            <h1>
+              {" "}
+              <div className="nav_bar_hover">
+                <h1
+                  className={
+                    routerPathname.startsWith("/mock_package")
+                      ? "text-primaryColor nav_bar_hover_dropdown "
+                      : "text-black nav_bar_hover_dropdown "
+                  }
+                >
+                  {/* <CheckPhoneNumber pushto={"/mock_package/selectmainfolder"} /> */}
+                  <CheckPhoneNumber pushto={"/mock_package/selectmainfolder"} />
+                </h1>
+              </div>
+            </h1>
 
             <Link href={"/blogs"}>
               <div className="nav_bar_hover">
@@ -329,7 +346,7 @@ export default function NavBar(response3: any) {
         </div>
       </div>
 
-      <div className="block  xmd:hidden fixed w-full z-50">
+      <div className="block  xxmd:hidden fixed w-full z-50">
         <NavBarForMobile
           data={data}
           notificationNumber={notificationNumber}

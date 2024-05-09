@@ -17,6 +17,7 @@ import {
   SearchSlash,
   // BookA,
   Blocks,
+  Book,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import {
@@ -25,6 +26,8 @@ import {
   PopoverTrigger,
 } from "@radix-ui/react-popover";
 import { apiUrl } from "@/apiConfig";
+import CheckPhoneNumber from "@/app/mock_package/mock_package_components/checkphonenumber";
+import useDrawerStatus from "@/app/store/navbarDrawerStore";
 
 export default function NavBarForMobile(props: any) {
   const data = props?.data;
@@ -34,10 +37,14 @@ export default function NavBarForMobile(props: any) {
   console.log("data: " + data);
   const routerPathname = usePathname();
 
-  const [dropdown, setDropDown] = useState(false);
+  // const [dropdown, setDropDown] = useState(false);
+  const setDrawerStatus = useDrawerStatus((state) => state.setDrawerStatus);
+  const drawerStatus = useDrawerStatus((state) => state.drawerStatus);
 
   const toggleDropDown = () => {
-    setDropDown(!dropdown);
+    //  setDropDown(!dropdown);
+
+    setDrawerStatus(!drawerStatus);
   };
 
   useEffect(() => {
@@ -46,7 +53,7 @@ export default function NavBarForMobile(props: any) {
       // Check if the click is outside the navbar drawer
       if (!event.target.closest(".navbar-drawer")) {
         // Close the navbar drawer
-        setDropDown(false);
+        //   setDropDown(false);
       }
     };
     // Attach the event listener to the document body
@@ -64,7 +71,7 @@ export default function NavBarForMobile(props: any) {
           className="my-auto cursor-pointer"
           onClick={() => toggleDropDown()}
         >
-          {dropdown ? <X /> : <AlignLeft />}
+          {drawerStatus ? <X /> : <AlignLeft />}
         </div>
         <div>
           {" "}
@@ -82,7 +89,7 @@ export default function NavBarForMobile(props: any) {
         </div> */}
       </div>
 
-      {dropdown && (
+      {drawerStatus && (
         <div className="absolute py-5  left-0 top-10 px-3 bg-gradient-to-r from-gray-50  to-blue-200 shadow-2xl  w-1/2 rounded-br-2xl ">
           <div className="z-50 ">
             <div className="space-y-2">
@@ -96,7 +103,10 @@ export default function NavBarForMobile(props: any) {
                         : "text-fourthColor nav_bar_hover "
                     }
                   >
-                    <div className="flex space-x-2">
+                    <div
+                      className="flex space-x-2"
+                      onClick={() => toggleDropDown()}
+                    >
                       <Home />
                       <h1>Home</h1>
                     </div>
@@ -114,7 +124,10 @@ export default function NavBarForMobile(props: any) {
                             : "text-fourthColor nav_bar_hover_dropdown "
                         }
                       >
-                        <div className="flex space-x-2">
+                        <div
+                          className="flex space-x-2"
+                          onClick={() => toggleDropDown()}
+                        >
                           <Blocks /> <h1>Courses List</h1>
                         </div>
                       </h1>
@@ -135,7 +148,10 @@ export default function NavBarForMobile(props: any) {
                             : "text-fourthColor nav_bar_hover_dropdown "
                         }
                       >
-                        <div className="flex space-x-2">
+                        <div
+                          className="flex space-x-2"
+                          onClick={() => toggleDropDown()}
+                        >
                           <Blocks /> <h1>Packages</h1>
                         </div>
                       </h1>
@@ -153,13 +169,34 @@ export default function NavBarForMobile(props: any) {
                           : "text-fourthColor nav_bar_hover_dropdown "
                       }
                     >
-                      <div className="flex space-x-2">
+                      <div
+                        className="flex space-x-2"
+                        onClick={() => toggleDropDown()}
+                      >
                         <Blocks />
                         <h1>Explore</h1>
                       </div>
                     </h1>
                   </div>
                 </Link>
+              </div>
+              <div>
+                <div className="nav_bar_hover">
+                  <h1
+                    className={
+                      routerPathname.startsWith("/mock_package")
+                        ? "text-primaryColor nav_bar_hover_dropdown "
+                        : "text-fourthColor nav_bar_hover_dropdown "
+                    }
+                  >
+                    <div className="flex space-x-2">
+                      <Book />
+                      <CheckPhoneNumber
+                        pushto={"/mock_package/selectmainfolder"}
+                      />
+                    </div>
+                  </h1>
+                </div>
               </div>
               <div>
                 <Link href={"/blogs"}>
@@ -171,7 +208,10 @@ export default function NavBarForMobile(props: any) {
                           : "text-fourthColor nav_bar_hover_dropdown "
                       }
                     >
-                      <div className="flex space-x-2">
+                      <div
+                        className="flex space-x-2"
+                        onClick={() => toggleDropDown()}
+                      >
                         <StickyNote /> <h1>Blogs</h1>
                       </div>
                     </h1>
@@ -188,7 +228,10 @@ export default function NavBarForMobile(props: any) {
                           : "text-fourthColor nav_bar_hover_dropdown "
                       }
                     >
-                      <div className="flex space-x-2">
+                      <div
+                        className="flex space-x-2"
+                        onClick={() => toggleDropDown()}
+                      >
                         <Award /> <h1>LeaderBoard</h1>
                       </div>
                     </h1>
@@ -205,7 +248,10 @@ export default function NavBarForMobile(props: any) {
                           : "text-fourthColor nav_bar_hover_dropdown "
                       }
                     >
-                      <div className="flex space-x-2">
+                      <div
+                        className="flex space-x-2"
+                        onClick={() => toggleDropDown()}
+                      >
                         <SearchSlash /> <h1>About</h1>
                       </div>
                     </h1>
@@ -227,7 +273,10 @@ export default function NavBarForMobile(props: any) {
                 </Link>
               </div>
               {data == "User not authenticated" ? (
-                <div className="mx-2 flex space-x-3">
+                <div
+                  className="mx-2 flex space-x-3"
+                  onClick={() => toggleDropDown()}
+                >
                   <div>
                     <Link href={"/login"}>
                       <button className=" text-primaryColor  rounded-md font-semibold  ">
@@ -245,7 +294,10 @@ export default function NavBarForMobile(props: any) {
                   </div>
                 </div>
               ) : (
-                <div className="my-auto text-secondaryColor">
+                <div
+                  className="my-auto text-secondaryColor"
+                  onClick={() => toggleDropDown()}
+                >
                   <Link href="/profile">Profile</Link>
                   <div className="mt-3">
                     <form
