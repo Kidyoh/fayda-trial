@@ -1,6 +1,17 @@
+"use client";
 import { apiUrl } from "@/apiConfig";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 interface ShowResultItems {
   reslultText: string;
@@ -13,6 +24,14 @@ export default function ShowResult({
   const Result = reslultText;
   const IncorrectQuestions = incorrectquestions;
   const Questions = questions;
+
+  const [open, setOpen] = useState(true);
+  const changeStatus = () => {
+    setOpen(false);
+  };
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to top on component mount
+  }, []);
 
   function formatTextToHTML(text: any) {
     if (!text) {
@@ -35,6 +54,32 @@ export default function ShowResult({
   console.log("Questions Get: " + JSON.stringify(Questions));
   return (
     <div className="mx-5">
+      <Dialog open={open} onOpenChange={setOpen}>
+        {/* <DialogTrigger className=" cursor-pointer">Take Exam</DialogTrigger> */}
+
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="text-center">
+              Yor Result Review{" "}
+            </DialogTitle>
+            <DialogDescription className="text-center">
+              {Result}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            {
+              <Button
+                type="submit"
+                className="bg-primaryColor text-white"
+                onClick={() => changeStatus()}
+              >
+                Ok
+              </Button>
+            }
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       <div className="my-4 flex space-x-3 mx-auto w-fit">
         <h1>Exam Result: </h1>
         <h1>{Result}.</h1>
@@ -127,7 +172,7 @@ export default function ShowResult({
                     D: {formatTextToHTML(que.choiseD)}
                   </h1>
                   <h1 className="flex gap-2">
-                    Correct Choice: {que.correctChoice}
+                    Correct Choice: {que.correctChoice.toUpperCase()}
                   </h1>
                   <h1>Explanation: {formatTextToHTML(que.correction)}</h1>
                   {que.correctionImage && (
@@ -159,7 +204,7 @@ export default function ShowResult({
                     D: {formatTextToHTML(que.choiseD)}
                   </h1>
                   <h1 className="flex gap-2">
-                    Correct Choice: {que.correctChoice}
+                    Correct Choice: {que.correctChoice.toUpperCase()}
                   </h1>
                   <h1 className="bg-green-200 px-6">Correct</h1>
                   <h1>Explanation: {formatTextToHTML(que.correction)}</h1>
