@@ -103,8 +103,8 @@ export default function LeaderBoard() {
                           //className="text-center my-4 border-4 bg-red-300 m-3 "
                           className={`text-center  ${
                             index % 2 == 0
-                              ? "bg-primaryColor text-white "
-                              : "bg-secondaryColor text-white"
+                              ? "bg-gray-200 text-gray-500"
+                              : "bg-gray-100 text-gray-500"
                           }`}
                           key={index}
                         >
@@ -148,8 +148,8 @@ export default function LeaderBoard() {
                         <tr
                           className={`text-center  ${
                             index % 2 == 0
-                              ? "bg-primaryColor text-white "
-                              : "bg-secondaryColor text-white"
+                              ? "bg-gray-200 text-gray-500"
+                              : "bg-gray-100 text-gray-500"
                           }`}
                           key={index}
                         >
