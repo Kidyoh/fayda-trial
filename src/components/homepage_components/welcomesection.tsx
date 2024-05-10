@@ -18,6 +18,18 @@ export default function WelcomeSection() {
             their full potential and embark on a journey of knowledge and
             growth.
           </h1>
+          <div className="w-full flex px-4 my-4">
+            <div className="aspect-ratio  mx-auto border-4 border-fourthColor shadow-2xl shadow-gray-600">
+              <video controls controlsList="nodownload" className="">
+                <source
+                  src="/common_files/introtest.mp4"
+                  type="video/mp4"
+                  className=" h-1/2 overflow-clip"
+                />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
         </div>
       </div>
       <div className="grid grid-cols-2 smd:grid-cols-4 gap-10 py-7 px-7">
