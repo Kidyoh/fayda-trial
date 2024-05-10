@@ -19,7 +19,7 @@ export default function WelcomeSection() {
             growth.
           </h1>
           <div className="w-full flex px-4 my-4">
-            <div className="aspect-ratio  mx-auto border-4 border-fourthColor shadow-2xl shadow-gray-600">
+            <div className="aspect-ratio  mx-auto rounded-3xl overflow-hidden shadow-xl shadow-gray-600">
               <video controls controlsList="nodownload" className="">
                 <source
                   src="/common_files/introtest.mp4"
