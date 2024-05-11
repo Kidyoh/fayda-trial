@@ -11,6 +11,7 @@ import MockexamSection from "@/components/homepage_components/mockexam_section";
 import PackageDiscountSlider from "@/components/homepage_components/package_discount_slider";
 import PackagesRenderd from "@/components/homepage_components/pakages_rendered";
 import SectionOne from "@/components/homepage_components/section_one";
+import Testimony from "@/components/homepage_components/testimony";
 import WelcomeSection from "@/components/homepage_components/welcomesection";
 import ContactUs from "@/components/main_components/contact_us";
 import Footer from "@/components/main_components/footer";
@@ -34,6 +35,7 @@ export default function Home() {
       <BlogSample />
       {/* <MockexamSection /> */}
       <SectionOne />
+      <Testimony />
       <ContactUs />
       <Footer />
     </div>
