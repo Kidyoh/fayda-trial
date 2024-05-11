@@ -20,7 +20,12 @@ export default function WelcomeSection() {
           </h1>
           <div className="w-full flex px-4 my-4">
             <div className="aspect-ratio  mx-auto rounded-3xl overflow-hidden shadow-xl shadow-gray-600">
-              <video controls controlsList="nodownload" className="">
+              <video
+                controls
+                controlsList="nodownload"
+                // poster="/common_files/main/cover33.jpg"
+                className=""
+              >
                 <source
                   src="/common_files/introtest.mp4"
                   type="video/mp4"

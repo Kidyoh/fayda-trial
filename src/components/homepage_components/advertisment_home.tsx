@@ -31,31 +31,36 @@ export default function Advertisment_home() {
   return (
     <div>
       {data[0]?.id && (
-        <div className="flex flex-col  bg-secondaryColor rounded-md md:px-4 py-6 shadow-md">
-          <div className="ssmd:flex items-center mx-auto">
+        <div className="flex flex-col  bg-primaryColor rounded-md md:px-4 py-6 shadow-md">
+          <div className="ssmd:flex items-center mx-auto ">
             <img
               // src={`${apiUrl}/upload_assets/images/advertisement_images/${data[0]?.image}`}
               src={data[0]?.imgUrl}
               alt="Ad Image"
               className="h-1/3  w-1/3 mx-auto  ssmd:h-1/4 ssmd:w-1/6 object-cover rounded-md"
             />
-            <div className="w-full flex">
-              <div className="mx-1 sm:ml-4 flex flex-col justify-between sm:mx-auto w-fit">
-                <h1 className="text-2xl text-center text-white font-bold">
-                  {data[0]?.title}
-                </h1>
-                <div className="mx-2 ssmd:text-lg text-center  text-white font-light">
-                  {data[0]?.subtitle}
-                  <br />
-                  {data[0]?.text}
-                </div>
-                <a
+            <div className="w-full flex ">
+              <div className="w-fit mx-auto">
+                <div className="mx-1 sm:ml-4 flex flex-col justify-between sm:mx-auto  ">
+                  <h1 className="text-2xl text-center text-white font-bold">
+                    {data[0]?.title}
+                  </h1>
+                  <div className="mx-2 ssmd:text-lg text-center  text-white font-light">
+                    {data[0]?.subtitle}
+                    <br />
+                    {data[0]?.text}
+                  </div>
+                  {/* <a
                   target="_blank"
                   href={`${data[0]?.info}`}
                   className="bg-white text-primaryColor text-center text-sm ssmd:font-semibold sm:px-4 py-2 rounded-md shadow-md hover:bg-gray-200"
                 >
                   {data[0]?.info}
-                </a>
+                </a> */}
+                  <h1 className="bg-white text-primaryColor text-center text-sm ssmd:font-semibold sm:px-4 py-2 rounded-md shadow-md hover:bg-gray-200">
+                    {data[0]?.info}
+                  </h1>
+                </div>
               </div>
             </div>
           </div>

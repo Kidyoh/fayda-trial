@@ -23,7 +23,7 @@ export default function Home() {
       <CoverHome />
       <Info />
       <WelcomeSection />
-      <MockExamRendered />
+      {/* <MockExamRendered /> */}
       <Advertisment_home />
       {/* <CoursesSampleNames /> */}
       <PackageDiscountSlider />
