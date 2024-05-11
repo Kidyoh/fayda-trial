@@ -1,5 +1,6 @@
 //import BlogSample from "@/components/homepage_components/blogs_sample";
 import Advertisment_home from "@/components/homepage_components/advertisment_home";
+import AdvertismentSliding from "@/components/homepage_components/advertisment_siding";
 import BlogSample from "@/components/homepage_components/blogs_sample";
 import CoursesSampleNames from "@/components/homepage_components/couses_sample_names";
 import HomePageCover from "@/components/homepage_components/cover";
@@ -24,7 +25,8 @@ export default function Home() {
       <Info />
       <WelcomeSection />
       {/* <MockExamRendered /> */}
-      <Advertisment_home />
+      {/* <Advertisment_home /> */}
+      <AdvertismentSliding />
       {/* <CoursesSampleNames /> */}
       <PackageDiscountSlider />
       <PackagesRenderd />
