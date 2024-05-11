@@ -31,11 +31,12 @@ export default function Home() {
       {/* <CoursesSampleNames /> */}
       <PackageDiscountSlider />
       <PackagesRenderd />
-      <PageBreaker />
+      {/* <PageBreaker /> */}
+      <Testimony />
       <BlogSample />
       {/* <MockexamSection /> */}
       <SectionOne />
-      <Testimony />
+
       <ContactUs />
       <Footer />
     </div>
