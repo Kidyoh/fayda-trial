@@ -27,7 +27,9 @@ export default function Home() {
       <WelcomeSection />
       {/* <MockExamRendered /> */}
       {/* <Advertisment_home /> */}
-      <AdvertismentSliding />
+
+      {/* <AdvertismentSliding /> */}
+
       {/* <CoursesSampleNames /> */}
       <PackageDiscountSlider />
       <PackagesRenderd />
