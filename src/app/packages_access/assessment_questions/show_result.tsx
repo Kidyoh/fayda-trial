@@ -181,8 +181,19 @@ export default function ShowResult({
                 <div className="bg-red-300 bg-opacity-70 p-3">
                   <h1 className="px-6">Incorrect</h1>
                   <h1 className="flex gap-2">
-                    Q: {formatTextToHTML(que.question)}
+                    Q {Qindex + ":"}
+                    {formatTextToHTML(que.question)}
                   </h1>
+                  {que.questionImage && (
+                    <div className="col-span-1">
+                      <img
+                        // src={`${apiUrl}/upload_assets/images/correction_images/${que.correctionImage}`}
+                        src={que?.questionImageUrl}
+                        alt="Correction Image"
+                        className="  rounded-lg"
+                      />
+                    </div>
+                  )}
                   <h1 className="flex gap-2">
                     A: {formatTextToHTML(que.choiseA)}
                   </h1>
@@ -213,8 +224,19 @@ export default function ShowResult({
               ) : (
                 <div>
                   <h1 className="flex gap-2">
-                    Q: {formatTextToHTML(que.question)}
+                    Q {Qindex + ":"}
+                    {formatTextToHTML(que.question)}
                   </h1>
+                  {que.questionImage && (
+                    <div className="col-span-1">
+                      <img
+                        // src={`${apiUrl}/upload_assets/images/correction_images/${que.correctionImage}`}
+                        src={que?.questionImageUrl}
+                        alt="Correction Image"
+                        className="  rounded-lg"
+                      />
+                    </div>
+                  )}
                   <h1 className="flex gap-2">
                     A: {formatTextToHTML(que.choiseA)}
                   </h1>
