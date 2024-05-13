@@ -56,10 +56,10 @@ function AssessmentQuestions({ params }: any) {
       .replace(/&&rarw&([^&]*)&&/g, function (_: any, text: any) {
         return text + " \u2192";
       })
-      .replace(
-        /(\d+)\/(\d+)/g,
-        '<span class="fraction"><sup class="numerator">$1</sup><sub class="denominator">$2</sub></span>'
-      ) // Matches _underline_
+      // .replace(
+      //   /(\d+)\/(\d+)/g,
+      //   '<span class="fraction"><sup class="numerator">$1</sup><sub class="denominator">$2</sub></span>'
+      // ) // Matches _underline_
 
       .replace(/&&st(\d+)&&end(\d+)/g, function (_: any, start: any, end: any) {
         return start + "<sub>" + end + "</sub>";
