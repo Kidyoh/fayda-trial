@@ -79,7 +79,7 @@ export default function AdvertismentSliding() {
                 // className="-mt-1 h-[200px]"
               >
                 <Link href={`/advertisment_details/${ad?.id}`}>
-                  <div className="flex flex-col  bg-primaryColor rounded-md md:px-4 py-6 shadow-md">
+                  {/* <div className="flex flex-col  bg-primaryColor rounded-md md:px-4 py-6 shadow-md">
                     <div className="md:flex items-center mx-auto ">
                       <img
                         // src={`${apiUrl}/upload_assets/images/advertisement_images/${data[0]?.image}`}
@@ -98,13 +98,7 @@ export default function AdvertismentSliding() {
                               <br />
                               {ad?.text}
                             </div>
-                            {/* <a
-                  target="_blank"
-                  href={`${data[0]?.info}`}
-                  className="bg-white text-primaryColor text-center text-sm ssmd:font-semibold sm:px-4 py-2 rounded-md shadow-md hover:bg-gray-200"
-                >
-                  {data[0]?.info}
-                </a> */}
+                           
                             <h1 className="bg-white w-3/4 mx-auto my-3 text-primaryColor text-center text-sm ssmd:font-semibold sm:px-4 py-2 rounded-md shadow-md hover:bg-gray-200">
                               {ad?.info}
                             </h1>
@@ -112,6 +106,10 @@ export default function AdvertismentSliding() {
                         </div>
                       </div>
                     </div>
+                  </div> */}
+
+                  <div>
+                    <img src={ad?.imgUrl} alt="" />
                   </div>
                 </Link>
               </CarouselItem>
