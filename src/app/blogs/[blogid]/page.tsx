@@ -31,9 +31,9 @@ export default function BlogDetails({ params }: any) {
   return (
     <div className="my-2">
       <div className="w-full flex">
-        <h1 className="mx-auto text-3xl text-primaryColor font-semibold underline">
+        {/* <h1 className="mx-auto text-3xl text-primaryColor font-semibold underline">
           Blog Details
-        </h1>
+        </h1> */}
       </div>
       <div className="md:grid grid-cols-3 gap-5 m-6 ">
         <div className="col-span-1 ">

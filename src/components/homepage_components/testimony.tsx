@@ -75,9 +75,9 @@ export default function Testimony() {
   return (
     <div className="my-8 cursor-pointer ">
       <div className="w-full my-4">
-        <h1 className="w-fit text-3xl underline text-primaryColor font-semibold mx-auto">
+        {/* <h1 className="w-fit text-3xl underline text-primaryColor font-semibold mx-auto">
           Testimony
-        </h1>
+        </h1> */}
       </div>
 
       <div className="">
