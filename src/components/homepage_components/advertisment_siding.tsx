@@ -118,13 +118,13 @@ export default function AdvertismentSliding() {
                     <div className="absolute top-0 h-full w-full z-50">
                       <div className="h-full w-full flex">
                         <div className=" mx-auto my-auto  ">
-                          <h1 className="text-white text-2xl mx-3 md:text-4xl text-center">
+                          <h1 className="text-white text-lg sm:text-2xl mx-3 md:text-4xl text-center">
                             {ad?.title}
                           </h1>
-                          <h1 className="md:text-xl mx-3 text-white text-center py-4">
+                          <h1 className="md:text-xl mx-3 text-white text-center py-1 md:py-4">
                             {ad?.subtitle}
                           </h1>
-                          <h1 className="text-xl bg-primaryColor border-2 border-white mx-auto px-3 w-fit text-white text-center py-4 my-10">
+                          <h1 className="md:text-xl bg-primaryColor border-2 border-white mx-auto px-1 sm:px-3 w-fit text-white text-center my-2 py-1 sm:py-2 md:py-4 md:my-10">
                             {ad?.info}
                           </h1>
                         </div>
