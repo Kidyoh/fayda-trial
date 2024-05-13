@@ -55,7 +55,7 @@ export default function AdvertismentSliding() {
       <Carousel
         plugins={[
           Autoplay({
-            delay: 6000,
+            delay: 12000,
             stopOnInteraction: false,
           }),
         ]}
@@ -75,7 +75,7 @@ export default function AdvertismentSliding() {
               <CarouselItem
                 key={ad.id}
                 //className="basis-1/2 smd:basis-1/3  lg:basis-1/4"
-                className="basis-1/1 w-fit"
+                className="w-full"
                 // className="-mt-1 h-[200px]"
               >
                 <Link href={`/advertisment_details/${ad?.id}`}>
@@ -108,8 +108,28 @@ export default function AdvertismentSliding() {
                     </div>
                   </div> */}
 
-                  <div>
-                    <img src={ad?.imgUrl} alt="" />
+                  <div className="realtive">
+                    <img
+                      src={ad?.imgUrl}
+                      className="bg-green-200 w-full"
+                      alt=""
+                    />
+                    <div className="absolute top-0 h-full w-full z-20 bg-primaryColor opacity-80"></div>
+                    <div className="absolute top-0 h-full w-full z-50">
+                      <div className="h-full w-full flex">
+                        <div className=" mx-auto my-auto  ">
+                          <h1 className="text-white text-2xl mx-3 md:text-4xl text-center">
+                            {ad?.title}
+                          </h1>
+                          <h1 className="md:text-xl mx-3 text-white text-center py-4">
+                            {ad?.subtitle}
+                          </h1>
+                          <h1 className="text-xl bg-primaryColor border-2 border-white mx-auto px-3 w-fit text-white text-center py-4 my-10">
+                            {ad?.info}
+                          </h1>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </Link>
               </CarouselItem>
