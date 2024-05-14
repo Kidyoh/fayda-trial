@@ -274,7 +274,7 @@ function AssessmentQuestions({ params }: any) {
               </span>{" "}
             </h1>
           </div>
-          <div className="bg-primaryColor z-50 sticky top-10 xxmd:top-16 text-white flex justify-end mx-5 px-5 py-3">
+          <div className="bg-primaryColor z-50 sticky top-10 xxmd:top-16 text-white flex justify-end mx-5 py-1 px-5 md:py-3">
             <div className="justify-end">
               <h2>
                 Time Remaining:{" "}
