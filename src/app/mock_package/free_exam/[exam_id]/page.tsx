@@ -61,9 +61,9 @@ function AssessmentQuestions({ params }: any) {
       //   '<span class="fraction"><sup class="numerator">$1</sup><sub class="denominator">$2</sub></span>'
       // ) // Matches _underline_
 
-      .replace(/&&st(\d+)&&end(\d+)/g, function (_: any, start: any, end: any) {
-        return start + "<sub>" + end + "</sub>";
-      });
+      // .replace(/&&st(\d+)&&end(\d+)/g, function (_: any, start: any, end: any) {
+      //   return start + "<sub>" + end + "</sub>";
+      // });
 
     const renderedHTML = (
       <div dangerouslySetInnerHTML={{ __html: formattedText }} />
