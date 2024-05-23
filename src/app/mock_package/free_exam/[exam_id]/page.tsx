@@ -149,6 +149,18 @@ function AssessmentQuestions({ params }: any) {
   };
 
   const automaticSubmit = async () => {
+    console.log("Automatic Submit Started!");
+    console.log("Answers: " + selectedAnswers);
+    const updatedAnswers = selectedAnswers.map((item: any) => {
+      if (item === null) {
+        return "X";
+      } else {
+        return item;
+      }
+    });
+    console.log("Updated: " + updatedAnswers);
+    setSelectedAnswers(updatedAnswers);
+    //if(selectedAnswers ="")
     try {
       const response = await axios.post(
         `${apiUrl}/assesments/submit-exam-answers/${AssessmentId}`,
@@ -166,6 +178,7 @@ function AssessmentQuestions({ params }: any) {
       if (response.status === 200) {
         // Handle successful submission
         setResultText(responseData.message);
+        setIncorrectQuestions(responseData.incorrectQuestionNumbers);
         setOnExam(false);
         console.log("Assessment answers submitted successfully!");
         // Clear answers, display feedback, etc.
@@ -196,6 +209,11 @@ function AssessmentQuestions({ params }: any) {
           setTotalQuestionsCounts(jsonData.question.length);
           setQuestions(jsonData.question);
 
+          const initialAnswers = Array(jsonData.question.length).fill("x");
+          setSelectedAnswers(initialAnswers);
+
+          // setSelectedAnswers([]);
+
           //  setVideoLocation(jsonData[0].location);
           //  console.log(jsonData[0].Courses.materials);
         })
@@ -215,7 +233,7 @@ function AssessmentQuestions({ params }: any) {
     }, 1000);
 
     const formattedTime = formatTime(seconds);
-    if (formattedTime === "00:01") {
+    if (formattedTime === "00:00:01") {
       console.log("Countdown reached 00:00!");
       {
         automaticSubmit();
@@ -227,12 +245,21 @@ function AssessmentQuestions({ params }: any) {
     return () => clearInterval(timerId);
   }, [seconds]);
 
+  // const formatTime = (timeInSeconds: any) => {
+  //   const minutes = Math.floor(timeInSeconds / 60);
+  //   const seconds = timeInSeconds % 60;
+  //   return `${minutes.toString().padStart(2, "0")}:${seconds
+  //     .toString()
+  //     .padStart(2, "0")}`;
+  // };
+
   const formatTime = (timeInSeconds: any) => {
-    const minutes = Math.floor(timeInSeconds / 60);
+    const hours = Math.floor(timeInSeconds / 3600);
+    const minutes = Math.floor((timeInSeconds % 3600) / 60);
     const seconds = timeInSeconds % 60;
-    return `${minutes.toString().padStart(2, "0")}:${seconds
+    return `${hours.toString().padStart(2, "0")}:${minutes
       .toString()
-      .padStart(2, "0")}`;
+      .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   };
 
   // const handleAnswerSelection = (questionIndex: any, answerId: any) => {
