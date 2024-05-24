@@ -27,7 +27,7 @@ export default function WelcomeSection() {
                 className=""
               >
                 <source
-                  src="/common_files/introtest.mp4"
+                  src="/common_files/introtestmain.mp4"
                   type="video/mp4"
                   className=" h-1/2 overflow-clip"
                 />
