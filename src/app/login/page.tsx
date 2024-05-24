@@ -8,6 +8,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Eye, EyeOff } from "lucide-react";
 type zodInputs = {
   email: string;
   password: string;
@@ -15,6 +16,8 @@ type zodInputs = {
 
 export default function LoginPage() {
   const [errorInfo, setErrorInfo] = useState("");
+  const [inputType, setInputType] = useState("password");
+
   const {
     register,
     handleSubmit,
@@ -28,6 +31,7 @@ export default function LoginPage() {
     },
     resolver: zodResolver(signInInfoSchema),
   });
+
   // const handleSubmit = (event: any) => {
   //   event.preventDefault();
 
@@ -122,6 +126,10 @@ export default function LoginPage() {
       });
   };
 
+  const toggleInputType = () => {
+    setInputType(inputType === "password" ? "text" : "password");
+  };
+
   return (
     <div className="w-full flex pb-64  bg-slate-100 p-5 h-full">
       <div className="flex flex-col-reverse smd:grid grid-cols-2  mx-auto shadow-2xl ">
@@ -154,14 +162,22 @@ export default function LoginPage() {
                 <label htmlFor="" className="text-sm text-gray-600 font-bold">
                   Password
                 </label>
-
-                <input
-                  className="px-2 border-b-2 border-blue-500 "
-                  type="password"
-                  // name="firstName"
-                  id="password"
-                  {...register("password")}
-                />
+                <div className="my-auto space-x-2">
+                  <input
+                    className="px-2 border-b-2 border-blue-500 "
+                    type={inputType}
+                    // name="firstName"
+                    id="password"
+                    {...register("password")}
+                  />
+                  <button
+                    className="hover:text-primaryColor"
+                    onClick={toggleInputType}
+                  >
+                    {" "}
+                    {inputType == "password" ? <Eye /> : <EyeOff />}
+                  </button>
+                </div>
               </div>
 
               <div className="w-full flex">
