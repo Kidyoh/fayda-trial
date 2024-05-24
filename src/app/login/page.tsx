@@ -162,7 +162,7 @@ export default function LoginPage() {
                 <label htmlFor="" className="text-sm text-gray-600 font-bold">
                   Password
                 </label>
-                <div className="my-auto space-x-2">
+                <div className="my-auto space-x-2 flex">
                   <input
                     className="px-2 border-b-2 border-blue-500 "
                     type={inputType}
@@ -170,13 +170,13 @@ export default function LoginPage() {
                     id="password"
                     {...register("password")}
                   />
-                  <button
-                    className="hover:text-primaryColor"
+                  <div
+                    className="hover:text-primaryColor cursor-pointer"
                     onClick={toggleInputType}
                   >
                     {" "}
                     {inputType == "password" ? <Eye /> : <EyeOff />}
-                  </button>
+                  </div>
                 </div>
               </div>
 
