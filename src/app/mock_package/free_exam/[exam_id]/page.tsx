@@ -66,6 +66,7 @@ function AssessmentQuestions({ params }: any) {
       .replace(/&&psi/g, "ψ")
       .replace(/&&omega/g, "ω")
       .replace(/&&eta/g, "η")
+      .replace(/&&dotdotdot/g, "⋮")
       .replace(/&&nl/g, "<br>")
       .replace(/&&r/g, "<span style='font-size:1.2em'>&#8477;</span>")
       .replace(/&&nat/g, "<span style='font-size:1.2em'>&naturals;</span>")
