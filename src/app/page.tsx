@@ -28,13 +28,13 @@ export default function Home() {
       {/* <MockExamRendered /> */}
       {/* <Advertisment_home /> */}
 
-      <AdvertismentSliding />
+      {/* <AdvertismentSliding /> */}
 
       {/* <CoursesSampleNames /> */}
       <PackageDiscountSlider />
       <PackagesRenderd />
       {/* <PageBreaker /> */}
-      <Testimony />
+      {/* <Testimony /> */}
       <BlogSample />
       {/* <MockexamSection /> */}
       <SectionOne />
