@@ -11,9 +11,9 @@ import {
   PhoneCall,
   Send,
 } from "lucide-react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { fa3, faCheck, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { faTiktok } from "@fortawesome/free-brands-svg-icons";
+//import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { fa3, faCheck, faTrash } from "@fortawesome/free-solid-svg-icons";
+// import { faTiktok } from "@fortawesome/free-brands-svg-icons";
 
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
@@ -116,11 +116,11 @@ export default function Footer() {
               target="_blank"
               href="https://www.tiktok.com/@fayidaacademy?_t=8m7lTj0C4kt&_r=1"
             >
-              <FontAwesomeIcon
+              {/* <FontAwesomeIcon
                 icon={faTiktok}
                 className=" text-white   my-auto"
                 style={{ fontSize: "1.5rem" }}
-              ></FontAwesomeIcon>
+              ></FontAwesomeIcon> */}
             </Link>
           </div>
           <div className=" smd:col-span-1 mx-auto right-0   w-fit  flex space-x-2">
