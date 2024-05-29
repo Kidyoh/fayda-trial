@@ -15,7 +15,7 @@ import {
 // import { fa3, faCheck, faTrash } from "@fortawesome/free-solid-svg-icons";
 // import { faTiktok } from "@fortawesome/free-brands-svg-icons";
 
-import { Separator } from "@/components/ui/separator";
+//import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 
 export default function Footer() {
@@ -66,7 +66,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <Separator className="w-11/12 my-4 mx-auto" orientation="horizontal" />
+      {/* <Separator className="w-11/12 my-4 mx-auto" orientation="horizontal" /> */}
       <div className=" w-fit xmd:w-full flex flex-col-reverse smd:flex-row space-x-9 mx-auto xmd:space-x-0 xmd:mx-0 xmd:justify-between px-10">
         <div className="flex space-x-1 text-sm ">
           <Copyright size={15} className="my-auto" />
