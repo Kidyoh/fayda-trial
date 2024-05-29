@@ -1,7 +1,7 @@
 import React from "react";
-// import "@fortawesome/fontawesome-svg-core/styles.css";
-// import { config } from "@fortawesome/fontawesome-svg-core";
-// config.autoAddCss = false;
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import { config } from "@fortawesome/fontawesome-svg-core";
+config.autoAddCss = false;
 import {
   Copyright,
   Facebook,
@@ -11,11 +11,11 @@ import {
   PhoneCall,
   Send,
 } from "lucide-react";
-//import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { fa3, faCheck, faTrash } from "@fortawesome/free-solid-svg-icons";
-// import { faTiktok } from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { fa3, faCheck, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faTiktok } from "@fortawesome/free-brands-svg-icons";
 
-//import { Separator } from "@/components/ui/separator";
+import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 
 export default function Footer() {
@@ -66,7 +66,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      {/* <Separator className="w-11/12 my-4 mx-auto" orientation="horizontal" /> */}
+      <Separator className="w-11/12 my-4 mx-auto" orientation="horizontal" />
       <div className=" w-fit xmd:w-full flex flex-col-reverse smd:flex-row space-x-9 mx-auto xmd:space-x-0 xmd:mx-0 xmd:justify-between px-10">
         <div className="flex space-x-1 text-sm ">
           <Copyright size={15} className="my-auto" />
@@ -116,11 +116,11 @@ export default function Footer() {
               target="_blank"
               href="https://www.tiktok.com/@fayidaacademy?_t=8m7lTj0C4kt&_r=1"
             >
-              {/* <FontAwesomeIcon
+              <FontAwesomeIcon
                 icon={faTiktok}
                 className=" text-white   my-auto"
                 style={{ fontSize: "1.5rem" }}
-              ></FontAwesomeIcon> */}
+              ></FontAwesomeIcon>
             </Link>
           </div>
           <div className=" smd:col-span-1 mx-auto right-0   w-fit  flex space-x-2">
