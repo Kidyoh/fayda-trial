@@ -36,7 +36,7 @@ export default function Footer() {
           <div className="w-3/4 lg:w-3/5 mx-auto my-auto  text-sm flex flex-col space-y-2 ssmd:space-y-0 ssmd:flex-row ssmd:justify-between ">
             <a
               className="hover:text-thirdColor hover:underline duration-75"
-              href=""
+              href="/contact_us"
             >
               Contact Us
             </a>
