@@ -54,7 +54,7 @@ export default function Footer() {
             </a>
             <a
               className="hover:text-thirdColor hover:underline duration-75"
-              href=""
+              href="/terms_of_service"
             >
               Terms of Service
             </a>
