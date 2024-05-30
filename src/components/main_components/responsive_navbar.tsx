@@ -135,7 +135,7 @@ export default function NavBarForMobile(props: any) {
                   </div>
                 )}
               </div>
-              <div>
+              {/* <div>
                 {data != "User not authenticated" && (
                   <div className="mx-2">
                     <Link href="/packages_access/packages_list">
@@ -158,8 +158,8 @@ export default function NavBarForMobile(props: any) {
                     </Link>
                   </div>
                 )}
-              </div>
-              <div>
+              </div> */}
+              {/* <div>
                 <Link href={"/explore_packages"}>
                   <div className="nav_bar_hover">
                     <h1
@@ -179,7 +179,7 @@ export default function NavBarForMobile(props: any) {
                     </h1>
                   </div>
                 </Link>
-              </div>
+              </div> */}
               <div>
                 <div className="nav_bar_hover">
                   <h1
@@ -218,7 +218,7 @@ export default function NavBarForMobile(props: any) {
                   </div>
                 </Link>
               </div>
-              <div>
+              {/* <div>
                 <Link href={"/leaderboard"}>
                   <div className="nav_bar_hover">
                     <h1
@@ -237,7 +237,7 @@ export default function NavBarForMobile(props: any) {
                     </h1>
                   </div>
                 </Link>
-              </div>
+              </div> */}
               <div>
                 <Link href={"/about_us"}>
                   <div className="nav_bar_hover">
@@ -258,7 +258,7 @@ export default function NavBarForMobile(props: any) {
                   </div>
                 </Link>
               </div>
-              <div>
+              {/* <div>
                 <Link href={"notifications"}>
                   <div className="relative text-fourthColor  pr-2 nav_bar_hover">
                     <div className="my-auto">
@@ -271,8 +271,8 @@ export default function NavBarForMobile(props: any) {
                     )}
                   </div>{" "}
                 </Link>
-              </div>
-              {data == "User not authenticated" ? (
+              </div> */}
+              {/* {data == "User not authenticated" ? (
                 <div
                   className="mx-2 flex space-x-3"
                   onClick={() => toggleDropDown()}
@@ -313,7 +313,7 @@ export default function NavBarForMobile(props: any) {
                     </form>
                   </div>
                 </div>
-              )}
+              )} */}
             </div>
           </div>
         </div>

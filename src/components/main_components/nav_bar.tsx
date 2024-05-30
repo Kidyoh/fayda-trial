@@ -202,7 +202,7 @@ export default function NavBar(response3: any) {
                 </Popover>
               </div>
             )}
-            <Link href={"/explore_packages"}>
+            {/* <Link href={"/explore_packages"}>
               <div className="nav_bar_hover">
                 <h1
                   className={
@@ -214,7 +214,7 @@ export default function NavBar(response3: any) {
                   Explore
                 </h1>
               </div>
-            </Link>
+            </Link> */}
 
             <h1>
               {" "}
@@ -246,7 +246,7 @@ export default function NavBar(response3: any) {
               </div>
             </Link>
 
-            <Link href={"/leaderboard"}>
+            {/* <Link href={"/leaderboard"}>
               <div className="nav_bar_hover">
                 <h1
                   className={
@@ -258,7 +258,7 @@ export default function NavBar(response3: any) {
                   LeaderBoard
                 </h1>
               </div>
-            </Link>
+            </Link> */}
             <Link href={"/about_us"}>
               <div className="nav_bar_hover">
                 <h1
@@ -273,7 +273,7 @@ export default function NavBar(response3: any) {
               </div>
             </Link>
 
-            <Link href={"/notifications"}>
+            {/* <Link href={"/notifications"}>
               <div className="relative  pr-2 nav_bar_hover">
                 <div className="my-auto">
                   <Bell />
@@ -284,10 +284,10 @@ export default function NavBar(response3: any) {
                   </div>
                 )}
               </div>{" "}
-            </Link>
+            </Link> */}
           </div>
 
-          {data == "User not authenticated" ? (
+          {/* {data == "User not authenticated" ? (
             <div className="flex space-x-5">
               <div className="py-3 space-x-3">
                 <Link href={"/login"}>
@@ -342,7 +342,7 @@ export default function NavBar(response3: any) {
                 </PopoverContent>
               </Popover>
             </div>
-          )}
+          )} */}
         </div>
       </div>
 
