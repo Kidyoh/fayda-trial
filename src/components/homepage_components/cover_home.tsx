@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { ChevronRightCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import CheckPhoneNumber from "@/app/mock_package/mock_package_components/checkphonenumber";
 
 export default function CoverHome() {
   const texts = [
@@ -48,9 +49,14 @@ export default function CoverHome() {
               </h1>
             </div>
             <div className="mt-20  pb-3 w-full flex">
-              <h1 className="bg-fourthColor mx-auto  ssmd:mx-10 text-white px-3 py-1 rounded-2xl w-fit cursor-pointer hover:scale-105 duration-100">
+              <div className="bg-fourthColor  ssmd:mx-10 mx-auto w-fit px-3 py-1 rounded-2xl hover:scale-105 duration-100">
+                {" "}
+                <CheckPhoneNumber pushto={"/mock_package/selectmainfolder"} />
+              </div>
+
+              {/* <h1 className="bg-fourthColor mx-auto  ssmd:mx-10 text-white px-3 py-1 rounded-2xl w-fit cursor-pointer hover:scale-105 duration-100">
                 Download App
-              </h1>
+              </h1> */}
             </div>
           </div>
         </div>

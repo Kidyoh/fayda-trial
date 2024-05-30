@@ -13,11 +13,11 @@ export default function WelcomeSection() {
           <h1 className="mx-auto w-fit text-2xl font-semibold text-fourthColor">
             Welcome To Fayida Academy
           </h1>
-          <h1 className="px-6 sm:px-12 smd:px-20 md:px-28 xmd:px-36 text-center text-sm font-semibold">
+          {/* <h1 className="px-6 sm:px-12 smd:px-20 md:px-28 xmd:px-36 text-center text-sm font-semibold">
             Welcome to our online learning platform, where students can unlock
             their full potential and embark on a journey of knowledge and
             growth.
-          </h1>
+          </h1> */}
           <div className="w-full flex px-4 my-4">
             <div className="aspect-ratio  mx-auto rounded-3xl overflow-hidden shadow-xl shadow-gray-600">
               <video
