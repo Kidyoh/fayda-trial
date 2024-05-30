@@ -32,7 +32,7 @@ export default function Home() {
 
       {/* <CoursesSampleNames /> */}
       <PackageDiscountSlider />
-      <PackagesRenderd />
+      {/* <PackagesRenderd /> */}
       {/* <PageBreaker /> */}
       {/* <Testimony /> */}
       <BlogSample />
