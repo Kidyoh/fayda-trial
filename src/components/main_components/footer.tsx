@@ -58,12 +58,12 @@ export default function Footer() {
             >
               Terms of Service
             </a>
-            <a
+            {/* <a
               className="hover:text-thirdColor hover:underline duration-75"
               href=""
             >
               Privacy Policy
-            </a>
+            </a> */}
           </div>
         </div>
       </div>

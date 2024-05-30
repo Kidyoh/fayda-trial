@@ -22,41 +22,44 @@ export default function CoverHome() {
   const currentText = texts[currentTextIndex];
 
   return (
-    <div className="ssmd:grid ssmd:grid-cols-3 h-92 pt-12 xl:pt-2 bg-gradient-to-r from-primaryColor via-emerald-600 to-primaryColor">
-      <div className="col-span-2 w-full  flex">
-        <div className="mx-auto my-auto   px-5">
-          <div className="mx-auto my-auto  text-3xl smd:text-4xl lg:text-5xl font-bold px-5">
-            <AnimatePresence mode="wait">
-              <motion.h1
-                key={currentText}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-                className="text-center  ssmd:text-left"
-              >
-                {currentText}
-              </motion.h1>
-            </AnimatePresence>
-          </div>
-          <div className="mx-4 my-10">
-            <h1 className="text-white text-xl md:text-2xl font-semibold text-center  ssmd:text-left">
-              Education for All, Anytime, Anywhere!
-            </h1>
-          </div>
-          <div className="mt-20  pb-3 w-full flex">
-            <h1 className="bg-fourthColor mx-auto  ssmd:mx-10 text-white px-3 py-1 rounded-2xl w-fit cursor-pointer hover:scale-105 duration-100">
-              Download App
-            </h1>
+    // <div className="ssmd:grid ssmd:grid-cols-3 h-92 pt-12 xl:pt-2 bg-gradient-to-r from-primaryColor via-emerald-600 to-primaryColor">
+
+    <div className="bg-yellow-600">
+      <div className="relative ssmd:grid  ssmd:grid-cols-3 h-92 pt-12 xl:pt-2 bg-gradient-to-r from-sky-500/70  to-sky-300">
+        <div className="col-span-2 w-full  flex">
+          <div className="mx-auto my-auto   px-5">
+            <div className="mx-auto my-auto  text-3xl smd:text-4xl lg:text-5xl font-bold px-5">
+              <AnimatePresence mode="wait">
+                <motion.h1
+                  key={currentText}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="text-center  ssmd:text-left"
+                >
+                  {currentText}
+                </motion.h1>
+              </AnimatePresence>
+            </div>
+            <div className="mx-4 my-10">
+              <h1 className="text-white text-xl md:text-2xl font-semibold text-center  ssmd:text-left">
+                Education for All, Anytime, Anywhere!
+              </h1>
+            </div>
+            <div className="mt-20  pb-3 w-full flex">
+              <h1 className="bg-fourthColor mx-auto  ssmd:mx-10 text-white px-3 py-1 rounded-2xl w-fit cursor-pointer hover:scale-105 duration-100">
+                Download App
+              </h1>
+            </div>
           </div>
         </div>
-      </div>
-      <div className=" w-full flex">
-        {/* <img className="w-full " src="common_files/main/cover4.png" alt="" /> */}
-        <div className="hidden ssmd:block right-0">
+        {/* <div className=" w-full flex">
+        <div className="hidden bg-yellow-200 ssmd:block right-0">
           <motion.img
-            src="common_files/main/22.png"
+            src="common_files/main/webbannernew.png"
             alt="Floating Image"
+            className="w-full h-full"
             animate={{
               y: [-20, 20, -20],
               transition: { repeat: Infinity, duration: 7 },
@@ -71,6 +74,14 @@ export default function CoverHome() {
               y: [-20, 20, -20],
               transition: { repeat: Infinity, duration: 7 },
             }}
+          />
+        </div>
+      </div>  */}
+        <div>
+          <img
+            src="common_files/main/webbannernew2.png"
+            className="w-full"
+            alt=""
           />
         </div>
       </div>

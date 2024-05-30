@@ -117,11 +117,11 @@ export default function NavBar(response3: any) {
   return (
     <div className="">
       <div className="hidden xxmd:block fixed w-full top-0 z-50 bg-white bg-opacity-80 border-2">
-        <div className="flex justify-around text-sm px-3">
+        <div className="flex justify-between  px-20">
           <div>
             <Link href={"/"}>
               <img
-                className="h-16"
+                className="h-20"
                 src="/common_files/main/smallfulllogo.png"
                 alt="fayida"
               />

@@ -39,7 +39,7 @@ export default function Home() {
       {/* <MockexamSection /> */}
       <SectionOne />
 
-      <ContactUs />
+      {/* <ContactUs /> */}
       <Footer />
     </div>
   );
