@@ -22,10 +22,11 @@ export default function Footer() {
   return (
     <div className="bg-primaryColor text-white py-6">
       <div className="xmd:grid grid-cols-3 ">
-        <div className="col-span-1 py-5 xmd:py-0">
+        <div className="xmd:col-span-1 py-5 xmd:py-0">
           <div className=" w-fit mx-auto   duration-75 cursor-pointer">
             <img
-              className="h-32 smd:h-32 lg:h-44 w-fit"
+              className="h-32 smd:h-32 lg:h-44 "
+              //   className=" w-1/2"
               src="/common_files/main/logo_white.png"
               alt="fayida"
             />
