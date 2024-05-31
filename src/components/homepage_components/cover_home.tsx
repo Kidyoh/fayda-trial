@@ -6,9 +6,11 @@ import CheckPhoneNumber from "@/app/mock_package/mock_package_components/checkph
 
 export default function CoverHome() {
   const texts = [
-    "Learning Simplified: Online courses that pave your path. ",
-    "Education Unbound: Learn on your terms, anytime, anywhere.",
-    "Effortless Learning: Streamlined courses, maximized results.",
+    "Grade 12 Mock Exams                  ",
+    "From 2010 up to 2015 Entrance Exams",
+    "Also, Different Schools Model Exams",
+    "Answer & Explanations For every question",
+    "All for Free!",
   ];
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
 
@@ -24,12 +26,12 @@ export default function CoverHome() {
 
   return (
     // <div className="ssmd:grid ssmd:grid-cols-3 h-92 pt-12 xl:pt-2 bg-gradient-to-r from-primaryColor via-emerald-600 to-primaryColor">
-
-    <div className="bg-yellow-600">
-      <div className="relative ssmd:grid  ssmd:grid-cols-3 h-92 pt-12 xl:pt-2 bg-gradient-to-r from-sky-500/70  to-sky-300">
-        <div className="col-span-2 w-full  flex">
-          <div className="mx-auto my-auto   px-5">
-            <div className="mx-auto my-auto  text-3xl smd:text-4xl lg:text-5xl font-bold px-5">
+    //      <div className="relative ssmd:grid  ssmd:grid-cols-5 h-92 pt-12 xl:pt-2 bg-gradient-to-r from-sky-500/70  to-sky-300">
+    <div className="">
+      <div className="relative ssmd:grid  ssmd:grid-cols-5 h-92 pt-12 xl:pt-2 bg-coverColor">
+        <div className="col-span-3 w-full  flex">
+          <div className="relative mx-auto  h-full w-full py-5 ssmd:py-20  px-5">
+            <div className="mx-auto my-auto h-24 ssmd:h-32  text-3xl smd:text-4xl lg:text-5xl font-bold px-5">
               <AnimatePresence mode="wait">
                 <motion.h1
                   key={currentText}
@@ -43,20 +45,22 @@ export default function CoverHome() {
                 </motion.h1>
               </AnimatePresence>
             </div>
-            <div className="mx-4 my-10">
-              <h1 className="text-white text-xl md:text-2xl font-semibold text-center  ssmd:text-left">
-                Education for All, Anytime, Anywhere!
-              </h1>
-            </div>
-            <div className="mt-20  pb-3 w-full flex">
-              <div className="bg-fourthColor  ssmd:mx-10 mx-auto w-fit px-3 py-1 rounded-2xl hover:scale-105 duration-100">
-                {" "}
-                <CheckPhoneNumber pushto={"/mock_package/selectmainfolder"} />
+            <div className=" h-fit ">
+              <div className="mx-4  my-10">
+                <h1 className="text-primaryColor text-xl md:text-2xl font-semibold text-center  ssmd:text-left">
+                  Education for All, Anytime, Anywhere!
+                </h1>
               </div>
+              <div className="mt-20  pb-3 w-full flex">
+                <div className="bg-fourthColor  ssmd:mx-10 mx-auto w-fit px-3 py-1 rounded-2xl hover:scale-105 duration-100">
+                  {" "}
+                  <CheckPhoneNumber pushto={"/mock_package/selectmainfolder"} />
+                </div>
 
-              {/* <h1 className="bg-fourthColor mx-auto  ssmd:mx-10 text-white px-3 py-1 rounded-2xl w-fit cursor-pointer hover:scale-105 duration-100">
+                {/* <h1 className="bg-fourthColor mx-auto  ssmd:mx-10 text-white px-3 py-1 rounded-2xl w-fit cursor-pointer hover:scale-105 duration-100">
                 Download App
               </h1> */}
+              </div>
             </div>
           </div>
         </div>
@@ -83,10 +87,24 @@ export default function CoverHome() {
           />
         </div>
       </div>  */}
-        <div>
+        <div className="col-span-2">
           <img
-            src="common_files/main/webbannernew2.png"
-            className="w-full"
+            src="common_files/main/the_girl5.png"
+            className="w-full  "
+            alt=""
+          />
+        </div>
+        <div className="hidden ssmd:block absolute bottom-0  h-fit">
+          <img
+            src="common_files/main/the_shape2.png"
+            className="h-fit"
+            alt=""
+          />
+        </div>
+        <div className="hidden ssmd:block absolute bottom-10 left-36  h-fit">
+          <img
+            src="common_files/main/the_arrow2.png"
+            className="h-fit"
             alt=""
           />
         </div>

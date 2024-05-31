@@ -66,6 +66,7 @@ module.exports = {
         secondaryColor: "#4088db",
         thirdColor: "#c7cc3f",
         fourthColor: "#bf8c13",
+        coverColor: "#CCCCCC",
       },
 
       borderRadius: {
