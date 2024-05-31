@@ -28,7 +28,7 @@ export default function CoverHome() {
     // <div className="ssmd:grid ssmd:grid-cols-3 h-92 pt-12 xl:pt-2 bg-gradient-to-r from-primaryColor via-emerald-600 to-primaryColor">
     //      <div className="relative ssmd:grid  ssmd:grid-cols-5 h-92 pt-12 xl:pt-2 bg-gradient-to-r from-sky-500/70  to-sky-300">
     <div className="">
-      <div className="relative ssmd:grid  ssmd:grid-cols-5 h-92 pt-12 xl:pt-2 bg-coverColor">
+      <div className="relative ssmd:grid  smd:grid-cols-5 h-92 pt-12 xl:pt-2 bg-coverColor">
         <div className="col-span-3 w-full  flex">
           <div className="relative mx-auto  h-full w-full py-5 ssmd:py-20  px-5">
             <div className="mx-auto my-auto h-24 ssmd:h-32  text-3xl smd:text-4xl lg:text-5xl font-bold px-5">
@@ -87,10 +87,10 @@ export default function CoverHome() {
           />
         </div>
       </div>  */}
-        <div className="col-span-2">
+        <div className="smd:relative col-span-2 ">
           <img
             src="common_files/main/the_girl5.png"
-            className="w-full  "
+            className="smd:absolute w-fit  smd:bottom-0 "
             alt=""
           />
         </div>
