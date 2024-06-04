@@ -23,11 +23,11 @@ export default function WelcomeSection() {
               <video
                 controls
                 controlsList="nodownload"
-                // poster="/common_files/main/cover33.jpg"
+                poster="/common_files/intro_thumbnail.png"
                 className=""
               >
                 <source
-                  src="/common_files/introtestmain.mp4"
+                  src="/common_files/intro.mp4"
                   type="video/mp4"
                   className=" h-1/2 overflow-clip"
                 />
