@@ -71,6 +71,8 @@ function AssessmentQuestions({ params }: any) {
       .replace(/&&lessequal/g, "≤")
       .replace(/&&plusminus/g, "±")
       .replace(/&&nl/g, "<br>")
+      .replace(/&&dash/g, "________")
+      .replace(/&&dashl/g, "______________________")
       .replace(/&&r/g, "<span style='font-size:1.2em'>&#8477;</span>")
       .replace(/&&nat/g, "<span style='font-size:1.2em'>&naturals;</span>")
       .replace(/&&rarw&([^&]*)&&/g, function (_: any, text: any) {
