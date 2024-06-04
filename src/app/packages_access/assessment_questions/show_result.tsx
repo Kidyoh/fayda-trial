@@ -50,7 +50,7 @@ export default function ShowResult({
       .replace(/&&arb/g, "←")
       .replace(/&&aru/g, "↑")
       .replace(/&&ard/g, "↓") // &&f   // function f
-      .replace(/&&.*?pi/g, "π")
+      .replace(/&&.pi/g, "π")
       .replace(/&&sqrt/g, "√")
       .replace(/&&noteq/g, "≠")
       .replace(/&&empty/g, "∅")
@@ -201,7 +201,7 @@ export default function ShowResult({
                 <div className="bg-red-300 bg-opacity-70 p-3">
                   <h1 className="px-6">Incorrect</h1>
                   <h1 className="flex gap-2">
-                    Q {Qindex + ":"}
+                    Q {Qindex + 1 + ":"}
                     {formatTextToHTML(que.question)}
                   </h1>
                   {que.questionImage && (
