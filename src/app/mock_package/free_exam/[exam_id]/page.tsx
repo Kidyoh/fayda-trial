@@ -108,7 +108,17 @@ function AssessmentQuestions({ params }: any) {
   const countNullValues = (arr: any[]): number => {
     let count = 0;
     for (const value of arr) {
-      if (value === undefined) {
+      if (value === undefined || value === "x" || value === "X") {
+        count++;
+      }
+    }
+    return count;
+  };
+
+  const countSelectedAnswers = (arr: any[]): number => {
+    let count = 0;
+    for (const value of arr) {
+      if (value !== undefined && value !== "x" && value !== "X") {
         count++;
       }
     }
@@ -313,7 +323,7 @@ function AssessmentQuestions({ params }: any) {
             </h1>
             <h1>
               <span className="text-primaryColor"> Answerd Questions:</span>{" "}
-              {selectedAnswers.length}
+              {countSelectedAnswers(selectedAnswers)}
             </h1>
             <h1 className="">
               <span className="text-primaryColor font-semibold"> Note:</span>{" "}
