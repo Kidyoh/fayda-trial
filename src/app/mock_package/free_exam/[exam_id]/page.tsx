@@ -171,7 +171,7 @@ function AssessmentQuestions({ params }: any) {
       }
     } else {
       toast({
-        title: `Faild!`,
+        title: `Submission Failed!`,
         description: `There are questions remaining!`,
       });
     }
