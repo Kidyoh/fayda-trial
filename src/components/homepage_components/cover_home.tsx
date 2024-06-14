@@ -48,7 +48,7 @@ export default function CoverHome() {
             <div className=" h-fit ">
               <div className="mx-4  my-10">
                 <h1 className="text-primaryColor text-xl md:text-2xl font-semibold text-center  ssmd:text-left">
-                  Education for All, Anytime, Anywhere!
+                  Quality Education for All, Anytime, Anywhere!
                 </h1>
               </div>
               <div className="mt-20  pb-3 w-full flex">
