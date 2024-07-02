@@ -26,8 +26,8 @@ import {
   PopoverTrigger,
 } from "@radix-ui/react-popover";
 import { apiUrl } from "@/apiConfig";
-import CheckPhoneNumber from "@/app/mock_package/mock_package_components/checkphonenumber";
-import useDrawerStatus from "@/app/store/navbarDrawerStore";
+import CheckPhoneNumber from "@/app/[locale]/mock_package/mock_package_components/checkphonenumber";
+import useDrawerStatus from "@/app/[locale]/store/navbarDrawerStore";
 
 export default function NavBarForMobile(props: any) {
   const data = props?.data;

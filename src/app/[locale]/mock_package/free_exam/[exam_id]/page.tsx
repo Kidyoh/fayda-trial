@@ -3,9 +3,9 @@ import { apiUrl } from "@/apiConfig";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "@/components/ui/use-toast";
-import ShowResult from "@/app/packages_access/assessment_questions/show_result";
-import useSelectedMockPackageStore from "@/app/store/selectedmockpackageStore";
-import useTemporaryPhonenumberStore from "@/app/store/temporaryphonenumberStore";
+import ShowResult from "@/app/[locale]/packages_access/assessment_questions/show_result";
+import useSelectedMockPackageStore from "@/app/[locale]/store/selectedmockpackageStore";
+import useTemporaryPhonenumberStore from "@/app/[locale]/store/temporaryphonenumberStore";
 import { useRouter } from "next/navigation";
 
 function AssessmentQuestions({ params }: any) {

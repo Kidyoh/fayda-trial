@@ -1,7 +1,7 @@
 import React from "react";
 import { ScrollText } from "lucide-react";
 import Link from "next/link";
-import CheckPhoneNumber from "@/app/mock_package/mock_package_components/checkphonenumber";
+import CheckPhoneNumber from "@/app/[locale]/mock_package/mock_package_components/checkphonenumber";
 
 export default function MockexamSection() {
   return (

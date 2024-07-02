@@ -22,7 +22,7 @@ import { stringify } from "querystring";
 import { usePathname } from "next/navigation";
 import NavBarForMobile from "./responsive_navbar";
 import axios from "axios";
-import CheckPhoneNumber from "@/app/mock_package/mock_package_components/checkphonenumber";
+import CheckPhoneNumber from "@/app/[locale]/mock_package/mock_package_components/checkphonenumber";
 
 export default function NavBar(response3: any) {
   const profile = response3;

@@ -3,7 +3,7 @@ import { apiUrl } from "@/apiConfig";
 import React, { useEffect, useState } from "react";
 import CheckPhoneNumber from "../../mock_package_components/checkphonenumber";
 import CheckPayment from "../../mock_package_components/checkpayment";
-import useSelectedMockPackageStore from "@/app/store/selectedmockpackageStore";
+import useSelectedMockPackageStore from "@/app/[locale]/store/selectedmockpackageStore";
 
 export default function MockPackage({ params }: any) {
   const FolderName = params.foldername;

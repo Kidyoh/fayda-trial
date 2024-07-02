@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
-import useSelectedMockPackageStore from "@/app/store/selectedmockpackageStore";
+import useSelectedMockPackageStore from "@/app/[locale]/store/selectedmockpackageStore";
 import { useRouter } from "next/navigation";
 import { MockPurchaseDialogCustom } from "@/components/custom_components/mockPurchaseDialog";
 

@@ -14,8 +14,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { toast } from "../ui/use-toast";
-import useSelectedMockPackageStore from "@/app/store/selectedmockpackageStore";
-import useTemporaryPhonenumberStore from "@/app/store/temporaryphonenumberStore";
+import useSelectedMockPackageStore from "@/app/[locale]/store/selectedmockpackageStore";
+import useTemporaryPhonenumberStore from "@/app/[locale]/store/temporaryphonenumberStore";
 import { useRouter } from "next/navigation";
 
 export function MockPurchaseDialogCustom() {

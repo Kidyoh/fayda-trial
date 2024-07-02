@@ -16,7 +16,7 @@ import router from "next/router";
 import { apiUrl } from "@/apiConfig";
 import { toast } from "@/components/ui/use-toast";
 import { ScrollText } from "lucide-react";
-import useTemporaryPhonenumberStore from "@/app/store/temporaryphonenumberStore";
+import useTemporaryPhonenumberStore from "@/app/[locale]/store/temporaryphonenumberStore";
 
 import { useRouter } from "next/navigation";
 
