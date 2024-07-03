@@ -18,10 +18,11 @@ import Footer from "@/components/main_components/footer";
 import PageBreaker from "@/components/main_components/pageBreaker";
 import Image from "next/image";
 
-export default function Home() {
+export default async function Home() {
   return (
     <div>
       {/* <HomePageCover /> */}
+
       <CoverHome />
       <Info />
       <WelcomeSection />

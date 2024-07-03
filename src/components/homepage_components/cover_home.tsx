@@ -4,27 +4,49 @@ import { ChevronRightCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 //import CheckPhoneNumber from "@/app/mock_package/mock_package_components/checkphonenumber";
 import CheckPhoneNumber from "@/app/[locale]/mock_package/mock_package_components/checkphonenumber";
+import initTranslation from "../../app/i18n";
+import { TFunction } from "i18next";
+import { useParams } from "next/navigation";
 
 export default function CoverHome() {
-  const texts = [
-    "Grade 12 Mock Exams                  ",
-    "From 2010 up to 2015 Entrance Exams",
-    "Also, Different Schools Model Exams",
-    "Answer & Explanations For every question",
-    "All for Free!",
-  ];
+  const [t, setT] = useState<TFunction | null>(null);
+  //const locale = params?.locale || "en";
+
+  const paramsx = useParams();
+  const locale = paramsx?.locale || "en";
+
+  // console.log(paramsx);
+
+  useEffect(() => {
+    async function loadTranslations() {
+      const { t } = await initTranslation(locale, ["home", "common"]);
+      setT(() => t);
+    }
+
+    loadTranslations();
+  }, [locale]);
+
+  // const {t} =  initTranslation(locale, ["home", "common"]);
+
+  let texts: any = [];
+  if (t) {
+    texts = [t("home:info01"), t("home:info02"), t("home:info03")];
+  }
+
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentTextIndex((prevIndex) => (prevIndex + 1) % texts.length);
+      setCurrentTextIndex((prevIndex) => (prevIndex + 1) % 3);
     }, 5000);
-
     return () => clearInterval(interval);
   }, []);
 
   const currentText = texts[currentTextIndex];
 
+  if (!t) {
+    return <div></div>; // or any loading indicator
+  }
   return (
     // <div className="ssmd:grid ssmd:grid-cols-3 h-92 pt-12 xl:pt-2 bg-gradient-to-r from-primaryColor via-emerald-600 to-primaryColor">
     //      <div className="relative ssmd:grid  ssmd:grid-cols-5 h-92 pt-12 xl:pt-2 bg-gradient-to-r from-sky-500/70  to-sky-300">
@@ -49,7 +71,7 @@ export default function CoverHome() {
             <div className=" h-fit ">
               <div className="mx-4  my-10">
                 <h1 className="text-primaryColor text-xl md:text-2xl font-semibold text-center  ssmd:text-left">
-                  Quality Education for All, Anytime, Anywhere!
+                  {t("home:slogan")}
                 </h1>
               </div>
               <div className="mt-20  pb-3 w-full flex">
