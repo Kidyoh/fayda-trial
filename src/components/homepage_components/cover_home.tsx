@@ -7,26 +7,10 @@ import CheckPhoneNumber from "@/app/[locale]/mock_package/mock_package_component
 import initTranslation from "../../app/i18n";
 import { TFunction } from "i18next";
 import { useParams } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 export default function CoverHome() {
-  const [t, setT] = useState<TFunction | null>(null);
-  //const locale = params?.locale || "en";
-
-  const paramsx = useParams();
-  const locale = paramsx?.locale || "en";
-
-  // console.log(paramsx);
-
-  useEffect(() => {
-    async function loadTranslations() {
-      const { t } = await initTranslation(locale, ["home", "common"]);
-      setT(() => t);
-    }
-
-    loadTranslations();
-  }, [locale]);
-
-  // const {t} =  initTranslation(locale, ["home", "common"]);
+  const { t } = useTranslation();
 
   let texts: any = [];
   if (t) {
@@ -71,7 +55,7 @@ export default function CoverHome() {
             <div className=" h-fit ">
               <div className="mx-4  my-10">
                 <h1 className="text-primaryColor text-xl md:text-2xl font-semibold text-center  ssmd:text-left">
-                  {t("home:slogan")}
+                  {t("slogan")}
                 </h1>
               </div>
               <div className="mt-20  pb-3 w-full flex">
