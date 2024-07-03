@@ -23,6 +23,9 @@ import { usePathname } from "next/navigation";
 import NavBarForMobile from "./responsive_navbar";
 import axios from "axios";
 import CheckPhoneNumber from "@/app/[locale]/mock_package/mock_package_components/checkphonenumber";
+import LanguageChanger from "../LanguageChanger";
+
+import { useTranslation } from "react-i18next";
 
 export default function NavBar(response3: any) {
   const profile = response3;
@@ -34,6 +37,8 @@ export default function NavBar(response3: any) {
   const [isLoading, setLoading] = useState(true);
   const [userName, setUserName] = useState("");
   const [activeMenu, setActiveMenu] = useState("Home");
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetch(`${apiUrl}/login_register/profile`, {
@@ -273,6 +278,7 @@ export default function NavBar(response3: any) {
               </div>
             </Link>
 
+            <LanguageChanger />
             {/* <Link href={"/notifications"}>
               <div className="relative  pr-2 nav_bar_hover">
                 <div className="my-auto">

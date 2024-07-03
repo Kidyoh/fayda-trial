@@ -17,9 +17,10 @@ import ContactUs from "@/components/main_components/contact_us";
 import Footer from "@/components/main_components/footer";
 import PageBreaker from "@/components/main_components/pageBreaker";
 import Image from "next/image";
+
+
 import initTranslations from "../i18n";
 import TranslationProvider from "../../components/TranslationsProvider";
-
 const i18nNamespaces = ["home", "common"];
 
 export default async function Home({ params: { locale } }: any) {
