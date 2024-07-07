@@ -27,6 +27,18 @@ import LanguageChanger from "../LanguageChanger";
 
 import { useTranslation } from "react-i18next";
 
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuIndicator,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  NavigationMenuViewport,
+} from "@/components/ui/navigation-menu";
+import ExploreNavigation from "./drawer_components/explore_navigation";
+
 export default function NavBar(response3: any) {
   const profile = response3;
   const routerPathname = usePathname();
@@ -123,7 +135,7 @@ export default function NavBar(response3: any) {
     <div className="">
       <div className="hidden xxmd:block fixed w-full top-0 z-50 bg-white bg-opacity-80 border-2">
         <div className="flex justify-between  px-20">
-          <div>
+          <div className="flex space-x-3">
             <Link href={"/"}>
               <img
                 className="h-20"
@@ -131,7 +143,24 @@ export default function NavBar(response3: any) {
                 alt="fayida"
               />
             </Link>
+            <div className="my-auto h-fit">
+              <NavigationMenu>
+                <NavigationMenuList>
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger>
+                      <h1 className="border-2 border-primaryColor rounded px-3 py-1">
+                        Explore
+                      </h1>
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <ExploreNavigation />
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
+            </div>
           </div>
+
           <div className="flex space-x-5  lg:space-x-10 py-1 my-auto ">
             <Link href={"/"}>
               <h1
