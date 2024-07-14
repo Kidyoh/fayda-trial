@@ -20,7 +20,7 @@ export default function ExploreNavigation() {
               onClick={() => onClickMenu("carricular")}
               className="flex space-x-3 cursor-pointer hover:text-primaryColor"
             >
-              <h1>Carricular</h1> <ChevronRight size={12} className="my-auto" />
+              <h1>Academic</h1> <ChevronRight size={12} className="my-auto" />
             </div>
             <div className="flex space-x-3 cursor-pointer hover:text-primaryColor">
               <h1>Extra Carricular</h1>{" "}
@@ -38,7 +38,7 @@ export default function ExploreNavigation() {
           {slectedMenu === "carricular" && (
             <div className="p-3">
               <h1 className="text-primaryColor text-xl mb-4 underline font-semibold">
-                Carricular
+                Academic
               </h1>
               <div className="flex flex-col gap-2 w-fit mx-4 ">
                 <Link
