@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 
 import initTranslations from "../i18n";
 import TranslationProvider from "../../components/TranslationsProvider";
+import BackToTop from "@/components/main_components/back_to_top";
 const i18nNamespaces = ["home", "common"];
 
 const inter = Inter({ subsets: ["latin"] });
@@ -35,6 +36,9 @@ export default async function RootLayout({
               <NavBar />
             </div>
             <div className="pt-8 xmd:pt-20">{children}</div>
+          </div>
+          <div className=" absolute bottom-14 right-24">
+            <BackToTop />
           </div>
         </body>
       </html>
