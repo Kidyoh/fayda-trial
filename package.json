@@ -48,7 +48,7 @@
     "embla-carousel-react": "^8.0.0-rc21",
     "eslint": "8.51.0",
     "eslint-config-next": "13.5.4",
-    "framer-motion": "^11.0.3",
+    "framer-motion": "^11.3.2",
     "i18next": "^23.11.5",
     "i18next-resources-to-backend": "^1.2.1",
     "js-cookie": "^3.0.5",
