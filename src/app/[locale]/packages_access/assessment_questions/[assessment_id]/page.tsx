@@ -199,7 +199,7 @@ export default function AssessmentQuestions({ params }: any) {
             <h1>Answerd Questions: {selectedAnswers.length}</h1>
             <h1>Note: You should finish and submit your answer. </h1>
           </div>
-          <div className="bg-primaryColor text-white flex justify-end mx-5 px-5">
+          <div className="bg-primaryColor text-white flex justify-end mx-5 px-5 my-4">
             <div className="justify-end">
               <h1>Countdown Timer</h1>
               <h2>
@@ -213,8 +213,12 @@ export default function AssessmentQuestions({ params }: any) {
             <form onSubmit={handleSubmit}>
               <div>
                 {data[0]?.question.map((question: any, index: any) => (
-                  <div key={question?.id}>
-                    <h2>{question?.question}</h2>
+                  <div key={question?.id} className="py-5">
+                    <div className="gap-2">
+                      {index + 1}
+                      {`)`}
+                      {question?.question}
+                    </div>
 
                     <div>
                       <h1
@@ -274,7 +278,12 @@ export default function AssessmentQuestions({ params }: any) {
                     </div>
                   </div>
                 ))}
-                <button type="submit">Submit Answers</button>
+                <button
+                  className="bg-primaryColor px-2 py-1 text-white rounded"
+                  type="submit"
+                >
+                  Submit Answers
+                </button>
               </div>
             </form>
           </div>

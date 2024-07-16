@@ -48,8 +48,8 @@ export default function CoursesList() {
         {data?.map((course) => (
           <Link
             key={course?.Courses?.id} // Add key prop for each item
-            //  href={`/packages_access/${course?.Courses?.id}`}
-            href="/"
+            href={`/packages_access_2/${course?.Courses?.id}`}
+            //href="/"
             className="course-card flex flex-col bg-primaryColor border-2 border-white rounded-2xl shadow-xl shadow-primaryColor text-white my-4 p-4 hover:shadow-2xl"
           >
             <div className="course-info flex-1">
