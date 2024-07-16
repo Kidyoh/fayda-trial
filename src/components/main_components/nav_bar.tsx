@@ -322,7 +322,7 @@ export default function NavBar(response3: any) {
             </Link> */}
           </div>
 
-          {/* {data == "User not authenticated" ? (
+          {data == "User not authenticated" ? (
             <div className="flex space-x-5">
               <div className="py-3 space-x-3">
                 <Link href={"/login"}>
@@ -339,7 +339,14 @@ export default function NavBar(response3: any) {
             </div>
           ) : (
             <div className="my-auto">
-              <Popover>
+              <div>
+                <Link href={"/dashboard"}>
+                  <h1 className="text-white bg-primaryColor px-3 py-1 rounded">
+                    Dashboard
+                  </h1>
+                </Link>
+              </div>
+              {/* <Popover>
                 <PopoverTrigger>
                   <div className="flex space-x-1 text-primaryColor hover:text-secondaryColor duration-150">
                     <UserCircle />
@@ -375,9 +382,9 @@ export default function NavBar(response3: any) {
                     </div>
                   </div>
                 </PopoverContent>
-              </Popover>
+              </Popover> */}
             </div>
-          )} */}
+          )}
         </div>
       </div>
 
