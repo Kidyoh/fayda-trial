@@ -13,6 +13,18 @@ export default function VideoDetial({ video_id }: any) {
   const videoId = video_id;
 
   useEffect(() => {
+    const handleContextMenu = (event: any) => {
+      event.preventDefault();
+    };
+
+    document.addEventListener("contextmenu", handleContextMenu);
+
+    return () => {
+      document.removeEventListener("contextmenu", handleContextMenu);
+    };
+  }, []);
+
+  useEffect(() => {
     const fetchData = () => {
       fetch(`${apiUrl}/materials/${videoId}`, {
         credentials: "include",
@@ -43,7 +55,12 @@ export default function VideoDetial({ video_id }: any) {
       <div className="py-5">
         {data?.videoUrl ? (
           <div>
-            <video controls>
+            <video
+              controls
+              disablePictureInPicture
+              controlsList="nodownload"
+              contextMenu="return false"
+            >
               <source
                 // src={`${apiUrl}/upload_assets/videos/course_videos/${VideoLocation}`}
                 src={data?.videoUrl}
