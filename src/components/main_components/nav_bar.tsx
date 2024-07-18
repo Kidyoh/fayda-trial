@@ -12,6 +12,7 @@ import {
   AlignLeft,
   X,
   Settings,
+  Search,
 } from "lucide-react";
 import {
   Popover,
@@ -38,6 +39,7 @@ import {
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
 import ExploreNavigation from "./drawer_components/explore_navigation";
+import useFetchStore from "../../app/[locale]/store/fetchStore";
 
 export default function NavBar(response3: any) {
   const profile = response3;
@@ -51,6 +53,15 @@ export default function NavBar(response3: any) {
   const [activeMenu, setActiveMenu] = useState("Home");
 
   const { t } = useTranslation();
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+
+  const setSearchQuery = useFetchStore((state) => state.setSearchQuery);
+
+  const handleSearch = async () => {
+    setSearchQuery(searchTerm);
+  };
 
   useEffect(() => {
     fetch(`${apiUrl}/login_register/profile`, {
@@ -161,19 +172,43 @@ export default function NavBar(response3: any) {
             </div>
           </div>
 
-          <div className="flex space-x-5  lg:space-x-10 py-1 my-auto ">
-            <Link href={"/"}>
+          <div className="flex space-x-5  lg:space-x-10  my-auto ">
+            <Link href={"/"} className="flex">
               <h1
                 className={
                   routerPathname == "/"
-                    ? "text-primaryColor nav_bar_hover "
-                    : "text-black nav_bar_hover "
+                    ? "text-primaryColor nav_bar_hover my-auto h-fit "
+                    : "text-black nav_bar_hover my-auto h-fit"
                 }
               >
                 Home
               </h1>
             </Link>
-            {data != "User not authenticated" && (
+
+            <div>
+              <div className="flex">
+                <input
+                  type="text"
+                  id="search"
+                  className="block w-full pl-10 pr-3 py-2 my-auto rounded-l-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  placeholder="Search..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      handleSearch();
+                    }
+                  }}
+                />
+                <Link href={"/searchPackages"} onClick={() => handleSearch()}>
+                  <div className="bg-primaryColor text-white h-fit my-auto py-3 px-2 rounded-r-lg">
+                    <Search size={18} className="" />
+                  </div>
+                </Link>
+              </div>
+            </div>
+
+            {/* {data != "User not authenticated" && (
               <div>
                 <Popover>
                   <PopoverTrigger>
@@ -235,7 +270,7 @@ export default function NavBar(response3: any) {
                   </PopoverContent>
                 </Popover>
               </div>
-            )}
+            )} */}
             {/* <Link href={"/explore_packages"}>
               <div className="nav_bar_hover">
                 <h1
@@ -250,7 +285,7 @@ export default function NavBar(response3: any) {
               </div>
             </Link> */}
 
-            <h1>
+            {/* <h1>
               {" "}
               <div className="nav_bar_hover">
                 <h1
@@ -260,13 +295,13 @@ export default function NavBar(response3: any) {
                       : "text-black nav_bar_hover_dropdown "
                   }
                 >
-                  {/* <CheckPhoneNumber pushto={"/mock_package/selectmainfolder"} /> */}
+                  
                   <CheckPhoneNumber pushto={"/mock_package/selectmainfolder"} />
                 </h1>
               </div>
-            </h1>
+            </h1> */}
 
-            <Link href={"/blogs"}>
+            {/* <Link href={"/blogs"}>
               <div className="nav_bar_hover">
                 <h1
                   className={
@@ -278,7 +313,7 @@ export default function NavBar(response3: any) {
                   Blogs
                 </h1>
               </div>
-            </Link>
+            </Link> */}
 
             {/* <Link href={"/leaderboard"}>
               <div className="nav_bar_hover">
@@ -293,7 +328,8 @@ export default function NavBar(response3: any) {
                 </h1>
               </div>
             </Link> */}
-            <Link href={"/about_us"}>
+
+            {/* <Link href={"/about_us"}>
               <div className="nav_bar_hover">
                 <h1
                   className={
@@ -305,11 +341,11 @@ export default function NavBar(response3: any) {
                   About
                 </h1>
               </div>
-            </Link>
+            </Link> */}
 
             <LanguageChanger />
-            {/* <Link href={"/notifications"}>
-              <div className="relative  pr-2 nav_bar_hover">
+            <Link href={"/notifications"} className=" h-fit my-auto">
+              <div className="relative flex my-auto  pr-2 nav_bar_hover">
                 <div className="my-auto">
                   <Bell />
                 </div>
@@ -319,7 +355,7 @@ export default function NavBar(response3: any) {
                   </div>
                 )}
               </div>{" "}
-            </Link> */}
+            </Link>
           </div>
 
           {data == "User not authenticated" ? (

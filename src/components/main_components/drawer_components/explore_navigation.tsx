@@ -71,30 +71,30 @@ export default function ExploreNavigation() {
               <h1 className="text-primaryColor text-xl mb-4 underline font-semibold">
                 Academic
               </h1>
-              <div className="flex flex-col gap-2 w-fit mx-4 ">
+              <div className="grid grid-cols-2  gap-5 w-fit mx-4 ">
                 <Link
-                  className=" bg-white px-4"
+                  className="  p-6 text-white bg-primaryColor bg-opacity-80 rounded-xl"
                   href={`/packages_access/filter_packages/grade9`}
                 >
                   Grade 9
                 </Link>
 
                 <Link
-                  className=" bg-white px-4"
+                  className=" p-6 text-white bg-primaryColor bg-opacity-80 rounded-xl"
                   href={`/packages_access/filter_packages/grade10`}
                 >
                   Grade 10
                 </Link>
 
                 <Link
-                  className=" bg-white px-4"
+                  className=" p-6 text-white bg-primaryColor bg-opacity-80 rounded-xl"
                   href={`/packages_access/filter_packages/grade11`}
                 >
                   Grade 11
                 </Link>
 
                 <Link
-                  className=" bg-white px-4"
+                  className=" p-6 text-white bg-primaryColor bg-opacity-80 rounded-xl"
                   href={`/packages_access/filter_packages/grade12`}
                 >
                   Grade 12

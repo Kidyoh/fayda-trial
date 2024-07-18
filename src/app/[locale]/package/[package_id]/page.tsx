@@ -167,7 +167,7 @@ export default function PackageDetails({ params }: any) {
         </div>
       </div> */}
 
-      <div className="grid grid-cols-5 px-10 py-5">
+      <div className="lg:grid grid-cols-5 px-10 py-5">
         <div className="col-span-3">
           <div>
             <h1 className="text-4xl font-semibold">{data?.packageName}</h1>
@@ -244,10 +244,10 @@ export default function PackageDetails({ params }: any) {
           </div>
         </div>
         <div className="col-span-2 flex w-full">
-          <div className="w-full mx-8 py-4 bg-gradient-to-t from-primaryColor/20 to-white shadow-xl">
+          <div className="w-full mx-8 my-4 py-4 bg-gradient-to-t from-primaryColor/20 to-white shadow-xl">
             <div>
               <img
-                className="border-2  border-primaryColor mx-auto w-1/2 rounded-xl"
+                className="border-2  border-primaryColor mx-auto w-1/4 lg:w-1/2 rounded-xl"
                 //  src={`${apiUrl}/upload_assets/images/package_thumbnails/${data?.thumbnail}`}
                 src={data?.imgUrl}
                 alt=""
