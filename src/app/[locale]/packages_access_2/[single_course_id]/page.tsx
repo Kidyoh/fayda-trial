@@ -24,11 +24,13 @@ import VideoDetails from "./components/videoDetails";
 import AssessmentDetails from "./components/assessmentDetails";
 import FileDetails from "./components/fileDetails";
 import LinkDetails from "./components/linkDetails";
+import Link from "next/link";
 
 export default function SingleCourse() {
   const [data, setData] = useState<any[]>([]);
   const [totalPartNumber, setTotalPartNumber] = useState("1");
   const [materialDrawer, setMaterialDrawer] = useState(true);
+  const [forumId, setForumId] = useState("");
 
   const activeMaterialId = useMaterialManagerStore(
     (state) => state.activeMaterialId
@@ -67,6 +69,24 @@ export default function SingleCourse() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const getCourse = async () => {
+      const res = await fetch(`${apiUrl}/forums/checkcourseforum/${courseId}`, {
+        next: {
+          revalidate: 0,
+        },
+        credentials: "include",
+      });
+      const course = await res.json();
+      //  setCourse(course);
+      setForumId(course[0]?.id);
+      // console.log("COurses: " + course?.id);
+      // console.log("Course ID: " + courseId);
+    };
+
+    getCourse();
+  }, []);
+
   const MaterialClicked = (
     materialId: any,
     materialtype: any,
@@ -101,6 +121,7 @@ export default function SingleCourse() {
             className="opacity-50 bg-primaryColor rounded-full cursor-pointer text-white"
           />
         </div>
+
         <div
           className={`
     absolute w-full bg-white z-20 top-4
@@ -109,6 +130,16 @@ export default function SingleCourse() {
     ${!materialDrawer ? "hidden md:block" : ""}
   `}
         >
+          <div className="flex gap-2">
+            <div className=" bg-secondaryColor text-sm p-1 rounded w-fit text-white my-2 mx-2">
+              <Link href="/packages_access/courses_list">Back to Courses</Link>
+            </div>
+            {forumId && (
+              <div className=" bg-secondaryColor text-sm p-1 rounded w-fit text-white my-2 mx-2">
+                <Link href={`/forum/${forumId}`}>Go to Forum</Link>
+              </div>
+            )}
+          </div>
           {Array.from({ length: parseInt(totalPartNumber) }, (_, index) => (
             <div key={index}>
               <Accordion type="single" collapsible>
