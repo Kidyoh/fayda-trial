@@ -115,23 +115,22 @@ export default function SingleCourse() {
                 <AccordionItem value="item-1">
                   <AccordionTrigger>Unit {index + 1}</AccordionTrigger>
                   <AccordionContent>
-                    {data[0]?.Courses?.materials.map(
-                      (material: any, index: number) => {
-                        return (
-                          <div
-                            key={material.id}
-                            onClick={() => {
-                              MaterialClicked(
-                                material.id,
-                                material.materialType,
-                                material.Access
-                              );
-                              MaterialDrawerClicked();
-                            }}
-                          >
-                            {material.part == index + 1 && (
-                              <div
-                                className={`
+                    {data[0]?.Courses?.materials.map((material: any) => {
+                      return (
+                        <div
+                          key={material.id}
+                          onClick={() => {
+                            MaterialClicked(
+                              material.id,
+                              material.materialType,
+                              material.Access
+                            );
+                            MaterialDrawerClicked();
+                          }}
+                        >
+                          {material.part == index + 1 && (
+                            <div
+                              className={`
                                 px-4 py-2 rounded-md hover:bg-blue-300 cursor-pointer
                                 ${
                                   material.id == activeMaterialId
@@ -139,51 +138,48 @@ export default function SingleCourse() {
                                     : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                                 }
                               `}
-                              >
-                                {material.materialType == "video" && (
-                                  <div className="space-x-3 flex">
-                                    {" "}
-                                    <Play size={18} />{" "}
-                                    {material?.video?.vidTitle}{" "}
-                                    {material?.Access == "locked" && (
-                                      <LockKeyhole size={18} />
-                                    )}
-                                  </div>
-                                )}{" "}
-                                {material.materialType == "assessment" && (
-                                  <div className="space-x-3 flex">
-                                    {" "}
-                                    <StickyNote size={18} />{" "}
-                                    {material?.assementId?.assesmentTitle}
-                                    {material?.Access == "locked" && (
-                                      <LockKeyhole size={18} />
-                                    )}
-                                  </div>
-                                )}{" "}
-                                {material.materialType == "file" && (
-                                  <div className="space-x-3 flex">
-                                    {" "}
-                                    <Text size={18} /> {material?.file?.title}
-                                    {material?.Access == "locked" && (
-                                      <LockKeyhole size={18} />
-                                    )}
-                                  </div>
-                                )}{" "}
-                                {material.materialType == "link" && (
-                                  <div className="space-x-3 flex">
-                                    <Youtube size={18} />{" "}
-                                    {material?.link?.title}
-                                    {material?.Access == "locked" && (
-                                      <LockKeyhole size={18} />
-                                    )}
-                                  </div>
-                                )}{" "}
-                              </div>
-                            )}
-                          </div>
-                        );
-                      }
-                    )}
+                            >
+                              {material.materialType == "video" && (
+                                <div className="space-x-3 flex">
+                                  {" "}
+                                  <Play size={18} /> {material?.video?.vidTitle}{" "}
+                                  {material?.Access == "locked" && (
+                                    <LockKeyhole size={18} />
+                                  )}
+                                </div>
+                              )}{" "}
+                              {material.materialType == "assessment" && (
+                                <div className="space-x-3 flex">
+                                  {" "}
+                                  <StickyNote size={18} />{" "}
+                                  {material?.assementId?.assesmentTitle}
+                                  {material?.Access == "locked" && (
+                                    <LockKeyhole size={18} />
+                                  )}
+                                </div>
+                              )}{" "}
+                              {material.materialType == "file" && (
+                                <div className="space-x-3 flex">
+                                  {" "}
+                                  <Text size={18} /> {material?.file?.title}
+                                  {material?.Access == "locked" && (
+                                    <LockKeyhole size={18} />
+                                  )}
+                                </div>
+                              )}{" "}
+                              {material.materialType == "link" && (
+                                <div className="space-x-3 flex">
+                                  <Youtube size={18} /> {material?.link?.title}
+                                  {material?.Access == "locked" && (
+                                    <LockKeyhole size={18} />
+                                  )}
+                                </div>
+                              )}{" "}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
