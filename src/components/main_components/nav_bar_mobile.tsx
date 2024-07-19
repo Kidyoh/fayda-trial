@@ -90,7 +90,7 @@ export default function NavBarMobile(props: any) {
       </div>
 
       {mainDrawer && (
-        <div className=" absolute top-10 h-50 bg-white z-50 w-full">
+        <div className=" absolute top-10 h-50 bg-white z-50 w-full  p-2">
           <div className=" w-full py-4 justify-around flex">
             <h1
               onClick={() => toggleExploreDrawer("toggle")}

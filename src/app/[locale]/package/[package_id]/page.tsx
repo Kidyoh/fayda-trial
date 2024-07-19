@@ -301,9 +301,12 @@ export default function PackageDetails({ params }: any) {
       </div>
 
       <div>
-        {data.courses?.map((course: any) => {
+        {data.courses?.map((course: any, index: number) => {
           return (
-            <div className="w-3/4 mx-auto bg-white my-6 px-6 shadow-lg">
+            <div
+              key={course.id}
+              className="w-3/4 mx-auto bg-white my-6 px-6 shadow-lg"
+            >
               <Accordion type="single" collapsible>
                 <AccordionItem value="item-1">
                   <AccordionTrigger>

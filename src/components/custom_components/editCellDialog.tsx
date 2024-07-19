@@ -26,7 +26,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 
 //import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { updateProfileInfoSchema } from "../../app/validation/updateProfileValidation";
+//import { updateProfileInfoSchema } from "../../app/validation/updateProfileValidation";
 import { FormField } from "../ui/form";
 
 interface EditDialogProps {

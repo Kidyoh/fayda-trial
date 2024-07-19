@@ -102,8 +102,11 @@ export default function FilteredPackage({ params }: any) {
 
       <div className="flex min-h-screen  items-center justify-center bg-gray-200">
         <div className="grid grid-cols-1  gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {data.map((singlePackage: any) => (
-            <div className="group relative cursor-pointer items-center justify-center overflow-hidden transition-shadow hover:shadow-xl hover:shadow-black/30">
+          {data.map((singlePackage: any, index: number) => (
+            <div
+              key={singlePackage.id}
+              className="group relative cursor-pointer items-center justify-center overflow-hidden transition-shadow hover:shadow-xl hover:shadow-black/30"
+            >
               <div className="h-96 w-72">
                 <img
                   className="group-hover:translate-y-[-60%] translate-y-0 h-full w-full object-cover transition-transform duration-500  "
