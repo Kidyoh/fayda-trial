@@ -40,6 +40,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import ExploreNavigation from "./drawer_components/explore_navigation";
 import useFetchStore from "../../app/[locale]/store/fetchStore";
+import NavBarMobile from "./nav_bar_mobile";
 
 export default function NavBar(response3: any) {
   const profile = response3;
@@ -145,11 +146,11 @@ export default function NavBar(response3: any) {
   return (
     <div className="">
       <div className="hidden xxmd:block fixed w-full top-0 z-50 bg-white bg-opacity-80 border-2">
-        <div className="flex justify-between  px-20">
+        <div className="flex justify-between px-10 lg:px-20">
           <div className="flex space-x-3">
-            <Link href={"/"}>
+            <Link className="w-full " href={"/"}>
               <img
-                className="h-20"
+                className="h-20 w-full "
                 src="/common_files/main/smallfulllogo.png"
                 alt="fayida"
               />
@@ -190,7 +191,7 @@ export default function NavBar(response3: any) {
                 <input
                   type="text"
                   id="search"
-                  className="block w-full pl-10 pr-3 py-2 my-auto rounded-l-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="block w-full pl-4 pr-3 py-2 my-auto rounded-l-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   placeholder="Search..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -359,18 +360,20 @@ export default function NavBar(response3: any) {
           </div>
 
           {data == "User not authenticated" ? (
-            <div className="flex space-x-5">
-              <div className="py-3 space-x-3">
-                <Link href={"/login"}>
-                  <button className="border-2 border-primaryColor py-2 px-3 rounded-md font-semibold hover:bg-primaryColor hover:text-white duration-100">
-                    Login
-                  </button>
-                </Link>
-                <Link href={"/signup"}>
-                  <button className="border-2 bg-primaryColor text-white px-2 py-2 rounded-md hover:bg-white hover:border-primaryColor hover:text-primaryColor duration-100">
-                    Sign Up
-                  </button>
-                </Link>
+            <div className="w-1/4 flex justify-end ">
+              <div className="flex  w-fit space-x-1 lg:space-x-2 xl:space-x-5">
+                <div className="py-3 space-x-3">
+                  <Link href={"/login"}>
+                    <button className="border-2 border-primaryColor py-1 px-1 xl:py-2 xl:px-3 rounded-md font-semibold hover:bg-primaryColor hover:text-white duration-100">
+                      Login
+                    </button>
+                  </Link>
+                  <Link href={"/signup"}>
+                    <button className="border-2 bg-primaryColor text-white py-1 px-1 xl:px-2 xl:py-2 rounded-md hover:bg-white hover:border-primaryColor hover:text-primaryColor duration-100">
+                      Sign Up
+                    </button>
+                  </Link>
+                </div>
               </div>
             </div>
           ) : (
@@ -425,11 +428,13 @@ export default function NavBar(response3: any) {
       </div>
 
       <div className="block  xxmd:hidden fixed w-full z-50">
-        <NavBarForMobile
+        {/* <NavBarForMobile
           data={data}
           notificationNumber={notificationNumber}
           userName={userName}
-        />
+        /> */}
+
+        <NavBarMobile data={data} notificationNumber={notificationNumber} />
       </div>
     </div>
   );

@@ -32,7 +32,7 @@ export default function BackToTop() {
       {isVisible && (
         <div
           onClick={() => scrollToTop()}
-          className="bg-primaryColor rounded-full p-1 text-white border-2 border-white"
+          className="bg-primaryColor rounded-full p-1 text-white border-2 border-white cursor-pointer hover:bg-opacity-70"
         >
           <ChevronUp size={32} />
         </div>

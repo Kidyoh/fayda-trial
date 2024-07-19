@@ -15,6 +15,14 @@ export default function FilteredPackage({ params }: any) {
     filterKeyExtracted = "Grade 11";
   } else if (FilterKey == "grade12") {
     filterKeyExtracted = "Grade 12";
+  } else if (FilterKey == "computer") {
+    filterKeyExtracted = "Computer";
+  } else if (FilterKey == "artlitrature") {
+    filterKeyExtracted = "Art Litrature";
+  } else if (FilterKey == "language") {
+    filterKeyExtracted = "Language";
+  } else if (FilterKey == "other") {
+    filterKeyExtracted = "Other";
   }
 
   const [data, setData] = useState<any>([]);
@@ -112,7 +120,7 @@ export default function FilteredPackage({ params }: any) {
                   <h1>{singlePackage.packageName}</h1>
                   <h1 className="text-lg">{singlePackage.price} Birr</h1>
                 </div>
-                <p className="line-clamp-5 pt-2 mb-3 text-lg  text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                <p className="line-clamp-5 pt-4 mb-3   text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                   {singlePackage.packageDescription}
                 </p>
 

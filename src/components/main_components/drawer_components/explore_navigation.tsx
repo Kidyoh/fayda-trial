@@ -55,6 +55,12 @@ export default function ExploreNavigation() {
             </div>
 
             <div className="flex space-x-3 cursor-pointer hover:text-primaryColor">
+              <Link href={"/searchPackages"}>
+                <h1>Packages List</h1>
+              </Link>
+            </div>
+
+            <div className="flex space-x-3 cursor-pointer hover:text-primaryColor">
               <Link href={"/blogs"}>
                 <h1>Blogs</h1>
               </Link>
@@ -62,6 +68,12 @@ export default function ExploreNavigation() {
 
             <div className="flex space-x-3 cursor-pointer hover:text-primaryColor">
               <h1>Advert</h1>
+            </div>
+
+            <div className="flex space-x-3 cursor-pointer hover:text-primaryColor">
+              <Link href={"/about_us"}>
+                <h1>About</h1>
+              </Link>
             </div>
           </div>
         </div>
@@ -111,12 +123,36 @@ export default function ExploreNavigation() {
           {slectedMenu === "extracarricular" && (
             <div className="p-3">
               <h1 className="text-primaryColor text-xl mb-4 underline font-semibold">
-                Academic
+                Multidisciplinary Skills
               </h1>
-              <div className="flex flex-col gap-2 w-fit mx-4 ">
-                <h1 className=" bg-white px-4">Languages</h1>
-                <h1 className=" bg-white px-4"> Computer Skills</h1>
-                <h1 className=" bg-white px-4"> Art & Litrature</h1>
+              <div className="grid grid-cols-2  gap-5 w-fit mx-4 ">
+                <Link
+                  className="  p-6 text-white bg-primaryColor bg-opacity-80 rounded-xl"
+                  href={`/packages_access/filter_packages/computer`}
+                >
+                  Computer
+                </Link>
+
+                <Link
+                  className=" p-6 text-white bg-primaryColor bg-opacity-80 rounded-xl"
+                  href={`/packages_access/filter_packages/language`}
+                >
+                  Language
+                </Link>
+
+                <Link
+                  className=" p-6 text-white bg-primaryColor bg-opacity-80 rounded-xl"
+                  href={`/packages_access/filter_packages/artlitrature`}
+                >
+                  Art and Litrature
+                </Link>
+
+                <Link
+                  className=" p-6 text-white bg-primaryColor bg-opacity-80 rounded-xl"
+                  href={`/packages_access/filter_packages/other`}
+                >
+                  Others
+                </Link>
 
                 {/* <button className=" bg-white px-4">Grade 9</button>
                 <button className=" bg-white px-4">Grade 10</button>
