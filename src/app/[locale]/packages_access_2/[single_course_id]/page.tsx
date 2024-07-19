@@ -28,7 +28,7 @@ import LinkDetails from "./components/linkDetails";
 export default function SingleCourse() {
   const [data, setData] = useState<any[]>([]);
   const [totalPartNumber, setTotalPartNumber] = useState("1");
-  const [materialDrawer, setMaterialDrawer] = useState(false);
+  const [materialDrawer, setMaterialDrawer] = useState(true);
 
   const activeMaterialId = useMaterialManagerStore(
     (state) => state.activeMaterialId

@@ -50,8 +50,9 @@ export default function LinkDetails({ link_id }: any) {
           <div className="space-y-5">
             <div>
               <iframe
-                width="560"
-                height="315"
+                className=" w-full h-[315px]  xxmd:w-[560px] xxmd:h-[315px] bg-yell"
+                // width="560"
+                // height="315"
                 src={`https://www.youtube.com/embed/${getVideoId(
                   data?.link?.location
                 )}`}

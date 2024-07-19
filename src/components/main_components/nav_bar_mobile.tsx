@@ -54,6 +54,7 @@ export default function NavBarMobile(props: any) {
       setExploreDrawer(!exploreDrawer);
     } else if (type == "close") {
       setExploreDrawer(false);
+      setMainDrawer(false);
     }
   };
 
@@ -136,24 +137,28 @@ export default function NavBarMobile(props: any) {
                       className="grid grid-cols-2 px-5 gap-4 py-2  flex-col"
                     >
                       <Link
+                        onClick={() => toggleMainDrawer("close")}
                         className="  text-primaryColor"
                         href={`/packages_access/filter_packages/grade9`}
                       >
                         Grade 9
                       </Link>{" "}
                       <Link
+                        onClick={() => toggleMainDrawer("close")}
                         className="  text-primaryColor"
                         href={`/packages_access/filter_packages/grade10`}
                       >
                         Grade 10
                       </Link>{" "}
                       <Link
+                        onClick={() => toggleMainDrawer("close")}
                         className="  text-primaryColor"
                         href={`/packages_access/filter_packages/grade11`}
                       >
                         Grade 11
                       </Link>{" "}
                       <Link
+                        onClick={() => toggleMainDrawer("close")}
                         className="  text-primaryColor"
                         href={`/packages_access/filter_packages/grade12`}
                       >
@@ -171,6 +176,7 @@ export default function NavBarMobile(props: any) {
                       className="grid grid-cols-2 px-5 gap-4 py-2  "
                     >
                       <Link
+                        onClick={() => toggleMainDrawer("close")}
                         className="  text-primaryColor"
                         href={`/packages_access/filter_packages/computer`}
                       >
@@ -178,6 +184,7 @@ export default function NavBarMobile(props: any) {
                       </Link>
 
                       <Link
+                        onClick={() => toggleMainDrawer("close")}
                         className=" text-primaryColor"
                         href={`/packages_access/filter_packages/language`}
                       >
@@ -185,6 +192,7 @@ export default function NavBarMobile(props: any) {
                       </Link>
 
                       <Link
+                        onClick={() => toggleMainDrawer("close")}
                         className=" text-primaryColor"
                         href={`/packages_access/filter_packages/artlitrature`}
                       >
@@ -192,6 +200,7 @@ export default function NavBarMobile(props: any) {
                       </Link>
 
                       <Link
+                        onClick={() => toggleMainDrawer("close")}
                         className=" text-primaryColor"
                         href={`/packages_access/filter_packages/other`}
                       >
@@ -258,20 +267,29 @@ export default function NavBarMobile(props: any) {
 
             <Separator orientation="horizontal" className=" mx-auto" />
 
-            <div className="w-fit mx-auto">
+            <div className="w-fit mx-auto py-2">
               <LanguageChanger />
             </div>
 
-            <Separator orientation="horizontal" className=" mx-auto" />
-
-            <div className="w-fit mx-auto">
-              <Bell onClick={() => toggleMainDrawer("close")} />{" "}
-              {notificationNumber != 0 && (
-                <h1 className="text-white bg-red rounded-full p-1 text-xs">
-                  {notificationNumber}
-                </h1>
-              )}
-            </div>
+            {data != "User not authenticated" && (
+              <Link
+                onClick={() => toggleMainDrawer("close")}
+                href={"/notifications"}
+                className="w-fit  h-fit my-auto"
+              >
+                <Separator orientation="horizontal" className=" mx-auto" />
+                <div className="relative flex my-auto mx-auto py-2   pr-2 nav_bar_hover">
+                  <div className="my-auto">
+                    <Bell />
+                  </div>
+                  {notificationNumber != 0 && (
+                    <div className="absolute px-1  top-0 right-0 text-white rounded-full bg-red-600">
+                      <h1>{notificationNumber}</h1>
+                    </div>
+                  )}
+                </div>{" "}
+              </Link>
+            )}
 
             <Separator orientation="horizontal" className=" mx-auto" />
 
@@ -279,6 +297,7 @@ export default function NavBarMobile(props: any) {
               <div>
                 {" "}
                 <Link
+                  className="w-fit mx-auto"
                   onClick={() => toggleMainDrawer("close")}
                   href={"/dashboard"}
                 >

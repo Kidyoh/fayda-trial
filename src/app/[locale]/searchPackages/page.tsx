@@ -111,9 +111,13 @@ export default function SearchPackages() {
 
   return (
     <div>
-      <div className="grid grid-cols-6 ">
+      <div className="smd:grid grid-cols-6 m-4">
         <div className="col-span-2">
           <div className="w-fit  mx-auto my-10">
+            <h1 className="text-2xl text-center ssmd:text-left text-primaryColor font-semibold">
+              Explore Packages
+            </h1>
+
             <div className="flex my-7 mx-auto w-fit">
               <input
                 type="text"
@@ -134,8 +138,8 @@ export default function SearchPackages() {
             </div>
 
             <div className=" w-full flex flex-col">
-              <div className="w-fit mx-7 space-y-2">
-                <h1 className="text-lg underline">Filter</h1>
+              <div className="w-fit mx-7 flex smd:flex-col  flex-wrap justify-center space-x-3 space-y-2 smd:space-y-2">
+                <h1 className="hidden smd:block  text-lg underline">Filter</h1>
 
                 <div className="items-top flex space-x-2">
                   <input
@@ -152,7 +156,9 @@ export default function SearchPackages() {
                   </div>
                 </div>
 
-                <h1 className="text-lg underline">Academics</h1>
+                <h1 className="hidden smd:block text-lg underline">
+                  Academics
+                </h1>
 
                 <div className="items-top flex space-x-2">
                   <input
@@ -214,7 +220,9 @@ export default function SearchPackages() {
                   </div>
                 </div>
 
-                <h1 className="text-lg underline">Multidisciplinary</h1>
+                <h1 className="hidden smd:block  text-lg underline">
+                  Multidisciplinary
+                </h1>
                 <div className="items-top flex space-x-2">
                   <input
                     type="checkbox"
@@ -278,11 +286,40 @@ export default function SearchPackages() {
           </div>
         </div>
         <div className="col-span-4">
-          <div className="grid grid-cols-2 xsm:grid-cols-3  gap-4 mx-2 my-3">
-            {filteredPackages?.map((item, index: number) => {
+          <div className="grid grid-cols-2 md:grid-cols-2 xxmd:grid-cols-3  gap-8 mx-2 my-3">
+            {filteredPackages?.map((singlePackage, index: number) => {
               return (
-                <Link key={index} href={`/package/${item.id}`}>
-                  <div key={item.id} className="relative w-fit ">
+                <Link key={index} href={`/package/${singlePackage.id}`}>
+                  <div className=" rounded-2xl group relative cursor-pointer items-center justify-center overflow-hidden transition-shadow hover:shadow-xl hover:shadow-black/30">
+                    <div className=" w-full">
+                      <img
+                        className="group-hover:translate-y-[-60%] translate-y-0 h-full w-full object-cover transition-transform duration-500  "
+                        src={singlePackage.imgUrl}
+                        alt=""
+                      />
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-primaryColor group-hover:from-primaryColor/70 group-hover:via-primaryColor/60 group-hover:to-primaryColor/70"></div>
+                    <div className="absolute inset-0 flex translate-y-[60%] flex-col items-center justify-center px-3 text-center transition-all duration-500 group-hover:translate-y-0">
+                      {/* <h1 className="font-dmserif text-3xl font-bold text-white">
+                  Beauty
+                </h1> */}
+                      <div className="justify-between flex w-full text-white  font-semibold">
+                        <h1 className=" text-sm xxmd:text-base lg:text-lg">
+                          {singlePackage.packageName}
+                        </h1>
+                        <h1 className="text-sm">{singlePackage.price} Birr</h1>
+                      </div>
+                      <p className="line-clamp-4 pt-12 mb-3 text-sm  text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                        {singlePackage.packageDescription}
+                      </p>
+
+                      <h1 className="rounded-full bg-neutral-900 py-2 px-3.5 font-com text-sm capitalize text-white shadow shadow-black/60">
+                        Details
+                      </h1>
+                    </div>
+                  </div>
+
+                  {/* <div key={item.id} className="relative w-fit ">
                     <div className="m-7 hover:shadow-xl p-3 rounded-xl shadow-lg border hover:shadow-primaryColor">
                       <img
                         src={item?.imgUrl}
@@ -304,26 +341,8 @@ export default function SearchPackages() {
                         </h1>
                       </div>
                     </div>
-                    {/* <div className="rounded-xl overflow-hidden w-full">
-                      <img
-                        //src={`${apiUrl}/upload_assets/images/package_thumbnails/${item.thumbnail}`}
-                        src={item?.imgUrl}
-                        alt="ThumbNail Image"
-                        className="mx-auto"
-                      />
-                      
-                    </div>
-
-                    <div className="absolute py-1 ssmd:py-2 flex top-5 bg-primaryColor w-full bg-opacity-80 text-white">
-                      {" "}
-                      <h1 className="mx-auto text-sm ssmd:text-lg ">
-                        {item.packageName}
-                      </h1>
-                    </div>
-                    <div className="absolute bottom-0  p-1 bg-primaryColor bg-opacity-80 rounded-tr-xl text-white ">
-                      {item.courses?.length} Courses
-                    </div> */}
-                  </div>
+                   
+                  </div> */}
                 </Link>
               );
             })}

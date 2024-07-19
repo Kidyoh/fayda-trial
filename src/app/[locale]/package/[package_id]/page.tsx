@@ -17,6 +17,7 @@ export default function PackageDetails({ params }: any) {
   const PackageId = params.package_id;
   const [data, setData] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [profile, setProfile] = useState<any>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,6 +38,19 @@ export default function PackageDetails({ params }: any) {
     };
 
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    fetch(`${apiUrl}/login_register/profile`, {
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setProfile(data);
+
+        //  console.log("yes :" + data.stringify());
+        // setPointStore(data.point);
+      });
   }, []);
 
   return (
@@ -217,30 +231,54 @@ export default function PackageDetails({ params }: any) {
                 </div>
               )}
             </div>
-
-            <div>
+            {profile?.studentStatus == "active" ? (
               <div>
-                {data?.discountStatus ? (
-                  <div className="mt-10">
-                    <PurchaseDialogCustom
-                      packageId={data?.id}
-                      price={data?.temporaryPrice}
-                      price2={data?.temporaryPrice2}
-                      price3={data?.temporaryPrice3}
-                    />
+                <div>
+                  {data?.discountStatus ? (
+                    <div className="mt-10">
+                      <PurchaseDialogCustom
+                        packageId={data?.id}
+                        price={data?.temporaryPrice}
+                        price2={data?.temporaryPrice2}
+                        price3={data?.temporaryPrice3}
+                      />
+                    </div>
+                  ) : (
+                    <div>
+                      <PurchaseDialogCustom
+                        packageId={data?.id}
+                        price={data?.price}
+                        price2={data?.price2}
+                        price3={data?.price3}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div>
+                {profile?.accountType == "Student" ? (
+                  <div>
+                    <h1>
+                      You need to confirm your email to purchase! Go to your
+                      profile to activate.
+                    </h1>
+                    <Link href={"/profile"}>Profile</Link>
                   </div>
                 ) : (
                   <div>
-                    <PurchaseDialogCustom
-                      packageId={data?.id}
-                      price={data?.price}
-                      price2={data?.price2}
-                      price3={data?.price3}
-                    />
+                    <h1>
+                      You need to sign in to purchase! Go to Login or Sign up
+                      for free!
+                    </h1>
+                    <div className="space-x-3 text-primaryColor underline">
+                      <Link href={"/login"}>Log in</Link>
+                      <Link href={"/signup"}>Sign Up</Link>
+                    </div>
                   </div>
                 )}
               </div>
-            </div>
+            )}
           </div>
         </div>
         <div className="col-span-2 flex w-full">
