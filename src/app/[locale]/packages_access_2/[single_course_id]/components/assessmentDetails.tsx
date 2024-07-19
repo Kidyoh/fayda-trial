@@ -31,7 +31,7 @@ export default function AssessmentDetails({ assessment_id }: any) {
   }, []);
   //{data[0]?.id}
   return (
-    <div className="mx-3 ">
+    <div className="mx-3 px-8 ">
       <div>
         <h1 className="pb-3">Assessment Details</h1>
         <h1>{data?.assementId?.assesmentTitle}</h1>
