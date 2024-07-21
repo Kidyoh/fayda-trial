@@ -8,6 +8,7 @@ import CheckPhoneNumber from "@/app/[locale]/mock_package/mock_package_component
 export default function ExploreNavigation() {
   const [slectedMenu, setSlectedMenu] = useState("");
   const [categoryList, setCategoryList] = useState<any>([]);
+  const [isHovered, setIsHovered] = useState(false);
   const [categoryFolderList, setCategoryFolderList] = useState<any>([]);
 
   useEffect(() => {
@@ -20,6 +21,22 @@ export default function ExploreNavigation() {
         // console.log("CategoryList: " + JSON.stringify(data));
       });
   }, []);
+
+  const handleMouseEnter = (item: any) => {
+    setIsHovered(true);
+    setSlectedMenu(item);
+
+    // Execute your function here
+
+    console.log("Mouse entered the component");
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    //setSlectedMenu("");
+    // Execute your function here
+    console.log("Mouse left the component");
+  };
 
   const onClickMenu = (menu: any) => {
     setSlectedMenu(menu);
@@ -35,6 +52,8 @@ export default function ExploreNavigation() {
           <h1 className="text-lg font-semibold py-5 underline">Categories</h1>
           <div className="space-y-3">
             <div
+              onMouseEnter={() => handleMouseEnter("carricular")}
+              onMouseLeave={handleMouseLeave}
               onClick={() => onClickMenu("carricular")}
               className="flex space-x-3 cursor-pointer hover:text-primaryColor"
             >
@@ -42,6 +61,8 @@ export default function ExploreNavigation() {
             </div>
 
             <div
+              onMouseEnter={() => handleMouseEnter("extracarricular")}
+              onMouseLeave={handleMouseLeave}
               onClick={() => onClickMenu("extracarricular")}
               className="flex space-x-3 cursor-pointer hover:text-primaryColor"
             >
