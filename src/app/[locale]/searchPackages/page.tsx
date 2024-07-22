@@ -289,7 +289,7 @@ export default function SearchPackages() {
           <div className="grid grid-cols-2 md:grid-cols-2 xxmd:grid-cols-3  gap-8 mx-2 my-3">
             {filteredPackages?.map((singlePackage, index: number) => {
               return (
-                <Link key={index} href={`/package/${singlePackage.id}`}>
+                <Link key={index} href={`/package_2/${singlePackage.id}`}>
                   <div className=" rounded-2xl group relative cursor-pointer items-center justify-center overflow-hidden transition-shadow hover:shadow-xl hover:shadow-black/30">
                     <div className=" w-full">
                       <img

@@ -103,37 +103,37 @@ export default function FilteredPackage({ params }: any) {
       <div className="flex min-h-screen  items-center justify-center bg-gray-200">
         <div className="grid grid-cols-1  gap-5 md:grid-cols-2 lg:grid-cols-3">
           {data.map((singlePackage: any, index: number) => (
-            <div
-              key={singlePackage.id}
-              className="group relative cursor-pointer items-center justify-center overflow-hidden transition-shadow hover:shadow-xl hover:shadow-black/30"
-            >
-              <div className="h-96 w-72">
-                <img
-                  className="group-hover:translate-y-[-60%] translate-y-0 h-full w-full object-cover transition-transform duration-500  "
-                  src={singlePackage.imgUrl}
-                  alt=""
-                />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-primaryColor group-hover:from-primaryColor/70 group-hover:via-primaryColor/60 group-hover:to-primaryColor/70"></div>
-              <div className="absolute inset-0 flex translate-y-[60%] flex-col items-center justify-center px-3 text-center transition-all duration-500 group-hover:translate-y-0">
-                {/* <h1 className="font-dmserif text-3xl font-bold text-white">
+            <Link href={`/package_2/${singlePackage.id}`}>
+              <div
+                key={singlePackage.id}
+                className="group relative cursor-pointer items-center justify-center overflow-hidden transition-shadow hover:shadow-xl hover:shadow-black/30"
+              >
+                <div className="h-96 w-72">
+                  <img
+                    className="group-hover:translate-y-[-60%] translate-y-0 h-full w-full object-cover transition-transform duration-500  "
+                    src={singlePackage.imgUrl}
+                    alt=""
+                  />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-primaryColor group-hover:from-primaryColor/70 group-hover:via-primaryColor/60 group-hover:to-primaryColor/70"></div>
+                <div className="absolute inset-0 flex translate-y-[60%] flex-col items-center justify-center px-3 text-center transition-all duration-500 group-hover:translate-y-0">
+                  {/* <h1 className="font-dmserif text-3xl font-bold text-white">
                   Beauty
                 </h1> */}
-                <div className="justify-between flex w-full text-white text-2xl font-semibold">
-                  <h1>{singlePackage.packageName}</h1>
-                  <h1 className="text-lg">{singlePackage.price} Birr</h1>
-                </div>
-                <p className="line-clamp-5 pt-4 mb-3   text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                  {singlePackage.packageDescription}
-                </p>
+                  <div className="justify-between flex w-full text-white text-2xl font-semibold">
+                    <h1>{singlePackage.packageName}</h1>
+                    <h1 className="text-lg">{singlePackage.price} Birr</h1>
+                  </div>
+                  <p className="line-clamp-5 pt-4 mb-3   text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    {singlePackage.packageDescription}
+                  </p>
 
-                <Link href={`/package/${singlePackage.id}`}>
                   <h1 className="rounded-full bg-neutral-900 py-2 px-3.5 font-com text-sm capitalize text-white shadow shadow-black/60">
                     Details
                   </h1>
-                </Link>
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
