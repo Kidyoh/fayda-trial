@@ -149,7 +149,7 @@ export default function PackageDetailsRendered(props: any) {
                                       <AccordionTrigger>
                                         <div className="justify-between  flex w-full px-2">
                                           <h1 className="text-xs sm:text-sm md:text-lg">
-                                            Course Name: {course?.courseName}
+                                            {course?.courseName}
                                           </h1>
                                           <h1 className="text-xs sm:text-sm md:text-base">
                                             Units: {course?.parts}
@@ -234,7 +234,7 @@ export default function PackageDetailsRendered(props: any) {
                               <div>
                                 <div>
                                   {data?.discountStatus ? (
-                                    <div className="mt-10">
+                                    <div className="mt-10 mx-5 ">
                                       <PurchaseDialogCustom
                                         packageId={data?.id}
                                         price={data?.temporaryPrice}
@@ -243,7 +243,7 @@ export default function PackageDetailsRendered(props: any) {
                                       />
                                     </div>
                                   ) : (
-                                    <div>
+                                    <div className="mx-5 ">
                                       <PurchaseDialogCustom
                                         packageId={data?.id}
                                         price={data?.price}

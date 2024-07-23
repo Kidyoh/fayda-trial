@@ -148,7 +148,7 @@ export function PurchaseDialogCustom(props: any) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <div className="w-fit bg-primaryColor px-3 py-1 rounded shadow-lg shadow-black  text-white">
+        <div className="w-fit bg-primaryColor text-xs px-2 py-1 rounded shadow-lg shadow-black  text-white">
           <button>Enroll</button>
         </div>
       </AlertDialogTrigger>

@@ -12,6 +12,10 @@ import {
 } from "lucide-react";
 import { apiUrl } from "@/apiConfig";
 import Link from "next/link";
+import { Progress } from "@/components/ui/progress";
+import CoursesList from "../packages_access/courses_list/page";
+import CourseList2 from "./components/course_list";
+
 export default function DashBoard() {
   const [data, setData] = useState<any>();
   const [coursesList, setCoursesList] = useState<any[]>([]);
@@ -208,6 +212,18 @@ export default function DashBoard() {
             <div>
               <div>
                 {" "}
+                <div className="w-full flex justify-center items-center py-4"></div>
+                <div className="w-full">
+                  <CourseList2 />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* {menuSelection == "mycourse" && (
+            <div>
+              <div>
+                {" "}
                 <div className="w-full flex justify-center items-center py-4">
                   <h1 className="text-2xl font-semibold text-primaryColor">
                     Explore Exciting Courses
@@ -246,7 +262,7 @@ export default function DashBoard() {
                 </div>
               </div>
             </div>
-          )}
+          )} */}
 
           {menuSelection == "mypackage" && (
             <div>
