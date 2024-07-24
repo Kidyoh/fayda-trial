@@ -10,6 +10,7 @@ import {
   Divide,
   LockKeyhole,
   ArrowDownWideNarrow,
+  CheckCheck,
 } from "lucide-react";
 import { useParams } from "next/navigation";
 import useMaterialManagerStore from "../../store/materialManagerStore";
@@ -25,12 +26,22 @@ import AssessmentDetails from "./components/assessmentDetails";
 import FileDetails from "./components/fileDetails";
 import LinkDetails from "./components/linkDetails";
 import Link from "next/link";
+import useFetchStore from "../../store/fetchStore";
 
 export default function SingleCourse() {
   const [data, setData] = useState<any[]>([]);
   const [totalPartNumber, setTotalPartNumber] = useState("1");
   const [materialDrawer, setMaterialDrawer] = useState(true);
   const [forumId, setForumId] = useState("");
+
+  const { searchQuery, setSearchQuery, seenMaterials, setSeenMaterials } =
+    useFetchStore();
+
+  const seenMaterialsFetch = useFetchStore((state) => state.seenMaterials);
+
+  const setSeenMaterialsFetch = useFetchStore(
+    (state) => state.setSeenMaterials
+  );
 
   const activeMaterialId = useMaterialManagerStore(
     (state) => state.activeMaterialId
@@ -59,6 +70,12 @@ export default function SingleCourse() {
         .then((jsonData) => {
           setData(jsonData);
           setTotalPartNumber(jsonData[0].Courses.parts);
+          MaterialClicked(
+            jsonData[0].Courses.materials[0].id,
+            jsonData[0].Courses.materials[0].materialType,
+            jsonData[0].Courses.materials[0].Access
+          );
+          //  setActiveMaterialId(jsonData[0].Courses.materials[0].id);
           //  console.log(jsonData[0].Courses.materials);
         })
         .catch((error) => {
@@ -67,7 +84,7 @@ export default function SingleCourse() {
     };
 
     fetchData();
-  }, []);
+  }, [seenMaterialsFetch]);
 
   useEffect(() => {
     const getCourse = async () => {
@@ -174,6 +191,9 @@ export default function SingleCourse() {
                                 <div className="space-x-3 flex">
                                   {" "}
                                   <Play size={18} /> {material?.video?.vidTitle}{" "}
+                                  {material?.StudentMaterial[0]?.Done && (
+                                    <CheckCheck />
+                                  )}
                                   {material?.Access == "locked" && (
                                     <LockKeyhole size={18} />
                                   )}
@@ -184,6 +204,9 @@ export default function SingleCourse() {
                                   {" "}
                                   <StickyNote size={18} />{" "}
                                   {material?.assementId?.assesmentTitle}
+                                  {material?.StudentMaterial[0]?.Done && (
+                                    <CheckCheck />
+                                  )}
                                   {material?.Access == "locked" && (
                                     <LockKeyhole size={18} />
                                   )}
@@ -193,6 +216,9 @@ export default function SingleCourse() {
                                 <div className="space-x-3 flex">
                                   {" "}
                                   <Text size={18} /> {material?.file?.title}
+                                  {material?.StudentMaterial[0]?.Done && (
+                                    <CheckCheck />
+                                  )}
                                   {material?.Access == "locked" && (
                                     <LockKeyhole size={18} />
                                   )}
@@ -201,6 +227,9 @@ export default function SingleCourse() {
                               {material.materialType == "link" && (
                                 <div className="space-x-3 flex">
                                   <Youtube size={18} /> {material?.link?.title}
+                                  {material?.StudentMaterial[0]?.Done && (
+                                    <CheckCheck />
+                                  )}
                                   {material?.Access == "locked" && (
                                     <LockKeyhole size={18} />
                                   )}

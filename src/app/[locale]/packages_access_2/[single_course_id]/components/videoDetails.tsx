@@ -1,6 +1,7 @@
 "use client";
 
 import { apiUrl } from "@/apiConfig";
+import MaterialSeen from "@/components/custom_components/seenToggle";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
@@ -74,6 +75,11 @@ export default function VideoDetial({ video_id }: any) {
         )}
       </div>
 
+      {data?.StudentMaterial[0]?.Done != true && (
+        <div>
+          <MaterialSeen MaterialId={videoId} />
+        </div>
+      )}
       <div>
         <h1>
           <span className="font-semibold text-primaryColor"> Description:</span>{" "}

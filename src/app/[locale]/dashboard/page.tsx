@@ -15,6 +15,7 @@ import Link from "next/link";
 import { Progress } from "@/components/ui/progress";
 import CoursesList from "../packages_access/courses_list/page";
 import CourseList2 from "./components/course_list";
+import Footer from "@/components/main_components/footer";
 
 export default function DashBoard() {
   const [data, setData] = useState<any>();
@@ -338,6 +339,8 @@ export default function DashBoard() {
           )}
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }

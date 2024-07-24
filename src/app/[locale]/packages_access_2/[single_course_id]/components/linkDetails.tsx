@@ -1,6 +1,7 @@
 "use client";
 
 import { apiUrl } from "@/apiConfig";
+import MaterialSeen from "@/components/custom_components/seenToggle";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
@@ -76,7 +77,11 @@ export default function LinkDetails({ link_id }: any) {
           <div>Loading File ...</div>
         )}
       </div>
-
+      {data?.StudentMaterial[0]?.Done != true && (
+        <div>
+          <MaterialSeen MaterialId={LinkId} />
+        </div>
+      )}
       <div>
         <h1>
           <span className="font-semibold text-primaryColor"> Description:</span>{" "}

@@ -29,6 +29,31 @@ export default function AssessmentDetails({ assessment_id }: any) {
 
     fetchData();
   }, []);
+
+  const CheckAssessmentIfSeen = () => {
+    const postData = {
+      MaterialId: AssessmentId,
+    };
+
+    fetch(`${apiUrl}/studentmaterial/`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(postData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Handle the response data
+        console.log(data[0]?.id);
+      })
+      .catch((error) => {
+        // Handle any errors
+        console.error(error);
+      });
+    //
+  };
   //{data[0]?.id}
   return (
     <div className="mx-3 px-8 ">
@@ -57,7 +82,12 @@ export default function AssessmentDetails({ assessment_id }: any) {
         href={`/packages_access/assessment_questions/${data?.assementId?.id}`}
       >
         <div className="my-4 w-fit">
-          <h1 className="px-3 py-1 bg-secondaryColor text-white rounded-md">
+          <h1
+            onClick={() => {
+              CheckAssessmentIfSeen();
+            }}
+            className="px-3 py-1 bg-secondaryColor text-white rounded-md"
+          >
             Start
           </h1>
         </div>
