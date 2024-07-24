@@ -11,6 +11,9 @@ import {
 } from "@/components/ui/accordion";
 import { PurchaseDialogCustom } from "@/components/custom_components/purchaseDialong";
 import Footer from "@/components/main_components/footer";
+import PackageReviewForm from "@/components/custom_components/packageReviewForm";
+import DeletePackageReview from "@/components/custom_components/delete_review";
+import useFetchStore from "../../[locale]/store/fetchStore";
 
 export default function PackageDetailsRendered(props: any) {
   const PackageId = props.package_id;
@@ -18,6 +21,10 @@ export default function PackageDetailsRendered(props: any) {
   const [isLoading, setIsLoading] = useState(true);
   const [profile, setProfile] = useState<any>([]);
   const [tagChosen, setTagChosen] = useState("");
+
+  const fetchPackagesReview = useFetchStore(
+    (state) => state.fetchPackageReview
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,7 +63,7 @@ export default function PackageDetailsRendered(props: any) {
     };
 
     fetchData();
-  }, []);
+  }, [fetchPackagesReview]);
 
   useEffect(() => {
     fetch(`${apiUrl}/login_register/profile`, {
@@ -126,7 +133,7 @@ export default function PackageDetailsRendered(props: any) {
                         <TabsList className="justify-around flex">
                           <TabsTrigger value="info">Info</TabsTrigger>
                           <TabsTrigger value="content">Content</TabsTrigger>
-                          <TabsTrigger value="password">Review</TabsTrigger>
+                          <TabsTrigger value="review">Review</TabsTrigger>
                         </TabsList>
                         <TabsContent value="info">
                           <div className="space-y-3 py-3">
@@ -165,6 +172,41 @@ export default function PackageDetailsRendered(props: any) {
                               );
                             })}
                           </div>
+                        </TabsContent>
+
+                        <TabsContent value="review" className="w-full ">
+                          {data?.review?.map((review: any, index: number) => {
+                            return (
+                              <div
+                                key={index}
+                                className="flex justify-between bg-white/70 text-gray-900 my-6 py-2  px-6 shadow-xl rounded-xl"
+                              >
+                                <div>
+                                  <div>
+                                    <h1>{review?.text}</h1>
+                                  </div>
+                                  <div className="py-1">
+                                    <h1 className="text-xs italic">
+                                      {review?.Student?.firstName}{" "}
+                                      {review?.Student?.lastName}
+                                    </h1>
+                                  </div>
+                                </div>
+                                {review?.Student?.id == profile?.id && (
+                                  <div>
+                                    <DeletePackageReview
+                                      reviewId={review?.id}
+                                    />
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
+
+                          <PackageReviewForm
+                            packageId={data?.id}
+                            studentId={profile?.id}
+                          />
                         </TabsContent>
                       </Tabs>
                     </div>

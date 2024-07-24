@@ -5,6 +5,8 @@ interface StoreState {
   setSearchQuery: (newSearchQuery: string) => void;
   seenMaterials: boolean;
   setSeenMaterials: (newSeenMaterials: boolean) => void;
+  fetchPackageReview: boolean;
+  setFetchPackageReview: (newFetchPackageReview: boolean) => void;
 }
 
 const useFetchStore = create<StoreState>((set) => ({
@@ -13,6 +15,10 @@ const useFetchStore = create<StoreState>((set) => ({
   seenMaterials: false,
   setSeenMaterials: (newSeenMaterials) =>
     set({ seenMaterials: newSeenMaterials }),
+
+  fetchPackageReview: false,
+  setFetchPackageReview: (newFetchPackageReview) =>
+    set({ fetchPackageReview: newFetchPackageReview }),
 }));
 
 export default useFetchStore;

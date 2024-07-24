@@ -269,7 +269,7 @@ export default function DashBoard() {
             <div>
               <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
                 {packagesList.map((item, index: number) => (
-                  <Link key={index} href={`/package/${item?.packagesId}`}>
+                  <Link key={index} href={`/package_2/${item?.packagesId}`}>
                     <div
                       key={item.id}
                       className="package-card rounded-xl border shadow-md p-4 hover:shadow-lg hover:shadow-primaryColor cursor-pointer"
