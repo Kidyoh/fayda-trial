@@ -9,11 +9,23 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import {
+  Play,
+  ScrollText,
+  Text,
+  Youtube,
+  StickyNote,
+  Divide,
+  LockKeyhole,
+  ArrowDownWideNarrow,
+  CheckCheck,
+} from "lucide-react";
 import { PurchaseDialogCustom } from "@/components/custom_components/purchaseDialong";
 import Footer from "@/components/main_components/footer";
 import PackageReviewForm from "@/components/custom_components/packageReviewForm";
 import DeletePackageReview from "@/components/custom_components/delete_review";
 import useFetchStore from "../../[locale]/store/fetchStore";
+import { Heading1 } from "lucide-react";
 
 export default function PackageDetailsRendered(props: any) {
   const PackageId = props.package_id;
@@ -165,6 +177,117 @@ export default function PackageDetailsRendered(props: any) {
                                       </AccordionTrigger>
                                       <AccordionContent>
                                         <p>{course?.courseDescription}</p>
+                                        <div>
+                                          {Array.from(
+                                            { length: parseInt(course?.parts) },
+                                            (_, index) => (
+                                              <div key={index} className="pt-3">
+                                                <h1 className="text-lg underline">
+                                                  {" "}
+                                                  Unit {index + 1} :{" "}
+                                                  {
+                                                    course?.CourseUnitsList[
+                                                      index + 1
+                                                    ]?.Title
+                                                  }{" "}
+                                                </h1>
+
+                                                {course?.materials.map(
+                                                  (
+                                                    material: any,
+                                                    index: number
+                                                  ) => {
+                                                    return (
+                                                      <div
+                                                        key={index}
+                                                        className=""
+                                                      >
+                                                        {material?.part ==
+                                                          index + 1 && (
+                                                          <div className="py-1">
+                                                            {material?.materialType ==
+                                                              "video" && (
+                                                              <div className="w-full flex space-x-4">
+                                                                <div className="flex gap-3">
+                                                                  <Play
+                                                                    size={18}
+                                                                  />
+                                                                  Video:{" "}
+                                                                </div>
+                                                                <div>
+                                                                  {
+                                                                    material
+                                                                      ?.video
+                                                                      ?.vidTitle
+                                                                  }
+                                                                </div>
+                                                              </div>
+                                                            )}
+                                                            {material?.materialType ==
+                                                              "file" && (
+                                                              <div className="w-full flex space-x-4">
+                                                                <div className="flex gap-3">
+                                                                  <Text
+                                                                    size={18}
+                                                                  />
+                                                                  File:{" "}
+                                                                </div>
+                                                                <div>
+                                                                  {
+                                                                    material
+                                                                      ?.file
+                                                                      ?.title
+                                                                  }
+                                                                </div>
+                                                              </div>
+                                                            )}
+
+                                                            {material?.materialType ==
+                                                              "assessment" && (
+                                                              <div className="w-full flex space-x-4">
+                                                                <div className="flex gap-3">
+                                                                  <StickyNote
+                                                                    size={18}
+                                                                  />
+                                                                  Assessment:{" "}
+                                                                </div>
+                                                                <div>
+                                                                  {
+                                                                    material
+                                                                      ?.assementId
+                                                                      ?.assesmentTitle
+                                                                  }
+                                                                </div>
+                                                              </div>
+                                                            )}
+                                                            {material?.materialType ==
+                                                              "link" && (
+                                                              <div className="w-full flex space-x-4">
+                                                                <div className="flex gap-3">
+                                                                  <Youtube
+                                                                    size={18}
+                                                                  />
+                                                                  Link:{" "}
+                                                                </div>
+                                                                <div>
+                                                                  {
+                                                                    material
+                                                                      ?.link
+                                                                      ?.title
+                                                                  }
+                                                                </div>
+                                                              </div>
+                                                            )}
+                                                          </div>
+                                                        )}
+                                                      </div>
+                                                    );
+                                                  }
+                                                )}
+                                              </div>
+                                            )
+                                          )}
+                                        </div>
                                       </AccordionContent>
                                     </AccordionItem>
                                   </Accordion>
