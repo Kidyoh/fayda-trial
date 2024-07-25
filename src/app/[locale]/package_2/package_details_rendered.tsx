@@ -181,26 +181,29 @@ export default function PackageDetailsRendered(props: any) {
                                           {Array.from(
                                             { length: parseInt(course?.parts) },
                                             (_, index) => (
-                                              <div key={index} className="pt-3">
+                                              <div
+                                                key={index}
+                                                className="pt-3 space-y-3"
+                                              >
                                                 <h1 className="text-lg underline">
                                                   {" "}
                                                   Unit {index + 1} :{" "}
                                                   {
                                                     course?.CourseUnitsList[
-                                                      index + 1
+                                                      index
                                                     ]?.Title
                                                   }{" "}
                                                 </h1>
 
                                                 {course?.materials.map(
                                                   (
-                                                    material: any,
-                                                    index: number
+                                                    material: any
+                                                    //index: number
                                                   ) => {
                                                     return (
                                                       <div
-                                                        key={index}
-                                                        className=""
+                                                        key={material.id}
+                                                        className="bg-gray-200 rounded text-primaryColor px-3"
                                                       >
                                                         {material?.part ==
                                                           index + 1 && (

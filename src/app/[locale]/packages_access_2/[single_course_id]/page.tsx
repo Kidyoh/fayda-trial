@@ -29,7 +29,7 @@ import Link from "next/link";
 import useFetchStore from "../../store/fetchStore";
 
 export default function SingleCourse() {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<any>([]);
   const [totalPartNumber, setTotalPartNumber] = useState("1");
   const [materialDrawer, setMaterialDrawer] = useState(true);
   const [forumId, setForumId] = useState("");
@@ -148,11 +148,11 @@ export default function SingleCourse() {
   `}
         >
           <div className="flex gap-2">
-            <div className=" bg-secondaryColor text-sm p-1 rounded w-fit text-white my-2 mx-2">
+            {/* <div className=" bg-secondaryColor text-sm p-1 rounded w-fit text-white my-2 mx-2">
               <Link href="/packages_access/courses_list">Back to Courses</Link>
-            </div>
+            </div> */}
             {forumId && (
-              <div className=" bg-secondaryColor text-sm p-1 rounded w-fit text-white my-2 mx-2">
+              <div className=" bg-primaryColor text-sm p-1 rounded w-fit text-white my-2 mx-2">
                 <Link href={`/forum/${forumId}`}>Go to Forum</Link>
               </div>
             )}
@@ -161,7 +161,12 @@ export default function SingleCourse() {
             <div key={index}>
               <Accordion type="single" collapsible>
                 <AccordionItem value="item-1">
-                  <AccordionTrigger>Unit {index + 1}</AccordionTrigger>
+                  <AccordionTrigger>
+                    <div>
+                      Unit {index + 1} :{" "}
+                      {data[0]?.Courses?.CourseUnitsList[index].Title}
+                    </div>
+                  </AccordionTrigger>
                   <AccordionContent>
                     {data[0]?.Courses?.materials.map((material: any) => {
                       return (

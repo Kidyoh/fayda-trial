@@ -126,6 +126,44 @@ export default function ForumDetail({ studentId, forumId }: FetchedProps) {
         <h1>Froum Id {forumIdRecived}</h1>
       </div> */}
       <div>{/* <h1>Post</h1> */}</div>
+
+      <div className="my-4">
+        {data?.conversation?.map((conv: any, index: number) => {
+          return (
+            <div key={index}>
+              <div className="mx-5 my-2 bg-gray-100 rounded px-3 ">
+                <div className="flex space-x-3  px-5 py-3">
+                  <div className="space-x-2 flex font-semibold ">
+                    <h1>{conv?.writtenBy?.firstName}</h1>
+                    <h1>{conv?.writtenBy?.lastName}</h1>
+                  </div>
+                  <div>
+                    <h1>{conv.text}</h1>
+                  </div>
+                </div>
+                <div className="relative mx-2 w-full  flex ml-2">
+                  <div>
+                    <h1 className="text-xs">
+                      {new Date(conv?.createdAt).toLocaleString()}
+                    </h1>
+                  </div>
+                  {conv?.writtenBy?.id == studentIdRecived && (
+                    <div className="absolute right-3 bottom-3 w-fit ">
+                      <DeleteDialog
+                        type="conversations"
+                        id={conv?.id}
+                        buttonTitle="Delete"
+                        backTo={`forum/${forumIdRecived}`}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
       <div className="my-6">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -175,43 +213,6 @@ export default function ForumDetail({ studentId, forumId }: FetchedProps) {
             </div>
           </form>
         </Form>
-      </div>
-
-      <div>
-        {data?.conversation?.map((conv: any, index: number) => {
-          return (
-            <div key={index}>
-              <div className="mx-5 my-2 bg-gray-100 rounded px-3 ">
-                <div className="flex space-x-3  px-5 py-3">
-                  <div className="space-x-2 flex font-semibold ">
-                    <h1>{conv?.writtenBy?.firstName}</h1>
-                    <h1>{conv?.writtenBy?.lastName}</h1>
-                  </div>
-                  <div>
-                    <h1>{conv.text}</h1>
-                  </div>
-                </div>
-                <div className="relative mx-2 w-full  flex ml-2">
-                  <div>
-                    <h1 className="text-xs">
-                      {new Date(conv?.createdAt).toLocaleString()}
-                    </h1>
-                  </div>
-                  {conv?.writtenBy?.id == studentIdRecived && (
-                    <div className="absolute right-3 bottom-3 w-fit ">
-                      <DeleteDialog
-                        type="conversations"
-                        id={conv?.id}
-                        buttonTitle="Delete"
-                        backTo={`forum/${forumIdRecived}`}
-                      />
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          );
-        })}
       </div>
     </div>
   );
