@@ -5,13 +5,14 @@ import MaterialSeen from "@/components/custom_components/seenToggle";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-export default function FileDetails({ file_id }: any) {
+export default function FileDetails({ file_id, student_id }: any) {
   const [data, setData] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
   const [videoLocation, setVideoLocation] = useState("");
   // const params = useParams();
   //console.log(params);
   const FileId = file_id;
+  const studentId = student_id;
 
   useEffect(() => {
     const fetchData = () => {
@@ -56,11 +57,19 @@ export default function FileDetails({ file_id }: any) {
           <div>Loading File ...</div>
         )}
       </div>
-      {data?.StudentMaterial[0]?.Done != true && (
+
+      {data?.StudentMaterial.find((item: any) => item.StudentId === studentId)
+        ?.Done !== true && (
         <div>
           <MaterialSeen MaterialId={FileId} />
         </div>
       )}
+
+      {/* {data?.StudentMaterial[0]?.Done != true && (
+        <div>
+          <MaterialSeen MaterialId={FileId} />
+        </div>
+      )} */}
       <div>
         <h1>
           <span className="font-semibold text-primaryColor"> Description:</span>{" "}

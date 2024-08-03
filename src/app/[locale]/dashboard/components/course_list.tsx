@@ -92,18 +92,25 @@ export default function CourseList2() {
                           value={
                             (course?.Courses?.materials?.filter(
                               (material: any) =>
-                                material.StudentMaterial[0]?.Done == true
+                                material?.StudentMaterial.find(
+                                  (item: any) =>
+                                    item.StudentId === course?.studentsId
+                                )?.Done == true
                             ).length *
                               100) /
                             course?.Courses?.materials?.length
                           }
                           className="text-primaryColor my-auto"
                         />
+
                         <h1 className="flex my-auto">
                           {isNaN(
                             (course?.Courses?.materials?.filter(
                               (material: any) =>
-                                material.StudentMaterial[0]?.Done == true
+                                material?.StudentMaterial.find(
+                                  (item: any) =>
+                                    item.StudentId === course?.studentsId
+                                )?.Done == true
                             ).length *
                               100) /
                               course?.Courses?.materials?.length
@@ -112,7 +119,10 @@ export default function CourseList2() {
                             : `${
                                 (course?.Courses?.materials?.filter(
                                   (material: any) =>
-                                    material.StudentMaterial[0]?.Done == true
+                                    material?.StudentMaterial.find(
+                                      (item: any) =>
+                                        item.StudentId === course?.studentsId
+                                    )?.Done == true
                                 ).length *
                                   100) /
                                 course?.Courses?.materials?.length
@@ -135,7 +145,10 @@ export default function CourseList2() {
               //href="/"
             >
               {(course?.Courses?.materials?.filter(
-                (material: any) => material.StudentMaterial[0]?.Done == true
+                (material: any) =>
+                  material?.StudentMaterial.find(
+                    (item: any) => item.StudentId === course?.studentsId
+                  )?.Done == true
               ).length *
                 100) /
                 course?.Courses?.materials?.length ==
@@ -159,7 +172,10 @@ export default function CourseList2() {
                         <h1 className="flex my-auto">
                           {(course?.Courses?.materials?.filter(
                             (material: any) =>
-                              material.StudentMaterial[0]?.Done == true
+                              material?.StudentMaterial.find(
+                                (item: any) =>
+                                  item.StudentId === course?.studentsId
+                              )?.Done == true
                           ).length *
                             100) /
                             course?.Courses?.materials?.length}

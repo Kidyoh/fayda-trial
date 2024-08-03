@@ -164,7 +164,7 @@ export default function SingleCourse() {
                   <AccordionTrigger>
                     <div>
                       Unit {index + 1} :{" "}
-                      {data[0]?.Courses?.CourseUnitsList[index].Title}
+                      {data[0]?.Courses?.CourseUnitsList[index]?.Title}
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
@@ -196,9 +196,13 @@ export default function SingleCourse() {
                                 <div className="space-x-3 flex">
                                   {" "}
                                   <Play size={18} /> {material?.video?.vidTitle}{" "}
-                                  {material?.StudentMaterial[0]?.Done && (
+                                  {/* {material?.StudentMaterial[0]?.Done && (
                                     <CheckCheck />
-                                  )}
+                                  )} */}
+                                  {material?.StudentMaterial.find(
+                                    (item: any) =>
+                                      item.StudentId === data[0]?.studentsId
+                                  )?.Done && <CheckCheck />}
                                   {material?.Access == "locked" && (
                                     <LockKeyhole size={18} />
                                   )}
@@ -209,9 +213,13 @@ export default function SingleCourse() {
                                   {" "}
                                   <StickyNote size={18} />{" "}
                                   {material?.assementId?.assesmentTitle}
-                                  {material?.StudentMaterial[0]?.Done && (
+                                  {/* {material?.StudentMaterial[0]?.Done && (
                                     <CheckCheck />
-                                  )}
+                                  )} */}
+                                  {material?.StudentMaterial.find(
+                                    (item: any) =>
+                                      item.StudentId === data[0]?.studentsId
+                                  )?.Done && <CheckCheck />}
                                   {material?.Access == "locked" && (
                                     <LockKeyhole size={18} />
                                   )}
@@ -221,9 +229,13 @@ export default function SingleCourse() {
                                 <div className="space-x-3 flex">
                                   {" "}
                                   <Text size={18} /> {material?.file?.title}
-                                  {material?.StudentMaterial[0]?.Done && (
+                                  {/* {material?.StudentMaterial[0]?.Done && (
                                     <CheckCheck />
-                                  )}
+                                  )} */}
+                                  {material?.StudentMaterial.find(
+                                    (item: any) =>
+                                      item.StudentId === data[0]?.studentsId
+                                  )?.Done && <CheckCheck />}
                                   {material?.Access == "locked" && (
                                     <LockKeyhole size={18} />
                                   )}
@@ -232,9 +244,13 @@ export default function SingleCourse() {
                               {material.materialType == "link" && (
                                 <div className="space-x-3 flex">
                                   <Youtube size={18} /> {material?.link?.title}
-                                  {material?.StudentMaterial[0]?.Done && (
+                                  {/* {material?.StudentMaterial[0]?.Done && (
                                     <CheckCheck />
-                                  )}
+                                  )} */}
+                                  {material?.StudentMaterial.find(
+                                    (item: any) =>
+                                      item.StudentId === data[0]?.studentsId
+                                  )?.Done && <CheckCheck />}
                                   {material?.Access == "locked" && (
                                     <LockKeyhole size={18} />
                                   )}
@@ -255,22 +271,34 @@ export default function SingleCourse() {
           {activeMaterialtype == "" && <div>Loading ...</div>}
           {activeMaterialtype == "video" && (
             <div>
-              <VideoDetails video_id={activeMaterialId} />
+              <VideoDetails
+                video_id={activeMaterialId}
+                student_id={data[0]?.studentsId}
+              />
             </div>
           )}
           {activeMaterialtype == "assessment" && (
             <div>
-              <AssessmentDetails assessment_id={activeMaterialId} />
+              <AssessmentDetails
+                assessment_id={activeMaterialId}
+                student_id={data[0]?.studentsId}
+              />
             </div>
           )}
           {activeMaterialtype == "file" && (
             <div>
-              <FileDetails file_id={activeMaterialId} />
+              <FileDetails
+                file_id={activeMaterialId}
+                student_id={data[0]?.studentsId}
+              />
             </div>
           )}
           {activeMaterialtype == "link" && (
             <div>
-              <LinkDetails link_id={activeMaterialId} />
+              <LinkDetails
+                link_id={activeMaterialId}
+                student_id={data[0]?.studentsId}
+              />
             </div>
           )}
         </div>
