@@ -86,6 +86,11 @@ export default function ExploreNavigation() {
                 <h1>Blogs</h1>
               </Link>
             </div>
+            <div className="flex space-x-3 cursor-pointer hover:text-primaryColor">
+              <Link href={"/leaderboard"}>
+                <h1>Leader Board</h1>
+              </Link>
+            </div>
 
             <div className="flex space-x-3 cursor-pointer hover:text-primaryColor">
               <h1>Advert</h1>

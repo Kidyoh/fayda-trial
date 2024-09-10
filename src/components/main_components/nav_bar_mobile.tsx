@@ -236,6 +236,14 @@ export default function NavBarMobile(props: any) {
                       <h1>Blogs</h1>
                     </Link>
                   </div>
+                  <div className="flex space-x-3 cursor-pointer hover:text-primaryColor">
+                    <Link
+                      onClick={() => toggleExploreDrawer("close")}
+                      href={"/leaderboard"}
+                    >
+                      <h1>Leader Board</h1>
+                    </Link>
+                  </div>
 
                   <div
                     onClick={() => toggleExploreDrawer("close")}
