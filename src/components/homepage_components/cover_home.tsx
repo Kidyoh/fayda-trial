@@ -14,14 +14,15 @@ export default function CoverHome() {
 
   let texts: any = [];
   if (t) {
-    texts = [t("home:info01"), t("home:info02"), t("home:info03")];
+    //texts = [t("home:info01"), t("home:info02"), t("home:info03")];
+    texts = [t("home:info01"), t("home:info02")];
   }
 
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentTextIndex((prevIndex) => (prevIndex + 1) % 3);
+      setCurrentTextIndex((prevIndex) => (prevIndex + 1) % 2);
     }, 5000);
     return () => clearInterval(interval);
   }, []);
@@ -35,7 +36,7 @@ export default function CoverHome() {
     // <div className="ssmd:grid ssmd:grid-cols-3 h-92 pt-12 xl:pt-2 bg-gradient-to-r from-primaryColor via-emerald-600 to-primaryColor">
     //      <div className="relative ssmd:grid  ssmd:grid-cols-5 h-92 pt-12 xl:pt-2 bg-gradient-to-r from-sky-500/70  to-sky-300">
     <div className="">
-      <div className="relative ssmd:grid  smd:grid-cols-5 h-92 pt-12 xl:pt-2 bg-coverColor">
+      <div className="relative ssmd:grid  smd:grid-cols-6 h-92 pt-12 xl:pt-2 bg-gray-100">
         <div className="col-span-3 w-full  flex">
           <div className="relative mx-auto  h-full w-full py-5 ssmd:py-20  px-5">
             <div className="mx-auto my-auto h-24 ssmd:h-32  text-3xl smd:text-4xl lg:text-5xl font-bold px-5">
@@ -58,16 +59,20 @@ export default function CoverHome() {
                   {t("slogan")}
                 </h1>
               </div>
+              <div className="mt-20  pb-3 w-full flex"></div>
+              {/* 
               <div className="mt-20  pb-3 w-full flex">
                 <div className="bg-fourthColor  ssmd:mx-10 mx-auto w-fit px-3 py-1 rounded-2xl hover:scale-105 duration-100">
                   {" "}
                   <CheckPhoneNumber pushto={"/mock_package/selectmainfolder"} />
                 </div>
 
-                {/* <h1 className="bg-fourthColor mx-auto  ssmd:mx-10 text-white px-3 py-1 rounded-2xl w-fit cursor-pointer hover:scale-105 duration-100">
+                 <h1 className="bg-fourthColor mx-auto  ssmd:mx-10 text-white px-3 py-1 rounded-2xl w-fit cursor-pointer hover:scale-105 duration-100">
                 Download App
-              </h1> */}
-              </div>
+              </h1> 
+
+
+              </div> */}
             </div>
           </div>
         </div>
@@ -94,9 +99,10 @@ export default function CoverHome() {
           />
         </div>
       </div>  */}
-        <div className="smd:relative col-span-2 ">
+        <div className="smd:relative col-span-3 bg-gray-100">
           <img
-            src="common_files/main/the_girl5.png"
+            // src="common_files/main/the_girl5.png"
+            src="common_files/main/bannerx01.jpg"
             className="smd:absolute w-fit  smd:bottom-0 "
             alt=""
           />
@@ -108,13 +114,13 @@ export default function CoverHome() {
             alt=""
           />
         </div>
-        <div className="hidden ssmd:block absolute bottom-10 left-36  h-fit">
+        {/* <div className="hidden ssmd:block absolute bottom-10 left-36  h-fit">
           <img
             src="common_files/main/the_arrow2.png"
             className="h-fit"
             alt=""
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );
