@@ -98,26 +98,32 @@ export default function LeaderBoard() {
                       </tr>
                     </thead>
                     <tbody className="space-y-3">
-                      {data?.map((student: any, index: any) => (
-                        <tr
-                          //className="text-center my-4 border-4 bg-red-300 m-3 "
-                          className={`text-center  ${
-                            index % 2 == 0
-                              ? "bg-gray-200 text-gray-500"
-                              : "bg-gray-100 text-gray-500"
-                          }`}
-                          key={index}
-                        >
-                          <td className="w-1/5">{index + 1}</td>
-                          <td className="w-1/5">{student?.firstName}</td>
-                          <td className="w-1/5">{student?.lastName}</td>
-                          <td className="w-1/5">{student?.gread}</td>
-                          <td className="w-1/5">
-                            {parseFloat(student?.points).toFixed(1)}
-                          </td>{" "}
-                          {/* Render additional table cells based on your data structure */}
-                        </tr>
-                      ))}
+                      {data?.map((student: any, index: any) => {
+                        let rowClass = "text-center text-gray-500";
+
+                        if (index === 0) {
+                          rowClass += " bg-yellow-300"; // Gold for the first row
+                        } else if (index === 1) {
+                          rowClass += " bg-gray-300"; // Silver for the second row
+                        } else if (index === 2) {
+                          rowClass += " bg-orange-400 text-white"; // Bronze for the third row
+                        } else {
+                          rowClass +=
+                            index % 2 === 0 ? " bg-gray-200" : " bg-gray-100"; // Alternate colors for subsequent rows
+                        }
+
+                        return (
+                          <tr className={rowClass} key={index}>
+                            <td className="w-1/5">{index + 1}</td>
+                            <td className="w-1/5">{student?.firstName}</td>
+                            <td className="w-1/5">{student?.lastName}</td>
+                            <td className="w-1/5">{student?.gread}</td>
+                            <td className="w-1/5">
+                              {parseFloat(student?.points).toFixed(1)}
+                            </td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>
