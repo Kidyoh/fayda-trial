@@ -126,7 +126,8 @@ export default function Footer() {
           </div>
           <div className=" smd:col-span-1 mx-auto right-0   w-fit  flex space-x-2">
             <PhoneCall />
-            <h1>+251915733163</h1>
+            <h1>+251970483333</h1>
+            <h1>+251970493333</h1>
           </div>
         </div>
       </div>
