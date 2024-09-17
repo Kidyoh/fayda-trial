@@ -124,7 +124,7 @@ export default function Footer() {
               ></FontAwesomeIcon>
             </Link>
           </div>
-          <div className=" smd:col-span-1 mx-auto right-0   w-fit  flex space-x-2">
+          <div className=" smd:col-span-1 mx-auto right-0   w-fit  flex space-x-2 pb-6">
             <PhoneCall />
             <h1>+251970483333</h1>
             <h1>+251970493333</h1>
