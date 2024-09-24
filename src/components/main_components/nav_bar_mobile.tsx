@@ -166,7 +166,7 @@ export default function NavBarMobile(props: any) {
                       </Link>{" "}
                     </AccordionContent>
                   </AccordionItem>
-                  <AccordionItem value="item-2">
+                  {/* <AccordionItem value="item-2">
                     <AccordionTrigger>
                       {" "}
                       Multidisciplinary Skills
@@ -207,17 +207,17 @@ export default function NavBarMobile(props: any) {
                         Others
                       </Link>
                     </AccordionContent>
-                  </AccordionItem>
+                  </AccordionItem> */}
                 </Accordion>
 
                 <div className="py-2 space-y-3">
-                  <div className="flex space-x-3 cursor-pointer hover:text-primaryColor">
+                  {/* <div className="flex space-x-3 cursor-pointer hover:text-primaryColor">
                     <CheckPhoneNumber
                       onClick={() => toggleExploreDrawer("close")}
                       pushto={"/mock_package/selectmainfolder"}
                     />
                     <ChevronRight size={12} className="my-auto" />
-                  </div>
+                  </div> */}
 
                   <div className="flex space-x-3 cursor-pointer hover:text-primaryColor">
                     <Link
@@ -245,12 +245,12 @@ export default function NavBarMobile(props: any) {
                     </Link>
                   </div>
 
-                  <div
+                  {/* <div
                     onClick={() => toggleExploreDrawer("close")}
                     className="flex space-x-3 cursor-pointer hover:text-primaryColor"
                   >
                     <h1>Advert</h1>
-                  </div>
+                  </div> */}
 
                   <div className="flex space-x-3 cursor-pointer hover:text-primaryColor">
                     <Link

@@ -60,7 +60,7 @@ export default function ExploreNavigation() {
               <h1>Academic</h1> <ChevronRight size={12} className="my-auto" />
             </div>
 
-            <div
+            {/* <div
               onMouseEnter={() => handleMouseEnter("extracarricular")}
               onMouseLeave={handleMouseLeave}
               onClick={() => onClickMenu("extracarricular")}
@@ -68,12 +68,12 @@ export default function ExploreNavigation() {
             >
               <h1>Multidisciplinary Skills</h1>{" "}
               <ChevronRight size={12} className="my-auto" />
-            </div>
+            </div> */}
 
-            <div className="flex space-x-3 cursor-pointer hover:text-primaryColor">
+            {/* <div className="flex space-x-3 cursor-pointer hover:text-primaryColor">
               <CheckPhoneNumber pushto={"/mock_package/selectmainfolder"} />
               <ChevronRight size={12} className="my-auto" />
-            </div>
+            </div> */}
 
             <div className="flex space-x-3 cursor-pointer hover:text-primaryColor">
               <Link href={"/searchPackages"}>
@@ -92,9 +92,9 @@ export default function ExploreNavigation() {
               </Link>
             </div>
 
-            <div className="flex space-x-3 cursor-pointer hover:text-primaryColor">
+            {/* <div className="flex space-x-3 cursor-pointer hover:text-primaryColor">
               <h1>Advert</h1>
-            </div>
+            </div> */}
 
             <div className="flex space-x-3 cursor-pointer hover:text-primaryColor">
               <Link href={"/about_us"}>
