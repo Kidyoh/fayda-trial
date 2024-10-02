@@ -34,7 +34,7 @@ export default function contactUs() {
               </div>
               <div>
                 <h1>Phone</h1>
-                <h1>+251915733163</h1>
+                <h1>+251970483333 </h1> <h1>+251970493333</h1>
               </div>
             </div>
 
