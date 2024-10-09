@@ -165,7 +165,7 @@ export function PurchaseDialogCustom(props: any) {
                   >
                     Monthly - {Price}
                   </ul>
-                  <ul
+                  {/* <ul
                     className="cursor-pointer hover:text-primaryColor hover:underline"
                     onClick={() => handleTimeLength("3")}
                   >
@@ -176,7 +176,7 @@ export function PurchaseDialogCustom(props: any) {
                     onClick={() => handleTimeLength("6")}
                   >
                     Six Months - {Price3}
-                  </ul>
+                  </ul> */}
                 </div>
               </div>
             </AlertDialogDescription>

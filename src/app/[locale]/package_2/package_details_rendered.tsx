@@ -362,8 +362,9 @@ export default function PackageDetailsRendered(props: any) {
                                       ).toLocaleDateString()}
                                     </h1>
                                   </div>
+
                                   <div className="flex space-x-2 my-4 px-3 py-2">
-                                    <h1>Monthly Price:</h1>
+                                    <h1>Price:</h1>
                                     <h1 className="line-through">
                                       {data?.price} Birr
                                     </h1>
@@ -371,7 +372,16 @@ export default function PackageDetailsRendered(props: any) {
                                       {data?.temporaryPrice} Birr
                                     </h1>
                                   </div>
-                                  <div className="flex space-x-2 my-4">
+                                  {/* <div className="flex space-x-2 my-4 px-3 py-2">
+                                    <h1>Monthly Price:</h1>
+                                    <h1 className="line-through">
+                                      {data?.price} Birr
+                                    </h1>
+                                    <h1 className="text-primaryColor underline">
+                                      {data?.temporaryPrice} Birr
+                                    </h1>
+                                  </div> */}
+                                  {/* <div className="flex space-x-2 my-4">
                                     <h1> Three Months Price:</h1>
                                     <h1 className="line-through">
                                       {data?.price2} Birr
@@ -379,8 +389,8 @@ export default function PackageDetailsRendered(props: any) {
                                     <h1 className="text-primaryColor underline">
                                       {data?.temporaryPrice2} Birr
                                     </h1>
-                                  </div>
-                                  <div className="flex space-x-2 my-4">
+                                  </div> */}
+                                  {/* <div className="flex space-x-2 my-4">
                                     <h1>Six Months Price:</h1>
                                     <h1 className="line-through">
                                       {data?.price3} Birr
@@ -388,13 +398,14 @@ export default function PackageDetailsRendered(props: any) {
                                     <h1 className="text-primaryColor underline">
                                       {data?.temporaryPrice3} Birr
                                     </h1>
-                                  </div>
+                                  </div> */}
                                 </div>
                               ) : (
                                 <div className="pr-5 text-base px-3 py-2 font-serif text-primaryColor space-y-3">
-                                  <h1>Monthly Price: {data?.price} Birr</h1>
+                                  <h1>Price: {data?.price} Birr</h1>
+                                  {/* <h1>Monthly Price: {data?.price} Birr</h1>
                                   <h1>3 Months Price: {data?.price2} Birr</h1>
-                                  <h1>6 Months Price: {data?.price3} Birr</h1>
+                                  <h1>6 Months Price: {data?.price3} Birr</h1> */}
                                 </div>
                               )}
                             </div>
