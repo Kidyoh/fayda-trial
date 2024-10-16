@@ -22,6 +22,7 @@ type Inputs = {
   age: string;
   gread: string;
   confirmPassword: string;
+  promocode: string;
 };
 type zodInputs = {
   firstName: string;
@@ -35,6 +36,7 @@ type zodInputs = {
   city: string;
   region: string;
   schoolName: string;
+  promocode: string;
 };
 interface Choice {
   id: string;
@@ -45,6 +47,7 @@ interface Choice {
   // region:string;
   cityName: string;
   regionName: string;
+  promocode: string;
 }
 
 export default function SignUp() {
@@ -78,6 +81,7 @@ export default function SignUp() {
       gread: "",
       city: "",
       region: "",
+      promocode: "",
     },
     resolver: zodResolver(signUpInfoSchema),
   });
@@ -410,6 +414,26 @@ export default function SignUp() {
                       //name="password"
                       id="confirmPassword"
                       {...register("confirmPassword")}
+                    />
+                  </div>
+
+                  <div className="space-x-3">
+                    {errors.firstName?.message && (
+                      <h1>{errors.firstName?.message}</h1>
+                    )}
+                    <label
+                      htmlFor=""
+                      className="text-sm text-gray-600 font-bold"
+                    >
+                      Promo Code
+                    </label>
+
+                    <input
+                      className="px-2 border-b-2 border-blue-500 "
+                      type="text"
+                      // name="firstName"
+                      id="promocode"
+                      {...register("promocode")}
                     />
                   </div>
 

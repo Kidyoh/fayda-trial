@@ -14,6 +14,7 @@ export const signUpInfoSchema: any = z
     password: z.string().min(6, "Password must be at least 6 characters"),
 
     confirmPassword: z.string().min(6),
+    promocode: z.string(),
 
     //isVerified: z.boolean().optional()
   })
