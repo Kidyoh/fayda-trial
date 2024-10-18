@@ -260,6 +260,14 @@ export default function NavBarMobile(props: any) {
                       <h1>About</h1>
                     </Link>
                   </div>
+                  <div className="flex space-x-3 cursor-pointer hover:text-primaryColor">
+                    <Link
+                      onClick={() => toggleExploreDrawer("close")}
+                      href={"/to_bot"}
+                    >
+                      <h1>Telegram Bot</h1>
+                    </Link>
+                  </div>
                 </div>
               </ScrollArea>
             </div>

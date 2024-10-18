@@ -101,6 +101,11 @@ export default function ExploreNavigation() {
                 <h1>About</h1>
               </Link>
             </div>
+            <div className="flex space-x-3 cursor-pointer hover:text-primaryColor">
+              <Link href={"/to_bot"}>
+                <h1>Telegram Bot</h1>
+              </Link>
+            </div>
           </div>
         </div>
         <div className="col-span-3 bg-gray-100">
