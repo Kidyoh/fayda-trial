@@ -10,7 +10,7 @@ const AboutBot = () => {
         <p className="text-gray-600 mb-6">
           Fayida Academy Bot is designed to enhance your learning experience by
           providing instant access to educational resources, student profiles,
-          and much more. Whether you're looking for personalized content or a
+          and much more. Whether you are looking for personalized content or a
           way to track your progress, our bot has got you covered.
         </p>
         <p className="text-gray-600 mb-6">
