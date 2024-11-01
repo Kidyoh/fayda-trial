@@ -18,7 +18,7 @@ type Inputs = {
   firstName: string;
   lastName: string;
   grandName: string;
-  email: string;
+  agent_email: string;
   password: string;
   //age: string;
   // gread: string;
@@ -28,7 +28,7 @@ type zodInputs = {
   firstName: string;
   lastName: string;
   grandName: string;
-  email: string;
+  agent_email: string;
   password: string;
   //age: string;
   //gread: string;
@@ -72,7 +72,7 @@ export default function SignUp() {
       firstName: "",
       lastName: "",
       grandName: "",
-      email: "",
+      agent_email: "",
       // age: "",
       password: "",
       confirmPassword: "",
@@ -370,13 +370,15 @@ export default function SignUp() {
                     >
                       Email
                     </label>
-                    {errors.email?.message && <h1>{errors.email?.message}</h1>}
+                    {errors.agent_email?.message && (
+                      <h1>{errors.agent_email?.message}</h1>
+                    )}
                     <input
                       className="px-2 border-b-2 border-blue-500"
                       type="text"
                       // name="email"
                       id="email"
-                      {...register("email")}
+                      {...register("agent_email")}
                     />
                   </div>
                   <div className="space-x-3">

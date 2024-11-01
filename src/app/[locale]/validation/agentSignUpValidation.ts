@@ -1,13 +1,13 @@
 import { z } from "zod";
 export const agentSignUpInfoSchema: any = z
   .object({
-    email: z.string().email({ message: "An email is required." }),
+    agent_email: z.string().email({ message: "An email is required." }),
     firstName: z.string().min(1, "First Name is required"),
     lastName: z.string().min(1, "Last Name is required"),
- //   schoolName: z.string(),
+    //   schoolName: z.string(),
     grandName: z.string(),
-   // age: z.string().min(1, "Age is required"),
-  //  gread: z.string().min(1, "Grade is required"),
+    // age: z.string().min(1, "Age is required"),
+    //  gread: z.string().min(1, "Grade is required"),
     city: z.string().min(1, "City is required"),
     region: z.string().min(1, "Region is required"),
 
