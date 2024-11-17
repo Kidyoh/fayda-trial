@@ -27,12 +27,15 @@ import FileDetails from "./components/fileDetails";
 import LinkDetails from "./components/linkDetails";
 import Link from "next/link";
 import useFetchStore from "../../store/fetchStore";
+import { setAccessToken, getAccessToken, clearAccessToken } from "../../../../lib/tokenManager";
 
 export default function SingleCourse() {
   const [data, setData] = useState<any>([]);
   const [totalPartNumber, setTotalPartNumber] = useState("1");
   const [materialDrawer, setMaterialDrawer] = useState(true);
   const [forumId, setForumId] = useState("");
+  const accessToken = getAccessToken();
+
 
   const { searchQuery, setSearchQuery, seenMaterials, setSeenMaterials } =
     useFetchStore();
@@ -64,7 +67,11 @@ export default function SingleCourse() {
   useEffect(() => {
     const fetchData = () => {
       fetch(`${apiUrl}/purchaselist/specificStudentSingleCourse/${courseId}`, {
-        credentials: "include",
+        method: "GET",
+        headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
+        },
       })
         .then((response) => response.json())
         .then((jsonData) => {
@@ -92,7 +99,11 @@ export default function SingleCourse() {
         next: {
           revalidate: 0,
         },
-        credentials: "include",
+        method: "GET",
+        headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
+        },
       });
       const course = await res.json();
       //  setCourse(course);

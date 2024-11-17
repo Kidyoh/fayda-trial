@@ -26,6 +26,8 @@ import PackageReviewForm from "@/components/custom_components/packageReviewForm"
 import DeletePackageReview from "@/components/custom_components/delete_review";
 import useFetchStore from "../../[locale]/store/fetchStore";
 import { Heading1 } from "lucide-react";
+import { setAccessToken, getAccessToken, clearAccessToken } from "../../../lib/tokenManager";
+
 
 export default function PackageDetailsRendered(props: any) {
   const PackageId = props.package_id;
@@ -33,6 +35,9 @@ export default function PackageDetailsRendered(props: any) {
   const [isLoading, setIsLoading] = useState(true);
   const [profile, setProfile] = useState<any>([]);
   const [tagChosen, setTagChosen] = useState("");
+
+  const accessToken = getAccessToken();
+
 
   const fetchPackagesReview = useFetchStore(
     (state) => state.fetchPackageReview
@@ -78,8 +83,12 @@ export default function PackageDetailsRendered(props: any) {
   }, [fetchPackagesReview]);
 
   useEffect(() => {
-    fetch(`${apiUrl}/login_register/profile`, {
-      credentials: "include",
+    fetch(`${apiUrl}/newlogin/profile`, {
+      method: "GET",
+headers: {
+"Content-Type": "application/json",
+Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
+},
     })
       .then((res) => res.json())
       .then((data) => {

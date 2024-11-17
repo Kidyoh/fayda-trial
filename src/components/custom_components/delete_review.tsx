@@ -16,8 +16,13 @@ import { useRouter } from "next/navigation";
 import { apiUrl, homeUrl, localUrl } from "@/apiConfig";
 import useFetchStore from "../../app/[locale]/store/fetchStore";
 
+import { setAccessToken, getAccessToken, clearAccessToken } from "../../lib/tokenManager";
+
+
+
 export default function DeletePackageReview({ reviewId }: any) {
   const RecivedId = reviewId;
+  const accessToken = getAccessToken();
 
   const fetchPackagesReview = useFetchStore(
     (state) => state.fetchPackageReview
@@ -33,6 +38,10 @@ export default function DeletePackageReview({ reviewId }: any) {
       console.log("printed");
       const response = await fetch(`${apiUrl}/packagereview/${RecivedId}`, {
         method: "delete",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
+          },
         credentials: "include",
         // Add any necessary headers or authentication tokens
       });

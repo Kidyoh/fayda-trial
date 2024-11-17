@@ -4,19 +4,25 @@ import { apiUrl } from "@/apiConfig";
 import { Progress } from "@/components/ui/progress";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { setAccessToken, getAccessToken, clearAccessToken } from "../../../../lib/tokenManager";
 
 export default function CourseList2() {
   const [coursesList, setCoursesList] = useState<any[]>([]);
+  const accessToken = getAccessToken();
 
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `${apiUrl}/purchaselist/specificStudentCourses`,
-          {
-            credentials: "include",
-          }
+          `${apiUrl}/purchaselist/specificStudentCourses`,{
+          method: "GET",
+headers: {
+"Content-Type": "application/json",
+Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
+}
+
+},
         );
 
         const jsonData = await response.json();

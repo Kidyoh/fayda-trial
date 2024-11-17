@@ -14,12 +14,17 @@ import {
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { toast } from "../ui/use-toast";
+import { setAccessToken, getAccessToken, clearAccessToken } from "../../lib/tokenManager";
+
 
 export function PurchaseDialogCustom(props: any) {
   const PackageId = props.packageId;
   const Price = props.price;
   const Price2 = props.price2;
   const Price3 = props.price3;
+
+
+  const accessToken = getAccessToken();
 
   const [data, setData] = useState<any[]>([]);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
@@ -94,9 +99,10 @@ export function PurchaseDialogCustom(props: any) {
     // Perform the POST request here
     fetch(`${apiUrl}/purchaselist`, {
       method: "POST",
-      credentials: "include",
+     // credentials: "include",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`, 
       },
       body: JSON.stringify(updatedFormData),
     })

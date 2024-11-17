@@ -13,6 +13,8 @@ import {
 import { apiUrl } from "@/apiConfig";
 import { toast } from "../ui/use-toast";
 import useFetchStore from "../../app/[locale]/store/fetchStore";
+import { setAccessToken, getAccessToken, clearAccessToken } from "../../lib/tokenManager";
+
 
 //import { useToast } from "../ui/use-toast";
 
@@ -26,6 +28,9 @@ export default function MaterialSeen({
   MaterialId,
 }: ConfirmDialogProps) {
   const seenMaterialsFetch = useFetchStore((state) => state.seenMaterials);
+
+  const accessToken = getAccessToken();
+
 
   const setSeenMaterialsFetch = useFetchStore(
     (state) => state.setSeenMaterials
@@ -43,10 +48,11 @@ export default function MaterialSeen({
 
       const response = await fetch(`${apiUrl}/studentmaterial/`, {
         method: "POST",
-        credentials: "include",
+        //credentials: "include",
         // Add any necessary headers or authentication tokens
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
           //credentials: "include",
           // withCredentials: true
           //Authorization: `Bearer ${"secret"}`,

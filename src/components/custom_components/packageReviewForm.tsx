@@ -12,6 +12,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import useFetchStore from "../../app/[locale]/store/fetchStore";
+import { setAccessToken, getAccessToken, clearAccessToken } from "../../lib/tokenManager";
+
 
 type zodInputs = {
   text: string;
@@ -46,6 +48,9 @@ export default function PackageReviewForm({ packageId, studentId }: any) {
   });
 
   const { push } = useRouter();
+
+  const accessToken = getAccessToken();
+
   const onSubmit: SubmitHandler<zodInputs> = (data) => {
     //this line is included so that 'confirm password' is not sent to server
     // const { confirmPassword, ...formData } = data;
@@ -54,8 +59,9 @@ export default function PackageReviewForm({ packageId, studentId }: any) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
-      credentials: "include",
+     // credentials: "include",
       body: JSON.stringify({
         ...data,
         packageId: PackageId,

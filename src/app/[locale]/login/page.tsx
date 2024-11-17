@@ -9,6 +9,9 @@ import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
+import { setAccessToken, getAccessToken, clearAccessToken } from "../../../lib/tokenManager";
+
+
 type zodInputs = {
   email: string;
   password: string;
@@ -32,66 +35,14 @@ export default function LoginPage() {
     resolver: zodResolver(signInInfoSchema),
   });
 
-  // const handleSubmit = (event: any) => {
-  //   event.preventDefault();
 
-  //   const form = event.target;
-  //   const formData = new FormData(form);
-
-  //   type zodInputs = {
-  //     email: string;
-  //     password: string;
-  //   };
-
-  //   const {
-  //     register,
-  //     handleSubmit,
-  //     watch,
-  //     formState: { errors, isSubmitting },
-  //   } = useForm<zodInputs>({
-  //     defaultValues: {
-
-  //       email: "",
-
-  //       password: "",
-
-  //     },
-  //     resolver: zodResolver(signInInfoSchema),
-  //   });
-
-  //   fetch(`${apiUrl}/login_register/login`, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(formData),
-  //   })
-  //     .then((response) => {
-  //       if (response.ok) {
-  //         console.log("Request successful");
-  //         return response.json();
-  //       } else {
-  //         throw new Error("Request failed with status: " + response.status);
-  //       }
-  //     })
-  //     .then((data) => {
-  //       // Process the response data
-  //       console.log("works");
-  //       console.log(data);
-  //     })
-  //     .catch((error) => {
-  //       console.log("not work");
-  //       // Handle any errors that occurred during the request
-  //       console.error(error);
-  //     });
-  // };
   const { push } = useRouter();
   const onSubmit: SubmitHandler<zodInputs> = (data) => {
-    //this line is included so that 'confirm password' is not sent to server
-    // const { confirmPassword, ...formData } = data;
+   
     console.log(data);
-    fetch(`${apiUrl}/login_register/loginss`, {
-      method: "POST",
+    //fetch(`${apiUrl}/login_register/loginss`, {
+      fetch(`${apiUrl}/newlogin/login`, { 
+    method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
@@ -102,18 +53,17 @@ export default function LoginPage() {
         if (response.ok) {
           console.log("Working");
           return response.json();
-          //console.log(response.json());
-          // console.log("Working")
+        
         }
         throw new Error("Error: " + response.status);
       })
       .then((responseData) => {
         // Handle the response data
         console.log(responseData);
-
+        setAccessToken(responseData.accessToken);
         toast({
           title: `Success!`,
-          description: `${responseData.message}`,
+          description: `Login Successful`,
         });
         // push("/");
         window.location.href = "/";

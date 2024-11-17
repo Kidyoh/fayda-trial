@@ -39,7 +39,7 @@ export default function SignUp() {
   const [code, setCode] = useState("");
 
   const { toast } = useToast();
-  const { push } = useRouter();
+  const {  } = useRouter();
   const {
     register,
     //handleEmailSubmit,

@@ -16,6 +16,9 @@ import { Progress } from "@/components/ui/progress";
 import CoursesList from "../packages_access/courses_list/page";
 import CourseList2 from "./components/course_list";
 import Footer from "@/components/main_components/footer";
+import { setAccessToken, getAccessToken, clearAccessToken } from "../../../lib/tokenManager";
+
+import { useRouter } from "next/navigation";
 
 export default function DashBoard() {
   const [data, setData] = useState<any>();
@@ -26,10 +29,17 @@ export default function DashBoard() {
 
   const [menuSelection, setMenuSelection] = useState("dashboard");
 
+  const accessToken = getAccessToken();
+  const { push } = useRouter();
+
   useEffect(() => {
     const fetchData = () => {
-      fetch(`${apiUrl}/login_register/profile`, {
-        credentials: "include",
+      fetch(`${apiUrl}/newlogin/profile`, {
+        method: "GET",
+        headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
+        },
       })
         .then((response) => response.json())
         .then((jsonData) => {
@@ -72,7 +82,11 @@ export default function DashBoard() {
     const fetchData = async () => {
       try {
         const response = await fetch(`${apiUrl}/purchaselist/getpuchasedlist`, {
-          credentials: "include",
+          method: "GET",
+          headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
+          },
         });
         const jsonData = await response.json();
         setPackagesList(jsonData);
@@ -92,6 +106,12 @@ export default function DashBoard() {
     setMenuSelection(menu);
   };
 
+
+  const setTokenLogout= () =>{
+
+    setAccessToken("0");
+    window.location.href = "/login";
+  }
   return (
     <div>
       <div className="ssmd:grid grid-cols-6 my-6">
@@ -154,14 +174,14 @@ export default function DashBoard() {
             </div>
 
             <div>
-              <form action={`${apiUrl}/login_register/logout`} method="POST">
-                <button type="submit">
+             
+                <button onClick={()=>setTokenLogout()}>
                   <div className="flex space-x-1 nav_bar_hover_dropdown ">
                     <LogOut size={20} className="" />
                     <h1>Log Out</h1>
                   </div>
                 </button>
-              </form>
+           
             </div>
           </div>
         </div>
@@ -268,7 +288,7 @@ export default function DashBoard() {
           {menuSelection == "mypackage" && (
             <div>
               <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
-                {packagesList.map((item, index: number) => (
+                {packagesList.length >= 0 && packagesList?.map((item, index: number) => (
                   <Link key={index} href={`/package_2/${item?.packagesId}`}>
                     <div
                       key={item.id}

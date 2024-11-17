@@ -4,8 +4,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "@/components/ui/use-toast";
 import ShowResult from "../show_result";
+import { setAccessToken, getAccessToken, clearAccessToken } from "../../../../../lib/tokenManager";
+
 
 export default function AssessmentQuestions({ params }: any) {
+  const accessToken = getAccessToken();
+
+
   const [data, setData] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [seconds, setSeconds] = useState(0);
@@ -52,7 +57,11 @@ export default function AssessmentQuestions({ params }: any) {
             answers: selectedAnswers,
           },
           {
-            withCredentials: true,
+        
+headers: {
+"Content-Type": "application/json",
+Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
+},
           }
         );
         const responseData = response.data; // Extract the response data
@@ -91,7 +100,10 @@ export default function AssessmentQuestions({ params }: any) {
           answers: selectedAnswers,
         },
         {
-          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
+            },
         }
       );
       const responseData = response.data; // Extract the response data
@@ -120,7 +132,11 @@ export default function AssessmentQuestions({ params }: any) {
       fetch(
         `${apiUrl}/purchaselist/specificStudentSingleAssessment/${AssessmentId}`,
         {
-          credentials: "include",
+          method: "GET",
+headers: {
+"Content-Type": "application/json",
+Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
+},
         }
       )
         .then((response) => response.json())

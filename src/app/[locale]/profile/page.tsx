@@ -17,6 +17,11 @@ import { updatePasswordSchema } from "../validation/updatePasswordValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useProfileStore from "../store/profileStore";
 import Link from "next/link";
+import { setAccessToken, getAccessToken, clearAccessToken } from "../../../lib/tokenManager";
+
+
+const accessToken = getAccessToken();
+
 
 type zodInputs = {
   currentPassword: string;
@@ -68,8 +73,14 @@ export default function ProfileDetails() {
   });
 
   useEffect(() => {
-    fetch(`${apiUrl}/login_register/profile`, {
-      credentials: "include",
+    fetch(`${apiUrl}/newlogin/profile`, 
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
+        },
+      
     })
       .then((res) => res.json())
       .then((data) => {
@@ -148,6 +159,7 @@ export default function ProfileDetails() {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`
       },
       credentials: "include",
       body: JSON.stringify(formData),
@@ -187,9 +199,10 @@ export default function ProfileDetails() {
 
     fetch(`${apiUrl}/login_register/sendconfirmation/${email}`, {
       method: "GET",
-      credentials: "include",
+      
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`
       },
     })
       .then((response) => response.json())
@@ -221,9 +234,10 @@ export default function ProfileDetails() {
         `${apiUrl}/login_register/check_confirmation`,
         {
           method: "POST",
-          credentials: "include",
+         // credentials: "include",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
           },
           body: JSON.stringify({ code: code }),
         }

@@ -42,6 +42,9 @@ import ExploreNavigation from "./drawer_components/explore_navigation";
 import useFetchStore from "../../app/[locale]/store/fetchStore";
 import NavBarMobile from "./nav_bar_mobile";
 
+import { setAccessToken, getAccessToken, clearAccessToken } from "../../lib/tokenManager";
+
+
 export default function NavBar(response3: any) {
   const profile = response3;
   const routerPathname = usePathname();
@@ -58,24 +61,62 @@ export default function NavBar(response3: any) {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
+  //const accessToken = localStorage.getItem("accessToken");
+  const accessToken = getAccessToken();
   const setSearchQuery = useFetchStore((state) => state.setSearchQuery);
 
   const handleSearch = async () => {
     setSearchQuery(searchTerm);
   };
 
+  // useEffect(() => {
+  //   fetch(`${apiUrl}/login_register/profile`, {
+  //     credentials: "include",
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setData(data.message);
+  //       setLoading(false);
+  //       setUserName(data.firstName + " " + data.lastName);
+  //       console.log("message: " + data);
+  //     });
+  // }, []);
+
+
+
   useEffect(() => {
-    fetch(`${apiUrl}/login_register/profile`, {
-      credentials: "include",
+    //const accessToken = localStorage.getItem("accessToken");
+  //const accessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxNmQzMDUwLTI5MTYtNDQ3YS04OGEyLWM0MzE2Y2U0YTJhMSIsImlhdCI6MTczMTMyMDkxM30.QSm1qpDlJMI8XrvW4snH5nm-bzSsppZk4RZ_fxlzmII'
+   console.log("AccessToken: "+ accessToken)
+    fetch(`${apiUrl}/newlogin/profile`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
+      },
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to fetch profile data");
+        }
+        return res.json();
+      })
       .then((data) => {
-        setData(data.message);
+        setData(data.id);
         setLoading(false);
         setUserName(data.firstName + " " + data.lastName);
-        console.log("message: " + data);
+        console.log("message:", data);
+      })
+      .catch((error) => {
+        console.error("Error fetching profile:", error);
       });
   }, []);
+
+
+
+
+
+
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -98,24 +139,54 @@ export default function NavBar(response3: any) {
   //   fetchData();
   // }, []);
 
+  // useEffect(() => {
+  //   fetch(`${apiUrl}/notifications/count/`, {
+  //     credentials: "include",
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setNotificationData(data.message);
+  //       //  setLoading(false);
+  //       var countx = 0;
+  //       if (data.error != "not authenticated") {
+  //         countx = Object.keys(data).length;
+  //       }
+
+  //       setNotificationNumber(countx);
+  //       console.log("message2: " + data.error);
+  //     });
+  // }, []);
   useEffect(() => {
+   // const accessToken = getAccessToken();
+  
     fetch(`${apiUrl}/notifications/count/`, {
-      credentials: "include",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
+      },
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to fetch notifications");
+        }
+        return res.json();
+      })
       .then((data) => {
         setNotificationData(data.message);
-        //  setLoading(false);
-        var countx = 0;
-        if (data.error != "not authenticated") {
+  
+        let countx = 0;
+        if (data.error !== "not authenticated") {
           countx = Object.keys(data).length;
         }
-
+  
         setNotificationNumber(countx);
-        console.log("message2: " + data.error);
+        console.log("message2:", data.error);
+      })
+      .catch((error) => {
+        console.error("Error fetching notifications:", error);
       });
   }, []);
-
   // useEffect(() => {
   //   const fetchNotificationCount = async () => {
   //     try {
@@ -359,7 +430,7 @@ export default function NavBar(response3: any) {
             </Link>
           </div>
 
-          {data == "User not authenticated" ? (
+          {data == null ? (
             <div className="w-1/4 flex justify-end ">
               <div className="flex  w-fit space-x-1 lg:space-x-2 xl:space-x-5">
                 <div className="py-3 space-x-3">
