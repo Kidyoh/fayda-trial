@@ -66,12 +66,13 @@ export default function MaterialNav() {
   };
 
   const RepeatDiv = ({ loopAmount }: any) => {
-    const divs = [];
-
+    //const divs = [];
+    const divs: JSX.Element[] = [];
     for (let i = 1; i <= loopAmount; i++) {
       const dynamicClassName = `${
         i == partNumber ? "bg-blue-600" : "bg-primaryColor"
       } text-white px-1 cursor-pointer rounded`;
+    
       divs.push(
         <div key={i} className="">
           {" "}
