@@ -11,6 +11,8 @@ export default function CourseList2() {
   const accessToken = getAccessToken();
 
   const [isLoading, setIsLoading] = useState(true);
+
+  console.log("Access Token: "+accessToken)
   useEffect(() => {
     const fetchData = async () => {
       try {

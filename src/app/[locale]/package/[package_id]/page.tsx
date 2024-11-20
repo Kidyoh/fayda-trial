@@ -236,21 +236,28 @@ export default function PackageDetails({ params }: any) {
                 <div>
                   {data?.discountStatus ? (
                     <div className="mt-10">
+                      
+                      {/*
+                      Restore this
+                      
                       <PurchaseDialogCustom
                         packageId={data?.id}
                         price={data?.temporaryPrice}
                         price2={data?.temporaryPrice2}
                         price3={data?.temporaryPrice3}
-                      />
+                      /> */}
                     </div>
                   ) : (
                     <div>
+                      {/*
+                      Restore this
+
                       <PurchaseDialogCustom
                         packageId={data?.id}
                         price={data?.price}
                         price2={data?.price2}
                         price3={data?.price3}
-                      />
+                      /> */}
                     </div>
                   )}
                 </div>

@@ -432,12 +432,12 @@ Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Author
                                     </div>
                                   ) : (
                                     <div className="mx-5 ">
-                                      <PurchaseDialogCustom
+                                      {/* <PurchaseDialogCustom
                                         packageId={data?.id}
                                         price={data?.price}
                                         price2={data?.price2}
                                         price3={data?.price3}
-                                      />
+                                      /> */}
                                     </div>
                                   )}
                                 </div>

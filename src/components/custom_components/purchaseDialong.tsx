@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { toast } from "../ui/use-toast";
 import { setAccessToken, getAccessToken, clearAccessToken } from "../../lib/tokenManager";
+import { ProceedPayment } from "./proceed_payment";
 
 
 export function PurchaseDialogCustom(props: any) {
@@ -150,166 +151,169 @@ export function PurchaseDialogCustom(props: any) {
         console.error("Error:", error);
       });
   };
-
+//{/* <ProceedPayment packageId={PackageId} price={selectedPrice}/> */}
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <div className="w-fit bg-primaryColor text-xs px-2 py-1 rounded shadow-lg shadow-black  text-white">
-          <button>Enroll</button>
-        </div>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        {pageSection == "timelength" && (
-          <AlertDialogHeader>
-            <AlertDialogTitle>Choose Your time Length.</AlertDialogTitle>
-            <AlertDialogDescription>
-              <div>
-                <div className="space-y-2">
-                  <ul
-                    className="cursor-pointer hover:text-primaryColor hover:underline"
-                    onClick={() => handleTimeLength("1")}
-                  >
-                    Monthly - {Price}
-                  </ul>
-                  {/* <ul
-                    className="cursor-pointer hover:text-primaryColor hover:underline"
-                    onClick={() => handleTimeLength("3")}
-                  >
-                    Three Months - {Price2}
-                  </ul>
-                  <ul
-                    className="cursor-pointer hover:text-primaryColor hover:underline"
-                    onClick={() => handleTimeLength("6")}
-                  >
-                    Six Months - {Price3}
-                  </ul> */}
-                </div>
-              </div>
-            </AlertDialogDescription>
-            <AlertDialogFooter>
-              <AlertDialogCancel
-                onClick={() => {
-                  setPageSection("timelength");
-                }}
-              >
-                Cancel
-              </AlertDialogCancel>
-            </AlertDialogFooter>
-          </AlertDialogHeader>
-        )}
 
-        {pageSection == "paymentOptions" && (
-          <AlertDialogHeader>
-            <AlertDialogTitle>Choose Your Payment Option.</AlertDialogTitle>
-            <AlertDialogDescription>
-              <div>
-                <div>
-                  {data ? (
-                    <ul>
-                      {data.map((item, index: number) => (
-                        <div key={index} className="py-1">
-                          <h1
-                            className="cursor-pointer hover:text-green-500"
-                            onClick={() =>
-                              handleSelectPaymentOption(
-                                item.name,
-                                item.accountNumber
-                              )
-                            }
-                            key={item.id}
-                          >
-                            {item.name}
-                          </h1>
-                        </div>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p>Loading data...</p>
-                  )}
-                </div>
+ <ProceedPayment packageId={PackageId} price={selectedPrice}/> 
 
-                <h1>{selectedPayemtOption}</h1>
-              </div>
-            </AlertDialogDescription>
-            <AlertDialogFooter>
-              <AlertDialogCancel
-                onClick={() => {
-                  setPageSection("timelength");
-                }}
-              >
-                Cancel
-              </AlertDialogCancel>
-            </AlertDialogFooter>
-          </AlertDialogHeader>
-        )}
+    // <AlertDialog>
+    //   <AlertDialogTrigger asChild>
+    //     <div className="w-fit bg-primaryColor text-xs px-2 py-1 rounded shadow-lg shadow-black  text-white">
+    //       <button>Enroll</button>
+    //     </div>
+    //   </AlertDialogTrigger>
+    //   <AlertDialogContent>
+    //     {pageSection == "timelength" && (
+    //       <AlertDialogHeader>
+    //         <AlertDialogTitle>Choose Your time Length.</AlertDialogTitle>
+    //         <AlertDialogDescription>
+    //           <div>
+    //             <div className="space-y-2">
+    //               <ul
+    //                 className="cursor-pointer hover:text-primaryColor hover:underline"
+    //                 onClick={() => handleTimeLength("1")}
+    //               >
+    //                 Monthly - {Price}
+    //               </ul>
+    //               {/* <ul
+    //                 className="cursor-pointer hover:text-primaryColor hover:underline"
+    //                 onClick={() => handleTimeLength("3")}
+    //               >
+    //                 Three Months - {Price2}
+    //               </ul>
+    //               <ul
+    //                 className="cursor-pointer hover:text-primaryColor hover:underline"
+    //                 onClick={() => handleTimeLength("6")}
+    //               >
+    //                 Six Months - {Price3}
+    //               </ul> */}
+    //             </div>
+    //           </div>
+    //         </AlertDialogDescription>
+    //         <AlertDialogFooter>
+    //           <AlertDialogCancel
+    //             onClick={() => {
+    //               setPageSection("timelength");
+    //             }}
+    //           >
+    //             Cancel
+    //           </AlertDialogCancel>
+    //         </AlertDialogFooter>
+    //       </AlertDialogHeader>
+    //     )}
 
-        {pageSection == "orderPage" && (
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              <span className="text-primaryColor">Payment Form</span>
-            </AlertDialogTitle>
-            <h1>
-              Note: Transfer Birr{" "}
-              <span className="text-primaryColor">
-                {" "}
-                {selectedTimeLength == "1" && Price}
-                {selectedTimeLength == "3" && Price2}
-                {selectedTimeLength == "6" && Price3}
-              </span>{" "}
-              to a{" "}
-              <span className="text-primaryColor">{selectedPayemtOption}</span>{" "}
-              account number:{" "}
-              <span className="text-primaryColor">{accountNumber}</span>
-            </h1>
-            <AlertDialogDescription>
-              <div>
-                <form onSubmit={handleSubmit}>
-                  <label>
-                    Name:
-                    <input
-                      className="border-b-2 border-primaryColor"
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                    />
-                  </label>
-                  <br /> <br />
-                  <label className="">
-                    Transaction Id:
-                    <input
-                      className="border-b-2 border-primaryColor"
-                      type="text"
-                      name="transaction_id"
-                      value={formData.transaction_id}
-                      onChange={handleChange}
-                    />
-                  </label>
-                  <br />
-                  <br />
-                  <AlertDialogFooter>
-                    <AlertDialogCancel
-                      onClick={() => {
-                        setPageSection("timelength");
-                      }}
-                    >
-                      Cancel
-                    </AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={enableButton}
-                      disabled={isButtonDisabled}
-                      className="bg-primaryColor"
-                      type="submit"
-                    >
-                      Submit
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </form>
-              </div>
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-        )}
-      </AlertDialogContent>
-    </AlertDialog>
+    //     {pageSection == "paymentOptions" && (
+    //       <AlertDialogHeader>
+    //         <AlertDialogTitle>Choose Your Payment Option.</AlertDialogTitle>
+    //         <AlertDialogDescription>
+    //           <div>
+    //             <div>
+    //               {data ? (
+    //                 <ul>
+    //                   {data.map((item, index: number) => (
+    //                     <div key={index} className="py-1">
+    //                       <h1
+    //                         className="cursor-pointer hover:text-green-500"
+    //                         onClick={() =>
+    //                           handleSelectPaymentOption(
+    //                             item.name,
+    //                             item.accountNumber
+    //                           )
+    //                         }
+    //                         key={item.id}
+    //                       >
+    //                         {item.name}
+    //                       </h1>
+    //                     </div>
+    //                   ))}
+    //                 </ul>
+    //               ) : (
+    //                 <p>Loading data...</p>
+    //               )}
+    //             </div>
+
+    //             <h1>{selectedPayemtOption}</h1>
+    //           </div>
+    //         </AlertDialogDescription>
+    //         <AlertDialogFooter>
+    //           <AlertDialogCancel
+    //             onClick={() => {
+    //               setPageSection("timelength");
+    //             }}
+    //           >
+    //             Cancel
+    //           </AlertDialogCancel>
+    //         </AlertDialogFooter>
+    //       </AlertDialogHeader>
+    //     )}
+
+    //     {pageSection == "orderPage" && (
+    //       <AlertDialogHeader>
+    //         <AlertDialogTitle>
+    //           <span className="text-primaryColor">Payment Form</span>
+    //         </AlertDialogTitle>
+    //         <h1>
+    //           Note: Transfer Birr{" "}
+    //           <span className="text-primaryColor">
+    //             {" "}
+    //             {selectedTimeLength == "1" && Price}
+    //             {selectedTimeLength == "3" && Price2}
+    //             {selectedTimeLength == "6" && Price3}
+    //           </span>{" "}
+    //           to a{" "}
+    //           <span className="text-primaryColor">{selectedPayemtOption}</span>{" "}
+    //           account number:{" "}
+    //           <span className="text-primaryColor">{accountNumber}</span>
+    //         </h1>
+    //         <AlertDialogDescription>
+    //           <div>
+    //             <form onSubmit={handleSubmit}>
+    //               <label>
+    //                 Name:
+    //                 <input
+    //                   className="border-b-2 border-primaryColor"
+    //                   type="text"
+    //                   name="name"
+    //                   value={formData.name}
+    //                   onChange={handleChange}
+    //                 />
+    //               </label>
+    //               <br /> <br />
+    //               <label className="">
+    //                 Transaction Id:
+    //                 <input
+    //                   className="border-b-2 border-primaryColor"
+    //                   type="text"
+    //                   name="transaction_id"
+    //                   value={formData.transaction_id}
+    //                   onChange={handleChange}
+    //                 />
+    //               </label>
+    //               <br />
+    //               <br />
+    //               <AlertDialogFooter>
+    //                 <AlertDialogCancel
+    //                   onClick={() => {
+    //                     setPageSection("timelength");
+    //                   }}
+    //                 >
+    //                   Cancel
+    //                 </AlertDialogCancel>
+    //                 <AlertDialogAction
+    //                   onClick={enableButton}
+    //                   disabled={isButtonDisabled}
+    //                   className="bg-primaryColor"
+    //                   type="submit"
+    //                 >
+    //                   Submit
+    //                 </AlertDialogAction>
+    //               </AlertDialogFooter>
+    //             </form>
+    //           </div>
+    //         </AlertDialogDescription>
+    //       </AlertDialogHeader>
+    //     )}
+    //   </AlertDialogContent>
+    // </AlertDialog>
   );
 }
