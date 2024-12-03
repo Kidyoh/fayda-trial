@@ -309,7 +309,7 @@ export default function NavBarMobile(props: any) {
 
             <Separator orientation="horizontal" className=" mx-auto" />
 
-            {data != "User not authenticated" ? (
+            {data != null ? (
               <div>
                 {" "}
                 <Link

@@ -8,6 +8,7 @@ import initTranslation from "../../app/i18n";
 import { TFunction } from "i18next";
 import { useParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import { apiUrl, localUrl } from "@/apiConfig";
 
 export default function CoverHome() {
   const { t } = useTranslation();
@@ -58,6 +59,10 @@ export default function CoverHome() {
                 <h1 className="text-primaryColor text-xl md:text-2xl font-semibold text-center  ssmd:text-left">
                   {t("slogan")}
                 </h1>
+
+                <div className="my-8">
+                  <a className="bg-primaryColor text-white p-3 rounded-2xl hover:bg-gray-300 hover:text-primaryColor duration-150" href={`${apiUrl}/download`}>Download App</a>
+                </div>
               </div>
               <div className="mt-20  pb-3 w-full flex"></div>
               {/* 
