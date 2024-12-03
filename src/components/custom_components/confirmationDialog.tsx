@@ -12,6 +12,8 @@ import {
 } from "../ui/alert-dialog";
 import { apiUrl } from "@/apiConfig";
 import { toast } from "../ui/use-toast";
+import { setAccessToken, getAccessToken, clearAccessToken } from "../../lib/tokenManager";
+
 //import { useToast } from "../ui/use-toast";
 
 interface ConfirmDialogProps {
@@ -30,6 +32,8 @@ export default function ConfirmationDialog({
   prizeIdRecived,
   prizeName,
 }: ConfirmDialogProps) {
+  const accessToken = getAccessToken();
+
   const postData = {
     //[RecivedField.toString()]: editedValue,
     prizeId: prizeIdRecived,
@@ -47,6 +51,7 @@ export default function ConfirmationDialog({
         // Add any necessary headers or authentication tokens
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`, 
           //credentials: "include",
           // withCredentials: true
           //Authorization: `Bearer ${"secret"}`,

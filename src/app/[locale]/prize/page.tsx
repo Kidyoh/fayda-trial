@@ -4,8 +4,10 @@ import { apiUrl } from "@/apiConfig";
 import React, { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ConfirmationDialog from "@/components/custom_components/confirmationDialog";
+import { setAccessToken, getAccessToken, clearAccessToken } from "../../../lib/tokenManager";
 
 export default function Prize() {
+  const accessToken = getAccessToken();
   const [data, setData] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [data2, setData2] = useState<any>([]);
@@ -16,7 +18,10 @@ export default function Prize() {
     const fetchData = async () => {
       try {
         const response = await fetch(`${apiUrl}/prizes/checkpoints`, {
-          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
+            },
         });
 
         const jsonData = await response.json();
@@ -37,7 +42,10 @@ export default function Prize() {
     const fetchData = async () => {
       try {
         const response = await fetch(`${apiUrl}/prizes/fetchprizes/`, {
-          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
+            },
         });
 
         const jsonData = await response.json();
@@ -58,7 +66,10 @@ export default function Prize() {
     const fetchData = async () => {
       try {
         const response = await fetch(`${apiUrl}/studentprize/prizehistory/`, {
-          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
+            },
         });
 
         const jsonData = await response.json();
