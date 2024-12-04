@@ -29,15 +29,15 @@ export default async function RootLayout({
       namespaces={i18nNamespaces}
     >
       <html lang="en">
-        <body className={inter.className}>
+        <body >
           <Toaster />
-          <div className="absolute top-0 w-full">
+          <div className="absolute top-0 w-fit">
             <div className="">
               <NavBar />
             </div>
             <div className="pt-8 xmd:pt-20">{children}</div>
           </div>
-          <div className=" absolute bottom-14 right-24">
+          <div className=" absolute bottom-12 right-16">
             <BackToTop />
           </div>
         </body>

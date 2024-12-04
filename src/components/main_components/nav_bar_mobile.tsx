@@ -69,7 +69,7 @@ export default function NavBarMobile(props: any) {
 
   return (
     <div className="relative bg-gray-200">
-      <div className="px-3 py-1 flex justify-between">
+      <div className="px-3 py-1 flex justify-between ">
         <div className=" " onClick={() => toggleMainDrawer("toggle")}>
           {mainDrawer ? (
             <X className="my-auto" />

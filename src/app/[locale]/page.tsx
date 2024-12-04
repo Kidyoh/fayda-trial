@@ -29,7 +29,7 @@ export default async function Home({ params: { locale } }: any) {
       resources={resources}
       namespaces={i18nNamespaces}
     >
-      <div>
+      <div className="">
         {/* <HomePageCover /> */}
 
         <CoverHome />
