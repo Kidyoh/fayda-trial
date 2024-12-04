@@ -29,7 +29,7 @@ export default async function RootLayout({
       namespaces={i18nNamespaces}
     >
       <html lang="en">
-        <body >
+        <body className={inter.className}>
           <Toaster />
           <div className="absolute top-0 w-fit">
             <div className="">
