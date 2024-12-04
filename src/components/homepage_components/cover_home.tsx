@@ -9,6 +9,7 @@ import { TFunction } from "i18next";
 import { useParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { apiUrl, localUrl } from "@/apiConfig";
+import DownloadAppConfirmation from "../custom_components/downloadApkDialog";
 
 export default function CoverHome() {
   const { t } = useTranslation();
@@ -61,7 +62,10 @@ export default function CoverHome() {
                 </h1>
 
                 <div className="my-8 flex ">
-                  <a className="mx-auto md:mx-5 bg-primaryColor text-white p-3 rounded-2xl hover:bg-gray-300 hover:text-primaryColor duration-150" href={`${apiUrl}/download`}>Download App</a>
+                  {/* <a className="mx-auto md:mx-5 bg-primaryColor text-white p-3 rounded-2xl hover:bg-gray-300 hover:text-primaryColor duration-150" 
+                  href={`${apiUrl}/download`}>Download App</a> */}
+                
+                <DownloadAppConfirmation />
                 </div>
               </div>
               <div className="mt-20  pb-3 w-full flex"></div>
