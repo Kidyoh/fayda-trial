@@ -108,6 +108,7 @@ Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Author
                               100) /
                             course?.Courses?.materials?.length
                           }
+                         
                           className="text-primaryColor my-auto"
                         />
 
@@ -125,7 +126,7 @@ Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Author
                           )
                             ? "0%"
                             : `${
-                                (course?.Courses?.materials?.filter(
+                             (   (course?.Courses?.materials?.filter(
                                   (material: any) =>
                                     material?.StudentMaterial.find(
                                       (item: any) =>
@@ -133,7 +134,7 @@ Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Author
                                     )?.Done == true
                                 ).length *
                                   100) /
-                                course?.Courses?.materials?.length
+                                course?.Courses?.materials?.length).toFixed(1)
                               }%`}
                         </h1>
                       </div>

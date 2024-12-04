@@ -20,7 +20,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <div className="bg-primaryColor text-white py-6">
+    <div className="bg-primaryColor text-white py-6 ">
       <div className="xmd:grid grid-cols-3 ">
         <div className="xmd:col-span-1 py-5 xmd:py-0">
           <div className=" w-fit mx-auto   duration-75 cursor-pointer">
@@ -58,17 +58,15 @@ export default function Footer() {
             >
               Terms of Service
             </a>
-            {/* <a
-              className="hover:text-thirdColor hover:underline duration-75"
-              href=""
-            >
-              Privacy Policy
-            </a> */}
+           
           </div>
         </div>
       </div>
       <Separator className="w-11/12 my-4 mx-auto" orientation="horizontal" />
-      <div className=" w-fit xmd:w-full flex flex-col-reverse smd:flex-row space-x-9 mx-auto xmd:space-x-0 xmd:mx-0 xmd:justify-between px-10">
+
+
+      {/* in the next div the w-fit is changed to w-full  */}
+      <div className=" w-full xmd:w-full flex flex-col-reverse smd:flex-row space-x-9 mx-auto xmd:space-x-0 xmd:mx-0 xmd:justify-between px-10">
         <div className="flex space-x-1 text-sm ">
           <Copyright size={15} className="my-auto" />
           <h1 className="my-auto">Fayida Academy. All Rights Reserved</h1>
