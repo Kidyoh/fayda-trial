@@ -61,8 +61,8 @@ export default function CoverHome() {
                   {t("slogan")}
                 </h1>
 
-                <div className="my-8 flex ">
-                  {/* <a className="mx-auto md:mx-5 bg-primaryColor text-white p-3 rounded-2xl hover:bg-gray-300 hover:text-primaryColor duration-150" 
+                <div className="my-8 flex mx-auto md:mx-5 w-fit">
+                  {/* <a className=" bg-primaryColor text-white p-3 rounded-2xl hover:bg-gray-300 hover:text-primaryColor duration-150" 
                   href={`${apiUrl}/download`}>Download App</a> */}
                 
                 <DownloadAppConfirmation />
