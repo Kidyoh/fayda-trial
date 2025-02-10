@@ -1,0 +1,2 @@
+GET http://localhost:5000/forums/checkcourseforum/9b21a5bb-818a-4d40-880e-5e4dd5e92a3d
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJmYzNjMDU2LTdjMmEtNDczOC04OGI2LTM2Njc2NWZkYjliNiIsImlhdCI6MTczOTE5NTczM30.SbA7DlZA4kwHcUa5WiV3JJE-Urv8zP_1CwtH2VynDcs

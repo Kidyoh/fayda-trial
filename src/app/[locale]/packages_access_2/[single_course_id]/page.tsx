@@ -27,7 +27,11 @@ import FileDetails from "./components/fileDetails";
 import LinkDetails from "./components/linkDetails";
 import Link from "next/link";
 import useFetchStore from "../../store/fetchStore";
-import { setAccessToken, getAccessToken, clearAccessToken } from "../../../../lib/tokenManager";
+import {
+  setAccessToken,
+  getAccessToken,
+  clearAccessToken,
+} from "../../../../lib/tokenManager";
 
 export default function SingleCourse() {
   const [data, setData] = useState<any>([]);
@@ -35,7 +39,6 @@ export default function SingleCourse() {
   const [materialDrawer, setMaterialDrawer] = useState(true);
   const [forumId, setForumId] = useState("");
   const accessToken = getAccessToken();
-
 
   const { searchQuery, setSearchQuery, seenMaterials, setSeenMaterials } =
     useFetchStore();
@@ -69,8 +72,8 @@ export default function SingleCourse() {
       fetch(`${apiUrl}/purchaselist/specificStudentSingleCourse/${courseId}`, {
         method: "GET",
         headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
         },
       })
         .then((response) => response.json())
@@ -101,8 +104,8 @@ export default function SingleCourse() {
         },
         method: "GET",
         headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
         },
       });
       const course = await res.json();
@@ -134,6 +137,10 @@ export default function SingleCourse() {
 
   return (
     <div className=" md:py-5">
+      {/* <div>
+        <h1>{`${apiUrl}/purchaselist/specificStudentSingleCourse/${courseId}`}</h1>
+        <h1>{accessToken}</h1>
+      </div> */}
       <div className="relative md:grid grid-cols-4">
         {/* <div className="col-span-1">
           {data[0]?.Courses?.materials.map((material: any) => {
