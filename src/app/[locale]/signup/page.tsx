@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpInfoSchema } from "../validation/signupValidation";
 import { error } from "console";
+import { Info } from "lucide-react";
 import Link from "next/link";
 
 type Inputs = {
@@ -37,6 +38,7 @@ type zodInputs = {
   region: string;
   schoolName: string;
   promocode: string;
+  studentStatus: string;
 };
 interface Choice {
   id: string;
@@ -82,6 +84,7 @@ export default function SignUp() {
       city: "",
       region: "",
       promocode: "",
+      studentStatus: "active",
     },
     resolver: zodResolver(signUpInfoSchema),
   });
@@ -380,6 +383,15 @@ export default function SignUp() {
                       {...register("email")}
                     />
                   </div>
+
+                  <div className="w-96 p-2 space-x-2 bg-primaryColor bg-opacity-80 text-white rounded-2xl flex">
+                    <Info className="my-auto" size={50} />
+                    <h1 className="text-sm my-auto">
+                      Use a unique email that has not been used before, or you
+                      will not be able to proceed.
+                    </h1>
+                  </div>
+
                   <div className="space-x-3">
                     <label
                       className="text-sm text-gray-600 font-bold"
