@@ -1,2 +1,28 @@
-GET http://localhost:5000/forums/checkcourseforum/9b21a5bb-818a-4d40-880e-5e4dd5e92a3d
+GET http://localhost:5000/purchaselist/specificStudentSingleCourse/9b21a5bb-818a-4d40-880e-5e4dd5e92a3d
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJmYzNjMDU2LTdjMmEtNDczOC04OGI2LTM2Njc2NWZkYjliNiIsImlhdCI6MTczOTE5NTczM30.SbA7DlZA4kwHcUa5WiV3JJE-Urv8zP_1CwtH2VynDcs
+###
+
+
+GET http://localhost:5000/purchaselist/specificStudentSingleCourse/40a0e298-05f6-4580-8f0d-3e3c1b0167e1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE0MGQ3N2Q1LTBhNmItNDBiZS1hNGM4LWE4YTc1Y2VkYmNlMiIsImlhdCI6MTczOTE5NjMzNX0.uRKepGAgauqigF6aUV8ye8Fyq0DMh5JQgavicGYYeQE
+###
+
+
+
+GET http://localhost:5000/purchaselist/specificStudentSingleCourse/40a0e298-05f6-4580-8f0d-3e3c1b0167e1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJmYzNjMDU2LTdjMmEtNDczOC04OGI2LTM2Njc2NWZkYjliNiIsImlhdCI6MTczOTIyNzI5MX0.99LJTV6UUEwxcmdFKdXBU6U9BBGxhjbndPuDSKIpWY8
+###
+
+GET http://localhost:5000/purchaselist/specificStudentSingleAssessment/064778b0-abb4-4c6d-9a97-bd9d78cd7fce
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE0MGQ3N2Q1LTBhNmItNDBiZS1hNGM4LWE4YTc1Y2VkYmNlMiIsImlhdCI6MTczOTE5NjMzNX0.uRKepGAgauqigF6aUV8ye8Fyq0DMh5JQgavicGYYeQE
+###
+
+
+GET http://localhost:5000/purchaselist/specificStudentSingleAssessment/064778b0-abb4-4c6d-9a97-bd9d78cd7fce
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJmYzNjMDU2LTdjMmEtNDczOC04OGI2LTM2Njc2NWZkYjliNiIsImlhdCI6MTczOTIwMDQ0MX0.0ayF_YqJkw6roCry3PEFyaGkImRv52J1Llpab1RMmPg
+###
+
+
+GET https://api.fayidaacademy.com/purchaselist/specificStudentSingleAssessment/064778b0-abb4-4c6d-9a97-bd9d78cd7fce
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE0MGQ3N2Q1LTBhNmItNDBiZS1hNGM4LWE4YTc1Y2VkYmNlMiIsImlhdCI6MTczOTE5NjMzNX0.uRKepGAgauqigF6aUV8ye8Fyq0DMh5JQgavicGYYeQE
+###

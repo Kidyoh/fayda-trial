@@ -387,8 +387,8 @@ export default function SignUp() {
                   <div className="w-96 p-2 space-x-2 bg-primaryColor bg-opacity-80 text-white rounded-2xl flex">
                     <Info className="my-auto" size={50} />
                     <h1 className="text-sm my-auto">
-                      Use a unique email that has not been used before, or you
-                      will not be able to proceed.
+                      Use a unique email that has not been used to sign in, or
+                      you will not be able to proceed.
                     </h1>
                   </div>
 
@@ -479,7 +479,7 @@ export default function SignUp() {
               <div className="mx-auto">
                 <Link href="/login">
                   <button className=" border-2 text-primaryColor border-primaryColor hover:bg-primaryColor hover:text-white duration-150 px-3 py-2 rounded-full">
-                    Sign In
+                    Log In
                   </button>
                 </Link>
               </div>

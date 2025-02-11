@@ -4,12 +4,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "@/components/ui/use-toast";
 import ShowResult from "../show_result";
-import { setAccessToken, getAccessToken, clearAccessToken } from "../../../../../lib/tokenManager";
-
+import {
+  setAccessToken,
+  getAccessToken,
+  clearAccessToken,
+} from "../../../../../lib/tokenManager";
 
 export default function AssessmentQuestions({ params }: any) {
   const accessToken = getAccessToken();
-
 
   const [data, setData] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -57,11 +59,10 @@ export default function AssessmentQuestions({ params }: any) {
             answers: selectedAnswers,
           },
           {
-        
-headers: {
-"Content-Type": "application/json",
-Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
-},
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
+            },
           }
         );
         const responseData = response.data; // Extract the response data
@@ -103,7 +104,7 @@ Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Author
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
-            },
+          },
         }
       );
       const responseData = response.data; // Extract the response data
@@ -133,15 +134,18 @@ Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Author
         `${apiUrl}/purchaselist/specificStudentSingleAssessment/${AssessmentId}`,
         {
           method: "GET",
-headers: {
-"Content-Type": "application/json",
-Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
-},
+          headers: {
+            "Content-Type": "application/json",
+            // Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
+            Authorization: `Bearer ${accessToken}`,
+            //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE0MGQ3N2Q1LTBhNmItNDBiZS1hNGM4LWE4YTc1Y2VkYmNlMiIsImlhdCI6MTczOTE5NjMzNX0.uRKepGAgauqigF6aUV8ye8Fyq0DMh5JQgavicGYYeQE
+          },
         }
       )
         .then((response) => response.json())
         .then((jsonData) => {
           setData(jsonData);
+          console.log("Data: " + jsonData);
           setSeconds(jsonData[0].duration * 60);
           setTotalQuestionsCounts(jsonData[0].question.length);
           setQuestions(jsonData[0].question);
@@ -210,6 +214,8 @@ Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Author
       {onExam && (
         <div className="mx-3">
           <div>
+            {/* <h1>{`${apiUrl}/purchaselist/specificStudentSingleAssessment/${AssessmentId}`}</h1>
+            <h1>{accessToken}</h1> */}
             <h1>Questions</h1>
             <h1>Total Questions : {totalQuestionCounts}</h1>
             <h1>Answerd Questions: {selectedAnswers.length}</h1>
