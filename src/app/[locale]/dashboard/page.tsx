@@ -16,7 +16,11 @@ import { Progress } from "@/components/ui/progress";
 import CoursesList from "../packages_access/courses_list/page";
 import CourseList2 from "./components/course_list";
 import Footer from "@/components/main_components/footer";
-import { setAccessToken, getAccessToken, clearAccessToken } from "../../../lib/tokenManager";
+import {
+  setAccessToken,
+  getAccessToken,
+  clearAccessToken,
+} from "../../../lib/tokenManager";
 
 import { useRouter } from "next/navigation";
 
@@ -37,8 +41,8 @@ export default function DashBoard() {
       fetch(`${apiUrl}/newlogin/profile`, {
         method: "GET",
         headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
         },
       })
         .then((response) => response.json())
@@ -61,10 +65,15 @@ export default function DashBoard() {
           `${apiUrl}/purchaselist/specificStudentCourses`,
           {
             credentials: "include",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            },
           }
         );
 
         const jsonData = await response.json();
+        console.log("Myresponse", jsonData);
         setCoursesList(jsonData);
         console.log("first");
         console.log("Data: ", jsonData);
@@ -84,8 +93,8 @@ export default function DashBoard() {
         const response = await fetch(`${apiUrl}/purchaselist/getpuchasedlist`, {
           method: "GET",
           headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
           },
         });
         const jsonData = await response.json();
@@ -106,12 +115,10 @@ export default function DashBoard() {
     setMenuSelection(menu);
   };
 
-
-  const setTokenLogout= () =>{
-
+  const setTokenLogout = () => {
     setAccessToken("0");
     window.location.href = "/login";
-  }
+  };
   return (
     <div>
       <div className="ssmd:grid grid-cols-6 my-6">
@@ -174,14 +181,12 @@ export default function DashBoard() {
             </div>
 
             <div>
-             
-                <button onClick={()=>setTokenLogout()}>
-                  <div className="flex space-x-1 nav_bar_hover_dropdown ">
-                    <LogOut size={20} className="" />
-                    <h1>Log Out</h1>
-                  </div>
-                </button>
-           
+              <button onClick={() => setTokenLogout()}>
+                <div className="flex space-x-1 nav_bar_hover_dropdown ">
+                  <LogOut size={20} className="" />
+                  <h1>Log Out</h1>
+                </div>
+              </button>
             </div>
           </div>
         </div>
@@ -288,72 +293,73 @@ export default function DashBoard() {
           {menuSelection == "mypackage" && (
             <div>
               <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
-                {packagesList.length >= 0 && packagesList?.map((item, index: number) => (
-                  <Link key={index} href={`/package_2/${item?.packagesId}`}>
-                    <div
-                      key={item.id}
-                      className="package-card rounded-xl border shadow-md p-4 hover:shadow-lg hover:shadow-primaryColor cursor-pointer"
-                      // onClick={() => /* Handle package click here */}
-                    >
-                      <div className="flex justify-between items-center mb-2">
-                        <h2 className="text-lg font-semibold">
-                          {item?.Package?.packageName}
-                        </h2>
-                        {/* <span className="badge badge-{item.paymentStatus.toLowerCase()}">
+                {packagesList.length >= 0 &&
+                  packagesList?.map((item, index: number) => (
+                    <Link key={index} href={`/package_2/${item?.packagesId}`}>
+                      <div
+                        key={item.id}
+                        className="package-card rounded-xl border shadow-md p-4 hover:shadow-lg hover:shadow-primaryColor cursor-pointer"
+                        // onClick={() => /* Handle package click here */}
+                      >
+                        <div className="flex justify-between items-center mb-2">
+                          <h2 className="text-lg font-semibold">
+                            {item?.Package?.packageName}
+                          </h2>
+                          {/* <span className="badge badge-{item.paymentStatus.toLowerCase()}">
                   {item.paymentStatus}
                 </span> */}
-                      </div>
-                      <div className="text-gray-700 mb-2">
-                        Courses: {item?.Package?.courses?.length}
-                      </div>
-                      <div>
-                        {item.expiryDate && (
+                        </div>
+                        <div className="text-gray-700 mb-2">
+                          Courses: {item?.Package?.courses?.length}
+                        </div>
+                        <div>
+                          {item.expiryDate && (
+                            <h1>
+                              Exp:{" "}
+                              {new Date(item.expiryDate).toLocaleDateString(
+                                "en-GB",
+                                {
+                                  day: "2-digit",
+                                  month: "2-digit",
+                                  year: "2-digit",
+                                }
+                              )}
+                            </h1>
+                          )}
+
                           <h1>
-                            Exp:{" "}
-                            {new Date(item.expiryDate).toLocaleDateString(
-                              "en-GB",
-                              {
-                                day: "2-digit",
-                                month: "2-digit",
-                                year: "2-digit",
-                              }
+                            {item.expiryDate && (
+                              <span>
+                                Days Remaining:{" "}
+                                {Math.ceil(
+                                  (new Date(item.expiryDate).getTime() -
+                                    new Date().getTime()) /
+                                    (1000 * 60 * 60 * 24)
+                                ) > 0
+                                  ? Math.ceil(
+                                      (new Date(item.expiryDate).getTime() -
+                                        new Date().getTime()) /
+                                        (1000 * 60 * 60 * 24)
+                                    )
+                                  : "Expired"}
+                              </span>
                             )}
                           </h1>
+                        </div>
+                        {item.paymentStatus != "active" && (
+                          <span className="text-primaryColor text-sm">
+                            {item.paymentStatus}
+                          </span>
                         )}
-
-                        <h1>
-                          {item.expiryDate && (
-                            <span>
-                              Days Remaining:{" "}
-                              {Math.ceil(
-                                (new Date(item.expiryDate).getTime() -
-                                  new Date().getTime()) /
-                                  (1000 * 60 * 60 * 24)
-                              ) > 0
-                                ? Math.ceil(
-                                    (new Date(item.expiryDate).getTime() -
-                                      new Date().getTime()) /
-                                      (1000 * 60 * 60 * 24)
-                                  )
-                                : "Expired"}
-                            </span>
-                          )}
-                        </h1>
+                        <img
+                          // src={`${apiUrl}/upload_assets/images/package_thumbnails/${item?.Package?.thumbnail}`}
+                          src={item?.Package?.thumbnailUrl}
+                          alt={item?.Package?.packageName}
+                          className="w-full h-48 object-cover rounded-md mt-4"
+                        />
                       </div>
-                      {item.paymentStatus != "active" && (
-                        <span className="text-primaryColor text-sm">
-                          {item.paymentStatus}
-                        </span>
-                      )}
-                      <img
-                        // src={`${apiUrl}/upload_assets/images/package_thumbnails/${item?.Package?.thumbnail}`}
-                        src={item?.Package?.thumbnailUrl}
-                        alt={item?.Package?.packageName}
-                        className="w-full h-48 object-cover rounded-md mt-4"
-                      />
-                    </div>
-                  </Link>
-                ))}
+                    </Link>
+                  ))}
               </div>
             </div>
           )}

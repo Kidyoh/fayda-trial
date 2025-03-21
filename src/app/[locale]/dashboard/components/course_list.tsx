@@ -4,7 +4,11 @@ import { apiUrl } from "@/apiConfig";
 import { Progress } from "@/components/ui/progress";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { setAccessToken, getAccessToken, clearAccessToken } from "../../../../lib/tokenManager";
+import {
+  setAccessToken,
+  getAccessToken,
+  clearAccessToken,
+} from "../../../../lib/tokenManager";
 
 export default function CourseList2() {
   const [coursesList, setCoursesList] = useState<any[]>([]);
@@ -12,22 +16,23 @@ export default function CourseList2() {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  console.log("Access Token: "+accessToken)
+  console.log("Access Token: " + accessToken);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `${apiUrl}/purchaselist/specificStudentCourses`,{
-          method: "GET",
-headers: {
-"Content-Type": "application/json",
-Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
-}
-
-},
+          `${apiUrl}/purchaselist/specificStudentCourses`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
+            },
+          }
         );
 
         const jsonData = await response.json();
+        console.log("Courses List: ", JSON.stringify(jsonData));
         setCoursesList(jsonData);
         console.log("first");
         console.log("Data: ", jsonData);
@@ -51,7 +56,7 @@ Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Author
         <TabsContent value="active">
           {coursesList?.map((course) => (
             <Link
-              key={course?.Courses?.id} // Add key prop for each item
+              key={course?.id} // Add key prop for each item
               href={`/packages_access_2/${course?.Courses?.id}`}
               //href="/"
             >
@@ -77,7 +82,7 @@ Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Author
                   ).length
                 }
               </h1> */}
-              {(course?.Courses?.materials?.filter(
+              {(course?.materials?.filter(
                 (material: any) => material.StudentMaterial[0]?.Done == true
               ).length *
                 100) /
@@ -108,7 +113,6 @@ Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Author
                               100) /
                             course?.Courses?.materials?.length
                           }
-                         
                           className="text-primaryColor my-auto"
                         />
 
@@ -125,8 +129,8 @@ Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Author
                               course?.Courses?.materials?.length
                           )
                             ? "0%"
-                            : `${
-                             (   (course?.Courses?.materials?.filter(
+                            : `${(
+                                (course?.Courses?.materials?.filter(
                                   (material: any) =>
                                     material?.StudentMaterial.find(
                                       (item: any) =>
@@ -134,8 +138,8 @@ Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Author
                                     )?.Done == true
                                 ).length *
                                   100) /
-                                course?.Courses?.materials?.length).toFixed(1)
-                              }%`}
+                                course?.Courses?.materials?.length
+                              ).toFixed(1)}%`}
                         </h1>
                       </div>
                       <h1 className="text-xs px-4 py-2">Over all progress</h1>
