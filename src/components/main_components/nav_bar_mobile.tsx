@@ -1,351 +1,303 @@
-"use clinet";
-import React, { useState } from "react";
-import {
-  AlignLeft,
-  X,
-  Settings,
-  ChevronDown,
-  Bell,
-  User,
-  LogOut,
-  UserCircle,
-  Home,
-  // LibraryBig,
-  StickyNote,
-  Award,
-  SearchSlash,
-  // BookA,
-  Blocks,
-  Book,
-  ChevronRight,
-  Search,
-} from "lucide-react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-
+"use client";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import CheckPhoneNumber from "@/app/[locale]/mock_package/mock_package_components/checkphonenumber";
-import useFetchStore from "@/app/[locale]/store/fetchStore";
+import { AnimatePresence, motion } from "framer-motion";
+import { 
+  Menu, X, Home, Search, Package, BookOpen, User, 
+  Bell, ChevronRight, LogOut, Bot, Book, Trophy, Info 
+} from "lucide-react";
 import LanguageChanger from "../LanguageChanger";
-export default function NavBarMobile(props: any) {
-  const data = props?.data;
-  const notificationNumber = props?.notificationNumber;
+import { usePathname } from "next/navigation";
+import { apiUrl } from "@/apiConfig";
+import { clearAccessToken, getAccessToken } from "../../lib/tokenManager";
 
-  const [exploreDrawer, setExploreDrawer] = useState(false);
-  const [mainDrawer, setMainDrawer] = useState(false);
+export default function NavBarMobile({ data, notificationNumber }: any) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
+  const pathname = usePathname();
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
+  // Close menu when route changes
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
 
-  const setSearchQuery = useFetchStore((state) => state.setSearchQuery);
-
-  const handleSearch = async () => {
-    setSearchQuery(searchTerm);
-  };
-
-  const toggleExploreDrawer = (type: any) => {
-    if (type == "toggle") {
-      setExploreDrawer(!exploreDrawer);
-    } else if (type == "close") {
-      setExploreDrawer(false);
-      setMainDrawer(false);
+  // Handle logout
+  const handleLogout = async () => {
+    try {
+      await fetch(`${apiUrl}/auth/logout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
+      });
+      clearAccessToken();
+      window.location.href = "/login";
+    } catch (error) {
+      console.error("Logout failed", error);
     }
   };
 
-  const toggleMainDrawer = (type: any) => {
-    if (type == "toggle") {
-      setMainDrawer(!mainDrawer);
-      setExploreDrawer(false);
-    } else if (type == "close") {
-      setMainDrawer(false);
+  // Handle search submit
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      setIsOpen(false);
+      window.location.href = `/searchPackages?query=${encodeURIComponent(searchQuery)}`;
     }
+  };
+
+  // Toggle expanded menu
+  const toggleMenu = (menu: string) => {
+    setExpandedMenu(expandedMenu === menu ? null : menu);
   };
 
   return (
-    <div className="relative bg-gray-200">
-      <div className="px-3 py-1 flex justify-between ">
-        <div className=" " onClick={() => toggleMainDrawer("toggle")}>
-          {mainDrawer ? (
-            <X className="my-auto" />
-          ) : (
-            <AlignLeft className="my-auto" />
-          )}
-        </div>
-        <div>
-          {" "}
-          <Link href={"/"}>
-            <img
-              className="h-10"
-              src="/common_files/main/smallfulllogo.png"
-              alt="fayida"
-            />
+    <>
+      {/* Fixed header with logo and menu button */}
+      <div className="fixed top-0 left-0 right-0 h-16 bg-white shadow-sm z-50 px-4 flex items-center justify-between">
+        <Link href="/" className="flex-shrink-0">
+          <img
+            className="h-8 w-auto"
+            src="/common_files/main/smallfulllogo.png"
+            alt="Fayida"
+          />
+        </Link>
+        
+        <div className="flex items-center space-x-2">
+          <Link href="/notifications" className="relative p-2">
+            <Bell size={20} className="text-gray-600" />
+            {notificationNumber > 0 && (
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                {notificationNumber}
+              </span>
+            )}
           </Link>
+          
+          <button 
+            onClick={() => setIsOpen(true)}
+            className="p-2 text-gray-600 focus:outline-none"
+            aria-label="Open menu"
+          >
+            <Menu size={24} />
+          </button>
         </div>
       </div>
 
-      {mainDrawer && (
-        <div className=" absolute top-10 h-50 bg-white z-50 w-full  p-2">
-          <div className=" w-full py-4 justify-around flex">
-            <h1
-              onClick={() => toggleExploreDrawer("toggle")}
-              className="bg-primaryColor text-center my-auto cursor-pointer p-1 text-white w-fit rounded"
+      {/* Full screen menu overlay */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm"
+            onClick={() => setIsOpen(false)}
+          >
+            <motion.div 
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="absolute top-0 right-0 w-[85%] max-w-sm h-full bg-white overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
             >
-              Explore
-            </h1>
+              <div className="p-4 border-b border-gray-100 flex items-center justify-between">
+                <div className="flex items-center">
+                  <button 
+                    onClick={() => setIsOpen(false)}
+                    className="p-2 -ml-2 text-gray-600 focus:outline-none"
+                    aria-label="Close menu"
+                  >
+                    <X size={24} />
+                  </button>
+                  <span className="ml-2 font-medium text-gray-900">Menu</span>
+                </div>
+                <LanguageChanger />
+              </div>
 
-            <div>
-              <div className="flex">
-                <input
-                  type="text"
-                  id="search"
-                  className="block w-3/4 pl-4 pr-3 py-2 my-auto rounded-l-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  placeholder="Search..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  onKeyPress={(e) => {
-                    if (e.key === "Enter") {
-                      handleSearch();
-                    }
-                  }}
-                />
-                <Link href={"/searchPackages"} onClick={() => handleSearch()}>
-                  <div className="bg-primaryColor text-white h-fit my-auto py-3 px-2 rounded-r-lg">
-                    <Search
-                      onClick={() => toggleMainDrawer("close")}
-                      size={18}
-                      className=""
-                    />
+              {/* Search bar */}
+              <div className="p-4 border-b border-gray-100">
+                <form onSubmit={handleSearch} className="relative">
+                  <input
+                    type="text"
+                    placeholder="Search courses..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full px-4 py-2 pl-10 pr-4 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primaryColor/20 text-sm"
+                  />
+                  <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <button 
+                    type="submit"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 bg-primaryColor text-white p-1 rounded-full"
+                  >
+                    <ChevronRight size={16} />
+                  </button>
+                </form>
+              </div>
+
+              {/* Menu links */}
+              <div className="py-2">
+                <Link href="/">
+                  <div className={`flex items-center px-4 py-3 ${pathname === '/' ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
+                    <Home size={20} className="mr-3" />
+                    <span className="font-medium">Home</span>
                   </div>
                 </Link>
-              </div>
-            </div>
-          </div>
-          {exploreDrawer && (
-            <div className="absolute z-40 t-50 bg-white w-5/6 ssmd:w-3/4 px-5 py-2">
-              <ScrollArea className="h-full rounded-md border p-4">
-                <Accordion type="single" collapsible className="w-full">
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger>Academics</AccordionTrigger>
-                    <AccordionContent
-                      onClick={() => toggleExploreDrawer("close")}
-                      className="grid grid-cols-2 px-5 gap-4 py-2  flex-col"
-                    >
-                      <Link
-                        onClick={() => toggleMainDrawer("close")}
-                        className="  text-primaryColor"
-                        href={`/packages_access/filter_packages/grade9`}
-                      >
-                        Grade 9
-                      </Link>{" "}
-                      <Link
-                        onClick={() => toggleMainDrawer("close")}
-                        className="  text-primaryColor"
-                        href={`/packages_access/filter_packages/grade10`}
-                      >
-                        Grade 10
-                      </Link>{" "}
-                      <Link
-                        onClick={() => toggleMainDrawer("close")}
-                        className="  text-primaryColor"
-                        href={`/packages_access/filter_packages/grade11`}
-                      >
-                        Grade 11
-                      </Link>{" "}
-                      <Link
-                        onClick={() => toggleMainDrawer("close")}
-                        className="  text-primaryColor"
-                        href={`/packages_access/filter_packages/grade12`}
-                      >
-                        Grade 12
-                      </Link>{" "}
-                    </AccordionContent>
-                  </AccordionItem>
-                  {/* <AccordionItem value="item-2">
-                    <AccordionTrigger>
-                      {" "}
-                      Multidisciplinary Skills
-                    </AccordionTrigger>
-                    <AccordionContent
-                      onClick={() => toggleExploreDrawer("close")}
-                      className="grid grid-cols-2 px-5 gap-4 py-2  "
-                    >
-                      <Link
-                        onClick={() => toggleMainDrawer("close")}
-                        className="  text-primaryColor"
-                        href={`/packages_access/filter_packages/computer`}
-                      >
-                        Computer
-                      </Link>
 
-                      <Link
-                        onClick={() => toggleMainDrawer("close")}
-                        className=" text-primaryColor"
-                        href={`/packages_access/filter_packages/language`}
-                      >
-                        Language
-                      </Link>
-
-                      <Link
-                        onClick={() => toggleMainDrawer("close")}
-                        className=" text-primaryColor"
-                        href={`/packages_access/filter_packages/artlitrature`}
-                      >
-                        Art and Litrature
-                      </Link>
-
-                      <Link
-                        onClick={() => toggleMainDrawer("close")}
-                        className=" text-primaryColor"
-                        href={`/packages_access/filter_packages/other`}
-                      >
-                        Others
-                      </Link>
-                    </AccordionContent>
-                  </AccordionItem> */}
-                </Accordion>
-
-                <div className="py-2 space-y-3">
-                  {/* <div className="flex space-x-3 cursor-pointer hover:text-primaryColor">
-                    <CheckPhoneNumber
-                      onClick={() => toggleExploreDrawer("close")}
-                      pushto={"/mock_package/selectmainfolder"}
-                    />
-                    <ChevronRight size={12} className="my-auto" />
-                  </div> */}
-
-                  <div className="flex space-x-3 cursor-pointer hover:text-primaryColor">
-                    <Link
-                      onClick={() => toggleExploreDrawer("close")}
-                      href={"/searchPackages"}
-                    >
-                      <h1>Packages List</h1>
-                    </Link>
-                  </div>
-
-                  <div className="flex space-x-3 cursor-pointer hover:text-primaryColor">
-                    <Link
-                      onClick={() => toggleExploreDrawer("close")}
-                      href={"/blogs"}
-                    >
-                      <h1>Blogs</h1>
-                    </Link>
-                  </div>
-                  <div className="flex space-x-3 cursor-pointer hover:text-primaryColor">
-                    <Link
-                      onClick={() => toggleExploreDrawer("close")}
-                      href={"/leaderboard"}
-                    >
-                      <h1>Leader Board</h1>
-                    </Link>
-                  </div>
-
-                  {/* <div
-                    onClick={() => toggleExploreDrawer("close")}
-                    className="flex space-x-3 cursor-pointer hover:text-primaryColor"
+                {/* Academic Categories */}
+                <div>
+                  <div 
+                    className="flex items-center justify-between px-4 py-3 text-gray-700 cursor-pointer"
+                    onClick={() => toggleMenu('academic')}
                   >
-                    <h1>Advert</h1>
-                  </div> */}
-
-                  <div className="flex space-x-3 cursor-pointer hover:text-primaryColor">
-                    <Link
-                      onClick={() => toggleExploreDrawer("close")}
-                      href={"/about_us"}
-                    >
-                      <h1>About</h1>
-                    </Link>
-                  </div>
-                  <div className="flex space-x-3 cursor-pointer hover:text-primaryColor">
-                    <Link
-                      onClick={() => toggleExploreDrawer("close")}
-                      href={"/to_bot"}
-                    >
-                      <h1>Telegram Bot</h1>
-                    </Link>
-                  </div>
-                </div>
-              </ScrollArea>
-            </div>
-          )}
-          <div className="w-full bg-white pb-4 space-y-2">
-            <Link
-              onClick={() => toggleMainDrawer("close")}
-              className="w-fit text-center mx-auto py-1"
-              href={"/"}
-            >
-              <h1>Home</h1>
-            </Link>
-
-            <Separator orientation="horizontal" className=" mx-auto" />
-
-            <div className="w-fit mx-auto py-2">
-              <LanguageChanger />
-            </div>
-
-            {data != "User not authenticated" && (
-              <Link
-                onClick={() => toggleMainDrawer("close")}
-                href={"/notifications"}
-                className="w-fit  h-fit my-auto"
-              >
-                <Separator orientation="horizontal" className=" mx-auto" />
-                <div className="relative flex my-auto mx-auto py-2   pr-2 nav_bar_hover">
-                  <div className="my-auto">
-                    <Bell />
-                  </div>
-                  {notificationNumber != 0 && (
-                    <div className="absolute px-1  top-0 right-0 text-white rounded-full bg-red-600">
-                      <h1>{notificationNumber}</h1>
+                    <div className="flex items-center">
+                      <BookOpen size={20} className="mr-3" />
+                      <span className="font-medium">Academic</span>
                     </div>
+                    <ChevronRight size={18} className={`transition-transform duration-200 ${expandedMenu === 'academic' ? 'rotate-90' : ''}`} />
+                  </div>
+                  
+                  {expandedMenu === 'academic' && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="bg-gray-50 overflow-hidden"
+                    >
+                      <Link href="/packages_access/filter_packages/grade9">
+                        <div className="px-12 py-2 text-gray-600 hover:text-primaryColor">
+                          Grade 9
+                        </div>
+                      </Link>
+                      <Link href="/packages_access/filter_packages/grade10">
+                        <div className="px-12 py-2 text-gray-600 hover:text-primaryColor">
+                          Grade 10
+                        </div>
+                      </Link>
+                      <Link href="/packages_access/filter_packages/grade11">
+                        <div className="px-12 py-2 text-gray-600 hover:text-primaryColor">
+                          Grade 11
+                        </div>
+                      </Link>
+                      <Link href="/packages_access/filter_packages/grade12">
+                        <div className="px-12 py-2 text-gray-600 hover:text-primaryColor">
+                          Grade 12
+                        </div>
+                      </Link>
+                    </motion.div>
                   )}
-                </div>{" "}
-              </Link>
-            )}
+                </div>
 
-            <Separator orientation="horizontal" className=" mx-auto" />
+                {/* Other menu items */}
+                <Link href="/searchPackages">
+                  <div className={`flex items-center px-4 py-3 ${pathname.includes('/searchPackages') ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
+                    <Package size={20} className="mr-3" />
+                    <span className="font-medium">Packages</span>
+                  </div>
+                </Link>
 
-            {data != null ? (
-              <div>
-                {" "}
-                <Link
-                  className="w-fit mx-auto"
-                  onClick={() => toggleMainDrawer("close")}
-                  href={"/dashboard"}
-                >
-                  <h1 className="text-white bg-primaryColor px-3 py-1 rounded w-fit mx-auto">
-                    Dashboard
-                  </h1>
+                <Link href="/blogs">
+                  <div className={`flex items-center px-4 py-3 ${pathname.includes('/blogs') ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
+                    <Book size={20} className="mr-3" />
+                    <span className="font-medium">Blogs</span>
+                  </div>
+                </Link>
+
+                <Link href="/leaderboard">
+                  <div className={`flex items-center px-4 py-3 ${pathname.includes('/leaderboard') ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
+                    <Trophy size={20} className="mr-3" />
+                    <span className="font-medium">Leaderboard</span>
+                  </div>
+                </Link>
+                
+                <Link href="/to_bot">
+                  <div className={`flex items-center px-4 py-3 ${pathname.includes('/to_bot') ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
+                    <Bot size={20} className="mr-3" />
+                    <span className="font-medium">Telegram Bot</span>
+                  </div>
+                </Link>
+
+                <Link href="/about_us">
+                  <div className={`flex items-center px-4 py-3 ${pathname.includes('/about_us') ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
+                    <Info size={20} className="mr-3" />
+                    <span className="font-medium">About Us</span>
+                  </div>
                 </Link>
               </div>
-            ) : (
-              <div>
-                <div className="flex w-3/4 mx-auto justify-around">
-                  <Link
-                    onClick={() => toggleMainDrawer("close")}
-                    href={"/login"}
-                    className="text-primaryColor"
-                  >
-                    {" "}
-                    Log In
-                  </Link>
-                  <Link
-                    onClick={() => toggleMainDrawer("close")}
-                    href={"/signup"}
-                    className="text-primaryColor"
-                  >
-                    Sign Up
-                  </Link>
-                </div>
+
+              {/* User section */}
+              <div className="mt-auto border-t border-gray-100 p-4">
+                {data ? (
+                  <>
+                    <Link href="/dashboard">
+                      <div className="flex items-center px-4 py-3 mb-2 bg-primaryColor text-white rounded-xl">
+                        <User size={20} className="mr-3" />
+                        <span className="font-medium">Dashboard</span>
+                      </div>
+                    </Link>
+                    <button 
+                      onClick={handleLogout}
+                      className="flex items-center w-full px-4 py-3 text-gray-700 rounded-xl border border-gray-200"
+                    >
+                      <LogOut size={20} className="mr-3" />
+                      <span className="font-medium">Sign Out</span>
+                    </button>
+                  </>
+                ) : (
+                  <div className="space-y-3">
+                    <Link href="/login">
+                      <div className="flex items-center px-4 py-3 text-primaryColor border border-primaryColor rounded-xl justify-center">
+                        <span className="font-medium">Login</span>
+                      </div>
+                    </Link>
+                    <Link href="/signup">
+                      <div className="flex items-center px-4 py-3 bg-primaryColor text-white rounded-xl justify-center">
+                        <span className="font-medium">Sign Up</span>
+                      </div>
+                    </Link>
+                  </div>
+                )}
               </div>
-            )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Bottom navigation */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40 flex items-center justify-around h-16">
+        <Link href="/">
+          <div className={`flex flex-col items-center justify-center ${pathname === '/' ? 'text-primaryColor' : 'text-gray-500'}`}>
+            <Home size={20} />
+            <span className="text-xs mt-1">Home</span>
           </div>
-        </div>
-      )}
-    </div>
+        </Link>
+        
+        <Link href="/searchPackages">
+          <div className={`flex flex-col items-center justify-center ${pathname.includes('/searchPackages') || pathname.includes('/packages_access') ? 'text-primaryColor' : 'text-gray-500'}`}>
+            <Package size={20} />
+            <span className="text-xs mt-1">Packages</span>
+          </div>
+        </Link>
+        
+        <Link href="/blogs">
+          <div className={`flex flex-col items-center justify-center ${pathname.includes('/blogs') ? 'text-primaryColor' : 'text-gray-500'}`}>
+            <Book size={20} />
+            <span className="text-xs mt-1">Blogs</span>
+          </div>
+        </Link>
+        
+        <Link href={data ? "/dashboard" : "/login"}>
+          <div className={`flex flex-col items-center justify-center ${pathname.includes('/dashboard') || pathname.includes('/login') ? 'text-primaryColor' : 'text-gray-500'}`}>
+            <User size={20} />
+            <span className="text-xs mt-1">{data ? "Profile" : "Login"}</span>
+          </div>
+        </Link>
+      </div>
+      
+      {/* Space to prevent content from being hidden behind the bottom navigation */}
+      <div className="h-16 w-full"></div>
+    </>
   );
 }

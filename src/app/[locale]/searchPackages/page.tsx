@@ -2,350 +2,460 @@
 import { apiUrl } from "@/apiConfig";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import { Search } from "lucide-react";
+import { motion } from "framer-motion";
+import { Search, Filter, BookOpen as Book, ChevronDown, X } from "lucide-react";
 import useFetchStore from "../store/fetchStore";
 import { Checkbox } from "@/components/ui/checkbox";
 
+// Create Badge component since it's missing
+const Badge = ({ children, className = "", variant = "default" }) => {
+  return (
+    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+      variant === "outline" ? "border " : ""
+    } ${className}`}>
+      {children}
+    </span>
+  );
+};
+
+// Create Skeleton component since it's missing
+const Skeleton = ({ className = "" }) => {
+  return <div className={`animate-pulse bg-gray-200 rounded ${className}`} />;
+};
+
 export default function SearchPackages() {
   const [packageData, setPackagesData] = useState<any[]>([]);
-
-  const [isGrade9Checked, setIsGrade9Checked] = useState(false);
-  const [isGrade10Checked, setIsGrade10Checked] = useState(false);
-  const [isGrade11Checked, setIsGrade11Checked] = useState(false);
-  const [isGrade12Checked, setIsGrade12Checked] = useState(false);
-  const [isComputerTagChecked, setIsComputerTagChecked] = useState(false);
-  const [isLanguageTagChecked, setIsLanguageTagChecked] = useState(false);
-  const [isArtLitratureTagChecked, setIsArtLitratureTagChecked] =
-    useState(false);
-  const [isOtherTagChecked, setIsOtherTagChecked] = useState(false);
-
-  const [isAllChecked, setIsAllChecked] = useState(true);
-
-  const handleCheckboxChangeG9 = (event: any) => {
-    setIsGrade9Checked(event.target.checked);
-  };
-  const handleCheckboxChangeG10 = (event: any) => {
-    setIsGrade10Checked(event.target.checked);
-  };
-  const handleCheckboxChangeG11 = (event: any) => {
-    setIsGrade11Checked(event.target.checked);
-  };
-  const handleCheckboxChangeG12 = (event: any) => {
-    setIsGrade12Checked(event.target.checked);
-  };
-  const handleCheckboxChangeAll = (event: any) => {
-    setIsAllChecked(event.target.checked);
-  };
-  const handleCheckboxChangeComputer = (event: any) => {
-    setIsComputerTagChecked(event.target.checked);
-  };
-  const handleCheckboxChangeLanguage = (event: any) => {
-    setIsLanguageTagChecked(event.target.checked);
-  };
-  const handleCheckboxChangeArtLitrature = (event: any) => {
-    setIsArtLitratureTagChecked(event.target.checked);
-  };
-  const handleCheckboxChangeOther = (event: any) => {
-    setIsOtherTagChecked(event.target.checked);
-  };
-
-  // const [searchQuery, setSearchQuery] = useState("");
-
+  const [loading, setLoading] = useState(true);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("all");
+  
+  // Filter states
+  const [filters, setFilters] = useState({
+    all: true,
+    grade9: false,
+    grade10: false,
+    grade11: false,
+    grade12: false,
+    computer: false,
+    language: false,
+    artLiterature: false,
+    other: false
+  });
+  
   const setSearchQuery = useFetchStore((state) => state.setSearchQuery);
   const searchQuery = useFetchStore((state) => state.searchQuery);
+  
+  // Filter categories
+  const filterCategories = [
+    { 
+      name: "Academic Grades", 
+      items: [
+        { id: "grade9", label: "Grade 9", tag: "Grade 9" },
+        { id: "grade10", label: "Grade 10", tag: "Grade 10" },
+        { id: "grade11", label: "Grade 11", tag: "Grade 11" },
+        { id: "grade12", label: "Grade 12", tag: "Grade 12" },
+      ]
+    },
+    { 
+      name: "Course Types", 
+      items: [
+        { id: "computer", label: "Computer Studies", tag: "Computer" },
+        { id: "language", label: "Language", tag: "Language" },
+        { id: "artLiterature", label: "Art & Literature", tag: "Art Litrature" },
+        { id: "other", label: "Other", tag: "Other" },
+      ]
+    }
+  ];
+  
+  // Popular tags that appear at the top
+  const popularTags = [
+    { id: "all", label: "All Courses" },
+    { id: "grade9", label: "Grade 9" },
+    { id: "grade10", label: "Grade 10" },
+    { id: "computer", label: "Computer" },
+    { id: "language", label: "Language" },
+  ];
 
   useEffect(() => {
+    setLoading(true);
     fetch(`${apiUrl}/packages/fetchPackagesall/`, {
       credentials: "include",
     })
       .then((res) => res.json())
       .then((data) => {
         setPackagesData(data);
-        //  setLoading(false);
-
-        console.log("message3: " + data[1]?.id);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error("Error fetching packages:", error);
+        setLoading(false);
       });
   }, []);
 
-  const handleSearch = (event: any) => {
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
 
+  const handleFilterChange = (id: string) => {
+    if (id === "all") {
+      // If "All" is clicked, clear other filters
+      setFilters({
+        all: true,
+        grade9: false,
+        grade10: false,
+        grade11: false,
+        grade12: false,
+        computer: false,
+        language: false,
+        artLiterature: false,
+        other: false
+      });
+      setActiveTab("all");
+    } else {
+      // If any other filter is clicked, uncheck "All"
+      setFilters({
+        ...filters,
+        [id]: !filters[id as keyof typeof filters],
+        all: false
+      });
+      setActiveTab(id);
+    }
+  };
+
+  // Function to handle tag clicks in the top bar
+  const handleTagClick = (id: string) => {
+    if (id === "all") {
+      setFilters({
+        all: true,
+        grade9: false,
+        grade10: false,
+        grade11: false,
+        grade12: false,
+        computer: false,
+        language: false,
+        artLiterature: false,
+        other: false
+      });
+    } else {
+      setFilters({
+        all: false,
+        grade9: id === "grade9",
+        grade10: id === "grade10",
+        grade11: id === "grade11",
+        grade12: id === "grade12",
+        computer: id === "computer",
+        language: id === "language",
+        artLiterature: id === "artLiterature",
+        other: id === "other"
+      });
+    }
+    setActiveTab(id);
+  };
+
+  // Filter the packages based on search query and selected filters
   const filteredPackages = packageData.filter((item: any) => {
-    const gradeCheckedConditions = [
-      isGrade9Checked
-        ? item.tag.toLowerCase().includes("Grade 9".toLowerCase())
-        : false,
-      isGrade10Checked
-        ? item.tag.toLowerCase().includes("Grade 10".toLowerCase())
-        : false,
-      isGrade11Checked
-        ? item.tag.toLowerCase().includes("Grade 11".toLowerCase())
-        : false,
-      isGrade12Checked
-        ? item.tag.toLowerCase().includes("Grade 12".toLowerCase())
-        : false,
-      isComputerTagChecked
-        ? item.tag.toLowerCase().includes("Computer".toLowerCase())
-        : false,
-      isLanguageTagChecked
-        ? item.tag.toLowerCase().includes("Language".toLowerCase())
-        : false,
-      isArtLitratureTagChecked
-        ? item.tag.toLowerCase().includes("Art Litrature".toLowerCase())
-        : false,
-      isOtherTagChecked
-        ? item.tag.toLowerCase().includes("Other".toLowerCase())
-        : false,
+    // Check if package name includes search query
+    if (!item.packageName.toLowerCase().includes(searchQuery.toLowerCase())) {
+      return false;
+    }
+    
+    // If "All" filter is active, show everything
+    if (filters.all) {
+      return true;
+    }
+    
+    // Check if any of the selected filters match the package tag
+    const tagConditions = [
+      filters.grade9 && item.tag.toLowerCase().includes("Grade 9".toLowerCase()),
+      filters.grade10 && item.tag.toLowerCase().includes("Grade 10".toLowerCase()),
+      filters.grade11 && item.tag.toLowerCase().includes("Grade 11".toLowerCase()),
+      filters.grade12 && item.tag.toLowerCase().includes("Grade 12".toLowerCase()),
+      filters.computer && item.tag.toLowerCase().includes("Computer".toLowerCase()),
+      filters.language && item.tag.toLowerCase().includes("Language".toLowerCase()),
+      filters.artLiterature && item.tag.toLowerCase().includes("Art Litrature".toLowerCase()),
+      filters.other && item.tag.toLowerCase().includes("Other".toLowerCase()),
     ];
-
-    const isGradeChecked = gradeCheckedConditions.some(
-      (condition) => condition
-    );
-
-    return (
-      item.packageName.toLowerCase().includes(searchQuery.toLowerCase()) &&
-      (isAllChecked || isGradeChecked)
-    );
+    
+    return tagConditions.some(condition => condition);
   });
 
-  return (
-    <div>
-      <div className="smd:grid grid-cols-6 m-4">
-        <div className="col-span-2">
-          <div className="w-fit  mx-auto my-10">
-            <h1 className="text-2xl text-center ssmd:text-left text-primaryColor font-semibold">
-              Explore Packages
-            </h1>
+  const renderSkeletons = () => {
+    return Array(6).fill(0).map((_, index) => (
+      <div key={`skeleton-${index}`} className="bg-white rounded-2xl overflow-hidden shadow-md">
+        <Skeleton className="h-48 w-full" />
+        <div className="p-4">
+          <Skeleton className="h-6 w-3/4 mb-2" />
+          <Skeleton className="h-4 w-1/2 mb-4" />
+          <div className="flex justify-between items-center">
+            <Skeleton className="h-5 w-1/3" />
+            <Skeleton className="h-8 w-24 rounded-full" />
+          </div>
+        </div>
+      </div>
+    ));
+  };
 
-            <div className="flex my-7 mx-auto w-fit">
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-r from-primaryColor to-primaryColor/80 text-white py-12">
+        <div className="container mx-auto px-6 z-10 relative">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="max-w-3xl mx-auto text-center"
+          >
+            <h1 className="text-4xl font-bold mb-4">Find Your Perfect Learning Package</h1>
+            <p className="text-lg mb-8 text-white/90">Discover courses tailored to your academic needs and interests</p>
+            
+            <div className="bg-white rounded-full shadow-lg p-2 flex items-center">
+              <Search className="ml-2 text-gray-400" size={20} />
               <input
                 type="text"
-                id="search"
-                className="block w-3/4 pl-10 pr-3 py-2 my-auto rounded-l-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Search..."
+                placeholder="Search for packages..."
                 value={searchQuery}
-                onChange={handleSearch}
-                onKeyPress={(e) => {
-                  if (e.key === "Enter") {
-                    handleSearch;
-                  }
-                }}
+                onChange={handleSearchChange}
+                className="w-full px-4 py-2 text-gray-800 focus:outline-none bg-transparent"
               />
-              <div className="bg-primaryColor text-white h-fit my-auto py-3 px-2 rounded-r-lg">
-                <Search size={18} className="" />
-              </div>
+              <button className="ml-auto bg-primaryColor text-white font-medium px-5 py-2 rounded-full hover:bg-primaryColor/90 transition">
+                Search
+              </button>
             </div>
+          </motion.div>
+        </div>
+        <div className="absolute inset-0 bg-black/10 z-0"></div>
+      </section>
 
-            <div className=" w-full flex flex-col">
-              <div className="w-fit mx-7 flex smd:flex-col  flex-wrap justify-center space-x-3 space-y-2 smd:space-y-2">
-                <h1 className="hidden smd:block  text-lg underline">Filter</h1>
+      {/* Quick Filter Tags */}
+      <section className="container mx-auto px-6 py-6">
+        <div className="flex flex-wrap gap-2 justify-center">
+          {popularTags.map((tag) => (
+            <button
+              key={tag.id}
+              onClick={() => handleTagClick(tag.id)}
+              className={`px-4 py-2 rounded-full transition-all ${
+                activeTab === tag.id
+                  ? "bg-primaryColor text-white shadow-md"
+                  : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-200"
+              }`}
+            >
+              {tag.label}
+            </button>
+          ))}
+        </div>
+      </section>
 
-                <div className="items-top flex space-x-2">
-                  <input
-                    type="checkbox"
-                    id="terms1"
-                    className="hover:bg-primaryColor cursor-pointer form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
-                    checked={isAllChecked}
-                    onChange={handleCheckboxChangeAll}
-                  />
-                  <div className="grid gap-1.5 leading-none">
-                    <h1 className=" text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      All
-                    </h1>
-                  </div>
+      <div className="container mx-auto px-6 pb-16">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Mobile Filter Toggle */}
+          <div className="lg:hidden flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold text-gray-800">
+              {loading ? "Loading packages..." : `${filteredPackages.length} packages found`}
+            </h2>
+            <button
+              onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
+              className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-gray-200 shadow-sm"
+            >
+              <Filter size={18} />
+              <span>Filters</span>
+            </button>
+          </div>
+
+          {/* Mobile Filter Drawer */}
+          <div className={`fixed inset-0 bg-black/50 z-50 transition-opacity lg:hidden ${
+            mobileFiltersOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}>
+            <div className={`absolute right-0 top-0 h-full bg-white w-80 transition-transform shadow-xl ${
+              mobileFiltersOpen ? "translate-x-0" : "translate-x-full"
+            }`}>
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="text-lg font-semibold">Filters</h3>
+                  <button 
+                    onClick={() => setMobileFiltersOpen(false)}
+                    className="p-2 text-gray-500 hover:text-gray-700"
+                  >
+                    <X size={20} />
+                  </button>
                 </div>
-
-                <h1 className="hidden smd:block text-lg underline">
-                  Academics
-                </h1>
-
-                <div className="items-top flex space-x-2">
-                  <input
-                    type="checkbox"
-                    id="terms1"
-                    className="cursor-pointer form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
-                    checked={isGrade9Checked}
-                    onChange={handleCheckboxChangeG9}
-                  />
-                  <div className="grid gap-1.5 leading-none">
-                    <h1 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      Grade 9
-                    </h1>
-                  </div>
+                
+                <div className="space-y-6">
+                  {filterCategories.map((category, idx) => (
+                    <div key={idx} className="border-b border-gray-200 pb-6 last:border-0">
+                      <h4 className="font-medium mb-4 text-gray-900">{category.name}</h4>
+                      <div className="space-y-3">
+                        {category.items.map((item) => (
+                          <div key={item.id} className="flex items-center">
+                            <Checkbox
+                              id={`mobile-${item.id}`}
+                              checked={filters[item.id as keyof typeof filters]} 
+                              onCheckedChange={() => handleFilterChange(item.id)}
+                              className="data-[state=checked]:bg-primaryColor data-[state=checked]:border-primaryColor"
+                            />
+                            <label htmlFor={`mobile-${item.id}`} className="ml-2 text-sm text-gray-600">
+                              {item.label}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
                 </div>
-
-                <div className="items-top flex space-x-2">
-                  <input
-                    type="checkbox"
-                    id="terms1"
-                    className="  cursor-pointer form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
-                    checked={isGrade10Checked}
-                    onChange={handleCheckboxChangeG10}
-                  />
-                  <div className="grid gap-1.5 leading-none">
-                    <h1 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      Grade 10
-                    </h1>
-                  </div>
-                </div>
-
-                <div className="items-top flex space-x-2">
-                  <input
-                    type="checkbox"
-                    id="terms1"
-                    className="cursor-pointer form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
-                    checked={isGrade11Checked}
-                    onChange={handleCheckboxChangeG11}
-                  />
-                  <div className="grid gap-1.5 leading-none">
-                    <h1 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      Grade 11
-                    </h1>
-                  </div>
-                </div>
-
-                <div className="items-top flex space-x-2">
-                  <input
-                    type="checkbox"
-                    id="terms1"
-                    className="cursor-pointer form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
-                    checked={isGrade12Checked}
-                    onChange={handleCheckboxChangeG12}
-                  />
-                  <div className="grid gap-1.5 leading-none">
-                    <h1 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      Grade 12
-                    </h1>
-                  </div>
-                </div>
-
-                <h1 className="hidden smd:block  text-lg underline">
-                  Multidisciplinary
-                </h1>
-                <div className="items-top flex space-x-2">
-                  <input
-                    type="checkbox"
-                    id="terms1"
-                    className="cursor-pointer form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
-                    checked={isComputerTagChecked}
-                    onChange={handleCheckboxChangeComputer}
-                  />
-                  <div className="grid gap-1.5 leading-none">
-                    <h1 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      Computer Studies
-                    </h1>
-                  </div>
-                </div>
-                <div className="items-top flex space-x-2">
-                  <input
-                    type="checkbox"
-                    id="terms1"
-                    className="cursor-pointer form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
-                    checked={isLanguageTagChecked}
-                    onChange={handleCheckboxChangeLanguage}
-                  />
-                  <div className="grid gap-1.5 leading-none">
-                    <h1 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      Language{" "}
-                    </h1>
-                  </div>
-                </div>
-
-                <div className="items-top flex space-x-2">
-                  <input
-                    type="checkbox"
-                    id="terms1"
-                    className="cursor-pointer form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
-                    checked={isArtLitratureTagChecked}
-                    onChange={handleCheckboxChangeArtLitrature}
-                  />
-                  <div className="grid gap-1.5 leading-none">
-                    <h1 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      Art and Litrature
-                    </h1>
-                  </div>
-                </div>
-
-                <div className="items-top flex space-x-2">
-                  <input
-                    type="checkbox"
-                    id="terms1"
-                    className="cursor-pointer form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
-                    checked={isOtherTagChecked}
-                    onChange={handleCheckboxChangeOther}
-                  />
-                  <div className="grid gap-1.5 leading-none">
-                    <h1 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      Other
-                    </h1>
-                  </div>
-                </div>
+                
+                <button 
+                  onClick={() => setMobileFiltersOpen(false)}
+                  className="w-full mt-6 bg-primaryColor text-white py-2 rounded-lg hover:bg-primaryColor/90 transition"
+                >
+                  Apply Filters
+                </button>
               </div>
             </div>
           </div>
-        </div>
-        <div className="col-span-4">
-          <div className="grid grid-cols-2 md:grid-cols-2 xxmd:grid-cols-3  gap-8 mx-2 my-3">
-            {filteredPackages?.map((singlePackage, index: number) => {
-              return (
-                <Link key={index} href={`/package_2/${singlePackage.id}`}>
-                  <div className=" rounded-2xl group relative cursor-pointer items-center justify-center overflow-hidden transition-shadow hover:shadow-xl hover:shadow-black/30">
-                    <div className=" w-full">
-                      <img
-                        className="group-hover:translate-y-[-60%] translate-y-0 h-full w-full object-cover transition-transform duration-500  "
-                        src={singlePackage.imgUrl}
-                        alt=""
-                      />
-                    </div>
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-primaryColor group-hover:from-primaryColor/70 group-hover:via-primaryColor/60 group-hover:to-primaryColor/70"></div>
-                    <div className="absolute inset-0 flex translate-y-[60%] flex-col items-center justify-center px-3 text-center transition-all duration-500 group-hover:translate-y-0">
-                      {/* <h1 className="font-dmserif text-3xl font-bold text-white">
-                  Beauty
-                </h1> */}
-                      <div className="justify-between flex w-full text-white  font-semibold">
-                        <h1 className=" text-sm xxmd:text-base lg:text-lg">
-                          {singlePackage.packageName}
-                        </h1>
-                        <h1 className="text-sm">{singlePackage.price} Birr</h1>
-                      </div>
-                      <p className="line-clamp-4 pt-12 mb-3 text-sm  text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                        {singlePackage.packageDescription}
-                      </p>
 
-                      <h1 className="rounded-full bg-neutral-900 py-2 px-3.5 font-com text-sm capitalize text-white shadow shadow-black/60">
-                        Details
-                      </h1>
+          {/* Desktop Sidebar Filters */}
+          <div className="hidden lg:block w-64 flex-shrink-0">
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 sticky top-24">
+              <h3 className="text-lg font-semibold mb-4 text-gray-900">Filters</h3>
+              
+              <div className="space-y-6">
+                <div className="pb-4 border-b border-gray-200">
+                  <div className="flex items-center mb-2">
+                    <Checkbox
+                      id="filter-all"
+                      checked={filters.all} 
+                      onCheckedChange={() => handleFilterChange("all")}
+                      className="data-[state=checked]:bg-primaryColor data-[state=checked]:border-primaryColor"
+                    />
+                    <label htmlFor="filter-all" className="ml-2 text-sm font-medium text-gray-700">
+                      All Packages
+                    </label>
+                  </div>
+                </div>
+                
+                {filterCategories.map((category, idx) => (
+                  <div key={idx} className="pb-4 border-b border-gray-200 last:border-0">
+                    <h4 className="font-medium mb-4 text-gray-900">{category.name}</h4>
+                    <div className="space-y-3">
+                      {category.items.map((item) => (
+                        <div key={item.id} className="flex items-center">
+                          <Checkbox
+                            id={`filter-${item.id}`}
+                            checked={filters[item.id as keyof typeof filters]} 
+                            onCheckedChange={() => handleFilterChange(item.id)}
+                            className="data-[state=checked]:bg-primaryColor data-[state=checked]:border-primaryColor"
+                          />
+                          <label htmlFor={`filter-${item.id}`} className="ml-2 text-sm text-gray-600">
+                            {item.label}
+                          </label>
+                        </div>
+                      ))}
                     </div>
                   </div>
+                ))}
+              </div>
+            </div>
+          </div>
 
-                  {/* <div key={item.id} className="relative w-fit ">
-                    <div className="m-7 hover:shadow-xl p-3 rounded-xl shadow-lg border hover:shadow-primaryColor">
-                      <img
-                        src={item?.imgUrl}
-                        alt="ThumbNail Image"
-                        className="mx-auto rounded-lg"
-                      />
-                      <div>
-                        <h1 className="font-semibold text-lg">
-                          {item?.packageName}
-                        </h1>
-                        <h1 className="py-1">{item?.tag}</h1>
+          {/* Main Content - Packages Grid */}
+          <div className="flex-1">
+            <div className="mb-6 hidden lg:flex justify-between items-center">
+              <h2 className="text-xl font-semibold text-gray-800">
+                {loading ? "Loading packages..." : `${filteredPackages.length} packages found`}
+              </h2>
+            </div>
+
+            {loading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {renderSkeletons()}
+              </div>
+            ) : filteredPackages.length === 0 ? (
+              <div className="bg-white rounded-xl p-12 text-center shadow-sm">
+                <div className="mx-auto w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+                  <Search className="text-gray-400" size={24} />
+                </div>
+                <h3 className="text-xl font-medium text-gray-900 mb-2">No packages found</h3>
+                <p className="text-gray-500 mb-6">Try adjusting your search or filter criteria</p>
+                <button 
+                  onClick={() => {
+                    setSearchQuery("");
+                    setFilters({
+                      all: true,
+                      grade9: false,
+                      grade10: false,
+                      grade11: false,
+                      grade12: false,
+                      computer: false,
+                      language: false,
+                      artLiterature: false,
+                      other: false
+                    });
+                    setActiveTab("all");
+                  }}
+                  className="px-4 py-2 bg-primaryColor text-white rounded-lg hover:bg-primaryColor/90 transition"
+                >
+                  Clear all filters
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredPackages.map((singlePackage, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                  >
+                    <Link href={`/package_2/${singlePackage.id}`}>
+                      <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 h-full flex flex-col group border border-gray-100">
+                        <div className="relative overflow-hidden h-48">
+                          <img
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            src={singlePackage.imgUrl}
+                            alt={singlePackage.packageName}
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div className="absolute bottom-4 right-4">
+                              <div className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium text-primaryColor">
+                                {singlePackage.price} Birr
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="p-5 flex-1 flex flex-col">
+                          <div className="mb-2">
+                            <Badge variant="outline" className="text-xs font-normal bg-primaryColor/5 text-primaryColor border-primaryColor/20">
+                              {singlePackage.tag}
+                            </Badge>
+                          </div>
+                          
+                          <h3 className="text-lg font-medium text-gray-900 mb-2 group-hover:text-primaryColor transition-colors">
+                            {singlePackage.packageName}
+                          </h3>
+                          
+                          <p className="text-sm text-gray-500 mb-4 line-clamp-2 flex-grow">
+                            {singlePackage.packageDescription}
+                          </p>
+                          
+                          <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
+                            <div className="flex items-center text-sm text-gray-500">
+                              <Book size={14} className="mr-1" />
+                              <span>{singlePackage.courses?.length || 0} Courses</span>
+                            </div>
+                            
+                            <button className="flex items-center justify-center text-sm font-medium text-primaryColor hover:text-primaryColor/80 transition-colors group">
+                              <span>View Details</span>
+                              <ChevronDown size={16} className="ml-1 transform group-hover:translate-x-1 transition-transform" />
+                            </button>
+                          </div>
+                        </div>
                       </div>
-                      <div className="w-full flex justify-end">
-                        <h1 className="w-fit">
-                          <span className="text-xl font-semibold">
-                            {item.courses?.length}
-                          </span>{" "}
-                          Courses
-                        </h1>
-                      </div>
-                    </div>
-                   
-                  </div> */}
-                </Link>
-              );
-            })}
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

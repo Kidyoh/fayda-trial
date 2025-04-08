@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/toaster";
 import initTranslations from "../i18n";
 import TranslationProvider from "../../components/TranslationsProvider";
 import BackToTop from "@/components/main_components/back_to_top";
+import Footer from "@/components/main_components/footer";
 const i18nNamespaces = ["home", "common"];
 
 const inter = Inter({ subsets: ["latin"] });
