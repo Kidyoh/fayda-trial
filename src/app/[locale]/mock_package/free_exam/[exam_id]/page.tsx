@@ -7,15 +7,19 @@ import ShowResult from "@/app/[locale]/packages_access/assessment_questions/show
 import useSelectedMockPackageStore from "@/app/[locale]/store/selectedmockpackageStore";
 import useTemporaryPhonenumberStore from "@/app/[locale]/store/temporaryphonenumberStore";
 import { useRouter } from "next/navigation";
+import { Brain, Clock, AlertCircle, CheckCircle2, Timer } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
-function AssessmentQuestions({ params }: any) {
+export default function AssessmentQuestions({ params }: any) {
   const { push } = useRouter();
   const [data, setData] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
   const [seconds, setSeconds] = useState(0);
   const [totalQuestionCounts, setTotalQuestionsCounts] = useState("");
-
-  //const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [selectedAnswers, setSelectedAnswers] = useState<any[]>([]);
   const [incorrectQuestions, setIncorrectQuestions] = useState([]);
   const [questions, setQuestions] = useState<any>([]);
@@ -23,27 +27,23 @@ function AssessmentQuestions({ params }: any) {
   const [resultText, setResultText] = useState("");
 
   const MockPackage = useSelectedMockPackageStore((state) => state.mockpackage);
-  const PhoneNumber = useTemporaryPhonenumberStore(
-    (state) => state.phoneNumber
-  );
+  const PhoneNumber = useTemporaryPhonenumberStore((state) => state.phoneNumber);
 
   function formatTextToHTML(text: any) {
-    if (!text) {
-      return ""; // Return an empty string if text is null or undefined
-    }
+    if (!text) return "";
 
     const formattedText = text
-      .replace(/\^(.*?)\^/g, "<sup>$1</sup>") // Matches ^^superscript^^
-      .replace(/\*\*\*(.*?)\*\*\*/g, "<sub>$1</sub>") // Matches ***subscript***
-      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") // Matches **bold**
-      .replace(/\*(.*?)\*/g, "<em>$1</em>") // Matches *italic*
+      .replace(/\^(.*?)\^/g, "<sup>$1</sup>")
+      .replace(/\*\*\*(.*?)\*\*\*/g, "<sub>$1</sub>")
+      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\*(.*?)\*/g, "<em>$1</em>")
       .replace(/_(.*?)_/g, "<u>$1</u>")
-      .replace(/&&8/g, "∞") // &&8  // infinity
+      .replace(/&&8/g, "∞")
       .replace(/&&f/g, "ƒ")
       .replace(/&&arf/g, "→")
       .replace(/&&arb/g, "←")
       .replace(/&&aru/g, "↑")
-      .replace(/&&ard/g, "↓") // &&f   // function f
+      .replace(/&&ard/g, "↓")
       .replace(/&&pi/g, "π")
       .replace(/&&sqrt/g, "√")
       .replace(/&&noteq/g, "≠")
@@ -75,382 +75,257 @@ function AssessmentQuestions({ params }: any) {
       .replace(/&&dashl/g, "______________________")
       .replace(/&&r/g, "<span style='font-size:1.2em'>&#8477;</span>")
       .replace(/&&nat/g, "<span style='font-size:1.2em'>&naturals;</span>")
-      .replace(/&&rarw&([^&]*)&&/g, function (_: any, text: any) {
-        return text + " \u2192";
-      });
-    // .replace(
-    //   /(\d+)\/(\d+)/g,
-    //   '<span class="fraction"><sup class="numerator">$1</sup><sub class="denominator">$2</sub></span>'
-    // ) // Matches _underline_
+      .replace(/&&rarw&([^&]*)&&/g, (_, text) => text + " \u2192");
 
-    // .replace(/&&st(\d+)&&end(\d+)/g, function (_: any, start: any, end: any) {
-    //   return start + "<sub>" + end + "</sub>";
-    // });
-
-    const renderedHTML = (
-      <div dangerouslySetInnerHTML={{ __html: formattedText }} />
-    );
-    return renderedHTML;
+    return <div dangerouslySetInnerHTML={{ __html: formattedText }} />;
   }
 
   useEffect(() => {
     if (MockPackage.id == undefined) {
-      // push("/mock_package");
       push("/mock_package/selectmainfolder");
     }
-  }, []); // The empty dependency array ensures the effect runs only once
+  }, []);
 
-  //const [videoLocation, setVideoLocation] = useState("");
-  // const params = useParams();
-  //console.log(params);
   const AssessmentId = params.exam_id;
 
   const countNullValues = (arr: any[]): number => {
-    let count = 0;
-    for (const value of arr) {
-      if (value === undefined || value === "x" || value === "X") {
-        count++;
-      }
-    }
-    return count;
+    return arr.filter(value => value === undefined || value === "x" || value === "X").length;
   };
 
   const countSelectedAnswers = (arr: any[]): number => {
-    let count = 0;
-    for (const value of arr) {
-      if (value !== undefined && value !== "x" && value !== "X") {
-        count++;
-      }
-    }
-    return count;
+    return arr.filter(value => value !== undefined && value !== "x" && value !== "X").length;
   };
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
-    console.log("print from submit");
-    console.log("selected answers: " + selectedAnswers.length);
-    console.log("total q: " + totalQuestionCounts);
-    console.log("check: " + selectedAnswers[1]);
-    console.log("count: " + countNullValues(selectedAnswers));
-    if (
-      parseInt(totalQuestionCounts) == selectedAnswers.length &&
-      countNullValues(selectedAnswers) == 0
-    ) {
+    
+    if (parseInt(totalQuestionCounts) === selectedAnswers.length && countNullValues(selectedAnswers) === 0) {
       try {
         const response = await axios.post(
           `${apiUrl}/assesments/submit-exam-answers/${AssessmentId}`,
-          {
-            answers: selectedAnswers,
-          },
-          {
-            withCredentials: true,
-          }
+          { answers: selectedAnswers },
+          { withCredentials: true }
         );
-        const responseData = response.data; // Extract the response data
-        console.log("Response message:", responseData.message);
-        console.log(
-          "Incorrect numbers: " + responseData.incorrectQuestionNumbers
-        );
-        // Access the message property
-        // console.log("response: " + response.message);
+        
+        const responseData = response.data;
         if (response.status === 200) {
-          // Handle successful submission
           setResultText(responseData.message);
           setIncorrectQuestions(responseData.incorrectQuestionNumbers);
           setOnExam(false);
-          console.log("Assessment answers submitted successfully!");
-          // Clear answers, display feedback, etc.
-        } else {
-          // Handle error
-          console.error("Submission failed:", response.statusText);
-          // Display error message to the user
         }
-        // Handle successful submission (e.g., clear answers, display feedback)
       } catch (error) {
-        // Handle errors
+        toast({
+          title: "Error",
+          description: "Failed to submit exam. Please try again.",
+          variant: "destructive",
+        });
       }
     } else {
       toast({
-        title: `Submission Failed!`,
-        description: `There are questions remaining!`,
+        title: "Incomplete Exam",
+        description: "Please answer all questions before submitting.",
+        variant: "destructive",
       });
     }
   };
 
   const automaticSubmit = async () => {
-    console.log("Automatic Submit Started!");
-    console.log("Answers: " + selectedAnswers);
-    const updatedAnswers = selectedAnswers.map((item: any) => {
-      if (item === null) {
-        return "X";
-      } else {
-        return item;
-      }
-    });
-    console.log("Updated: " + updatedAnswers);
+    const updatedAnswers = selectedAnswers.map(item => item === null ? "X" : item);
     setSelectedAnswers(updatedAnswers);
-    //if(selectedAnswers ="")
+
     try {
       const response = await axios.post(
         `${apiUrl}/assesments/submit-exam-answers/${AssessmentId}`,
-        {
-          answers: selectedAnswers,
-        },
-        {
-          withCredentials: true,
-        }
+        { answers: updatedAnswers },
+        { withCredentials: true }
       );
-      const responseData = response.data; // Extract the response data
-      console.log("Response message:", responseData.message);
-      // Access the message property
-      // console.log("response: " + response.message);
+      
       if (response.status === 200) {
-        // Handle successful submission
-        setResultText(responseData.message);
-        setIncorrectQuestions(responseData.incorrectQuestionNumbers);
+        setResultText(response.data.message);
+        setIncorrectQuestions(response.data.incorrectQuestionNumbers);
         setOnExam(false);
-        console.log("Assessment answers submitted successfully!");
-        // Clear answers, display feedback, etc.
-      } else {
-        // Handle error
-        console.error("Submission failed:", response.statusText);
-        // Display error message to the user
       }
-      // Handle successful submission (e.g., clear answers, display feedback)
     } catch (error) {
-      // Handle errors
+      console.error("Error submitting exam:", error);
     }
   };
 
   useEffect(() => {
-    const fetchData = () => {
-      fetch(
-        `${apiUrl}/mockexampackagepurchase/accessexam/${PhoneNumber}/${MockPackage?.id}/${AssessmentId}`,
-        {
-          credentials: "include",
-        }
-      )
-        .then((response) => response.json())
-        .then((jsonData) => {
-          setData(jsonData);
-          console.log("Json Data: " + JSON.stringify(jsonData));
-          setSeconds(jsonData.duration * 60);
-          setTotalQuestionsCounts(jsonData.question.length);
-          setQuestions(jsonData.question);
-
-          const initialAnswers = Array(jsonData.question.length).fill("x");
-          setSelectedAnswers(initialAnswers);
-
-          // setSelectedAnswers([]);
-
-          //  setVideoLocation(jsonData[0].location);
-          //  console.log(jsonData[0].Courses.materials);
-        })
-        .catch((error) => {
-          console.log("Error:", error);
-        });
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `${apiUrl}/mockexampackagepurchase/accessexam/${PhoneNumber}/${MockPackage?.id}/${AssessmentId}`,
+          { credentials: "include" }
+        );
+        const jsonData = await response.json();
+        setData(jsonData);
+        setSeconds(jsonData.duration * 60);
+        setTotalQuestionsCounts(jsonData.question.length);
+        setQuestions(jsonData.question);
+        setSelectedAnswers(Array(jsonData.question.length).fill("x"));
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error:", error);
+        setIsLoading(false);
+      }
     };
 
     fetchData();
-  }, []);
+  }, [AssessmentId, MockPackage?.id, PhoneNumber]);
 
   useEffect(() => {
-    let timerId: any; // Store the timer ID
+    if (seconds <= 0) return;
 
-    timerId = setInterval(() => {
-      setSeconds((prevSeconds) => prevSeconds - 1);
+    const timerId = setInterval(() => {
+      setSeconds(prev => {
+        if (prev <= 1) {
+          clearInterval(timerId);
+          automaticSubmit();
+        }
+        return prev - 1;
+      });
     }, 1000);
 
-    const formattedTime = formatTime(seconds);
-    if (formattedTime === "00:00:01") {
-      console.log("Countdown reached 00:00!");
-      {
-        automaticSubmit();
-      }
-      clearInterval(timerId); // Stop the timer
-    }
-
-    // Cleanup on unmount (only clears if still running)
     return () => clearInterval(timerId);
   }, [seconds]);
 
-  // const formatTime = (timeInSeconds: any) => {
-  //   const minutes = Math.floor(timeInSeconds / 60);
-  //   const seconds = timeInSeconds % 60;
-  //   return `${minutes.toString().padStart(2, "0")}:${seconds
-  //     .toString()
-  //     .padStart(2, "0")}`;
-  // };
-
-  const formatTime = (timeInSeconds: any) => {
+  const formatTime = (timeInSeconds: number): string => {
     const hours = Math.floor(timeInSeconds / 3600);
     const minutes = Math.floor((timeInSeconds % 3600) / 60);
     const seconds = timeInSeconds % 60;
-    return `${hours.toString().padStart(2, "0")}:${minutes
-      .toString()
-      .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   };
 
-  // const handleAnswerSelection = (questionIndex: any, answerId: any) => {
-  //   console.log("first print");
-  //   setSelectedAnswers((prevAnswers): any => [
-  //     ...prevAnswers.slice(0, questionIndex),
-  //     answerId,
-  //     ...prevAnswers.slice(questionIndex + 1),
-  //   ]);
-  // };
-
-  const handleAnswerSelection = (questionIndex: number, answerId: any) => {
-    setSelectedAnswers((prevAnswers: any[]): any[] => {
-      const newAnswers = [...prevAnswers];
+  const handleAnswerSelection = (questionIndex: number, answerId: string) => {
+    setSelectedAnswers(prev => {
+      const newAnswers = [...prev];
       newAnswers[questionIndex] = answerId;
       return newAnswers;
     });
   };
 
-  // <h1>{data[0]?.id}</h1>
-  //  <h1>{data[0]?.question[3]?.id}</h1>
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[600px]">
+        <div className="animate-pulse flex flex-col items-center gap-4">
+          <Brain size={40} className="text-primaryColor animate-bounce" />
+          <p className="text-gray-500 font-medium">Loading exam...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!onExam) {
+    return <ShowResult reslultText={resultText} incorrectquestions={incorrectQuestions} questions={questions} />;
+  }
+
+  const answeredQuestions = countSelectedAnswers(selectedAnswers);
+  const progressPercentage = (answeredQuestions / parseInt(totalQuestionCounts)) * 100;
 
   return (
-    <div className="my-5">
-      {onExam && (
-        <div className="mx-3">
-          <div className="py-4">
-            {/* <h1>Questions : {AssessmentId}</h1> */}
-            <h1>
-              <span className="text-primaryColor">Total Questions</span> :{" "}
-              {totalQuestionCounts}
+    <div className="max-w-4xl mx-auto px-4 py-8">
+      {/* Header */}
+      <div className="mb-8">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+              <Brain className="h-6 w-6 text-primaryColor" />
+              Mock Exam Progress
             </h1>
-            <h1>
-              <span className="text-primaryColor"> Answerd Questions:</span>{" "}
-              {countSelectedAnswers(selectedAnswers)}
-            </h1>
-            <h1 className="">
-              <span className="text-primaryColor font-semibold"> Note:</span>{" "}
-              <span className="underline">
-                {" "}
-                You need to answer all the questions to submit your answer.
-              </span>{" "}
-            </h1>
+            <p className="text-gray-600 mt-1">
+              Complete all {totalQuestionCounts} questions within the time limit
+            </p>
           </div>
-          <div className="bg-primaryColor z-50 sticky top-10 xxmd:top-16 text-white flex justify-end mx-5 py-1 px-5 md:py-3">
-            <div className="justify-end">
-              <h2>
-                Time Remaining:{" "}
-                <span className="text-thirdColor">{formatTime(seconds)}</span>
-              </h2>
+          
+          {/* Timer Card */}
+          <div className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
+            <div className="flex items-center gap-3">
+              <Timer className="h-5 w-5 text-primaryColor" />
+              <div>
+                <p className="text-sm font-medium text-gray-500">Time Remaining</p>
+                <p className="text-xl font-bold text-gray-900">{formatTime(seconds)}</p>
+              </div>
             </div>
           </div>
+        </div>
 
-          <div>
-            <form onSubmit={handleSubmit}>
-              <div className="md:mx-6">
-                {data?.question?.map((ques: any, index: any) => (
-                  <div key={ques?.id} className="my-10">
-                    <h2 className="flex gap-2 py-2">
-                      <span className=" w-fit font-semibold  text-primaryColor">
-                        {index + 1 + `)`}
-                      </span>{" "}
-                      {formatTextToHTML(ques?.question)}
-                    </h2>
-                    <div>
-                      {/* <h1>{ques?.questionImage}</h1> */}
-                      {ques?.questionImage && (
-                        <img
-                          // src={`${apiUrl}/upload_assets/images/question_images/${ques.questionImage}`}
-                          src={ques?.questionImageUrl}
-                          alt="ThumbNail Image"
-                          className="  rounded-lg"
-                        />
-                      )}
-                    </div>
-
-                    <div>
-                      <h1
-                        onClick={() => handleAnswerSelection(index, "A")}
-                        style={{
-                          backgroundColor:
-                            selectedAnswers[index] === "A"
-                              ? "lightblue"
-                              : "white",
-                        }}
-                        className="cursor-pointer flex gap-2"
-                      >
-                        A {formatTextToHTML(ques.choiseA)}
-                      </h1>
-                    </div>
-                    <div>
-                      <h1
-                        onClick={() => handleAnswerSelection(index, "b")}
-                        style={{
-                          backgroundColor:
-                            selectedAnswers[index] === "b"
-                              ? "lightblue"
-                              : "white",
-                        }}
-                        className="cursor-pointer flex gap-2"
-                      >
-                        B {formatTextToHTML(ques.choiseB)}
-                      </h1>
-                    </div>
-                    <div>
-                      <h1
-                        onClick={() => handleAnswerSelection(index, "c")}
-                        style={{
-                          backgroundColor:
-                            selectedAnswers[index] === "c"
-                              ? "lightblue"
-                              : "white",
-                        }}
-                        className="cursor-pointer flex gap-2"
-                      >
-                        C {formatTextToHTML(ques.choiseC)}
-                      </h1>
-                    </div>
-                    <div>
-                      <h1
-                        onClick={() => handleAnswerSelection(index, "d")}
-                        style={{
-                          backgroundColor:
-                            selectedAnswers[index] === "d"
-                              ? "lightblue"
-                              : "white",
-                        }}
-                        className="cursor-pointer flex gap-2"
-                      >
-                        D {formatTextToHTML(ques.choiseD)}
-                      </h1>
-                    </div>
-                  </div>
-                ))}
-                <button
-                  className="bg-primaryColor px-2 my-3 cursor-pointer hover:bg-opacity-80 rounded text-white"
-                  type="submit"
-                >
-                  Submit Answers
-                </button>
-              </div>
-            </form>
+        {/* Progress Bar */}
+        <div className="bg-white rounded-xl border border-gray-200 p-4">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium text-gray-500">Progress</span>
+            <span className="text-sm font-medium text-primaryColor">
+              {answeredQuestions} of {totalQuestionCounts} answered
+            </span>
           </div>
-
-          {/* <div className="mx-5">
-        <button className="px-2 py-1 bg-blue-600 text-white rounded-md">
-          Submit
-        </button>
-      </div> */}
+          <Progress value={progressPercentage} className="h-2" />
         </div>
-      )}
+      </div>
 
-      {!onExam && (
-        <div>
-          <ShowResult
-            reslultText={resultText}
-            incorrectquestions={incorrectQuestions}
-            questions={questions}
-          />
+      {/* Questions */}
+      <form onSubmit={handleSubmit} className="space-y-8">
+        {data?.question?.map((question: any, index: number) => (
+          <Card key={question?.id} className="p-6">
+            <div className="space-y-4">
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primaryColor/10 flex items-center justify-center">
+                  <span className="text-primaryColor font-semibold">{index + 1}</span>
+                </div>
+                <div className="space-y-4 flex-1">
+                  <h3 className="text-lg font-medium text-gray-900">
+                    {formatTextToHTML(question?.question)}
+                  </h3>
+                  
+                  {question?.questionImage && (
+                    <img
+                      src={question?.questionImageUrl}
+                      alt="Question Image"
+                      className="rounded-lg max-w-full h-auto"
+                    />
+                  )}
+
+                  <RadioGroup
+                    value={selectedAnswers[index]}
+                    onValueChange={(value) => handleAnswerSelection(index, value)}
+                    className="space-y-3"
+                  >
+                    {[
+                      { id: "A", text: question.choiseA },
+                      { id: "b", text: question.choiseB },
+                      { id: "c", text: question.choiseC },
+                      { id: "d", text: question.choiseD },
+                    ].map((choice) => (
+                      <div key={choice.id} className="flex items-center space-x-2">
+                        <RadioGroupItem
+                          value={choice.id}
+                          id={`${question.id}-${choice.id}`}
+                          className="border-2"
+                        />
+                        <Label
+                          htmlFor={`${question.id}-${choice.id}`}
+                          className="text-gray-700 cursor-pointer"
+                        >
+                          {formatTextToHTML(choice.text)}
+                        </Label>
+                      </div>
+                    ))}
+                  </RadioGroup>
+                </div>
+              </div>
+            </div>
+          </Card>
+        ))}
+
+        {/* Submit Button */}
+        <div className="flex justify-end pt-6">
+          <Button
+            type="submit"
+            className="px-8 py-6 bg-primaryColor text-white rounded-xl font-semibold text-lg shadow-lg hover:bg-primaryColor/90 transition-all hover:scale-105 hover:shadow-xl active:scale-100 flex items-center gap-2"
+          >
+            Submit Exam
+            <CheckCircle2 className="h-5 w-5" />
+          </Button>
         </div>
-      )}
+      </form>
     </div>
   );
 }
-export default AssessmentQuestions;
