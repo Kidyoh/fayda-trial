@@ -1,3 +1,2 @@
 //    "dev": "i18nexus pull && next dev -p 8080",
-
-
+//added new configs
