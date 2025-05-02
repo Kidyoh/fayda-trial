@@ -1,50 +1,121 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import Lottie from "lottie-react";
 import animationOne from "../../../public/lottie_files/lottie_one.json";
-import { SearchCheck } from "lucide-react";
+import { BookOpen, Target, Smartphone } from "lucide-react";
+import { motion } from "framer-motion";
+
+const features = [
+  {
+    icon: BookOpen,
+    title: "Interactive Learning",
+    description: "Engage with interactive materials including videos, simulations, and quizzes that make learning both effective and enjoyable.",
+  },
+  {
+    icon: Target,
+    title: "Personalized Experience",
+    description: "Receive tailored content that adapts to your learning pace, strengths, and areas for improvement.",
+  },
+  {
+    icon: Smartphone,
+    title: "Learn Anywhere",
+    description: "Access your courses on any device with our mobile-friendly platform, enabling learning on your schedule.",
+  },
+];
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+    },
+  },
+};
 
 export default function SectionOne() {
   return (
-    <div className=" mb-4">
-      <div className="xmd:grid xmd:grid-cols-2  ">
-        <div className="hidden xmd:block col-span-1 mx-auto  xmd-w-full xmd:m-20">
-          <Lottie animationData={animationOne} autoplay loop />
-        </div>
-        <div className="my-auto    px-4">
-          <div className="py-8 text-3xl text-primaryColor font-semibold">
-            <h1 className="text-center">
-              Learner Outcomes on Courses You will take
-            </h1>
-          </div>
-          <div className="space-y-6">
-            <div className="flex">
-              <SearchCheck size={64} className="px-2 text-thirdColor" />
-              <div>
-                Interactive Learning: Provide interactive learning materials
-                such as videos, simulations, and interactive quizzes to engage
-                students and enhance their understanding of various subjects.
-              </div>
+    <section className="py-20 bg-gradient-to-b from-white to-gray-50/50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Animation Column */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="relative"
+          >
+            <div className="relative z-10 rounded-3xl overflow-hidden bg-gradient-to-br from-primaryColor/5 to-transparent p-8">
+              <Lottie 
+                animationData={animationOne} 
+                autoplay 
+                loop 
+                className="w-full h-full"
+              />
             </div>
-            <div className="flex">
-              <SearchCheck size={64} className="px-2 text-thirdColor" />
-              <div>
-                Personalized Learning Experience: Implement adaptive learning
-                techniques to provide personalized content tailored to your
-                strength, weakness, and learning pace.
-              </div>
-            </div>
-            <div className="flex">
-              <SearchCheck size={64} className="px-2 text-thirdColor" />
-              <div>
-                Mobile-Friendly Design: Ensure that your platform is accessible
-                on various devices, including smartphones and tablets, allowing
-                students to learn anytime, anywhere.
-              </div>
-            </div>
+            {/* Decorative Elements */}
+            <div className="absolute -top-4 -left-4 w-72 h-72 bg-primaryColor/5 rounded-full blur-3xl" />
+            <div className="absolute -bottom-4 -right-4 w-72 h-72 bg-thirdColor/5 rounded-full blur-3xl" />
+          </motion.div>
+
+          {/* Content Column */}
+          <div className="lg:pl-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-center lg:text-left mb-12"
+            >
+              <h2 className="text-4xl font-bold text-gray-900">
+                Transform Your Learning Journey
+              </h2>
+              <p className="mt-4 text-lg text-gray-600">
+                Experience education reimagined with our innovative learning platform
+              </p>
+            </motion.div>
+
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="space-y-8"
+            >
+              {features.map((feature, index) => (
+                <motion.div
+                  key={index}
+                  variants={itemVariants}
+                  className="flex items-start space-x-4 group"
+                >
+                  <div className="flex-shrink-0">
+                    <div className="p-3 rounded-2xl bg-gradient-to-br from-primaryColor/10 to-thirdColor/10 group-hover:from-primaryColor/20 group-hover:to-thirdColor/20 transition-all duration-300">
+                      <feature.icon className="w-6 h-6 text-primaryColor" />
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-primaryColor transition-colors duration-200">
+                      {feature.title}
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
