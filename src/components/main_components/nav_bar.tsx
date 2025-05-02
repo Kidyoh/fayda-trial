@@ -23,7 +23,7 @@ import { stringify } from "querystring";
 import { usePathname } from "next/navigation";
 import NavBarForMobile from "./responsive_navbar";
 import axios from "axios";
-import CheckPhoneNumber from "@/app/[locale]/mock_package/mock_package_components/checkphonenumber";
+import CheckPhoneNumber from "@/app/mock_package/mock_package_components/checkphonenumber";
 import LanguageChanger from "../LanguageChanger";
 
 import { useTranslation } from "react-i18next";
@@ -39,7 +39,7 @@ import {
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
 import ExploreNavigation from "./drawer_components/explore_navigation";
-import useFetchStore from "../../app/[locale]/store/fetchStore";
+import useFetchStore from "../../app/store/fetchStore";
 import NavBarMobile from "./nav_bar_mobile";
 
 import { setAccessToken, getAccessToken, clearAccessToken } from "../../lib/tokenManager";
@@ -56,7 +56,6 @@ export default function NavBar(response3: any) {
   const [userName, setUserName] = useState("");
   const [activeMenu, setActiveMenu] = useState("Home");
 
-  const { t } = useTranslation();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);

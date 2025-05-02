@@ -12,7 +12,7 @@ import {
 } from "../ui/alert-dialog";
 import { apiUrl } from "@/apiConfig";
 import { toast } from "../ui/use-toast";
-import useFetchStore from "../../app/[locale]/store/fetchStore";
+import useFetchStore from "../../app/store/fetchStore";
 import { setAccessToken, getAccessToken, clearAccessToken } from "../../lib/tokenManager";
 
 

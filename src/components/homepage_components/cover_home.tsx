@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { ChevronRightCircle, ArrowRight, Download, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 //import CheckPhoneNumber from "@/app/mock_package/mock_package_components/checkphonenumber";
-import CheckPhoneNumber from "@/app/[locale]/mock_package/mock_package_components/checkphonenumber";
+import CheckPhoneNumber from "@/app/mock_package/mock_package_components/checkphonenumber";
 import initTranslation from "../../app/i18n";
 import { TFunction } from "i18next";
 import { useParams } from "next/navigation";

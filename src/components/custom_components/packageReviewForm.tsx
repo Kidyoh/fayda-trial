@@ -4,14 +4,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useState } from "react";
 
 //import { signInInfoSchema } from "../validation/signinValidation";
-import { packageReviewSchema } from "../../app/[locale]/validation/package_review_validation";
+import { packageReviewSchema } from "../../app/validation/package_review_validation";
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
-import useFetchStore from "../../app/[locale]/store/fetchStore";
+import useFetchStore from "../../app/store/fetchStore";
 import { setAccessToken, getAccessToken, clearAccessToken } from "../../lib/tokenManager";
 
 
