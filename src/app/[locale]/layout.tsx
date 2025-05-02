@@ -1,7 +1,6 @@
 import NavBar from "@/components/main_components/nav_bar";
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
 
 import initTranslations from "../i18n";
@@ -9,8 +8,6 @@ import TranslationProvider from "../../components/TranslationsProvider";
 import BackToTop from "@/components/main_components/back_to_top";
 import Footer from "@/components/main_components/footer";
 const i18nNamespaces = ["home", "common"];
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Fayida Academy",
@@ -31,7 +28,7 @@ export default async function RootLayout({
     >
       <html lang="en">
       {/* <body className={inter.className}> */}
-        <body className={inter.className}>
+        <body>
           <Toaster />
           <div className="absolute top-0 w-full">
             <div className="">
