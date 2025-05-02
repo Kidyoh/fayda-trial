@@ -4,13 +4,14 @@ RUN mkdir -p /app/src
 
 WORKDIR /app/src
 
-COPY package.json .
+COPY package.json pnpm-lock.yaml ./
 
-RUN npm install
+# Use pnpm to install dependencies
+RUN pnpm install
 
 COPY . .
 
 EXPOSE 8080
 
-#CMD ["npm", "start"]
-CMD npm run dev
+# Use pnpm for production
+CMD ["pnpm", "start"]
