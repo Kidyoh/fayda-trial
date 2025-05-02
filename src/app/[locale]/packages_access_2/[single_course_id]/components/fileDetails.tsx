@@ -35,47 +35,47 @@ export default function FileDetails({ file_id, student_id }: any) {
 
   console.log("data:" + data);
   return (
-    <div className="px-4 my-5">
-      <div>
-        <h1>
-          <span className="text-primaryColor font-semibold"> Title:</span>{" "}
+    <div className="max-w-4xl mx-auto space-y-6">
+      <div className="flex flex-col space-y-2">
+        <h1 className="text-2xl font-semibold text-gray-900">
           {data?.file?.title}
         </h1>
+        <p className="text-gray-500 text-sm">
+          {data?.file?.fileDescription}
+        </p>
       </div>
-      <div className="py-5">
-        {data?.fileUrl ? (
-          <div>
+
+      <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <div className="flex flex-col items-center justify-center space-y-4">
+          <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+            </svg>
+          </div>
+
+          {data?.fileUrl ? (
             <a
               href={data?.fileUrl}
               target="_blank"
-              className="text-white bg-primaryColor px-2 py-1 rounded"
+              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primaryColor hover:bg-primaryColor/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primaryColor transition-colors"
             >
-              Read File
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Download File
             </a>
-          </div>
-        ) : (
-          <div>Loading File ...</div>
-        )}
+          ) : (
+            <div className="animate-pulse text-gray-400">Loading file...</div>
+          )}
+        </div>
       </div>
 
       {data?.StudentMaterial.find((item: any) => item.StudentId === studentId)
         ?.Done !== true && (
-        <div>
+        <div className="flex justify-end">
           <MaterialSeen MaterialId={FileId} />
         </div>
       )}
-
-      {/* {data?.StudentMaterial[0]?.Done != true && (
-        <div>
-          <MaterialSeen MaterialId={FileId} />
-        </div>
-      )} */}
-      <div>
-        <h1>
-          <span className="font-semibold text-primaryColor"> Description:</span>{" "}
-          {data?.file?.fileDescription}
-        </h1>
-      </div>
     </div>
   );
 }

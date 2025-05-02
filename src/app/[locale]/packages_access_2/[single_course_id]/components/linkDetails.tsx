@@ -40,21 +40,22 @@ export default function LinkDetails({ link_id, student_id }: any) {
 
   console.log("data:" + data);
   return (
-    <div className="px-4 my-5">
-      <div>
-        <h1>
-          <span className="text-primaryColor font-semibold"> Title:</span>{" "}
+    <div className="max-w-4xl mx-auto space-y-6">
+      <div className="flex flex-col space-y-2">
+        <h1 className="text-2xl font-semibold text-gray-900">
           {data?.link?.title}
         </h1>
+        <p className="text-gray-500 text-sm">
+          {data?.link?.fileDescription}
+        </p>
       </div>
-      <div className="py-5">
+
+      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
         {data?.link?.location ? (
-          <div className="space-y-5">
-            <div>
+          <div className="space-y-4">
+            <div className="aspect-video w-full">
               <iframe
-                className=" w-full h-[315px]  xxmd:w-[560px] xxmd:h-[315px] bg-yell"
-                // width="560"
-                // height="315"
+                className="w-full h-full"
                 src={`https://www.youtube.com/embed/${getVideoId(
                   data?.link?.location
                 )}`}
@@ -64,39 +65,35 @@ export default function LinkDetails({ link_id, student_id }: any) {
                 allowFullScreen
               ></iframe>
             </div>
-            <div>
-              <a
-                href={data?.link?.location}
-                target="_blank"
-                className="text-white bg-primaryColor px-2 py-1 rounded"
-              >
-                Go to Source
-              </a>
+            <div className="p-6 border-t border-gray-200 bg-gray-50">
+              <div className="flex justify-between items-center">
+                <p className="text-sm text-gray-500">Want to view on YouTube?</p>
+                <a
+                  href={data?.link?.location}
+                  target="_blank"
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primaryColor hover:bg-primaryColor/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primaryColor transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                  Open in YouTube
+                </a>
+              </div>
             </div>
           </div>
         ) : (
-          <div>Loading File ...</div>
+          <div className="flex items-center justify-center h-[315px]">
+            <div className="animate-pulse text-gray-400">Loading video...</div>
+          </div>
         )}
       </div>
 
       {data?.StudentMaterial.find((item: any) => item.StudentId === studentId)
         ?.Done !== true && (
-        <div>
+        <div className="flex justify-end">
           <MaterialSeen MaterialId={LinkId} />
         </div>
       )}
-
-      {/* {data?.StudentMaterial[0]?.Done != true && (
-        <div>
-          <MaterialSeen MaterialId={LinkId} />
-        </div>
-      )} */}
-      <div>
-        <h1>
-          <span className="font-semibold text-primaryColor"> Description:</span>{" "}
-          {data?.link?.fileDescription}
-        </h1>
-      </div>
     </div>
   );
 }
