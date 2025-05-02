@@ -2,13 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { ChevronRightCircle, ArrowRight, Download, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-//import CheckPhoneNumber from "@/app/mock_package/mock_package_components/checkphonenumber";
-import CheckPhoneNumber from "@/app/mock_package/mock_package_components/checkphonenumber";
-import initTranslation from "../../app/i18n";
-import { TFunction } from "i18next";
-import { useParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import { apiUrl, localUrl } from "@/apiConfig";
 import DownloadAppConfirmation from "../custom_components/downloadApkDialog";
 
 export default function CoverHome() {
@@ -17,7 +11,7 @@ export default function CoverHome() {
   let texts: any = [];
   if (t) {
     //texts = [t("home:info01"), t("home:info02"), t("home:info03")];
-    texts = [t("home:info01"), t("home:info02")];
+    texts = [t("Discover a better way to study!"), t("Starting from grade 9 up to 12"), t("All for free!")];
   }
 
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
@@ -72,7 +66,7 @@ export default function CoverHome() {
                 </h1>
                 
                 <p className="text-xl sm:text-2xl text-gray-200 max-w-xl">
-                  {t("slogan")}
+                  {t("Quality Education for All, Anytime, Anywhere!")}
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 pt-6">

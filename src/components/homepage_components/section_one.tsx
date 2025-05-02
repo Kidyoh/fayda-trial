@@ -1,25 +1,34 @@
 "use client";
-import React from "react";
-import Lottie from "lottie-react";
-import animationOne from "../../../public/lottie_files/lottie_one.json";
+import React, { useEffect, useState } from "react";
+import dynamic from 'next/dynamic';
 import { BookOpen, Target, Smartphone } from "lucide-react";
 import { motion } from "framer-motion";
+import animationOne from "../../../public/lottie_files/lottie_one.json";
+
+// Dynamically import Lottie to avoid SSR issues
+const Lottie = dynamic(() => import('lottie-react'), { 
+  ssr: false,
+  loading: () => <div className="w-full h-96 bg-gray-100 animate-pulse rounded-lg"></div>
+});
 
 const features = [
   {
-    icon: BookOpen,
-    title: "Interactive Learning",
-    description: "Engage with interactive materials including videos, simulations, and quizzes that make learning both effective and enjoyable.",
+    icon: <BookOpen className="w-6 h-6" />,
+    title: "Comprehensive Learning",
+    description:
+      "Access a vast library of study materials, practice tests, and interactive lessons.",
   },
   {
-    icon: Target,
-    title: "Personalized Experience",
-    description: "Receive tailored content that adapts to your learning pace, strengths, and areas for improvement.",
+    icon: <Target className="w-6 h-6" />,
+    title: "Targeted Practice",
+    description:
+      "Focus on your weak areas with personalized quizzes and adaptive learning.",
   },
   {
-    icon: Smartphone,
+    icon: <Smartphone className="w-6 h-6" />,
     title: "Learn Anywhere",
-    description: "Access your courses on any device with our mobile-friendly platform, enabling learning on your schedule.",
+    description:
+      "Study on any device, anytime, with synchronized progress across platforms.",
   },
 ];
 
@@ -99,7 +108,7 @@ export default function SectionOne() {
                 >
                   <div className="flex-shrink-0">
                     <div className="p-3 rounded-2xl bg-gradient-to-br from-primaryColor/10 to-thirdColor/10 group-hover:from-primaryColor/20 group-hover:to-thirdColor/20 transition-all duration-300">
-                      <feature.icon className="w-6 h-6 text-primaryColor" />
+                      {feature.icon}
                     </div>
                   </div>
                   <div>
