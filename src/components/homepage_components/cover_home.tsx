@@ -2,23 +2,17 @@
 import React, { useEffect, useState } from "react";
 import { ChevronRightCircle, ArrowRight, Download, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-//import CheckPhoneNumber from "@/app/mock_package/mock_package_components/checkphonenumber";
-import CheckPhoneNumber from "@/app/[locale]/mock_package/mock_package_components/checkphonenumber";
-import initTranslation from "../../app/i18n";
-import { TFunction } from "i18next";
-import { useParams } from "next/navigation";
-import { useTranslation } from "react-i18next";
 import { apiUrl, localUrl } from "@/apiConfig";
 import DownloadAppConfirmation from "../custom_components/downloadApkDialog";
+import { useLanguage } from "@/lib/language-context";
 
 export default function CoverHome() {
-  const { t } = useTranslation();
+  const { t } = useLanguage();
 
-  let texts: any = [];
-  if (t) {
-    //texts = [t("home:info01"), t("home:info02"), t("home:info03")];
-    texts = [t("home:info01"), t("home:info02")];
-  }
+  const texts = [
+    t('home.hero.title1'),
+    t('home.hero.title2')
+  ];
 
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
 
@@ -31,9 +25,6 @@ export default function CoverHome() {
 
   const currentText = texts[currentTextIndex];
 
-  if (!t) {
-    return <div></div>; // or any loading indicator
-  }
   return (
     <div className="relative min-h-screen overflow-hidden bg-gray-50">
       {/* Hero Image with Overlay */}
@@ -72,7 +63,7 @@ export default function CoverHome() {
                 </h1>
                 
                 <p className="text-xl sm:text-2xl text-gray-200 max-w-xl">
-                  {t("slogan")}
+                  {t('home.hero.slogan')}
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 pt-6">
@@ -83,17 +74,6 @@ export default function CoverHome() {
                   >
                     <DownloadAppConfirmation />
                   </motion.div>
-                  
-                  {/* <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full sm:w-auto"
-                  >
-                    <CheckPhoneNumber 
-                      pushto={"/mock_package/selectmainfolder"}
-                      className="w-full flex items-center justify-center gap-2 bg-white/10 backdrop-blur-sm text-white border-2 border-white/20 px-8 py-3 rounded-lg font-medium hover:bg-white/20 transition-colors duration-200"
-                    />
-                  </motion.div> */}
                 </div>
               </motion.div>
             </AnimatePresence>
@@ -101,10 +81,10 @@ export default function CoverHome() {
             {/* Features grid */}
             <div className="grid grid-cols-2 gap-4 pt-8">
               {[
-                { icon: "📚", text: "Comprehensive Learning", count: "50+" },
-                { icon: "🎯", text: "Personalized Path", count: "100%" },
-                { icon: "🏆", text: "Track Progress", count: "24/7" },
-                { icon: "💡", text: "Smart Analytics", count: "1000+" }
+                { icon: "📚", text: t('home.features.learning'), count: "50+" },
+                { icon: "🎯", text: t('home.features.path'), count: "100%" },
+                { icon: "🏆", text: t('home.features.progress'), count: "24/7" },
+                { icon: "💡", text: t('home.features.analytics'), count: "1000+" }
               ].map((feature, index) => (
                 <motion.div
                   key={index}

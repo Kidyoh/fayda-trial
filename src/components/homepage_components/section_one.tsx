@@ -1,27 +1,16 @@
 "use client";
 import React from "react";
-import Lottie from "lottie-react";
-import animationOne from "../../../public/lottie_files/lottie_one.json";
+import dynamic from 'next/dynamic';
 import { BookOpen, Target, Smartphone } from "lucide-react";
 import { motion } from "framer-motion";
+import animationOne from "../../../public/lottie_files/lottie_one.json";
+import { useLanguage } from '@/lib/language-context';
 
-const features = [
-  {
-    icon: BookOpen,
-    title: "Interactive Learning",
-    description: "Engage with interactive materials including videos, simulations, and quizzes that make learning both effective and enjoyable.",
-  },
-  {
-    icon: Target,
-    title: "Personalized Experience",
-    description: "Receive tailored content that adapts to your learning pace, strengths, and areas for improvement.",
-  },
-  {
-    icon: Smartphone,
-    title: "Learn Anywhere",
-    description: "Access your courses on any device with our mobile-friendly platform, enabling learning on your schedule.",
-  },
-];
+// Dynamically import Lottie to avoid SSR issues
+const Lottie = dynamic(() => import('lottie-react'), { 
+  ssr: false,
+  loading: () => <div className="w-full h-96 bg-gray-100 animate-pulse rounded-lg"></div>
+});
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -45,6 +34,26 @@ const itemVariants = {
 };
 
 export default function SectionOne() {
+  const { t } = useLanguage();
+  
+  const features = [
+    {
+      icon: BookOpen,
+      title: t('home.feature1.title'),
+      description: t('home.feature1.desc'),
+    },
+    {
+      icon: Target,
+      title: t('home.feature2.title'),
+      description: t('home.feature2.desc'),
+    },
+    {
+      icon: Smartphone,
+      title: t('home.feature3.title'),
+      description: t('home.feature3.desc'),
+    },
+  ];
+
   return (
     <section className="py-20 bg-gradient-to-b from-white to-gray-50/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -78,10 +87,10 @@ export default function SectionOne() {
               className="text-center lg:text-left mb-12"
             >
               <h2 className="text-4xl font-bold text-gray-900">
-                Transform Your Learning Journey
+                {t('home.section.title')}
               </h2>
               <p className="mt-4 text-lg text-gray-600">
-                Experience education reimagined with our innovative learning platform
+                {t('home.section.subtitle')}
               </p>
             </motion.div>
 

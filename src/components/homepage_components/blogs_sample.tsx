@@ -14,6 +14,7 @@ import Link from "next/link";
 import { ArrowRight, Calendar, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 // Optional for navigation/pagination
+import { useLanguage } from "@/lib/language-context";
 
 interface Blog {
   id: string;
@@ -25,6 +26,7 @@ interface Blog {
 }
 
 export default function BlogSample() {
+  const { t } = useLanguage();
   //   const res = await fetch(`${apiUrl}/blogs/displayhome`, {
   //     next: {
   //       revalidate: 5,
@@ -69,10 +71,10 @@ export default function BlogSample() {
           className="text-center mb-12"
         >
           <h2 className="text-3xl font-bold text-gray-900">
-            Latest <span className="text-primaryColor">Insights</span>
+            <span className="text-primaryColor">{t('home.blogs.title')}</span>
           </h2>
           <p className="mt-4 text-lg text-gray-600">
-            Discover our latest articles and stay updated with educational trends
+            {t('home.blogs.subtitle')}
           </p>
         </motion.div>
 
@@ -171,7 +173,7 @@ export default function BlogSample() {
         >
           <Link href="/blogs">
             <button className="inline-flex items-center px-6 py-3 rounded-full bg-primaryColor text-white font-medium hover:bg-primaryColor/90 transition-colors duration-200 group">
-              View All Articles
+              {t('home.blogs.viewall')}
               <ArrowRight className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-200" />
             </button>
           </Link>
