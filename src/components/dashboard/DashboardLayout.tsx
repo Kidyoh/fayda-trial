@@ -4,7 +4,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import ProfileCard from "./ProfileCard";
 import Sidebar from "./Sidebar";
-import ProfileDetails from "@/app/[locale]/profile/page";
+import ProfileDetails from "@/app/profile/page";
 import { apiUrl } from "@/apiConfig";
 import { setAccessToken, getAccessToken } from "../../lib/tokenManager";
 import Footer from "../main_components/footer";

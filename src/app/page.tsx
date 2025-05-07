@@ -1,5 +1,4 @@
 'use client';
-
 import { useEffect, useState } from "react";
 import CoverHome from "@/components/homepage_components/cover_home";
 import Info from "@/components/homepage_components/info";

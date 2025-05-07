@@ -1,3 +1,5 @@
+'use client';
+
 import React from "react";
 import {
   AlertDialog,
@@ -14,14 +16,14 @@ import { apiUrl } from "@/apiConfig";
 import { toast } from "../ui/use-toast";
 import { setAccessToken, getAccessToken, clearAccessToken } from "../../lib/tokenManager";
 
-
-
-export default function DownloadAppConfirmation({
- 
-}) {
-  const accessToken = getAccessToken();
-
- 
+export default function DownloadAppConfirmation() {
+  // Use React hooks for client-side only code
+  const [token, setToken] = React.useState('');
+  
+  // Only access tokens on the client side
+  React.useEffect(() => {
+    setToken(getAccessToken() || '');
+  }, []);
 
   return (
     <div>

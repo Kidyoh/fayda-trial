@@ -7,7 +7,6 @@ import { useLanguage } from "@/lib/language-context";
 
 export default function CoverHome() {
   const { t } = useLanguage();
-
   const texts = [
     t('home.hero.title1'),
     t('home.hero.title2')
