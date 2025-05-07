@@ -43,7 +43,7 @@ import useFetchStore from "../../app/store/fetchStore";
 import NavBarMobile from "./nav_bar_mobile";
 
 import { setAccessToken, getAccessToken, clearAccessToken } from "../../lib/tokenManager";
-
+import LanguageSelector from "../LanguageSelector";
 
 export default function NavBar(response3: any) {
   const profile = response3;
@@ -282,7 +282,7 @@ export default function NavBar(response3: any) {
               </div>
 
               <div className="flex items-center space-x-4">
-                <LanguageChanger />
+               <LanguageSelector />
                 
                 <Link href={"/notifications"} className="relative">
                   <div className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200">
