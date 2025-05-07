@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { ChevronRight, BookOpen, Package, Book, Trophy, Info, Bot } from "lucide-react";
 import Link from "next/link";
 import { apiUrl } from "@/apiConfig";
-import CheckPhoneNumber from "@/app/[locale]/mock_package/mock_package_components/checkphonenumber";
+import CheckPhoneNumber from "@/app/mock_package/mock_package_components/checkphonenumber";
 
 export default function ExploreNavigation() {
   const [slectedMenu, setSlectedMenu] = useState("");

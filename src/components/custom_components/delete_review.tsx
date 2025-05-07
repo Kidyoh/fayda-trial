@@ -14,7 +14,7 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { apiUrl, homeUrl, localUrl } from "@/apiConfig";
-import useFetchStore from "../../app/[locale]/store/fetchStore";
+import useFetchStore from "../../app/store/fetchStore";
 
 import { setAccessToken, getAccessToken, clearAccessToken } from "../../lib/tokenManager";
 
