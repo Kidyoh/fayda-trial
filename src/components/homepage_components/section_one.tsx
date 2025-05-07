@@ -108,7 +108,7 @@ export default function SectionOne() {
                 >
                   <div className="flex-shrink-0">
                     <div className="p-3 rounded-2xl bg-gradient-to-br from-primaryColor/10 to-thirdColor/10 group-hover:from-primaryColor/20 group-hover:to-thirdColor/20 transition-all duration-300">
-                      {feature.icon}
+                      {React.createElement(feature.icon, { className: "w-6 h-6 text-primaryColor" })}
                     </div>
                   </div>
                   <div>
