@@ -1,8 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { ChevronRightCircle, ArrowRight, Download, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { apiUrl, localUrl } from "@/apiConfig";
 import DownloadAppConfirmation from "../custom_components/downloadApkDialog";
 import { useLanguage } from "@/lib/language-context";
 

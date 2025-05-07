@@ -33,9 +33,9 @@ export default function RootLayout({
           </main>
           
           {/* Back to top button */}
-          <div className="fixed bottom-14 right-8 z-50">
+          {/* <div className="fixed bottom-14 right-8 z-50">
             <BackToTop />
-          </div>
+          </div> */}
           
           {/* Footer */}
           <footer className="w-full">
