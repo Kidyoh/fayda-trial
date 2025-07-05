@@ -77,7 +77,7 @@ export default function FilteredPackage({ params }: any) {
               Home
             </Link>
             <ChevronRight className="h-4 w-4 mx-2 text-gray-400 mt-0.5" />
-            <Link href="/searchPackages" className="text-gray-500 hover:text-primaryColor transition-colors">
+            <Link href="/search-packages" className="text-gray-500 hover:text-primaryColor transition-colors">
               Packages
             </Link>
             <ChevronRight className="h-4 w-4 mx-2 text-gray-400 mt-0.5" />
@@ -206,7 +206,7 @@ export default function FilteredPackage({ params }: any) {
               </div>
               <h3 className="text-xl font-medium text-gray-900 mb-2">No packages found</h3>
               <p className="text-gray-600 mb-6">We couldn't find any packages in this category</p>
-              <Link href="/searchPackages">
+              <Link href="/search-packages">
                 <button className="px-4 py-2 bg-primaryColor text-white rounded-full text-sm font-medium hover:bg-primaryColor/90 transition-colors">
                   Browse All Packages
                 </button>

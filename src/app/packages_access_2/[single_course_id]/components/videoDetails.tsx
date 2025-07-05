@@ -34,8 +34,10 @@ export default function VideoDetial({ video_id, student_id }: any) {
         .then((response) => response.json())
         .then((jsonData) => {
           setData(jsonData);
-          setVideoLocation(jsonData[0].location);
-          //  console.log(jsonData[0].Courses.materials);
+          if (Array.isArray(jsonData) && jsonData.length > 0) {
+            setVideoLocation(jsonData[0].location);
+          }
+          console.log("jsonData:", jsonData);
         })
         .catch((error) => {
           console.log("Error:", error);

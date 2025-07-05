@@ -15,39 +15,44 @@ import {
 import { apiUrl } from "@/apiConfig";
 import { toast } from "../ui/use-toast";
 import { setAccessToken, getAccessToken, clearAccessToken } from "../../lib/tokenManager";
+import { Download } from "lucide-react";
+import { useLanguage } from "@/lib/language-context";
 
 export default function DownloadAppConfirmation() {
-  // Use React hooks for client-side only code
+  const { t } = useLanguage();
   const [token, setToken] = React.useState('');
   
-  // Only access tokens on the client side
   React.useEffect(() => {
     setToken(getAccessToken() || '');
   }, []);
 
   return (
-    <div>
-      <AlertDialog>
-        <AlertDialogTrigger asChild>
-          <div className="w-fit hover:bg-gray-300 hover:text-primaryColor duration-150 bg-primaryColor px-3 py-1 rounded shadow-lg shadow-black  text-white">
-            <button>Download App</button>
-          </div>
-        </AlertDialogTrigger>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Download Fayida Academy App</AlertDialogTitle>
-            <AlertDialogDescription>
-             Do you want to procced to download the mobile application? 
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction >
-              <a href={`${apiUrl}/download`}> Download</a>
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </div>
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <button className="relative w-full px-8 py-4 bg-primaryColor/80 backdrop-blur-sm hover:bg-primaryColor text-white rounded-xl flex items-center justify-center gap-2 font-medium border border-white/10 transition duration-200">
+          <Download className="w-5 h-5" />
+          <span>Download App</span>
+        </button>
+      </AlertDialogTrigger>
+      <AlertDialogContent className="bg-gray-900/95 backdrop-blur-lg border border-white/10">
+        <AlertDialogHeader>
+          <AlertDialogTitle className="text-white">Download Fayida Academy App</AlertDialogTitle>
+          <AlertDialogDescription className="text-gray-300">
+            Do you want to proceed to download the mobile application?
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter className="gap-2">
+          <AlertDialogCancel className="bg-gray-800 text-white hover:bg-gray-700 border border-white/10">
+            Cancel
+          </AlertDialogCancel>
+          <AlertDialogAction className="bg-primaryColor hover:bg-primaryColor/90 text-white">
+            <a href={`${apiUrl}/download`} className="flex items-center gap-2">
+              <Download className="w-4 h-4" />
+              Download
+            </a>
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }

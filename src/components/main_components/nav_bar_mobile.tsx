@@ -44,7 +44,7 @@ export default function NavBarMobile({ data, notificationNumber }: any) {
     e.preventDefault();
     if (searchQuery.trim()) {
       setIsOpen(false);
-      window.location.href = `/searchPackages?query=${encodeURIComponent(searchQuery)}`;
+      window.location.href = `/search-packages?query=${encodeURIComponent(searchQuery)}`;
     }
   };
 
@@ -191,8 +191,8 @@ export default function NavBarMobile({ data, notificationNumber }: any) {
                 </div>
 
                 {/* Other menu items */}
-                <Link href="/searchPackages">
-                  <div className={`flex items-center px-4 py-3 ${pathname.includes('/searchPackages') ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
+                <Link href="/search-packages">
+                  <div className={`flex items-center px-4 py-3 ${pathname.includes('/search-packages') ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
                     <Package size={20} className="mr-3" />
                     <span className="font-medium">Packages</span>
                   </div>
@@ -274,8 +274,8 @@ export default function NavBarMobile({ data, notificationNumber }: any) {
           </div>
         </Link>
         
-        <Link href="/searchPackages">
-          <div className={`flex flex-col items-center justify-center ${pathname.includes('/searchPackages') || pathname.includes('/packages_access') ? 'text-primaryColor' : 'text-gray-500'}`}>
+        <Link href="/search-packages">
+          <div className={`flex flex-col items-center justify-center ${pathname.includes('/search-packages') || pathname.includes('/packages_access') ? 'text-primaryColor' : 'text-gray-500'}`}>
             <Package size={20} />
             <span className="text-xs mt-1">Packages</span>
           </div>

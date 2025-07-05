@@ -273,7 +273,7 @@ export default function NavBar(response3: any) {
                       }
                     }}
                   />
-                  <Link href={"/searchPackages"} onClick={() => handleSearch()}>
+                  <Link href={"/search-packages"} onClick={() => handleSearch()}>
                     <div className="absolute right-2 top-1/2 -translate-y-1/2 bg-primaryColor text-white p-1.5 rounded-full hover:bg-primaryColor/90 transition-colors duration-200">
                       <Search size={16} />
                     </div>

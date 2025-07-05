@@ -141,7 +141,7 @@ export default function PackageDetailsRendered(props: any) {
               Home
             </Link>
             <ChevronRight className="h-4 w-4 mx-2 text-gray-400 mt-0.5" />
-            <Link href="/searchPackages" className="text-gray-500 hover:text-primaryColor">
+            <Link href="/search-packages" className="text-gray-500 hover:text-primaryColor">
               Packages
             </Link>
             <ChevronRight className="h-4 w-4 mx-2 text-gray-400 mt-0.5" />

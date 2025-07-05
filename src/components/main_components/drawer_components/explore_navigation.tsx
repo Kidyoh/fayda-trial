@@ -55,7 +55,7 @@ export default function ExploreNavigation() {
               <ChevronRight size={16} className="ml-auto" />
             </div>
 
-            <Link href={"/searchPackages"}>
+            <Link href={"/search-packages"}>
               <div className="flex items-center space-x-3 cursor-pointer p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200 text-gray-700">
                 <Package size={18} className="text-primaryColor" />
                 <h1 className="font-medium">Packages List</h1>

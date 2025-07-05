@@ -23,7 +23,7 @@ const Skeleton = ({ className = "" }) => {
   return <div className={`animate-pulse bg-gray-200 rounded ${className}`} />;
 };
 
-export default function SearchPackages() {
+export default function ExplorePackages() {
   const [packageData, setPackagesData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
