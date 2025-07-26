@@ -18,7 +18,7 @@ export default function Home() {
   }, []);
   
   return (
-    <div className="">
+    <>
       {isClient && (
         <>
           <CoverHome />
@@ -29,6 +29,6 @@ export default function Home() {
           <SectionOne />
         </>
       )}
-    </div>
+    </>
   );
 } 

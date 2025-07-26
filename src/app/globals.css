@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Sendako';
+  src: url('/fonts/SENDAKO.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -76,3 +84,17 @@
   }
 } 
 
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #ffffff; /* white */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #2e6d5e;
+  border-radius: 9999px;
+  border: 2px solid #ffffff;
+}

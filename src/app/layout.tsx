@@ -18,17 +18,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="flex flex-col min-h-screen">
+      <body className="flex flex-col min-h-screen justify-center items-center">
         <LanguageProvider>
           <Toaster />
           
           {/* Header */}
-          <header className="w-full">
             <NavBar />
-          </header>
           
           {/* Main content */}
-          <main className="flex-grow pt-8 xmd:pt-20 w-full">
+          <main className="flex-grow w-full">
             {children}
           </main>
           
