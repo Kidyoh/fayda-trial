@@ -1,137 +1,72 @@
-"use client";
-import { apiUrl } from "@/apiConfig";
-import React, { useEffect, useState } from "react";
-import Autoplay from "embla-carousel-autoplay";
-//import { Card, CardContent } from "@/components/ui/card"
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import Link from "next/link";
-// Optional for navigation/pagination
+import React from "react";
 
-export default function Testimony() {
-  //   const res = await fetch(`${apiUrl}/blogs/displayhome`, {
-  //     next: {
-  //       revalidate: 5,
-  //     },
-  //   });
-  //   const data = await res.json();
+const testimonials = [
+  {
+    quote: `Everything is possible with Chris’ coaching and guidance. He helps me see my true self, find my voice, and guide me on the road to self acceptance.
 
-  const [data, setData] = useState<any>([]);
-  const [isLoading, setIsLoading] = useState(true);
+With Chris as my coach I’ve reached goals I never thought were possible. Like a six-figure course launch, getting 100K followers on Instagram, and starting my own community.`,
+    name: 'Anneli Hansson',
+    title: 'Brand Strategist',
+    avatar: 'https://randomuser.me/api/portraits/women/65.jpg',
+  },
+  {
+    quote: `Chris helps open the doors of discovery and allows you to uncover the roadblocks. His uncanny ability to ask insightful questions and pull-out creative thoughts helps one to navigate a road map that is both productive and achievable. By carefully following Chris’s instructions and executing his advice our company has grown by 61% YOY.`,
+    name: 'Eric Wegweiser',
+    title: 'Horticultural Creations',
+    avatar: 'https://randomuser.me/api/portraits/men/12.jpg',
+  },
+  {
+    quote: `Chris’ coaching and expertise is easily worth $10,000/hour. In the two years we have worked together, I’ve made over $500,000 a year from my design business while working 15 hours a week. Grown my following from ZERO to over 100,000.
 
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       try {
-  //         const response = await fetch(`${apiUrl}/blogs/displayhome`, {
-  //           credentials: "include",
-  //         });
+Chris is an incredible mentor, a powerful coach, and a generous friend. I can’t recommend him enough.`,
+    name: 'Rich Webster',
+    title: 'Richard Media Company',
+    avatar: 'https://randomuser.me/api/portraits/men/24.jpg',
+  },
+  {
+    quote: `I was lost about how to get recognized in my new niche. Chris gave me the clarity and direction I needed: focus on content creation, raise my rate, and delegate.
 
-  //         const jsonData = await response.json();
-  //         setData(jsonData);
-  //         console.log("first");
-  //         console.log("Data: ", jsonData);
-  //       } catch (error) {
-  //         console.error("Error fetching data:", error);
-  //       } finally {
-  //         setIsLoading(false);
-  //       }
-  //     };
+In less than a year I reached 9.5K followers on LinkedIn (9X growth) and 19.6K followers on Instagram (19X growth). My revenue increased by 50% without having added any clients and I hired a full-time designer — all because of his coaching!`,
+    name: 'Kung Pik Liu',
+    title: 'Design Angel',
+    avatar: 'https://randomuser.me/api/portraits/men/54.jpg',
+  },
+];
 
-  //     fetchData();
-  //   }, []);
-
-  const TestimonyData = [
-    {
-      id: "001",
-      name: "Rich Webster, Richard Media Company",
-      text: "\"Fayida Academy has been a game-changer for me. As a busy professional, it was challenging to balance work, family, and education. But with Fayida Academy's flexible online platform, I have been able to seamlessly integrate learning into my daily routine. The platform's intuitive interface, well-structured courses, and self-paced learning approach have allowed me to learn at my own convenience. I am now equipped with the knowledge and skills to excel in my classes and exams, all thanks to Fayida Academy\"",
-      image: "/common_files/testimony/img01.jpg",
-    },
-    {
-      id: "002",
-      name: "Kung Pik Liu, Design Angel",
-      text: '"I cannot express enough how much Fayida Academy has transformed my academic journey. As a struggling student, I used to feel overwhelmed and lost when it came to my classes and exams. However, since enrolling in Fayida Academy, I have experienced a remarkable improvement in my grades and overall confidence. The platform\'s comprehensive study materials, interactive lessons, and valuable feedback from knowledgeable instructors have made all the difference. Thanks to Fayida Academy, I am now achieving success in my classes and exams like never before."',
-      image: "/common_files/testimony/img02.jpg",
-    },
-    {
-      id: "003",
-      name: "Eric Wegweiser, Horticulatural Creations",
-      text: "\"Fayida Academy has truly revolutionized the way I approach my studies. The platform's personalized learning system understands my unique strengths and weaknesses, allowing me to focus on areas where I need the most improvement. The interactive quizzes and practice exams have helped me gauge my progress and identify areas for further revision. With the support of Fayida Academy's dedicated tutors and their prompt responses to my queries, I feel empowered and well-prepared for my class assignments and exams. I highly recommend Fayida Academy to any student looking to achieve academic excellence.\"",
-      image: "/common_files/testimony/img03.jpg",
-    },
-    {
-      id: "004",
-      name: "Anneli Hansson, Brand Strategist",
-      text: "\"I enrolled in Fayida Academy with skepticism, unsure if an online platform could deliver the same quality of education as a traditional classroom setting. However, I am delighted to admit that Fayida Academy surpassed all my expectations. The platform's engaging video lectures, comprehensive study materials, and collaborative discussion forums have fostered an interactive and dynamic learning environment. The instructors' expertise and passion for teaching shine through in every lesson. Thanks to Fayida Academy, I have not only excelled in my class and exam performance but also developed a lifelong love for learning.\"",
-      image: "/common_files/testimony/img04.jpg",
-    },
-  ];
-
+function QuoteIcon() {
   return (
-    <div className="my-8 cursor-pointer ">
-      <div className="w-full my-4">
-        {/* <h1 className="w-fit text-3xl underline text-primaryColor font-semibold mx-auto">
-          Testimony
-        </h1> */}
-      </div>
+    <svg className="w-10 h-10 text-gray-200 absolute -top-4 -left-4" fill="none" viewBox="0 0 48 48">
+      <text x="0" y="38" fontSize="48" fill="currentColor">
+        &ldquo;
+      </text>
+    </svg>
+  );
+}
 
-      <div className="">
-        <Carousel
-          plugins={[
-            Autoplay({
-              delay: 6000,
-              stopOnInteraction: false,
-            }),
-          ]}
-          opts={{
-            align: "start",
-            duration: 100,
-            loop: true,
-            slidesToScroll: 1,
-            // itemPerPage: 4, // Show 4 items per page (Shad CN Carousel option)
-            //className: "w-full",
-          }}
-          className="w-full "
-        >
-          <CarouselContent>
-            {TestimonyData?.map((testimony: any) => {
-              return (
-                <CarouselItem
-                  key={testimony.id}
-                  className=" w-fit"
-                  // className="-mt-1 h-[200px]"
-                >
-                  <div className="border-2 p-10 smd:p-20 m-4">
-                    <div className="xxmd:grid grid-cols-3 gap-5 w-full smd:w-3/4 mx-auto">
-                      <div className="col-span-1 w-fit my-auto xxmd:mx-0 mx-auto ">
-                        <img
-                          src={testimony.image}
-                          className="rounded-full w-1/2 mx-auto xxmd:w-3/4 my-auto"
-                          alt=""
-                        />
-                      </div>
-                      <div className="col-span-2 my-auto">
-                        <h1 className="py-4 text-center">{testimony.text}</h1>
-                        <h1 className="text-center text-primaryColor">
-                          {testimony.name}
-                        </h1>
-                      </div>
-                    </div>
-                  </div>
-                </CarouselItem>
-              );
-            })}
-          </CarouselContent>
-          {/* 
-          <CarouselPrevious />
-          <CarouselNext /> */}
-        </Carousel>
+export default function Testimonials() {
+  return (
+    <section className="w-full px-4 py-12 bg-white">
+      <div className="mx-auto grid gap-10 md:grid-cols-2">
+        {testimonials.map((t, idx) => (
+          <div key={idx} className="relative bg-white shadow-none p-6 rounded-lg">
+            <div className="relative pl-12">
+              <QuoteIcon />
+              <p className="text-lg text-gray-800 whitespace-pre-line">{t.quote}</p>
+            </div>
+            <div className="flex items-center mt-8 pl-4">
+              <img
+                className="w-16 h-16 rounded-full object-cover border-2 border-gray-100"
+                src={t.avatar}
+                alt={t.name}
+              />
+              <div className="ml-4">
+                <div className="font-extrabold text-2xl text-gray-900">{t.name}</div>
+                <div className="uppercase tracking-wide text-gray-500 text-sm font-semibold">{t.title}</div>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
-    </div>
+    </section>
   );
 }

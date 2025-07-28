@@ -2,9 +2,11 @@
 import Blog from "@/components/homepage_components/blog";
 import CoverHome from "@/components/homepage_components/cover_home";
 import Info from "@/components/homepage_components/info";
+import Marquee from "@/components/homepage_components/marquee";
 import PackageCards from "@/components/homepage_components/package_cards";
 import PackageDiscountSlider from "@/components/homepage_components/package_discount_slider";
 import SectionOne from "@/components/homepage_components/section_one";
+import Testimonials from "@/components/homepage_components/testimony";
 import WelcomeSection from "@/components/homepage_components/welcomesection";
 import { useLanguage } from "@/lib/language-context";
 import { useEffect, useState } from "react";
@@ -28,7 +30,8 @@ export default function Home() {
           <PackageCards/>
           <PackageDiscountSlider />
           <Blog />
-          <SectionOne />
+          <Testimonials />
+          <Marquee/>
         </>
       )}
     </>
