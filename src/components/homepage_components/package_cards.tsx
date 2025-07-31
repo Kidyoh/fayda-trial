@@ -60,7 +60,7 @@ type CardProps = {
 const Card: React.FC<CardProps> = ({ title, price, button, description, bg, border, featured }) => (
   <div
     className={`
-      relative flex flex-col items-center p-6 rounded-md shadow-md
+      relative flex flex-col items-center p-6
       ${bg} ${border} 
       transition-all duration-300
       hover:-translate-y-3 hover:shadow-2xl hover:scale-105
@@ -98,10 +98,10 @@ export default function PackageCards() {
           height={56}
           className="absolute w-max top-3 left-1/2 -translate-x-1/2 z-10"
         />
-        <h2 className="text-2xl md:text-4xl font-extrabold font-Sendako tracking-wide uppercase text-white z-20 mt-8">
+        <h2 className="text-2xl md:text-4xl font-extrabold font-Sendako tracking-wide uppercase text-white z-20 my-8">
           FAYIDA PACKAGES
         </h2>
-        <div className="w-full border-t border-black mt-8"></div>
+
       </div>
       {/* Cards */}
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">

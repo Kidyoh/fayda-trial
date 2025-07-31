@@ -12,6 +12,7 @@ import { useLanguage } from "@/lib/language-context";
 import { useEffect, useState } from "react";
 import CoursesList from "./packages_access/courses_list/page";
 import CourseGrid from "@/components/homepage_components/courses";
+import FeaturedCourse from "@/components/homepage_components/featured_course";
 
 export default function Home() {
   // Use useState and useEffect to safely handle client-side code
@@ -31,6 +32,7 @@ export default function Home() {
           <WelcomeSection />
           <PackageCards/>
           <PackageDiscountSlider />
+          <FeaturedCourse/>
           <CourseGrid/>
           <Blog />
           <Testimonials />

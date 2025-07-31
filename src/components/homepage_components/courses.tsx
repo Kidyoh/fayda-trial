@@ -75,7 +75,7 @@ function AnimatedCourseCard({ card }) {
 
   return (
     <motion.div
-      className="bg-white overflow-hidden w-full"
+      className="bg-gray-100 overflow-hidden w-full"
       style={{ minHeight: 420 , maxWidth: 420   }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -94,7 +94,7 @@ function AnimatedCourseCard({ card }) {
           alt={card.title}
           className="w-full h-full object-cover"
           animate={{ scale: hovered ? 1.03 : 1 }}
-          transition={{ duration: 0.4 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
           style={{ willChange: 'transform' }}
         />
       </motion.div>
@@ -163,7 +163,7 @@ function AnimatedCourseCard({ card }) {
 
 export default function AnimatedCourseGrid() {
   return (
-    <div className="min-h-screen bg-gray-100 px-4 py-10">
+    <div className="min-h-screen px-4 py-10">
       <div className="max-w-7xl mx-auto grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {cards.map((card, idx) => (
           <AnimatedCourseCard key={idx} card={card} />
