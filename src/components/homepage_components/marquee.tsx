@@ -3,23 +3,23 @@ import MarqueeItem from "./marquee_item";
 
 const Marquee = () => {
     const upperMarquee = [
-        { img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=200&q=80", },
-        { img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=200&q=80", },
-        { img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=200&q=80", },
-        { img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=200&q=80", },
-        { img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=200&q=80", },
-        { img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=200&q=80", },
-        { img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=200&q=80", },
+        { img: "https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg" },
+        { img: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" },
+        { img: "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" },
+        { img: "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" },
+        { img: "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" },
+        { img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Spotify_icon.svg/768px-Spotify_icon.svg.png?20220821125323" },
+        { img: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Unity_logo.svg/450px-Unity_logo.svg.png?20160727081127" }
     ];
 
-    const lowerMarquee = [  
-        { img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=200&q=80", },
-        { img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=200&q=80", },
-        { img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=200&q=80", },
-        { img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=200&q=80", },
-        { img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=200&q=80", },
-        { img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=200&q=80", },
-        { img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=200&q=80", },
+    const lowerMarquee = [
+        { img: "https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg" },
+        { img: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" },
+        { img: "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" },
+        { img: "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" },
+        { img: "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" },
+        { img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Spotify_icon.svg/768px-Spotify_icon.svg.png?20220821125323" },
+        { img: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Unity_logo.svg/450px-Unity_logo.svg.png?20160727081127" },
     ];
 
     return (
