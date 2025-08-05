@@ -4,7 +4,7 @@ import React from "react";
 const packages = [
   {
     title: "PACKAGE 2",
-    price: "$",
+    price: "$10.00",
     button: "TRY IT FREE",
     description: [
       "Access to 850+ resources",
@@ -17,7 +17,7 @@ const packages = [
   },
   {
     title: "MAIN PACKAGE",
-    price: "$",
+    price: "$19.99",
     button: "TRY IT FREE",
     description: [
       "Access to 1000+ Resources",
@@ -34,7 +34,7 @@ const packages = [
   },
   {
     title: "PACKAGE 3",
-    price: "$",
+    price: "$10.00",
     button: "TRY IT FREE",
     description: [
       "Access to 500+ top courses",
@@ -65,7 +65,7 @@ const Card: React.FC<CardProps> = ({ title, price, button, description, bg, bord
       transition-all duration-300
       hover:-translate-y-3 hover:shadow-2xl hover:scale-105
       ${featured ? "z-10 scale-105 shadow-lg" : ""}
-      min-h-[350px] w-full
+      min-h-[350px] w-full rounded-2xl
     `}
     style={{
       boxShadow: featured
@@ -73,12 +73,12 @@ const Card: React.FC<CardProps> = ({ title, price, button, description, bg, bord
         : undefined,
     }}
   >
-    <div className="font-bold text-lg tracking-wide mb-2 text-white">{title}</div>
+    <div className="font-bold text-lg font-Sendako tracking-wide mb-2 text-white">{title}</div>
     <div className="text-3xl font-extrabold mb-1 text-white">{price}</div>
-    <button className="bg-white text-[#2A5951] font-bold py-2 px-5 rounded-md mb-4 shadow-sm transition hover:bg-[#e6e6e6]">
+    <button className="bg-white text-[#2A5951] font-bold py-2 px-5 rounded-full mb-4 shadow-sm transition hover:bg-[#e6e6e6]">
       {button}
     </button>
-    <ul className="text-white text-sm mt-2 space-y-1 text-center">
+    <ul className="text-white text-sm mt-2 space-y-1 text-left font-semibold md:text-base list-disc">
       {description.map((line, i) => (
         <li key={i}>{line}</li>
       ))}
@@ -104,7 +104,7 @@ export default function PackageCards() {
 
       </div>
       {/* Cards */}
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
         {packages.map((pkg, i) => (
           <Card key={i} {...pkg} />
         ))}
