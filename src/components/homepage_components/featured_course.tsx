@@ -22,7 +22,7 @@ const FeaturedCourse = () => {
           <img
             src="/Background/pricing.jpg"
             alt="Painless Pricing"
-            className="w-full h-auto"
+            className="w-full h-auto rounded-2xl"
           />
           <div className="absolute top-4 left-4 bg-red-500 text-white text-xs font-semibold px-4 py-1 rounded">
             BUY NOW
@@ -31,13 +31,13 @@ const FeaturedCourse = () => {
 
         {/* Right: Info */}
         <div className="mt-6 md:mt-0 md:ml-10 w-full md:w-1/3 flex flex-col justify-center">
-          <h2 className="text-3xl font-bold text-gray-900">Painless Pricing</h2>
+          <h2 className="text-3xl font-bold text-gray-900 font-Sendako">Painless Pricing</h2>
           <p className="text-gray-600 mt-4">
             Make pricing your creative work easy. Learn how to charge more and
             profit from every project.
           </p>
-          <p className="text-xl font-semibold text-gray-900 mt-4">$1499</p>
-          <button className="mt-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded">
+          <p className="text-xl font-semibold text-gray-900 mt-4 font-Sendako">$1499</p>
+          <button className="mt-6 bg-primaryColor text-white font-semibold py-6 px-6 rounded-full">
             LEARN MORE
           </button>
         </div>

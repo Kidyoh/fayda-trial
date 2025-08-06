@@ -3,11 +3,15 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Sendako';
-  src: url('/fonts/SENDAKO.otf') format('opentype');
+  font-family: "Sendako";
+  src: url("/fonts/SENDAKO.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
+}
+
+@theme {
+  --color-primary: #de933d;
 }
 
 @layer base {
@@ -82,7 +86,7 @@
       brightness(100%) contrast(100%);
     font-weight: bold;
   }
-} 
+}
 
 ::-webkit-scrollbar {
   width: 8px;

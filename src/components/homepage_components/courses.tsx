@@ -75,14 +75,14 @@ function AnimatedCourseCard({ card }) {
 
   return (
     <motion.div
-      className="bg-gray-100 overflow-hidden w-full"
+      className="bg-gray-100 overflow-hidden w-full rounded-2xl"
       style={{ minHeight: 420 , maxWidth: 420   }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
 
       <motion.div
-        className="w-full overflow-hidden"
+        className="w-full overflow-hidden relative z-20"
         animate={{
           height: hovered ? 120 : 300
         }}
@@ -92,7 +92,7 @@ function AnimatedCourseCard({ card }) {
         <motion.img
           src={card.img}
           alt={card.title}
-          className="w-full h-full object-cover"
+          className="w-full h-[120%] object-cover"
           animate={{ scale: hovered ? 1.03 : 1 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
           style={{ willChange: 'transform' }}
@@ -100,7 +100,7 @@ function AnimatedCourseCard({ card }) {
       </motion.div>
 
       <div className="px-6 py-6">
-        <div className="font-semibold text-2xl mb-3">{card.title}</div>
+        <div className="font-semibold text-2xl mb-3 font-Sendako">{card.title}</div>
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <img
@@ -112,7 +112,7 @@ function AnimatedCourseCard({ card }) {
               {card.instructor}
             </span>
           </div>
-          <span className="font-semibold text-2xl text-gray-900">
+          <span className="font-semibold text-2xl text-gray-900 font-Sendako">
             {card.price}
           </span>
         </div>
@@ -133,13 +133,13 @@ function AnimatedCourseCard({ card }) {
               <div className="flex items-center gap-4">
                 <a
                   href={card.link}
-                  className="bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 px-7 rounded shadow transition-shadow shadow-blue-200"
+                  className="bg-primaryColor text-white font-semibold font-Sendako py-2 px-7 rounded-full"
                 >
                   {card.cta}
                 </a>
                 <a
                   href={card.link}
-                  className="flex items-center font-medium text-gray-900 hover:underline ml-2"
+                  className="flex items-center font-Sendako font-medium text-gray-900 hover:underline ml-2"
                 >
                   Learn More
                   <svg
