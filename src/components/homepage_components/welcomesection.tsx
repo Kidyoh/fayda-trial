@@ -70,6 +70,15 @@ export default function WelcomeSection() {
       color: "text-amber-500",
       bgColor: "bg-amber-500/5",
       stats: "Weekly Awards"
+    }, 
+        {
+      icon: Trophy,
+      secondIcon: AtomIcon,
+      title: "Recognition",
+      description: "Recognition for Best Scores",
+      color: "text-amber-500",
+      bgColor: "bg-amber-500/5",
+      stats: "Weekly Awards"
     }
   ];
 
@@ -245,7 +254,7 @@ export default function WelcomeSection() {
 
       </div>
       {/* Features grid */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 place-content-center gap-8">
+      <div className="px-8 max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 place-content-center gap-2">
         {features.map((feature, index) => (
           <motion.div
             key={index}

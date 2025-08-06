@@ -32,7 +32,6 @@ export default function Home() {
           <WelcomeSection />
           <PackageCards/>
           <PackageDiscountSlider />
-          <FeaturedCourse/>
           <CourseGrid/>
           <Blog />
           <Testimonials />

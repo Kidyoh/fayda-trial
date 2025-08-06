@@ -215,7 +215,7 @@ export default function NavBar(response3: any) {
 
   return (
     <>
-      <div className="hidden xxmd:block fixed top-0 z-50 bg-white rounded-full mx-auto mt-4 w-11/12">
+      <div className="hidden xxmd:block fixed top-0 z-50 bg-white shadow-2xl shadow-primaryColor/10 rounded-full mx-auto mt-4 w-11/12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-8">
