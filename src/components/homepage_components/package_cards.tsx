@@ -88,7 +88,7 @@ const Card: React.FC<CardProps> = ({ title, price, button, description, bg, bord
 
 export default function PackageCards() {
   return (
-    <div className="bg-white py-10 px-2">
+    <div className="pb-10 md:pb-20 px-4">
       {/* Heading */}
       <div className="max-w-4xl mx-auto mb-10 relative flex flex-col items-center">
         <Image
@@ -96,9 +96,9 @@ export default function PackageCards() {
           alt="Fayida Packages"
           width={290}
           height={56}
-          className="absolute w-max top-3 left-1/2 -translate-x-1/2 z-10"
+          className="absolute w-full md:w-max top-3 left-1/2 -translate-x-1/2 z-10"
         />
-        <h2 className="text-2xl md:text-4xl font-extrabold font-Sendako tracking-wide uppercase text-white z-20 my-8">
+        <h2 className="text-3xl md:text-4xl font-extrabold font-Sendako tracking-wide uppercase text-white z-20 my-8">
           FAYIDA PACKAGES
         </h2>
 

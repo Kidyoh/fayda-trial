@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 const cards = [
   {
@@ -75,8 +76,8 @@ function AnimatedCourseCard({ card }) {
 
   return (
     <motion.div
-      className="bg-gray-100 overflow-hidden w-full rounded-2xl"
-      style={{ minHeight: 420 , maxWidth: 420   }}
+      className="bg-white shadow-2xl shadow-primaryColor/10 overflow-hidden w-full rounded-2xl"
+      style={{ minHeight: 420, maxWidth: 420 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -163,7 +164,20 @@ function AnimatedCourseCard({ card }) {
 
 export default function AnimatedCourseGrid() {
   return (
-    <div className="min-h-screen px-4 py-10">
+    <div className="min-h-screen py-10 px-4">
+      <div className="max-w-4xl mx-auto mb-10 relative flex flex-col items-center">
+        <Image
+          src="/svg/Asset 21.svg"
+          alt="Courses"
+          width={290}
+          height={56}
+          className="absolute w-full md:w-max top-3 left-1/2 -translate-x-1/2 z-10"
+        />
+        <h2 className="text-3xl md:text-4xl font-extrabold font-Sendako tracking-wide uppercase text-white z-20 my-8">
+          Courses
+        </h2>
+
+      </div>
       <div className="max-w-7xl mx-auto grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {cards.map((card, idx) => (
           <AnimatedCourseCard key={idx} card={card} />

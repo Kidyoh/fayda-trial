@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 const testimonials = [
@@ -45,8 +46,21 @@ function QuoteIcon() {
 
 export default function Testimonials() {
   return (
-    <section className="w-full px-4 py-12 bg-white">
-      <div className="mx-auto grid gap-10 md:grid-cols-2">
+    <section className="w-full px-4 py-12">
+      <div className="max-w-4xl mx-auto mb-10 relative flex flex-col items-center">
+        <Image
+          src="/svg/Asset 21.svg"
+          alt="Fayida Packages"
+          width={290}
+          height={56}
+          className="absolute w-full md:w-max top-3 left-1/2 -translate-x-1/2 z-10"
+        />
+        <h2 className="text-3xl md:text-4xl font-extrabold font-Sendako tracking-wide uppercase text-white z-20 my-8">
+          Testimonies
+        </h2>
+
+      </div>
+      <div className="mx-auto max-w-7xl grid gap-10 md:grid-cols-2">
         {testimonials.map((t, idx) => (
           <div key={idx} className="relative bg-white shadow-none p-6 rounded-lg">
             <div className="relative pl-12">

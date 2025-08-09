@@ -30,13 +30,13 @@ export default function CoverHome() {
           className="w-full bg-white rounded-3xl"
         />
       </div>
-        <Image
-          src="/svg/Asset 20.svg"
-          alt="Landing Image"
-          width={20}
-          height={20}
-          className="w-36 absolute -bottom-32 z-10 right-[20%]"
-        />
+      <Image
+        src="/svg/Asset 20.svg"
+        alt="Landing Image"
+        width={20}
+        height={20}
+        className="w-36 absolute -bottom-32 z-10 right-[20%]"
+      />
       <GetStarted />
       <FaqButton />
       <ScrollDown />
