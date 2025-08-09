@@ -6,7 +6,7 @@ const GetStarted = () => {
     return (
         <div className="hidden lg:flex absolute left-4 sm:left-10 top-1/2 -translate-y-1/2 w-[90%] sm:w-[280px] h-auto flex-col items-center justify-center px-4">
             <div>
-                <Image src="/svg/Axum.png" alt="App Icon" width={80} height={80} className="sm:w-[120px] sm:h-[120px]" />
+                <Image src="/Images/Axum.png" alt="App Icon" width={80} height={80} className="w-12 object-contain" />
             </div>
 
             <button className="bg-yellow-400 hover:bg-yellow-300 text-white font-bold w-full sm:w-52 h-12 sm:h-16 text-xl sm:text-3xl font-Sendako rounded-full mb-6 sm:mb-8">

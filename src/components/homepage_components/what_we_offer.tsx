@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { AtomIcon, Blocks, BookOpenCheck, FlaskConical, Globe, Orbit, PiIcon, Trophy, Vote } from "lucide-react";
+import { AtomIcon, Blocks, BookOpenCheck, FlaskConical, Globe, Orbit, PiIcon, Trophy, User, Users, Vote } from "lucide-react";
 import Image from "next/image";
 
 
@@ -44,22 +44,22 @@ const WhatWeOffer = () => {
             stats: "Weekly Awards"
         },
         {
-            icon: Trophy,
+            icon: Users,
             secondIcon: AtomIcon,
-            title: "Recognition",
-            description: "Recognition for Best Scores",
+            title: "Community Support",
+            description: "Supportive Learning Network",
             color: "text-amber-500",
             bgColor: "bg-amber-500/5",
-            stats: "Weekly Awards"
+            stats: "5000+ Active Members"
         },
         {
-            icon: Trophy,
+            icon: User,
             secondIcon: AtomIcon,
-            title: "Recognition",
-            description: "Recognition for Best Scores",
+            title: "Personalization",
+            description: "Tailored just for You",
             color: "text-amber-500",
             bgColor: "bg-amber-500/5",
-            stats: "Weekly Awards"
+            stats: "85% Faster Progress"
         }
     ];
     return (

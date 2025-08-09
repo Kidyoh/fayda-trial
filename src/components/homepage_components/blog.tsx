@@ -48,7 +48,7 @@ const Blog = () => {
   }, []);
 
   return (
-    <div className="md:py-10">
+    <>
       {blog?.map((item, index) => (
         <div
           id={item.link}
@@ -89,7 +89,7 @@ const Blog = () => {
           </div>
         </div>
       ))}
-    </div>
+    </>
   );
 };
 

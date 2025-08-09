@@ -1,5 +1,8 @@
 import Image from "next/image";
 import React from "react";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper/modules';
+import 'swiper/css';
 
 const testimonials = [
   {
@@ -19,7 +22,7 @@ With Chris as my coach I’ve reached goals I never thought were possible. Like 
   {
     quote: `Chris’ coaching and expertise is easily worth $10,000/hour. In the two years we have worked together, I’ve made over $500,000 a year from my design business while working 15 hours a week. Grown my following from ZERO to over 100,000.
 
-Chris is an incredible mentor, a powerful coach, and a generous friend. I can’t recommend him enough.`,
+Chris is an incredible mentor, a powerful coach, and a generous fri end. I can’t recommend him enough.`,
     name: 'Rich Webster',
     title: 'Richard Media Company',
     avatar: 'https://randomuser.me/api/portraits/men/24.jpg',
@@ -46,7 +49,7 @@ function QuoteIcon() {
 
 export default function Testimonials() {
   return (
-    <section className="w-full px-4 py-12">
+    <section className="w-full px-4 py-12 md:py-24">
       <div className="max-w-4xl mx-auto mb-10 relative flex flex-col items-center">
         <Image
           src="/svg/Asset 21.svg"
@@ -58,28 +61,38 @@ export default function Testimonials() {
         <h2 className="text-3xl md:text-4xl font-extrabold font-Sendako tracking-wide uppercase text-white z-20 my-8">
           Testimonies
         </h2>
-
       </div>
-      <div className="mx-auto max-w-7xl grid gap-4 md:gap-10 md:grid-cols-2">
-        {testimonials.map((t, idx) => (
-          <div key={idx} className="relative bg-white shadow-none p-6 rounded-lg">
-            <div className="relative pl-12">
-              <QuoteIcon />
-              <p className="md:text-lg text-gray-800 whitespace-pre-line">{t.quote}</p>
-            </div>
-            <div className="flex items-center mt-8 pl-4">
-              <img
-                className="w-16 h-16 rounded-full object-cover border-2 border-gray-100"
-                src={t.avatar}
-                alt={t.name}
-              />
-              <div className="ml-4">
-                <div className="font-extrabold text-2xl text-gray-900">{t.name}</div>
-                <div className="uppercase tracking-wide text-gray-500 text-sm font-semibold">{t.title}</div>
+      <div className="mx-auto max-w-5xl">
+        <Swiper
+          modules={[Autoplay]}
+          autoplay={{ delay: 4000, disableOnInteraction: false }}
+          loop={true}
+          spaceBetween={24}
+          slidesPerView={1}
+          className="w-full"
+        >
+          {testimonials.map((t, idx) => (
+            <SwiperSlide key={idx}>
+              <div className="relative bg-white border border-gray-200 p-6 rounded-lg">
+                <div className="relative pl-12">
+                  <QuoteIcon />
+                  <p className="md:text-lg text-gray-800 whitespace-pre-line">{t.quote}</p>
+                </div>
+                <div className="flex items-center mt-8 pl-4">
+                  <img
+                    className="w-16 h-16 rounded-full object-cover border-2 border-gray-100"
+                    src={t.avatar}
+                    alt={t.name}
+                  />
+                  <div className="ml-4">
+                    <div className="font-extrabold text-2xl text-gray-900">{t.name}</div>
+                    <div className="uppercase tracking-wide text-gray-500 text-sm font-semibold">{t.title}</div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        ))}
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
     </section>
   );

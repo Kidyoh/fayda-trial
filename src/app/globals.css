@@ -102,3 +102,16 @@
   border-radius: 9999px;
   border: 2px solid #ffffff;
 }
+
+@keyframes shine {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shine {
+  animation: shine linear infinite;
+}
