@@ -1,4 +1,5 @@
 'use client';
+import AdSlider from "@/components/homepage_components/ad_slider";
 import Blog from "@/components/homepage_components/blog";
 import CourseGrid from "@/components/homepage_components/courses";
 import CoverHome from "@/components/homepage_components/cover_home";
@@ -29,21 +30,22 @@ export default function Home() {
           <CoverHome />
           <Info />
           <WelcomeSection />
-          <div className="relative overflow-hidden w-screen">
-            <div className="w-[150vw] h-[250vh] absolute left-[45%] opacity-20 -z-10 -translate-x-1/2">
+          <AdSlider/>
+          <div className="relative overflow-hidden">
+            <div className="w-[180vw] h-[200vh] absolute -top-20 left-[45%] opacity-20 -z-10 -translate-x-1/2">
               <Image
                 src="/Images/Flowgreen1.png"
                 alt="background"
                 width={2000}
                 height={1000}
-                className="w-full h-full absolute opacity-100 rotate- -z-10 object-cover"
+                className="w-full h-full object-cover"
               />
             </div>
             <PackageCards />
             <CourseGrid />
           </div>
-          <div className="relative overflow-hidden w-screen">
-            <div className="w-[150vw] h-[250vh] absolute top-0 left-[44.5%] opacity-20 -z-10 -translate-x-1/2">
+          <div className="relative overflow-hidden">
+            <div className="w-[180vw] h-[250vh] absolute -top-20 left-[40%] opacity-20 -z-10 -translate-x-1/2">
               <Image
                 src="/Images/Floworange.png"
                 alt="background"

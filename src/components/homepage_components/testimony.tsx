@@ -60,12 +60,12 @@ export default function Testimonials() {
         </h2>
 
       </div>
-      <div className="mx-auto max-w-7xl grid gap-10 md:grid-cols-2">
+      <div className="mx-auto max-w-7xl grid gap-4 md:gap-10 md:grid-cols-2">
         {testimonials.map((t, idx) => (
           <div key={idx} className="relative bg-white shadow-none p-6 rounded-lg">
             <div className="relative pl-12">
               <QuoteIcon />
-              <p className="text-lg text-gray-800 whitespace-pre-line">{t.quote}</p>
+              <p className="md:text-lg text-gray-800 whitespace-pre-line">{t.quote}</p>
             </div>
             <div className="flex items-center mt-8 pl-4">
               <img

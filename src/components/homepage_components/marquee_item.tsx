@@ -16,7 +16,7 @@ const MarqueeItem = ({ items, from, to }) => {
                     return (
                         <div
                             key={name}
-                            className="w-40 h-32 mx-2 md:mx-8 mt-4"
+                            className="w-24 md:w-40 h-20 md:h-32 mx-2 md:mx-8 mt-4"
                         >
                             <Image src={img} width={128} height={96}  className="object-contain w-full h-full" alt="company logo" />
                         </div>
@@ -35,7 +35,7 @@ const MarqueeItem = ({ items, from, to }) => {
                     return (
                         <div
                             key={name}
-                            className="w-40 h-32 mx-2 md:mx-8 mt-4  "
+                            className="w-24 md:w-40 h-20 md:h-32 mx-2 md:mx-8 mt-4  "
                         >
                             <Image src={img} width={128} height={96} className="object-contain w-full h-full" alt="company logo" />
                         </div>

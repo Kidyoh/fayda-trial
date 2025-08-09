@@ -26,8 +26,8 @@ export default function WelcomeSection() {
   };
 
   return (
-    <div className="relative pt-10 overflow-hidden px-4">
-      <section className="max-w-7xl mx-auto h-screen flex items-center justify-center relative">
+    <div className="relative pb-10 lg:pb-0 pt-10 overflow-hidden px-4">
+      <section className="max-w-7xl mx-auto md:h-screen flex items-center justify-center relative">
         <Image
           src="/Images/TestTubes.png"
           alt="Welcome"

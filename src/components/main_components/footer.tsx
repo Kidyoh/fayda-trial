@@ -64,7 +64,7 @@ const itemVariants = {
 
 export default function Footer() {
   return (
-    <footer className="text-black relative h-[80dvh] ">
+    <footer className="text-black relative md:h-[80dvh]">
       {/* Background Images */}
       <Image
         width={1080}
@@ -90,7 +90,7 @@ export default function Footer() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-primaryColor relative z-40 flex flex-col h-full justify-between">
         {/* Main Footer Content */}
-        <div className="py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8">
+        <div className="py-12 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-12 gap-8">
           {/* Logo and Description */}
           <motion.div
             variants={containerVariants}
@@ -198,7 +198,7 @@ export default function Footer() {
                       <ChevronRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-200" />
                       {link.name}
                     </Link>
-                  </motion.li>
+                  </motion.li>  
                 ))}
               </motion.ul>
             </motion.div>

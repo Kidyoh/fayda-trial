@@ -4,7 +4,7 @@ import Image from 'next/image'; // If you're using Next.js
 const FAQButton = () => {
 
     return (
-        <div className="absolute right-4 sm:right-10 top-1/2 -translate-y-1/2 w-[90%] sm:w-[280px] h-auto flex flex-col items-center justify-center px-4">
+        <div className="hidden lg:flex absolute right-4 sm:right-10 top-1/2 -translate-y-1/2 w-[90%] sm:w-[280px] h-auto flex-col items-center justify-center px-4">
             <div>
                 <Image src="/svg/Asset 8.svg" alt="App Icon" width={80} height={80} className="sm:w-[120px] sm:h-[120px]" />
             </div>

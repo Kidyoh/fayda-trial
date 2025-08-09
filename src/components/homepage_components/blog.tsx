@@ -48,7 +48,7 @@ const Blog = () => {
   }, []);
 
   return (
-    <div className="py-10">
+    <div className="md:py-10">
       {blog?.map((item, index) => (
         <div
           id={item.link}
