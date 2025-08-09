@@ -49,7 +49,7 @@ function QuoteIcon() {
 
 export default function Testimonials() {
   return (
-    <section className="w-full px-4 py-12 md:py-24">
+    <section className="w-full px-4 pt-6 pb-8">
       <div className="max-w-4xl mx-auto mb-10 relative flex flex-col items-center">
         <Image
           src="/svg/Asset 21.svg"
@@ -73,7 +73,7 @@ export default function Testimonials() {
         >
           {testimonials.map((t, idx) => (
             <SwiperSlide key={idx}>
-              <div className="relative bg-white border border-gray-200 p-6 rounded-lg">
+              <div className="relative bg-primaryColor/10 border border-gray-200 p-6 rounded-lg">
                 <div className="relative pl-12">
                   <QuoteIcon />
                   <p className="md:text-lg text-gray-800 whitespace-pre-line">{t.quote}</p>

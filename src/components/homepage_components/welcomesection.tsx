@@ -88,6 +88,7 @@ export default function WelcomeSection() {
             height={600}
             className="w-[55%] absolute top-0 right-0 z-0 hidden md:flex object-contain"
           />
+
           <div className="relative">
             <div className="relative w-full aspect-video rounded-lg shadow-2xl overflow-hidden">
               <motion.div
@@ -154,6 +155,7 @@ export default function WelcomeSection() {
                       />
                     </div>
 
+
                     {/* Video Info */}
                     <div className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 z-10 transition-opacity duration-300 ${isHovering ? 'opacity-100' : 'opacity-0'}`}>
                       <div className="flex items-center justify-between text-white">
@@ -179,6 +181,7 @@ export default function WelcomeSection() {
                   <div className="absolute -bottom-6 -right-6 bg-emerald-500/10 w-24 h-24 rounded-full blur-xl" />
                 </div>
               </motion.div>
+
             </div>
           </div>
         </div>

@@ -9,9 +9,11 @@ const GetStarted = () => {
                 <Image src="/Images/Axum.png" alt="App Icon" width={80} height={80} className="w-12 object-contain" />
             </div>
 
-            <button className="bg-yellow-400 hover:bg-yellow-300 text-white font-bold w-full sm:w-52 h-12 sm:h-16 text-xl sm:text-3xl font-Sendako rounded-full mb-6 sm:mb-8">
-                Get Started
-            </button>
+            <a href='#course'>
+                <button className="bg-yellow-400 hover:bg-yellow-300 text-white hover:scale-105 active:scale-95 transition-all font-bold w-full sm:w-52 h-12 sm:h-16 text-xl sm:text-3xl font-Sendako rounded-full mb-6 sm:mb-8">
+                    Learn Now
+                </button>
+            </a>
 
             <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
                 <a href="https://apps.apple.com" target="_blank" rel="noopener noreferrer">

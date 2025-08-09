@@ -9,7 +9,7 @@ const FAQButton = () => {
                 <Image src="/Images/Axum.png" alt="App Icon" width={80} height={80} className="w-12 object-contain" />  
             </div>
 
-            <button className="bg-yellow-400 hover:bg-yellow-300 text-white font-bold w-full sm:w-52 h-12 sm:h-16 text-xl sm:text-3xl font-Sendako rounded-full mb-6 sm:mb-8">
+            <button className="bg-yellow-400 hover:bg-yellow-300 text-white hover:scale-105 active:scale-95 transition-all font-bold w-full sm:w-52 h-12 sm:h-16 text-xl sm:text-3xl font-Sendako rounded-full mb-6 sm:mb-8">
                 FAQ
             </button>
 

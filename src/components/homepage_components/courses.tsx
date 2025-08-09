@@ -164,7 +164,15 @@ function AnimatedCourseCard({ card }) {
 
 export default function AnimatedCourseGrid() {
   return (
-    <div className="min-h-screen py-10 px-4">
+    <section id="course" className="min-h-screen py-10 px-4 relative">
+      {/* Decorative Brush2.png */}
+      <Image
+        src="/Images/Brush2.png"
+        alt="Brush Decoration"
+        width={300}
+        height={180}
+        className="w-28 absolute top-1/2 right-0 md:right-0 opacity-80 pointer-events-none select-none"
+      />
       <div className="max-w-4xl mx-auto mb-10 relative flex flex-col items-center">
         <Image
           src="/svg/Asset 21.svg"
@@ -176,13 +184,12 @@ export default function AnimatedCourseGrid() {
         <h2 className="text-3xl md:text-4xl font-extrabold font-Sendako tracking-wide uppercase text-white z-20 my-8">
           Courses
         </h2>
-
       </div>
       <div className="max-w-7xl mx-auto grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {cards.map((card, idx) => (
           <AnimatedCourseCard key={idx} card={card} />
         ))}
       </div>
-    </div>
+    </section>
   );
 }
