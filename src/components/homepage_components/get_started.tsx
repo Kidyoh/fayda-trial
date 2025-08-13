@@ -6,7 +6,7 @@ const GetStarted = () => {
     return (
         <div className="hidden lg:flex absolute left-4 sm:left-10 top-1/2 -translate-y-1/2 w-[90%] sm:w-[280px] h-auto flex-col items-center justify-center px-4">
             <div>
-                <Image src="/Images/Axum.png" alt="App Icon" width={80} height={80} className="w-12 object-contain" />
+                <Image src="/Images/eth.png" alt="App Icon" width={80} height={80} className="w-36 object-contain" />
             </div>
 
             <a href='#course'>

@@ -100,8 +100,8 @@ export default function Footer() {
           >
             <motion.div variants={itemVariants}>
               <img
-                className="h-20 w-auto px-4 bg-primaryColor rounded-lg"
-                src="/common_files/main/logo_white.png"
+                className="h-20 w-auto"
+                src="/Images/faydagreenlogo.png"
                 alt="Fayida Academy"
               />
               <p className="mt-4 text-sm text-gray-700 leading-relaxed">
