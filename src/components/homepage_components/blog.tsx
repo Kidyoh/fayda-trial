@@ -228,7 +228,7 @@ const BlogCard = ({ post, index }: { post: any; index: number }) => {
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
