@@ -5,35 +5,35 @@ import Image from "next/image";
 const parallaxSlides = [
   {
     id: 1,
-    backgroundImage: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1600&q=80",
-    title: "የትምህርት መንገድ",
-    subtitle: "Educational Journey",
-    description: "Discover innovative learning paths that blend traditional Ethiopian wisdom with modern educational technology.",
-    overlayColor: "from-primaryColor/80 to-fourthColor/60",
+    backgroundImage: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80",
+    title: "Tech Innovators",
+    subtitle: "Leading the Future",
+    description: "Discover cutting-edge solutions from Tech Innovators, your partner in digital transformation and IT excellence.",
+    overlayColor: "from-green-950/80 to-black/50",
   },
   {
     id: 2,
-    backgroundImage: "https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=1600&q=80",
-    title: "ዲጂታል ትምህርት",
-    subtitle: "Digital Learning",
-    description: "Embrace the future of education with cutting-edge digital tools and interactive learning experiences.",
-    overlayColor: "from-secondaryColor/80 to-thirdColor/60",
+    backgroundImage: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1600&q=80",
+    title: "Green Energy Co.",
+    subtitle: "Powering Tomorrow",
+    description: "Join Green Energy Co. in building a sustainable future with clean, renewable energy for homes and businesses.",
+    overlayColor: "from-green-950/80 to-black/50",
   },
   {
     id: 3,
-    backgroundImage: "https://images.unsplash.com/photo-1497486751825-1233686d5d80?auto=format&fit=crop&w=1600&q=80",
-    title: "የማህበረሰብ ትምህርት",
-    subtitle: "Community Learning",
-    description: "Building stronger communities through collaborative education and shared knowledge systems.",
-    overlayColor: "from-thirdColor/80 to-primaryColor/60",
+    backgroundImage: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=1600&q=80",
+    title: "Urban Eats",
+    subtitle: "Taste the City",
+    description: "Experience culinary delights from Urban Eats, serving fresh flavors and gourmet experiences across the city.",
+    overlayColor: "from-green-950/80 to-black/50",
   },
   {
     id: 4,
-    backgroundImage: "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=1600&q=80",
-    title: "የሴቶች ብቃት ማሳደግ",
-    subtitle: "Women's Empowerment",
-    description: "Empowering women through education and creating opportunities for leadership and growth.",
-    overlayColor: "from-fourthColor/80 to-secondaryColor/60",
+    backgroundImage: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=1600&q=80",
+    title: "TravelSphere",
+    subtitle: "Explore the World",
+    description: "Adventure awaits with TravelSphere. Book your next journey and discover new destinations with expert guides.",
+    overlayColor: "from-green-950/80 to-black/50",
   },
 ];
 
@@ -58,7 +58,7 @@ const ParallaxSlider = () => {
   const smoothTextY = useSpring(textY, { stiffness: 400, damping: 40 });
   const smoothScale = useSpring(scale, { stiffness: 400, damping: 40 });
 
-  // Auto-play functionality
+
   useEffect(() => {
     const startAutoPlay = () => {
       autoPlayRef.current = setInterval(() => {
@@ -105,8 +105,7 @@ const ParallaxSlider = () => {
           transition={{ duration: 1, ease: "easeInOut" }}
         >
           <motion.div
-            style={{ y: smoothBackgroundY, scale: smoothScale }}
-            className="absolute inset-0 w-full h-[120%] -top-[10%]"
+            className="absolute inset-0 w-full h-full"
           >
             <Image
               src={slide.backgroundImage}
@@ -185,7 +184,7 @@ const ParallaxSlider = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              ይነሱ / Explore More
+             Explore More
             </motion.button>
           </motion.div>
         </div>
