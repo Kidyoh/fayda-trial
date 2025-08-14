@@ -1,123 +1,248 @@
-import React, { useEffect, useState } from "react";
-import { motion, useMotionValue } from "framer-motion";
+import React, { useEffect, useState, useRef } from "react";
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
+import Image from "next/image";
 
-const imgs = [
-    "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1444065381814-865dc9da92c0?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1465378553266-236e6dd6c8df?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=1200&q=80",
+const parallaxSlides = [
+  {
+    id: 1,
+    backgroundImage: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1600&q=80",
+    title: "የትምህርት መንገድ",
+    subtitle: "Educational Journey",
+    description: "Discover innovative learning paths that blend traditional Ethiopian wisdom with modern educational technology.",
+    overlayColor: "from-primaryColor/80 to-fourthColor/60",
+  },
+  {
+    id: 2,
+    backgroundImage: "https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=1600&q=80",
+    title: "ዲጂታል ትምህርት",
+    subtitle: "Digital Learning",
+    description: "Embrace the future of education with cutting-edge digital tools and interactive learning experiences.",
+    overlayColor: "from-secondaryColor/80 to-thirdColor/60",
+  },
+  {
+    id: 3,
+    backgroundImage: "https://images.unsplash.com/photo-1497486751825-1233686d5d80?auto=format&fit=crop&w=1600&q=80",
+    title: "የማህበረሰብ ትምህርት",
+    subtitle: "Community Learning",
+    description: "Building stronger communities through collaborative education and shared knowledge systems.",
+    overlayColor: "from-thirdColor/80 to-primaryColor/60",
+  },
+  {
+    id: 4,
+    backgroundImage: "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=1600&q=80",
+    title: "የሴቶች ብቃት ማሳደግ",
+    subtitle: "Women's Empowerment",
+    description: "Empowering women through education and creating opportunities for leadership and growth.",
+    overlayColor: "from-fourthColor/80 to-secondaryColor/60",
+  },
 ];
 
-const ONE_SECOND = 1000;
-const AUTO_DELAY = ONE_SECOND * 10;
-const DRAG_BUFFER = 50;
+const ParallaxSlider = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const autoPlayRef = useRef<NodeJS.Timeout>();
 
-const SPRING_OPTIONS = {
-  type: "spring",
-  mass: 3,
-  stiffness: 400,
-  damping: 50,
-};
+  // Scroll-based parallax
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
 
-export const SwipeCarousel = () => {
-  const [imgIndex, setImgIndex] = useState(0);
+  // Parallax transforms
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const textY = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.2, 1, 0.8]);
 
-  const dragX = useMotionValue(0);
+  // Smooth spring animations
+  const smoothBackgroundY = useSpring(backgroundY, { stiffness: 400, damping: 40 });
+  const smoothTextY = useSpring(textY, { stiffness: 400, damping: 40 });
+  const smoothScale = useSpring(scale, { stiffness: 400, damping: 40 });
 
+  // Auto-play functionality
   useEffect(() => {
-    const intervalRef = setInterval(() => {
-      const x = dragX.get();
+    const startAutoPlay = () => {
+      autoPlayRef.current = setInterval(() => {
+        setCurrentSlide((prev) => (prev + 1) % parallaxSlides.length);
+      }, 5000);
+    };
 
-      if (x === 0) {
-        setImgIndex((pv) => {
-          if (pv === imgs.length - 1) {
-            return 0;
-          }
-          return pv + 1;
-        });
+    startAutoPlay();
+
+    return () => {
+      if (autoPlayRef.current) {
+        clearInterval(autoPlayRef.current);
       }
-    }, AUTO_DELAY);
-
-    return () => clearInterval(intervalRef);
+    };
   }, []);
 
-  const onDragEnd = () => {
-    const x = dragX.get();
-
-    if (x <= -DRAG_BUFFER && imgIndex < imgs.length - 1) {
-      setImgIndex((pv) => pv + 1);
-    } else if (x >= DRAG_BUFFER && imgIndex > 0) {
-      setImgIndex((pv) => pv - 1);
+  const handleSlideChange = (index: number) => {
+    setCurrentSlide(index);
+    if (autoPlayRef.current) {
+      clearInterval(autoPlayRef.current);
     }
+    setTimeout(() => {
+      autoPlayRef.current = setInterval(() => {
+        setCurrentSlide((prev) => (prev + 1) % parallaxSlides.length);
+      }, 5000);
+    }, 1000);
   };
 
   return (
-    <div className="relative overflow-hidden py-8">
+    <div
+      ref={containerRef}
+      className="relative w-full h-[60vh] mb-12 overflow-hidden"
+    >
+      {/* Background slides with parallax */}
+      {parallaxSlides.map((slide, index) => (
+        <motion.div
+          key={slide.id}
+          className="absolute inset-0"
+          initial={{ opacity: 0 }}
+          animate={{
+            opacity: currentSlide === index ? 1 : 0,
+            scale: currentSlide === index ? 1 : 1.1
+          }}
+          transition={{ duration: 1, ease: "easeInOut" }}
+        >
+          <motion.div
+            style={{ y: smoothBackgroundY, scale: smoothScale }}
+            className="absolute inset-0 w-full h-[120%] -top-[10%]"
+          >
+            <Image
+              src={slide.backgroundImage}
+              alt={slide.title}
+              fill
+              className="object-cover"
+              priority={index === 0}
+            />
+          </motion.div>
+
+          {/* Gradient overlay */}
+          <div className={`absolute inset-0 bg-gradient-to-br ${slide.overlayColor}`} />
+
+          {/* Ethiopian pattern overlay */}
+          <div className="absolute inset-0 opacity-10">
+            <div
+              className="w-full h-full"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='white' fill-opacity='0.1'%3E%3Cpath d='M40 40l20-20v40l-20-20zm0 0l-20-20v40l20-20z'/%3E%3C/g%3E%3C/svg%3E")`,
+                backgroundSize: '80px 80px'
+              }}
+            />
+          </div>
+        </motion.div>
+      ))}
+
+      {/* Content with parallax text */}
       <motion.div
-        drag="x"
-        dragConstraints={{
-          left: 0,
-          right: 0,
-        }}
-        style={{
-          x: dragX,
-        }}
-        animate={{
-          translateX: `-${imgIndex * 100}%`,
-        }}
-        transition={SPRING_OPTIONS}
-        onDragEnd={onDragEnd}
-        className="flex cursor-grab items-center active:cursor-grabbing"
+        style={{ y: smoothTextY }}
+        className="relative z-20 h-full flex items-center justify-center px-4"
       >
-        <Images imgIndex={imgIndex} />
+        <div className="max-w-4xl text-center text-white">
+          <motion.div
+            key={currentSlide}
+            initial={{ opacity: 0, y: 60 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -60 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            {/* Amharic Title */}
+            <motion.h1
+              className="text-4xl md:text-6xl lg:text-7xl font-bold font-Sendako mb-4"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              {parallaxSlides[currentSlide].title}
+            </motion.h1>
+
+            {/* English Subtitle */}
+            <motion.h2
+              className="text-xl md:text-2xl lg:text-3xl font-semibold mb-6 opacity-90"
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+            >
+              {parallaxSlides[currentSlide].subtitle}
+            </motion.h2>
+
+            {/* Description */}
+            <motion.p
+              className="text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-8 opacity-80"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.6 }}
+            >
+              {parallaxSlides[currentSlide].description}
+            </motion.p>
+
+            {/* CTA Button */}
+            <motion.button
+              className="bg-white/20 backdrop-blur-md text-white px-8 py-4 rounded-full font-semibold text-lg border border-white/30 hover:bg-white/30 transition-all duration-300"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.8, duration: 0.6 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              ይነሱ / Explore More
+            </motion.button>
+          </motion.div>
+        </div>
       </motion.div>
 
-      <Dots imgIndex={imgIndex} setImgIndex={setImgIndex} />
+      {/* Navigation dots */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30">
+        <div className="flex space-x-3">
+          {parallaxSlides.map((_, index) => (
+            <motion.button
+              key={index}
+              onClick={() => handleSlideChange(index)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${currentSlide === index
+                  ? 'bg-white scale-125'
+                  : 'bg-white/50 hover:bg-white/70'
+                }`}
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.9 }}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Side navigation */}
+      <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-30 hidden md:block">
+        <div className="flex flex-col space-y-4">
+          {parallaxSlides.map((slide, index) => (
+            <motion.button
+              key={slide.id}
+              onClick={() => handleSlideChange(index)}
+              className={`w-1 h-8 rounded-full transition-all duration-300 ${currentSlide === index
+                  ? 'bg-white'
+                  : 'bg-white/30 hover:bg-white/50'
+                }`}
+              whileHover={{ scaleY: 1.2 }}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Progress indicator */}
+      <div className="absolute top-0 left-0 w-full h-1 bg-white/20 z-30">
+        <motion.div
+          className="h-full bg-white"
+          initial={{ width: "0%" }}
+          animate={{ width: "100%" }}
+          transition={{ duration: 5, ease: "linear" }}
+          key={currentSlide}
+        />
+      </div>
     </div>
   );
 };
 
-const Images = ({ imgIndex }) => {
-  return (
-    <>
-      {imgs.map((imgSrc, idx) => {
-        return (
-          <motion.div
-            key={idx}
-            style={{
-              backgroundImage: `url(${imgSrc})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
-            animate={{
-              scale: imgIndex === idx ? 0.95 : 0.85,
-            }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="aspect-video w-screen h-[500px] shrink-0 rounded-xl object-cover"
-          />
-        );
-      })}
-    </>
-  );
+const AdSlider = () => {
+  return <ParallaxSlider />;
 };
 
-const Dots = ({ imgIndex, setImgIndex }) => {
-  return (
-    <div className="mt-4 flex w-full justify-center gap-2">
-      {imgs.map((_, idx) => {
-        return (
-          <button
-            key={idx}
-            onClick={() => setImgIndex(idx)}
-            className={`h-3 w-3 rounded-full transition-colors ${
-              idx === imgIndex ? "bg-primaryColor   " : "bg-neutral-500"
-            }`}
-          />
-        );
-      })}
-    </div>
-  );
-};
+export default AdSlider;
 

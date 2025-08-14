@@ -173,6 +173,14 @@ export default function AnimatedCourseGrid() {
         height={180}
         className="w-28 absolute top-1/2 right-0 md:right-0 opacity-80 pointer-events-none select-none"
       />
+
+      <Image
+        src="/Images/spiral.png"
+        alt="Brush Decoration"
+        width={300}
+        height={180}
+        className="w-28 absolute top-1/2 left-0 md:right-0 opacity-80 pointer-events-none select-none"
+      />
       <div className="max-w-4xl mx-auto mb-10 relative flex flex-col items-center">
         <Image
           src="/svg/Asset 21.svg"

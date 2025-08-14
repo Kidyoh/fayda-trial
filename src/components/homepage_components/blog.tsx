@@ -98,9 +98,8 @@ const BlogCard = ({ post, index }: { post: any; index: number }) => {
 
   return (
     <div
-      className={`group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 bg-white h-[450px] ${
-        post.featured ? 'md:col-span-2' : ''
-      }`}
+      className={`group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 bg-white h-[450px] ${post.featured ? 'md:col-span-2' : ''
+        }`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -108,18 +107,15 @@ const BlogCard = ({ post, index }: { post: any; index: number }) => {
       <div className="absolute inset-0 opacity-10 z-10">
         <div className="w-full h-full bg-gradient-to-br from-primaryColor/20 via-transparent to-fourthColor/20"></div>
       </div>
-      
+
       {/* Featured Badge */}
       {post.featured && (
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.5 }}
+        <div
           className="absolute top-4 left-4 z-30 bg-gradient-to-r from-fourthColor to-thirdColor text-white px-3 py-1 rounded-full text-sm font-semibold font-Sendako flex items-center gap-1"
         >
           <Star size={14} fill="white" />
           Featured
-        </motion.div>
+        </div>
       )}
 
       {/* Image Container */}
@@ -136,10 +132,10 @@ const BlogCard = ({ post, index }: { post: any; index: number }) => {
             className="object-cover"
           />
         </motion.div>
-        
+
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-20"></div>
-        
+
         {/* Category Badge */}
         <div className="absolute top-4 right-4 z-30 bg-primaryColor/90 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-semibold">
           {post.category}
@@ -150,27 +146,24 @@ const BlogCard = ({ post, index }: { post: any; index: number }) => {
       <div className="relative p-5 flex flex-col justify-between flex-1 z-20">
         <div>
           {/* Amharic Title */}
-          <h3 className={`font-bold text-primaryColor mb-2 font-Sendako line-clamp-2 ${
-            post.featured ? 'text-xl' : 'text-lg'
-          }`}>
+          <h3 className={`font-bold text-primaryColor mb-2 font-Sendako line-clamp-2 ${post.featured ? 'text-xl' : 'text-lg'
+            }`}>
             {post.title}
           </h3>
-          
+
           {/* English Subtitle */}
-          <h4 className={`text-gray-600 mb-3 font-medium ${
-            post.featured ? 'text-base' : 'text-sm'
-          }`}>
+          <h4 className={`text-gray-600 mb-3 font-medium ${post.featured ? 'text-base' : 'text-sm'
+            }`}>
             {post.subtitle}
           </h4>
-          
+
           {/* Description */}
-          <p className={`text-gray-700 mb-4 ${
-            post.featured ? 'text-sm line-clamp-4' : 'text-sm line-clamp-3'
-          }`}>
+          <p className={`text-gray-700 mb-4 ${post.featured ? 'text-sm line-clamp-4' : 'text-sm line-clamp-3'
+            }`}>
             {post.description}
           </p>
         </div>
-        
+
         <div>
           {/* Meta Info */}
           <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
@@ -185,7 +178,7 @@ const BlogCard = ({ post, index }: { post: any; index: number }) => {
               </div>
             </div>
           </div>
-          
+
           {/* Tags */}
           <div className="flex flex-wrap gap-1 mb-3">
             {post.tags.slice(0, post.featured ? 3 : 2).map((tag: string) => (
@@ -197,27 +190,26 @@ const BlogCard = ({ post, index }: { post: any; index: number }) => {
               </span>
             ))}
           </div>
-          
+
           {/* Actions */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <motion.button
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setIsLiked(!isLiked)}
-                className={`flex items-center gap-1 text-xs transition-colors ${
-                  isLiked ? 'text-red-500' : 'text-gray-500'
-                }`}
+                className={`flex items-center gap-1 text-xs transition-colors ${isLiked ? 'text-red-500' : 'text-gray-500'
+                  }`}
               >
                 <Heart size={12} fill={isLiked ? 'currentColor' : 'none'} />
                 {post.likes + (isLiked ? 1 : 0)}
               </motion.button>
-              
+
               <button className="flex items-center gap-1 text-xs text-gray-500 hover:text-primaryColor transition-colors">
                 <Share2 size={12} />
                 Share
               </button>
             </div>
-            
+
             <Link
               href={`/blogs/${post.id}`}
               className="group/link flex items-center gap-1 text-xs text-primaryColor hover:text-fourthColor font-semibold transition-colors"
@@ -235,9 +227,9 @@ const BlogCard = ({ post, index }: { post: any; index: number }) => {
 const Blog = () => {
   const [filter, setFilter] = useState('All');
   const categories = ['All', 'Education', 'Technology', 'Community', 'Culture', 'Environment', 'Empowerment'];
-  
-  const filteredPosts = filter === 'All' 
-    ? blogPosts 
+
+  const filteredPosts = filter === 'All'
+    ? blogPosts
     : blogPosts.filter(post => post.category === filter);
 
   return (
@@ -251,71 +243,48 @@ const Blog = () => {
 
       <div className="max-w-7xl mx-auto relative">
         {/* Header */}
-        <div className="text-center mb-12">
-          <div className="relative inline-block">
-            <Image
-              src="/svg/Asset 21.svg"
-              alt="Blog Section"
-              width={290}
-              height={56}
-              className="absolute top-3 left-1/2 -translate-x-1/2 z-10"
-            />
-            <motion.h2
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-4xl md:text-5xl font-extrabold font-Sendako text-white z-20 relative mt-8 mb-4"
-            >
-              ጦማሮች / BLOGS
-            </motion.h2>
-          </div>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-gray-600 max-w-2xl mx-auto text-lg"
-          >
-            Discover insights, stories, and innovations shaping Ethiopia&apos;s educational landscape
-          </motion.p>
+        <div className="max-w-4xl mx-auto mb-10 relative flex flex-col items-center">
+          <Image
+            src="/svg/Asset 21.svg"
+            alt="Courses"
+            width={290}
+            height={56}
+            className="absolute w-full md:w-max top-3 left-1/2 -translate-x-1/2 z-10"
+          />
+          <h2 className="text-3xl md:text-4xl font-extrabold font-Sendako tracking-wide uppercase text-white z-20 my-8">
+            Blogs
+          </h2>
         </div>
 
         {/* Filter Tabs */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
+        <div
           className="flex flex-wrap justify-center gap-2 mb-12"
         >
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => setFilter(category)}
-              className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
-                filter === category
+              className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${filter === category
                   ? 'bg-primaryColor text-white shadow-lg scale-105'
                   : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
-              }`}
+                }`}
             >
               {category}
             </button>
           ))}
-        </motion.div>
+        </div>
 
         {/* Blog Grid */}
-        <motion.div
-          layout
+        <div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr"
         >
           {filteredPosts.map((post, index) => (
             <BlogCard key={post.id} post={post} index={index} />
           ))}
-        </motion.div>
+        </div>
 
         {/* View All Button */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
+        <div
           className="text-center mt-12"
         >
           <Link
@@ -326,7 +295,7 @@ const Blog = () => {
             View All Blogs
             <ArrowRight size={20} />
           </Link>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

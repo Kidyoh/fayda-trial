@@ -64,6 +64,13 @@ const WhatWeOffer = () => {
     ];
     return (
         <div className="relative py-10 overflow-hidden">
+            <Image
+                src="/Images/spiral.png"
+                alt="Brush Decoration"
+                width={300}
+                height={180}
+                className="w-28 absolute top-1/2 right-0"
+            />
             <div className="max-w-4xl mx-auto mb-10 relative flex flex-col items-center">
                 <Image
                     src="/svg/Asset 21.svg"
