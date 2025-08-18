@@ -2,25 +2,22 @@
 import { apiUrl } from "@/apiConfig";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Search, Filter, BookOpen as Book, ChevronDown, X } from "lucide-react";
+import { Search, Filter, BookOpen as Book, ChevronRight, X, Heart, Star, Users } from "lucide-react";
 import useFetchStore from "../store/fetchStore";
 import { Checkbox } from "@/components/ui/checkbox";
 
 // Create Badge component since it's missing
 const Badge = ({ children, className = "", variant = "default" }) => {
   return (
-    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-      variant === "outline" ? "border " : ""
-    } ${className}`}>
+    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${variant === "outline" ? "border " : ""
+      } ${className}`}>
       {children}
     </span>
   );
 };
 
-// Create Skeleton component since it's missing
 const Skeleton = ({ className = "" }) => {
-  return <div className={`animate-pulse bg-gray-200 rounded ${className}`} />;
+  return <div className={`animate-pulse rounded ${className}`} />;
 };
 
 export default function SearchPackages() {
@@ -28,7 +25,8 @@ export default function SearchPackages() {
   const [loading, setLoading] = useState(true);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("all");
-  
+
+
   // Filter states
   const [filters, setFilters] = useState({
     all: true,
@@ -41,14 +39,14 @@ export default function SearchPackages() {
     artLiterature: false,
     other: false
   });
-  
+
   const setSearchQuery = useFetchStore((state) => state.setSearchQuery);
   const searchQuery = useFetchStore((state) => state.searchQuery);
-  
+
   // Filter categories
   const filterCategories = [
-    { 
-      name: "Academic Grades", 
+    {
+      name: "Academic Grades",
       items: [
         { id: "grade9", label: "Grade 9", tag: "Grade 9" },
         { id: "grade10", label: "Grade 10", tag: "Grade 10" },
@@ -56,8 +54,8 @@ export default function SearchPackages() {
         { id: "grade12", label: "Grade 12", tag: "Grade 12" },
       ]
     },
-    { 
-      name: "Course Types", 
+    {
+      name: "Course Types",
       items: [
         { id: "computer", label: "Computer Studies", tag: "Computer" },
         { id: "language", label: "Language", tag: "Language" },
@@ -66,7 +64,7 @@ export default function SearchPackages() {
       ]
     }
   ];
-  
+
   // Popular tags that appear at the top
   const popularTags = [
     { id: "all", label: "All Courses" },
@@ -158,12 +156,12 @@ export default function SearchPackages() {
     if (!item.packageName.toLowerCase().includes(searchQuery.toLowerCase())) {
       return false;
     }
-    
+
     // If "All" filter is active, show everything
     if (filters.all) {
       return true;
     }
-    
+
     // Check if any of the selected filters match the package tag
     const tagConditions = [
       filters.grade9 && item.tag.toLowerCase().includes("Grade 9".toLowerCase()),
@@ -175,20 +173,21 @@ export default function SearchPackages() {
       filters.artLiterature && item.tag.toLowerCase().includes("Art Litrature".toLowerCase()),
       filters.other && item.tag.toLowerCase().includes("Other".toLowerCase()),
     ];
-    
+
     return tagConditions.some(condition => condition);
   });
 
+
   const renderSkeletons = () => {
     return Array(6).fill(0).map((_, index) => (
-      <div key={`skeleton-${index}`} className="bg-white rounded-2xl overflow-hidden shadow-md">
-        <Skeleton className="h-48 w-full" />
+      <div key={`skeleton-${index}`} className="bg-white rounded-2xl overflow-hidden shadow-lg border border-[#c7cc3f]/30">
+        <Skeleton className="h-48 w-full bg-gradient-to-r from-[#bf8c13]/20 to-[#c7cc3f]/20" />
         <div className="p-4">
-          <Skeleton className="h-6 w-3/4 mb-2" />
-          <Skeleton className="h-4 w-1/2 mb-4" />
+          <Skeleton className="h-6 w-3/4 mb-2 bg-[#07705d]/20" />
+          <Skeleton className="h-4 w-1/2 mb-4 bg-[#bf8c13]/20" />
           <div className="flex justify-between items-center">
-            <Skeleton className="h-5 w-1/3" />
-            <Skeleton className="h-8 w-24 rounded-full" />
+            <Skeleton className="h-5 w-1/3 bg-[#c7cc3f]/20" />
+            <Skeleton className="h-8 w-24 rounded-full bg-[#07705d]/20" />
           </div>
         </div>
       </div>
@@ -196,49 +195,46 @@ export default function SearchPackages() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white relative">
+      {/* Geometric Ethiopian pattern background */}
+      <div className="absolute inset-0 pointer-events-none opacity-10 z-0" style={{ backgroundImage: `url('data:image/svg+xml,%3Csvg width=\'80\' height=\'80\' viewBox=\'0 0 80 80\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'#bf8c13\' fill-opacity=\'0.12\'%3E%3Cpath d=\'M40 40l20-20v40l-20-20zm0 0l-20-20v40l20-20z\'/%3E%3C/g%3E%3C/svg%3E')`, backgroundSize: '80px 80px' }} />
+
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-primaryColor to-primaryColor/80 text-white py-12">
+      <section className="relative bg-[url(/Background/landing-bg.jpg)] bg-cover bg-center text-white pb-16 md:pt-24">
         <div className="container mx-auto px-6 z-10 relative">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="max-w-3xl mx-auto text-center"
-          >
-            <h1 className="text-4xl font-bold mb-4">Find Your Perfect Learning Package</h1>
-            <p className="text-lg mb-8 text-white/90">Discover courses tailored to your academic needs and interests</p>
-            
-            <div className="bg-white rounded-full shadow-lg p-2 flex items-center">
-              <Search className="ml-2 text-gray-400" size={20} />
+          <div className="max-w-3xl mx-auto text-center">
+            <h1 className="text-4xl sm:text-5xl font-bold mb-6">Find Your Perfect Learning Package</h1>
+            <p className="text-xl mb-8 text-white/90">Discover courses tailored to your academic needs and interests</p>
+
+            <div className="bg-white rounded-2xl shadow-lg p-3 flex items-center">
+              <Search className="ml-3 text-[#07705d]" size={20} />
               <input
                 type="text"
                 placeholder="Search for packages..."
                 value={searchQuery}
                 onChange={handleSearchChange}
-                className="w-full px-4 py-2 text-gray-800 focus:outline-none bg-transparent"
+                className="w-full px-4 py-3 text-gray-800 focus:outline-none bg-transparent text-lg"
               />
-              <button className="ml-auto bg-primaryColor text-white font-medium px-5 py-2 rounded-full hover:bg-primaryColor/90 transition">
+              <button className="ml-auto bg-[#bf8c13] text-white font-semibold px-6 py-3 rounded-xl hover:bg-[#bf8c13]/90 transition-all duration-200">
                 Search
               </button>
             </div>
-          </motion.div>
+          </div>
         </div>
         <div className="absolute inset-0 bg-black/10 z-0"></div>
       </section>
 
       {/* Quick Filter Tags */}
-      <section className="container mx-auto px-6 py-6">
-        <div className="flex flex-wrap gap-2 justify-center">
+      <section className="container mx-auto px-6 py-8 relative z-10">
+        <div className="flex flex-wrap gap-3 justify-center">
           {popularTags.map((tag) => (
             <button
               key={tag.id}
               onClick={() => handleTagClick(tag.id)}
-              className={`px-4 py-2 rounded-full transition-all ${
-                activeTab === tag.id
-                  ? "bg-primaryColor text-white shadow-md"
-                  : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-200"
-              }`}
+              className={`px-6 py-3 rounded-xl font-semibold transition-all duration-200 border shadow-sm ${activeTab === tag.id
+                  ? "bg-[#07705d] text-white border-[#07705d] shadow-md"
+                  : "bg-white text-[#07705d] hover:bg-[#c7cc3f]/10 border-[#c7cc3f]"
+                }`}
             >
               {tag.label}
             </button>
@@ -246,16 +242,16 @@ export default function SearchPackages() {
         </div>
       </section>
 
-      <div className="container mx-auto px-6 pb-16">
+      <div className="container mx-auto px-6 pb-16 relative z-10">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Mobile Filter Toggle */}
           <div className="lg:hidden flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold text-gray-800">
+            <h2 className="text-xl font-semibold text-[#07705d]">
               {loading ? "Loading packages..." : `${filteredPackages.length} packages found`}
             </h2>
             <button
               onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
-              className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-gray-200 shadow-sm"
+              className="flex items-center gap-2 px-4 py-2 bg-white rounded-xl border border-[#c7cc3f] shadow-sm text-[#07705d] hover:bg-[#c7cc3f]/10 transition-colors"
             >
               <Filter size={18} />
               <span>Filters</span>
@@ -263,37 +259,35 @@ export default function SearchPackages() {
           </div>
 
           {/* Mobile Filter Drawer */}
-          <div className={`fixed inset-0 bg-black/50 z-50 transition-opacity lg:hidden ${
-            mobileFiltersOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}>
-            <div className={`absolute right-0 top-0 h-full bg-white w-80 transition-transform shadow-xl ${
-              mobileFiltersOpen ? "translate-x-0" : "translate-x-full"
+          <div className={`fixed inset-0 bg-black/50 z-50 transition-opacity lg:hidden ${mobileFiltersOpen ? "opacity-100" : "opacity-0 pointer-events-none"
             }`}>
+            <div className={`absolute right-0 top-0 h-full bg-white w-80 transition-transform shadow-xl ${mobileFiltersOpen ? "translate-x-0" : "translate-x-full"
+              }`}>
               <div className="p-6">
                 <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-lg font-semibold">Filters</h3>
-                  <button 
+                  <h3 className="text-lg font-semibold text-[#07705d]">Filters</h3>
+                  <button
                     onClick={() => setMobileFiltersOpen(false)}
-                    className="p-2 text-gray-500 hover:text-gray-700"
+                    className="p-2 text-gray-500 hover:text-[#bf8c13] transition-colors"
                   >
                     <X size={20} />
                   </button>
                 </div>
-                
+
                 <div className="space-y-6">
                   {filterCategories.map((category, idx) => (
-                    <div key={idx} className="border-b border-gray-200 pb-6 last:border-0">
-                      <h4 className="font-medium mb-4 text-gray-900">{category.name}</h4>
+                    <div key={idx} className="border-b border-[#c7cc3f]/30 pb-6 last:border-0">
+                      <h4 className="font-medium mb-4 text-[#07705d]">{category.name}</h4>
                       <div className="space-y-3">
                         {category.items.map((item) => (
                           <div key={item.id} className="flex items-center">
                             <Checkbox
                               id={`mobile-${item.id}`}
-                              checked={filters[item.id as keyof typeof filters]} 
+                              checked={filters[item.id as keyof typeof filters]}
                               onCheckedChange={() => handleFilterChange(item.id)}
-                              className="data-[state=checked]:bg-primaryColor data-[state=checked]:border-primaryColor"
+                              className="data-[state=checked]:bg-[#07705d] data-[state=checked]:border-[#07705d]"
                             />
-                            <label htmlFor={`mobile-${item.id}`} className="ml-2 text-sm text-gray-600">
+                            <label htmlFor={`mobile-${item.id}`} className="ml-2 text-sm text-gray-700">
                               {item.label}
                             </label>
                           </div>
@@ -302,10 +296,10 @@ export default function SearchPackages() {
                     </div>
                   ))}
                 </div>
-                
-                <button 
+
+                <button
                   onClick={() => setMobileFiltersOpen(false)}
-                  className="w-full mt-6 bg-primaryColor text-white py-2 rounded-lg hover:bg-primaryColor/90 transition"
+                  className="w-full mt-6 bg-[#07705d] text-white py-3 rounded-xl hover:bg-[#07705d]/90 transition-colors font-semibold"
                 >
                   Apply Filters
                 </button>
@@ -315,37 +309,37 @@ export default function SearchPackages() {
 
           {/* Desktop Sidebar Filters */}
           <div className="hidden lg:block w-64 flex-shrink-0">
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 sticky top-24">
-              <h3 className="text-lg font-semibold mb-4 text-gray-900">Filters</h3>
-              
+            <div className="bg-white rounded-2xl p-6 shadow-lg border border-[#c7cc3f]/30 sticky top-24">
+              <h3 className="text-lg font-semibold mb-4 text-[#07705d]">Filters</h3>
+
               <div className="space-y-6">
-                <div className="pb-4 border-b border-gray-200">
+                <div className="pb-4 border-b border-[#c7cc3f]/30">
                   <div className="flex items-center mb-2">
                     <Checkbox
                       id="filter-all"
-                      checked={filters.all} 
+                      checked={filters.all}
                       onCheckedChange={() => handleFilterChange("all")}
-                      className="data-[state=checked]:bg-primaryColor data-[state=checked]:border-primaryColor"
+                      className="data-[state=checked]:bg-[#07705d] data-[state=checked]:border-[#07705d]"
                     />
-                    <label htmlFor="filter-all" className="ml-2 text-sm font-medium text-gray-700">
+                    <label htmlFor="filter-all" className="ml-2 text-sm font-medium text-[#07705d]">
                       All Packages
                     </label>
                   </div>
                 </div>
-                
+
                 {filterCategories.map((category, idx) => (
-                  <div key={idx} className="pb-4 border-b border-gray-200 last:border-0">
-                    <h4 className="font-medium mb-4 text-gray-900">{category.name}</h4>
+                  <div key={idx} className="pb-4 border-b border-[#c7cc3f]/30 last:border-0">
+                    <h4 className="font-medium mb-4 text-[#07705d]">{category.name}</h4>
                     <div className="space-y-3">
                       {category.items.map((item) => (
                         <div key={item.id} className="flex items-center">
                           <Checkbox
                             id={`filter-${item.id}`}
-                            checked={filters[item.id as keyof typeof filters]} 
+                            checked={filters[item.id as keyof typeof filters]}
                             onCheckedChange={() => handleFilterChange(item.id)}
-                            className="data-[state=checked]:bg-primaryColor data-[state=checked]:border-primaryColor"
+                            className="data-[state=checked]:bg-[#07705d] data-[state=checked]:border-[#07705d]"
                           />
-                          <label htmlFor={`filter-${item.id}`} className="ml-2 text-sm text-gray-600">
+                          <label htmlFor={`filter-${item.id}`} className="ml-2 text-sm text-gray-700">
                             {item.label}
                           </label>
                         </div>
@@ -360,7 +354,7 @@ export default function SearchPackages() {
           {/* Main Content - Packages Grid */}
           <div className="flex-1">
             <div className="mb-6 hidden lg:flex justify-between items-center">
-              <h2 className="text-xl font-semibold text-gray-800">
+              <h2 className="text-xl font-semibold text-[#07705d]">
                 {loading ? "Loading packages..." : `${filteredPackages.length} packages found`}
               </h2>
             </div>
@@ -370,13 +364,13 @@ export default function SearchPackages() {
                 {renderSkeletons()}
               </div>
             ) : filteredPackages.length === 0 ? (
-              <div className="bg-white rounded-xl p-12 text-center shadow-sm">
-                <div className="mx-auto w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
-                  <Search className="text-gray-400" size={24} />
+              <div className="bg-white rounded-2xl p-12 text-center shadow-lg border border-[#c7cc3f]/30">
+                <div className="mx-auto w-16 h-16 rounded-full bg-[#c7cc3f]/20 flex items-center justify-center mb-4">
+                  <Search className="text-[#bf8c13]" size={24} />
                 </div>
-                <h3 className="text-xl font-medium text-gray-900 mb-2">No packages found</h3>
-                <p className="text-gray-500 mb-6">Try adjusting your search or filter criteria</p>
-                <button 
+                <h3 className="text-xl font-medium text-[#07705d] mb-2">No packages found</h3>
+                <p className="text-gray-600 mb-6">Try adjusting your search or filter criteria</p>
+                <button
                   onClick={() => {
                     setSearchQuery("");
                     setFilters({
@@ -392,7 +386,7 @@ export default function SearchPackages() {
                     });
                     setActiveTab("all");
                   }}
-                  className="px-4 py-2 bg-primaryColor text-white rounded-lg hover:bg-primaryColor/90 transition"
+                  className="px-6 py-3 bg-[#07705d] text-white rounded-xl hover:bg-[#07705d]/90 transition-colors font-semibold"
                 >
                   Clear all filters
                 </button>
@@ -400,59 +394,52 @@ export default function SearchPackages() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredPackages.map((singlePackage, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: index * 0.05 }}
-                  >
+                  <div key={index}>
                     <Link href={`/package_2/${singlePackage.id}`}>
-                      <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 h-full flex flex-col group border border-gray-100">
+                      <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 h-full flex flex-col group border border-[#c7cc3f]/30">
                         <div className="relative overflow-hidden h-48">
                           <img
-                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                             src={singlePackage.imgUrl}
                             alt={singlePackage.packageName}
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                            <div className="absolute bottom-4 right-4">
-                              <div className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium text-primaryColor">
-                                {singlePackage.price} Birr
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <div className="p-5 flex-1 flex flex-col">
-                          <div className="mb-2">
-                            <Badge variant="outline" className="text-xs font-normal bg-primaryColor/5 text-primaryColor border-primaryColor/20">
+                          <div className="absolute top-3 left-3">
+                            <Badge variant="outline" className="text-xs font-semibold bg-[#bf8c13]/90 text-white border-none backdrop-blur-sm">
                               {singlePackage.tag}
                             </Badge>
                           </div>
-                          
-                          <h3 className="text-lg font-medium text-gray-900 mb-2 group-hover:text-primaryColor transition-colors">
+
+                          <div className="absolute bottom-3 right-3">
+                            <div className="bg-white/95 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-bold text-[#07705d]">
+                              {singlePackage.price} Birr
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="p-6 flex-1 flex flex-col">
+                          <h3 className="text-lg font-bold text-[#07705d] mb-2 group-hover:text-[#bf8c13] transition-colors">
                             {singlePackage.packageName}
                           </h3>
-                          
-                          <p className="text-sm text-gray-500 mb-4 line-clamp-2 flex-grow">
+
+                          <p className="text-sm text-gray-600 mb-4 line-clamp-2 flex-grow">
                             {singlePackage.packageDescription}
                           </p>
-                          
-                          <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
-                            <div className="flex items-center text-sm text-gray-500">
-                              <Book size={14} className="mr-1" />
+
+                          <div className="flex items-center justify-between mt-auto pt-4 border-t border-[#c7cc3f]/30">
+                            <div className="flex items-center text-sm text-gray-600">
+                              <Book size={14} className="mr-1 text-[#bf8c13]" />
                               <span>{singlePackage.courses?.length || 0} Courses</span>
                             </div>
-                            
-                            <button className="flex items-center justify-center text-sm font-medium text-primaryColor hover:text-primaryColor/80 transition-colors group">
+
+                            <div className="flex items-center justify-center text-sm font-semibold text-[#bf8c13] hover:text-[#bf8c13]/80 transition-colors group">
                               <span>View Details</span>
-                              <ChevronDown size={16} className="ml-1 transform group-hover:translate-x-1 transition-transform" />
-                            </button>
+                              <ChevronRight size={16} className="ml-1 transform group-hover:translate-x-1 transition-transform" />
+                            </div>
                           </div>
                         </div>
                       </div>
                     </Link>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
             )}
