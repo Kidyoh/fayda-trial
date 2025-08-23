@@ -11,7 +11,7 @@ const cards = [
     img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
     description:
       "Slow that scroll, create captivating social media content in no time, and have an Instagram feed that looks like money (without hiring a designer).",
-    cta: "Buy Now",
+    cta: "Add to Cart",
     link: "#"
   },
   {
@@ -22,7 +22,7 @@ const cards = [
     img: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
     description:
       "Learn the most important frameworks and exercises to lead successful brand strategy sessions.",
-    cta: "Buy Now",
+    cta: "Add to Cart",
     link: "#"
   },
   {
@@ -33,7 +33,7 @@ const cards = [
     img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
     description:
       "Whip up some tasty solutions to your clients’ toughest challenges with design thinking methods and become their most trusted advisor.",
-    cta: "Buy Now",
+    cta: "Add to Cart",
     link: "#"
   },
   {
@@ -44,7 +44,7 @@ const cards = [
     img: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80",
     description:
       "Master the art of illustration and elevate your design work with professional drawing techniques.",
-    cta: "Buy Now",
+    cta: "Add to Cart",
     link: "#"
   },
   {
@@ -55,7 +55,7 @@ const cards = [
     img: "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=400&q=80",
     description:
       "Learn how to create grids that provide structure and clarity to all your design projects.",
-    cta: "Buy Now",
+    cta: "Add to Cart",
     link: "#"
   },
   {
@@ -66,7 +66,7 @@ const cards = [
     img: "https://images.unsplash.com/photo-1472289065668-ce650ac443d2?auto=format&fit=crop&w=400&q=80",
     description:
       "Unlock the secrets of beautiful type and learn advanced techniques for working with fonts and lettering.",
-    cta: "Buy Now",
+    cta: "Add to Cart",
     link: "#"
   }
 ];
@@ -131,7 +131,7 @@ function AnimatedCourseCard({ card }) {
               <div className="text-gray-700 text-base mb-6 mt-2">
                 {card.description}
               </div>
-              <div className="flex items-center gap-4">
+              <div className="w-full justify-between flex items-center gap-4">
                 <a
                   href={card.link}
                   className="bg-primaryColor text-white font-semibold font-Sendako py-2 px-7 rounded-full"
