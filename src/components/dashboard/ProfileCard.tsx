@@ -1,5 +1,4 @@
 import { User } from "lucide-react";
-import { motion } from "framer-motion";
 
 interface ProfileCardProps {
   userData: {
