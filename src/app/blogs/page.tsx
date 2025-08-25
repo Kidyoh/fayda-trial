@@ -19,7 +19,7 @@ export default function Blogs() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [liked, setLiked] = useState<{[key: string]: boolean}>({});
+  const [liked, setLiked] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,7 +48,7 @@ export default function Blogs() {
 
   const filteredBlogs = data.filter(blog => {
     const matchesSearch = blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         blog.text.toLowerCase().includes(searchQuery.toLowerCase());
+      blog.text.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === "all" || blog.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
@@ -63,16 +63,16 @@ export default function Blogs() {
   return (
     <div className="min-h-screen bg-white relative">
       {/* Geometric Ethiopian pattern background */}
-      <div className="absolute inset-0 pointer-events-none opacity-10 z-0" style={{backgroundImage: `url('data:image/svg+xml,%3Csvg width=\'80\' height=\'80\' viewBox=\'0 0 80 80\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'#bf8c13\' fill-opacity=\'0.12\'%3E%3Cpath d=\'M40 40l20-20v40l-20-20zm0 0l-20-20v40l20-20z\'/%3E%3C/g%3E%3C/svg%3E')`, backgroundSize: '80px 80px'}} />
+      <div className="absolute inset-0 pointer-events-none opacity-10 z-0" style={{ backgroundImage: `url('data:image/svg+xml,%3Csvg width=\'80\' height=\'80\' viewBox=\'0 0 80 80\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'#bf8c13\' fill-opacity=\'0.12\'%3E%3Cpath d=\'M40 40l20-20v40l-20-20zm0 0l-20-20v40l20-20z\'/%3E%3C/g%3E%3C/svg%3E')`, backgroundSize: '80px 80px' }} />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:mt-24">
         {/* Hero Section */}
         <div className="text-center mb-12">
           <h1 className="text-4xl sm:text-5xl font-bold text-[#07705d] mb-4">
-            Ethiopian Cultural <span className="text-[#bf8c13]">Blogs</span>
+            Blogs
           </h1>
           <p className="text-xl text-gray-700 max-w-2xl mx-auto">
-            Explore stories, insights, and innovations in Ethiopian education and culture.
+            Explore stories, insights, and innovations in Ethiopian education.
           </p>
         </div>
 
@@ -94,8 +94,8 @@ export default function Blogs() {
                 key={category}
                 onClick={() => setSelectedCategory(category)}
                 className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 whitespace-nowrap border border-[#c7cc3f] shadow-sm
-                  ${selectedCategory === category 
-                    ? 'bg-[#07705d] text-white' 
+                  ${selectedCategory === category
+                    ? 'bg-[#07705d] text-white'
                     : 'bg-white text-[#07705d] hover:bg-[#c7cc3f]/10'}`}
               >
                 {category.charAt(0).toUpperCase() + category.slice(1)}

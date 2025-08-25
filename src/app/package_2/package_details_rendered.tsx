@@ -264,59 +264,6 @@ export default function PackageDetailsRendered(props: any) {
                           <span className="text-gray-600 font-medium">Study Materials</span>
                         </div>
                       </div>
-
-                      {/* Additional Features Section */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
-                        <div className="bg-white rounded-xl p-6 border border-[#c7cc3f]/30">
-                          <h3 className="text-lg font-bold text-[#07705d] mb-4 flex items-center">
-                            <Shield className="h-5 w-5 mr-2 text-[#bf8c13]" />
-                            What You&apos;ll Get
-                          </h3>
-                          <ul className="space-y-3">
-                            <li className="flex items-center text-gray-600">
-                              <Check className="h-5 w-5 mr-3 text-[#c7cc3f]" />
-                              <span>Lifetime access to all content</span>
-                            </li>
-                            <li className="flex items-center text-gray-600">
-                              <Check className="h-5 w-5 mr-3 text-[#c7cc3f]" />
-                              <span>Mobile and desktop compatibility</span>
-                            </li>
-                            <li className="flex items-center text-gray-600">
-                              <Check className="h-5 w-5 mr-3 text-[#c7cc3f]" />
-                              <span>Download resources for offline study</span>
-                            </li>
-                            <li className="flex items-center text-gray-600">
-                              <Check className="h-5 w-5 mr-3 text-[#c7cc3f]" />
-                              <span>Certificate of completion</span>
-                            </li>
-                          </ul>
-                        </div>
-
-                        <div className="bg-white rounded-xl p-6 border border-[#c7cc3f]/30">
-                          <h3 className="text-lg font-bold text-[#07705d] mb-4 flex items-center">
-                            <TrendingUp className="h-5 w-5 mr-2 text-[#bf8c13]" />
-                            Learning Benefits
-                          </h3>
-                          <ul className="space-y-3">
-                            <li className="flex items-center text-gray-600">
-                              <Check className="h-5 w-5 mr-3 text-[#c7cc3f]" />
-                              <span>Expert-led instruction</span>
-                            </li>
-                            <li className="flex items-center text-gray-600">
-                              <Check className="h-5 w-5 mr-3 text-[#c7cc3f]" />
-                              <span>Practical, hands-on learning</span>
-                            </li>
-                            <li className="flex items-center text-gray-600">
-                              <Check className="h-5 w-5 mr-3 text-[#c7cc3f]" />
-                              <span>Regular assessments</span>
-                            </li>
-                            <li className="flex items-center text-gray-600">
-                              <Check className="h-5 w-5 mr-3 text-[#c7cc3f]" />
-                              <span>Community support</span>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
                     </div>
                   </TabsContent>
 

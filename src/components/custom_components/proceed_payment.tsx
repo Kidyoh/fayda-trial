@@ -65,7 +65,7 @@ import {
     return (
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <div className="w-fit bg-primaryColor px-3 py-1 rounded shadow-lg shadow-black text-white text-sm">
+          <div className="w-full bg-primaryColor px-3 py-3 rounded text-white text-lg text-center ">
             <button>Enroll</button>
           </div>
         </AlertDialogTrigger>
