@@ -81,11 +81,14 @@ export default function SearchPackages() {
     fetch(`${apiUrl}/packages/fetchPackagesall/`, {
       credentials: "include",
     })
+
       .then((res) => res.json())
       .then((data) => {
         setPackagesData(data);
         setLoading(false);
+        console.log("Fetched packages:", data);
       })
+      
       .catch(error => {
         console.error("Error fetching packages:", error);
         setLoading(false);
