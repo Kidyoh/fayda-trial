@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 456.41 684.62">
+  <defs>
+    <style>
+      .cls-1 {
+        mix-blend-mode: color-dodge;
+        opacity: .5;
+      }
+
+      .cls-2 {
+        isolation: isolate;
+      }
+    </style>
+  </defs>
+  <g class="cls-2">
+    <g id="Layer_2" data-name="Layer 2">
+      <g id="Layer_1-2" data-name="Layer 1">
+        <image class="cls-1" width="1024" height="1536" transform="scale(.45)" xlink:href="../../../Downloads/ChatGPT Image Jul 24, 2025, 12_05_17 AM.png"/>
+      </g>
+    </g>
+  </g>
+</svg>

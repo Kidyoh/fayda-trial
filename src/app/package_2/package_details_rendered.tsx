@@ -1,45 +1,43 @@
 "use client";
 import { apiUrl } from "@/apiConfig";
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import { motion } from "framer-motion";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import useFetchStore from "@/app/store/fetchStore";
+import DeletePackageReview from "@/components/custom_components/delete_review";
+import PackageReviewForm from "@/components/custom_components/packageReviewForm";
+import { PurchaseDialogCustom } from "@/components/custom_components/purchaseDialong";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { getAccessToken } from "@/lib/tokenManager";
 import {
-  Play,
-  ScrollText,
-  Text,
-  Youtube,
-  StickyNote,
-  FileText,
-  Lock,
+  Book,
   Check,
   ChevronRight,
-  Star,
   Clock,
-  Book,
-  User,
-  Calendar,
+  FileText,
+  Heart,
+  Lock,
+  MessageSquare,
+  Play,
+  ScrollText,
+  Shield,
+  Star,
+  StickyNote,
   TagIcon,
-  Award,
-  DollarSign,
-  ShoppingCart,
+  TrendingUp,
+  User,
+  Users,
+  Youtube
 } from "lucide-react";
-import { PurchaseDialogCustom } from "@/components/custom_components/purchaseDialong";
-import Footer from "@/components/main_components/footer";
-import PackageReviewForm from "@/components/custom_components/packageReviewForm";
-import DeletePackageReview from "@/components/custom_components/delete_review";
-import useFetchStore from "@/app/store/fetchStore";
-import { setAccessToken, getAccessToken, clearAccessToken } from "@/lib/tokenManager";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
-// Create a Skeleton component for loading state
+// Create a Skeleton component for loading state with Ethiopian colors
 const Skeleton = ({ className = "" }) => {
-  return <div className={`animate-pulse bg-gray-200 rounded ${className}`} />;
+  return <div className={`animate-pulse bg-gradient-to-r from-[#c7cc3f]/20 to-[#bf8c13]/20 rounded ${className}`} />;
 };
 
 export default function PackageDetailsRendered(props: any) {
@@ -65,7 +63,7 @@ export default function PackageDetailsRendered(props: any) {
 
         const jsonData = await response.json();
         setData(jsonData);
-         
+
         // Map tag values to URL slugs
         const tagMap = {
           "Computer": "computer",
@@ -77,7 +75,7 @@ export default function PackageDetailsRendered(props: any) {
           "Grade 11": "grade11",
           "Grade 12": "grade12"
         };
-         
+
         setTagChosen(tagMap[jsonData.tag] || "");
         console.log("Package data:", jsonData);
       } catch (error) {
@@ -110,20 +108,22 @@ export default function PackageDetailsRendered(props: any) {
   // Calculate total course units and materials
   const totalUnits = data?.courses?.reduce((acc, course) => acc + parseInt(course.parts || 0), 0) || 0;
   const totalMaterials = data?.courses?.reduce((acc, course) => acc + (course.materials?.length || 0), 0) || 0;
-   
+
   if (isLoading) {
     return (
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 space-y-6">
-              <Skeleton className="h-12 w-3/4" />
-              <Skeleton className="h-64 w-full rounded-xl" />
-              <Skeleton className="h-8 w-1/3" />
-              <Skeleton className="h-48 w-full rounded-xl" />
-            </div>
-            <div className="lg:col-span-1">
-              <Skeleton className="h-80 w-full rounded-xl" />
+      <div className="min-h-screen bg-gradient-to-br from-[#c7cc3f]/5 via-white to-[#bf8c13]/5">
+        <div className="container mx-auto px-4 py-12 pt-8 md:pt-24">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2 space-y-6">
+                <Skeleton className="h-12 w-3/4" />
+                <Skeleton className="h-64 w-full rounded-2xl" />
+                <Skeleton className="h-8 w-1/3" />
+                <Skeleton className="h-48 w-full rounded-2xl" />
+              </div>
+              <div className="lg:col-span-1">
+                <Skeleton className="h-80 w-full rounded-2xl" />
+              </div>
             </div>
           </div>
         </div>
@@ -132,165 +132,177 @@ export default function PackageDetailsRendered(props: any) {
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen pt-8 pb-16">
-      <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto">
-          {/* Breadcrumb */}
-          <nav className="flex mb-6 text-sm">
-            <Link href="/" className="text-gray-500 hover:text-primaryColor">
-              Home
-            </Link>
-            <ChevronRight className="h-4 w-4 mx-2 text-gray-400 mt-0.5" />
-            <Link href="/searchPackages" className="text-gray-500 hover:text-primaryColor">
-              Packages
-            </Link>
-            <ChevronRight className="h-4 w-4 mx-2 text-gray-400 mt-0.5" />
-            <Link
-              href={`/packages_access/filter_packages/${tagChosen}`}
-              className="text-gray-500 hover:text-primaryColor"
-            >
-              {data?.tag}
-            </Link>
-            <ChevronRight className="h-4 w-4 mx-2 text-gray-400 mt-0.5" />
-            <span className="text-primaryColor font-medium truncate">
-              {data?.packageName}
-            </span>
-          </nav>
+    <div className="min-h-screen bg-gradient-to-br from-[#c7cc3f]/5 via-white to-[#bf8c13]/5 relative">
+
+      <div className="absolute inset-0 pointer-events-none opacity-5">
+        <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <defs>
+            <pattern id="ethiopian-bg" x="0" y="0" width="25" height="25" patternUnits="userSpaceOnUse">
+              <polygon points="12.5,0 25,12.5 12.5,25 0,12.5" fill="#bf8c13" opacity="0.3" />
+              <circle cx="12.5" cy="12.5" r="4" fill="#07705d" opacity="0.2" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#ethiopian-bg)" />
+        </svg>
+      </div>
+
+      <div className="container mx-auto px-0 md:px-4 pt-20 md:pt-24 pb-12 relative z-10">
+        <div className="max-w-7xl mx-auto">
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Main Content */}
             <div className="lg:col-span-2 order-2 lg:order-1">
-              <motion.h1 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-3xl md:text-4xl font-bold text-gray-900 mb-4"
-              >
-                {data?.packageName}
-              </motion.h1>
-              
-              <div className="flex items-center mb-6 space-x-4">
-                <span className="inline-flex items-center px-3 py-1 rounded-full bg-primaryColor/10 text-primaryColor text-sm font-medium">
-                  <TagIcon className="h-3.5 w-3.5 mr-1" />
-                  {data?.tag}
-                </span>
-                <span className="inline-flex items-center text-gray-500 text-sm">
-                  <Book className="h-4 w-4 mr-1.5 text-gray-400" />
-                  {data?.courses?.length || 0} Courses
-                </span>
-                <span className="inline-flex items-center text-gray-500 text-sm">
-                  <Clock className="h-4 w-4 mr-1.5 text-gray-400" />
-                  {totalUnits} Units
-                </span>
+              <div className="bg-white rounded-2xl p-8 border border-[#c7cc3f]/20 mb-6">
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-Sendako text-[#07705d] mb-4 leading-tight">
+                  {data?.packageName}
+                </h1>
+
+                <div className="flex flex-wrap items-center gap-4 mb-6">
+                  <span className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-[#bf8c13] to-[#c7cc3f] text-white text-sm font-semibold">
+                    <TagIcon className="h-4 w-4 mr-2" />
+                    {data?.tag}
+                  </span>
+                  <div className="flex items-center text-gray-600 text-sm bg-[#c7cc3f]/10 px-3 py-2 rounded-lg">
+                    <Book className="h-4 w-4 mr-2 text-[#07705d]" />
+                    {data?.courses?.length || 0} Courses
+                  </div>
+                  <div className="flex items-center text-gray-600 text-sm bg-[#bf8c13]/10 px-3 py-2 rounded-lg">
+                    <Clock className="h-4 w-4 mr-2 text-[#bf8c13]" />
+                    {totalUnits} Units
+                  </div>
+                  <div className="flex items-center text-gray-600 text-sm bg-[#07705d]/10 px-3 py-2 rounded-lg">
+                    <Users className="h-4 w-4 mr-2 text-[#07705d]" />
+                    {totalMaterials} Materials
+                  </div>
+                </div>
+
+                {/* Package Description Preview */}
+                <div className="bg-gradient-to-r from-[#c7cc3f]/10 to-[#bf8c13]/10 rounded-xl p-6 border border-[#c7cc3f]/30">
+                  <p className="text-gray-700 leading-relaxed text-lg">
+                    {data?.packageDescription?.slice(0, 200)}
+                    {data?.packageDescription?.length > 200 && "..."}
+                  </p>
+                </div>
               </div>
 
-              {/* Main Tabs */}
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-8">
+
+              <div className="bg-white rounded-2xl overflow-hidden">
                 <Tabs
                   defaultValue="info"
                   value={activeTab}
                   onValueChange={setActiveTab}
                   className="w-full"
                 >
-                  <TabsList className="flex w-full border-b border-gray-100 bg-gray-50">
-                    <TabsTrigger 
-                      value="info" 
-                      className="flex-1 py-4 data-[state=active]:text-primaryColor data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primaryColor"
+                  <TabsList className="flex w-full h-auto rounded-2xl bg-primaryColor/10">
+                    <TabsTrigger
+                      value="info"
+                      className="flex-1 py-3 rounded-xl text-gray-600 font-semibold data-[state=active]:text-[#07705d] data-[state=active]:border-b-3 data-[state=active]:border-[#07705d] transition-all duration-200"
                     >
-                      Overview
+                      <div className="flex items-center">
+                        <Star className="h-4 w-4 mr-2" />
+                        Overview
+                      </div>
                     </TabsTrigger>
-                    <TabsTrigger 
-                      value="content" 
-                      className="flex-1 py-4 data-[state=active]:text-primaryColor data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primaryColor"
+                    <TabsTrigger
+                      value="content"
+                      className="flex-1 py-3 rounded-2xl text-gray-600 font-semibold data-[state=active]:text-[#07705d] data-[state=active]:border-b-3 data-[state=active]:border-[#07705d] transition-all duration-200"
                     >
-                      Curriculum
+                      <div className="flex items-center">
+                        <Book className="h-4 w-4 mr-2" />
+                        Curriculum
+                      </div>
                     </TabsTrigger>
-                    <TabsTrigger 
-                      value="review" 
-                      className="flex-1 py-4 data-[state=active]:text-primaryColor data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primaryColor"
+                    <TabsTrigger
+                      value="review"
+                      className="flex-1 py-3 rounded-2xl text-gray-600 font-semibold data-[state=active]:text-[#07705d] data-[state=active]:border-b-3 data-[state=active]:border-[#07705d] transition-all duration-200"
                     >
-                      Reviews
+                      <div className="flex items-center">
+                        <MessageSquare className="h-4 w-4 mr-2" />
+                        Reviews
+                      </div>
                     </TabsTrigger>
                   </TabsList>
-                  
+
                   {/* Package Info Tab */}
-                  <TabsContent value="info" className="p-6">
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.5 }}
-                      className="space-y-6"
-                    >
+                  <TabsContent value="info" className="p-2 md:p-8">
+                    <div className="space-y-8">
                       <div>
-                        <h2 className="text-xl font-semibold mb-3 text-gray-900">Package Description</h2>
-                        <p className="text-gray-700 leading-relaxed">
-                          {data?.packageDescription}
-                        </p>
-                      </div>
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
-                        <div className="bg-gray-50 p-5 rounded-lg border border-gray-100 flex flex-col items-center">
-                          <div className="w-12 h-12 bg-primaryColor/10 rounded-full flex items-center justify-center mb-2">
-                            <Book className="h-6 w-6 text-primaryColor" />
-                          </div>
-                          <span className="text-2xl font-bold text-gray-900">{data?.courses?.length || 0}</span>
-                          <span className="text-gray-500 text-sm">Courses</span>
-                        </div>
-                        
-                        <div className="bg-gray-50 p-5 rounded-lg border border-gray-100 flex flex-col items-center">
-                          <div className="w-12 h-12 bg-primaryColor/10 rounded-full flex items-center justify-center mb-2">
-                            <ScrollText className="h-6 w-6 text-primaryColor" />
-                          </div>
-                          <span className="text-2xl font-bold text-gray-900">{totalUnits}</span>
-                          <span className="text-gray-500 text-sm">Units</span>
-                        </div>
-                        
-                        <div className="bg-gray-50 p-5 rounded-lg border border-gray-100 flex flex-col items-center">
-                          <div className="w-12 h-12 bg-primaryColor/10 rounded-full flex items-center justify-center mb-2">
-                            <FileText className="h-6 w-6 text-primaryColor" />
-                          </div>
-                          <span className="text-2xl font-bold text-gray-900">{totalMaterials}</span>
-                          <span className="text-gray-500 text-sm">Materials</span>
+                        <h2 className="text-2xl font- mb-4 text-[#07705d] font-Sendako flex items-center">
+                          <Star className="h-6 w-6 mr-3 text-[#bf8c13]" />
+                          Package Description
+                        </h2>
+                        <div className="bg-gradient-to-r from-[#c7cc3f]/5 to-[#bf8c13]/5 rounded-xl p-6 border border-[#c7cc3f]/20">
+                          <p className="text-gray-700 leading-relaxed text-lg">
+                            {data?.packageDescription}
+                          </p>
                         </div>
                       </div>
-                    </motion.div>
+
+                      {/* Enhanced Stats Grid */}
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6">
+                        <div className="bg-gradient-to-br from-[#07705d]/10 to-[#07705d]/5 p-6 rounded-2xl border border-[#07705d]/20 transition-all duration-300 group">
+                          <div className="w-16 h-16 bg-gradient-to-br from-[#07705d] to-[#bf8c13] rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-200">
+                            <Book className="h-8 w-8 text-white" />
+                          </div>
+                          <span className="text-3xl font-bold text-[#07705d] block mb-1">{data?.courses?.length || 0}</span>
+                          <span className="text-gray-600 font-medium">Comprehensive Courses</span>
+                        </div>
+
+                        <div className="bg-gradient-to-br from-[#bf8c13]/10 to-[#bf8c13]/5 p-6 rounded-2xl border border-[#bf8c13]/20 transition-all duration-300 group">
+                          <div className="w-16 h-16 bg-gradient-to-br from-[#bf8c13] to-[#c7cc3f] rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-200">
+                            <ScrollText className="h-8 w-8 text-white" />
+                          </div>
+                          <span className="text-3xl font-bold text-[#bf8c13] block mb-1">{totalUnits}</span>
+                          <span className="text-gray-600 font-medium">Learning Units</span>
+                        </div>
+
+                        <div className="bg-gradient-to-br from-[#c7cc3f]/10 to-[#c7cc3f]/5 p-6 rounded-2xl border border-[#c7cc3f]/20 transition-all duration-300 group">
+                          <div className="w-16 h-16 bg-gradient-to-br from-[#c7cc3f] to-[#bf8c13] rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-200">
+                            <FileText className="h-8 w-8 text-white" />
+                          </div>
+                          <span className="text-3xl font-bold text-[#c7cc3f] block mb-1">{totalMaterials}</span>
+                          <span className="text-gray-600 font-medium">Study Materials</span>
+                        </div>
+                      </div>
+                    </div>
                   </TabsContent>
-                  
+
                   {/* Curriculum Tab */}
-                  <TabsContent value="content" className="p-6">
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <h2 className="text-xl font-semibold mb-4 text-gray-900">Course Curriculum</h2>
-                      <div className="space-y-4">
+                  <TabsContent value="content" className="p-2 md:p-8">
+                    <div>
+                      <h2 className="text-2xl font-bold mb-6 text-[#07705d] flex items-center">
+                        <Book className="h-6 w-6 mr-3 text-[#bf8c13]" />
+                        Course Curriculum
+                      </h2>
+                      <div className="space-y-6">
                         {data.courses?.map((course: any, courseIndex: number) => (
-                          <Accordion 
-                            key={course.id || courseIndex} 
-                            type="single" 
+                          <Accordion
+                            key={course.id || courseIndex}
+                            type="single"
                             collapsible
-                            className="border border-gray-200 rounded-lg overflow-hidden"
+                            className="border border-[#c7cc3f]/30 rounded-2xl overflow-hidden bg-white"
                           >
                             <AccordionItem value={course.id || `course-${courseIndex}`} className="border-0">
-                              <AccordionTrigger className="px-4 py-3 hover:bg-gray-50 hover:no-underline bg-gray-50">
+                              <AccordionTrigger className="px-6 py-4 hover:bg-gradient-to-r hover:from-[#c7cc3f]/10 hover:to-[#bf8c13]/10 hover:no-underline">
                                 <div className="flex justify-between w-full items-center">
                                   <div className="flex items-center">
-                                    <div className="h-8 w-8 flex items-center justify-center rounded-full bg-primaryColor/10 text-primaryColor mr-3">
+                                    <div className="h-12 w-12 flex items-center justify-center rounded-2xl bg-gradient-to-br from-[#07705d] to-[#bf8c13] text-white mr-4 font-bold text-lg">
                                       {courseIndex + 1}
                                     </div>
                                     <div className="text-left">
-                                      <h3 className="font-medium text-gray-900">{course?.courseName}</h3>
-                                      <p className="text-sm text-gray-500">{course?.parts} units</p>
+                                      <h3 className="font-bold text-[#07705d] text-lg">{course?.courseName}</h3>
+                                      <p className="text-sm text-[#bf8c13] font-medium">{course?.parts} units • {course?.materials?.length || 0} materials</p>
                                     </div>
                                   </div>
                                 </div>
                               </AccordionTrigger>
-                              
-                              <AccordionContent className="px-4 py-3 bg-white">
-                                <div className="mb-4">
-                                  <p className="text-gray-700">{course?.courseDescription}</p>
+
+                              <AccordionContent className="px-2 md:px-6 py-4 bg-gradient-to-r from-[#c7cc3f]/5 to-[#bf8c13]/5">
+                                <div className="mb-6 p-4 bg-white rounded-xl border border-[#c7cc3f]/20">
+                                  <h4 className="font-semibold text-[#07705d] mb-2">Course Description</h4>
+                                  <p className="text-gray-700 leading-relaxed capitalize">{course?.courseDescription}</p>
                                 </div>
-                                
+
                                 <div className="space-y-6">
                                   {Array.from(
                                     { length: parseInt(course?.parts || "0", 10) || 0 },
@@ -299,37 +311,37 @@ export default function PackageDetailsRendered(props: any) {
                                       const unitMaterials = course?.materials?.filter(
                                         (material: any) => material?.part && material?.part.toString() === (unitIndex + 1).toString()
                                       ) || [];
-                                      
+
                                       // Safely get the unit title with fallback
                                       let unitTitle = "Unit " + (unitIndex + 1);
                                       try {
-                                        if (course?.CourseUnitsList && 
-                                            Array.isArray(course.CourseUnitsList) && 
-                                            course.CourseUnitsList[unitIndex] && 
-                                            course.CourseUnitsList[unitIndex].Title) {
+                                        if (course?.CourseUnitsList &&
+                                          Array.isArray(course.CourseUnitsList) &&
+                                          course.CourseUnitsList[unitIndex] &&
+                                          course.CourseUnitsList[unitIndex].Title) {
                                           unitTitle = course.CourseUnitsList[unitIndex].Title;
                                         }
                                       } catch (e) {
                                         console.error("Error accessing unit title:", e);
                                       }
-                                      
+
                                       return (
-                                        <div key={unitIndex} className="border-t border-gray-100 pt-4">
-                                          <h4 className="text-md font-medium text-gray-900 mb-3 flex items-center">
-                                            <span className="h-6 w-6 flex items-center justify-center rounded-full bg-primaryColor/10 text-primaryColor mr-2 text-xs">
+                                        <div key={unitIndex} className="bg-white rounded-xl p-2 md:p-6 border border-[#c7cc3f]/20">
+                                          <h4 className="text-lg font-bold text-[#07705d] mb-4 flex items-center">
+                                            <span className="h-8 w-8 flex items-center justify-center rounded-2xl bg-gradient-to-br from-[#bf8c13] to-[#c7cc3f] text-white mr-3 text-sm font-bold">
                                               {unitIndex + 1}
                                             </span>
                                             Unit {unitIndex + 1}{unitTitle !== `Unit ${unitIndex + 1}` ? `: ${unitTitle}` : ""}
                                           </h4>
-                                          
+
                                           {unitMaterials.length > 0 ? (
-                                            <ul className="space-y-2">
+                                            <ul className="space-y-3 bg-gradient-to-r from-[#c7cc3f]/5 to-[#bf8c13]/5 rounded-xl p-1 md:p-4 border border-[#c7cc3f]/20">
                                               {unitMaterials.map((material: any, materialIndex: number) => {
                                                 const materialType = material?.materialType;
                                                 let icon = <FileText size={16} />;
                                                 let label = "Resource";
                                                 let name = "Untitled resource";
-                                                
+
                                                 if (materialType === "video" && material?.video) {
                                                   icon = <Play size={16} />;
                                                   label = "Video";
@@ -347,29 +359,32 @@ export default function PackageDetailsRendered(props: any) {
                                                   label = "Link";
                                                   name = material.link.title || "Untitled link";
                                                 }
-                                                
+
                                                 return (
-                                                  <li 
-                                                    key={material.id || `material-${materialIndex}`} 
-                                                    className="flex items-center py-2 px-3 rounded-md hover:bg-gray-50"
+                                                  <li
+                                                    key={material.id || `material-${materialIndex}`}
+                                                    className="flex flex-wrap items-center py-3 px-2 md:px-4 rounded-xl hover:bg-gradient-to-r hover:from-[#c7cc3f]/10 hover:to-[#bf8c13]/10 transition-all duration-200 border border-transparent hover:border-[#c7cc3f]/30 group"
                                                   >
-                                                    <div className="text-gray-400 mr-3">
+                                                    <div className="w-8 h-8 bg-gradient-to-br from-[#bf8c13] to-[#c7cc3f] rounded-lg flex items-center justify-center mr-3 text-white group-hover:scale-110 transition-transform duration-200">
                                                       {icon}
                                                     </div>
                                                     <div className="flex-1">
-                                                      <span className="text-gray-700">{name}</span>
+                                                      <span className="text-[#07705d] font-medium">{name}</span>
                                                     </div>
-                                                    <span className="text-xs font-medium bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                                                    <p className="text-xs truncate max-w-[10rem] font-semibold bg-gradient-to-r from-[#c7cc3f] to-[#bf8c13] text-white px-3 py-1 rounded-full mr-3">
                                                       {label}
-                                                    </span>
-                                                    <Lock size={14} className="ml-3 text-gray-400" />
+                                                    </p>
+                                                    <div className="w-6 h-6 bg-[#07705d]/10 rounded-lg flex items-center justify-center">
+                                                      <Lock size={12} className="text-[#07705d]" />
+                                                    </div>
                                                   </li>
                                                 );
                                               })}
                                             </ul>
                                           ) : (
-                                            <div className="py-2 px-3 text-gray-500 italic text-sm">
-                                              No materials available for this unit
+                                            <div className="py-4 px-4 text-center bg-gradient-to-r from-[#c7cc3f]/10 to-[#bf8c13]/10 rounded-xl border border-[#c7cc3f]/20">
+                                              <FileText className="h-8 w-8 text-[#bf8c13] mx-auto mb-2" />
+                                              <p className="text-[#07705d] font-medium text-sm">No materials available for this unit</p>
                                             </div>
                                           )}
                                         </div>
@@ -382,38 +397,39 @@ export default function PackageDetailsRendered(props: any) {
                           </Accordion>
                         ))}
                       </div>
-                    </motion.div>
+                    </div>
                   </TabsContent>
 
                   {/* Reviews Tab */}
-                  <TabsContent value="review" className="p-6">
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <h2 className="text-xl font-semibold mb-4 text-gray-900">Student Reviews</h2>
-                      
+                  <TabsContent value="review" className="p-8">
+                    <div>
+                      <h2 className="text-2xl font-bold mb-6 text-[#07705d] flex items-center">
+                        <MessageSquare className="h-6 w-6 mr-3 text-[#bf8c13]" />
+                        Student Reviews
+                      </h2>
+
                       {data?.review?.length > 0 ? (
-                        <div className="space-y-4 mb-8">
+                        <div className="space-y-6 mb-8">
                           {data?.review?.map((review: any, index: number) => (
                             <div
                               key={review?.id || index}
-                              className="bg-white p-4 rounded-lg border border-gray-100 shadow-sm"
+                              className="bg-white border border-[#c7cc3f]/30 rounded-2xl p-6 transition-shadow duration-300"
                             >
                               <div className="flex justify-between">
-                                <div className="flex items-start gap-3">
-                                  <div className="h-10 w-10 rounded-full bg-primaryColor/10 flex items-center justify-center text-primaryColor font-medium">
+                                <div className="flex items-start gap-4">
+                                  <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-[#07705d] to-[#bf8c13] flex items-center justify-center text-white font-bold text-lg">
                                     {review?.Student?.firstName?.charAt(0)}{review?.Student?.lastName?.charAt(0)}
                                   </div>
-                                  <div>
-                                    <div className="font-medium text-gray-900">
+                                  <div className="flex-1">
+                                    <div className="font-bold text-[#07705d] mb-2">
                                       {review?.Student?.firstName} {review?.Student?.lastName}
                                     </div>
-                                    <p className="text-gray-700 mt-1">{review?.text}</p>
+                                    <div className="bg-gradient-to-r from-[#c7cc3f]/5 to-[#bf8c13]/5 rounded-xl p-4 border border-[#c7cc3f]/20">
+                                      <p className="text-gray-700 leading-relaxed">{review?.text}</p>
+                                    </div>
                                   </div>
                                 </div>
-                                
+
                                 {review?.Student?.id === profile?.id && (
                                   <DeletePackageReview reviewId={review?.id} />
                                 )}
@@ -422,86 +438,115 @@ export default function PackageDetailsRendered(props: any) {
                           ))}
                         </div>
                       ) : (
-                        <div className="text-center py-8">
-                          <div className="mx-auto w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
-                            <Star className="text-gray-400" size={24} />
+                        <div className="text-center py-12 bg-gradient-to-r from-[#c7cc3f]/10 to-[#bf8c13]/10 rounded-2xl border border-[#c7cc3f]/30">
+                          <div className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-[#bf8c13] to-[#c7cc3f] flex items-center justify-center mb-4">
+                            <Star className="text-white" size={32} />
                           </div>
-                          <h3 className="text-lg font-medium text-gray-900 mb-2">No reviews yet</h3>
-                          <p className="text-gray-500 mb-6">Be the first to review this package</p>
+                          <h3 className="text-xl font-bold text-[#07705d] mb-2">No reviews yet</h3>
+                          <p className="text-gray-600 mb-6">Be the first to review this package and help other students!</p>
                         </div>
                       )}
-                      
-                      <div className="border-t border-gray-100 pt-6">
-                        <h3 className="text-lg font-medium mb-4">Write a Review</h3>
+
+                      <div className="bg-white border border-[#c7cc3f]/30 rounded-2xl p-6">
+                        <h3 className="text-lg font-bold text-[#07705d] mb-4 flex items-center">
+                          <Star className="h-5 w-5 mr-2 text-[#bf8c13]" />
+                          Write a Review
+                        </h3>
                         <PackageReviewForm
                           packageId={data?.id}
                           studentId={profile?.id}
                         />
                       </div>
-                    </motion.div>
+                    </div>
                   </TabsContent>
                 </Tabs>
               </div>
             </div>
-            
-            {/* Sidebar */}
+
             <div className="lg:col-span-1 order-1 lg:order-2">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="sticky top-24 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
-              >
+              <div className="sticky top-24 bg-white rounded-2xl border border-[#c7cc3f]/30 overflow-hidden">
                 <div className="relative aspect-video overflow-hidden">
                   <img
                     src={data?.imgUrl}
                     alt={data?.packageName}
-                    className="object-cover w-full h-full"
+                    className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#07705d]/80 via-transparent to-transparent"></div>
+
+                  {/* Ethiopian Pattern Overlay */}
+                  <div className="absolute top-4 right-4">
+                    <div className="bg-white/90 backdrop-blur-sm rounded-xl p-2">
+                      <Heart className="h-5 w-5 text-[#bf8c13]" />
+                    </div>
+                  </div>
                 </div>
 
                 <div className="p-6">
+                  {/* Enhanced Pricing Section */}
                   {data?.discountStatus ? (
-                    <div className="mb-4">
-                      <div className="flex items-center text-sm text-red-600 mb-1">
+                    <div className="mb-6">
+                      <div className="flex items-center text-sm text-[#bf8c13] mb-2 bg-[#bf8c13]/10 px-3 py-1 rounded-full w-fit">
                         <Clock size={14} className="mr-1" />
-                        <span>Discount ends {new Date(data?.discountExpriyDate).toLocaleDateString()}</span>
+                        <span className="font-medium">Ends {new Date(data?.discountExpriyDate).toLocaleDateString()}</span>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-3xl font-bold text-gray-900">{data?.temporaryPrice} Birr</span>
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="text-3xl font-bold text-[#07705d]">{data?.temporaryPrice} Birr</span>
                         <span className="text-lg line-through text-gray-400">{data?.price} Birr</span>
-                        <span className="bg-red-100 text-red-600 text-xs font-medium px-2 py-1 rounded">
-                          {Math.round((1 - data?.temporaryPrice / data?.price) * 100)}% OFF
-                        </span>
                       </div>
+                      <span className="bg-gradient-to-r from-[#bf8c13] to-[#c7cc3f] text-white text-sm font-bold px-3 py-1 rounded-full">
+                        {Math.round((1 - data?.temporaryPrice / data?.price) * 100)}% OFF
+                      </span>
                     </div>
                   ) : (
-                    <div className="mb-4">
-                      <span className="text-3xl font-bold text-gray-900">{data?.price} Birr</span>
+                    <div className="mb-6">
+                      <span className="text-3xl font-bold text-[#07705d] font-Sendako">{data?.price} Birr</span>
+                      <p className="text-sm text-gray-600 mt-1">One-time payment • Lifetime access</p>
                     </div>
                   )}
-                  
-                  <div className="space-y-3 mb-6">
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Check size={18} className="mr-2 text-green-500" />
-                      <span>Full lifetime access</span>
+
+                  {/* Enhanced Features List */}
+                  <div className="space-y-4 mb-8">
+                    <div className="flex items-center text-sm text-gray-700">
+                      <div className="w-5 h-5 bg-[#c7cc3f] rounded-full flex items-center justify-center mr-3">
+                        <Check size={12} className="text-white" />
+                      </div>
+                      <span className="font-medium">Full lifetime access</span>
                     </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Check size={18} className="mr-2 text-green-500" />
-                      <span>{data?.courses?.length} full courses</span>
+                    <div className="flex items-center text-sm text-gray-700">
+                      <div className="w-5 h-5 bg-[#c7cc3f] rounded-full flex items-center justify-center mr-3">
+                        <Check size={12} className="text-white" />
+                      </div>
+                      <span className="font-medium">{data?.courses?.length} comprehensive courses</span>
                     </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Check size={18} className="mr-2 text-green-500" />
-                      <span>{totalUnits} learning units</span>
+                    <div className="flex items-center text-sm text-gray-700">
+                      <div className="w-5 h-5 bg-[#c7cc3f] rounded-full flex items-center justify-center mr-3">
+                        <Check size={12} className="text-white" />
+                      </div>
+                      <span className="font-medium">{totalUnits} structured learning units</span>
                     </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Check size={18} className="mr-2 text-green-500" />
-                      <span>Access on all devices</span>
+                    <div className="flex items-center text-sm text-gray-700">
+                      <div className="w-5 h-5 bg-[#c7cc3f] rounded-full flex items-center justify-center mr-3">
+                        <Check size={12} className="text-white" />
+                      </div>
+                      <span className="font-medium">Mobile & desktop access</span>
+                    </div>
+                    <div className="flex items-center text-sm text-gray-700">
+                      <div className="w-5 h-5 bg-[#c7cc3f] rounded-full flex items-center justify-center mr-3">
+                        <Check size={12} className="text-white" />
+                      </div>
+                      <span className="font-medium">Certificate of completion</span>
+                    </div>
+                    <div className="flex items-center text-sm text-gray-700">
+                      <div className="w-5 h-5 bg-[#c7cc3f] rounded-full flex items-center justify-center mr-3">
+                        <Check size={12} className="text-white" />
+                      </div>
+                      <span className="font-medium">24/7 community support</span>
                     </div>
                   </div>
-                  
+
+                  {/* Enhanced Purchase Section */}
                   {profile?.studentStatus === "active" ? (
-                    <div className="mt-4">
+                    <div className="space-y-4">
                       {data?.discountStatus ? (
                         <PurchaseDialogCustom
                           packageId={data?.id}
@@ -517,38 +562,53 @@ export default function PackageDetailsRendered(props: any) {
                           price3={data?.price3}
                         />
                       )}
+
+                      {/* Additional Info */}
+                      <div className="bg-gradient-to-r from-[#c7cc3f]/10 to-[#bf8c13]/10 rounded-xl p-4 border border-[#c7cc3f]/20">
+                        <div className="flex items-center text-sm text-gray-600">
+                          <Shield className="h-4 w-4 mr-2 text-[#07705d]" />
+                          <span className="font-medium">30-day money-back guarantee</span>
+                        </div>
+                      </div>
                     </div>
                   ) : (
-                    <div className="mt-4">
+                    <div className="space-y-4">
                       {profile?.accountType === "Student" ? (
-                        <div className="text-center p-3 bg-yellow-50 border border-yellow-100 rounded-lg">
-                          <p className="text-sm text-yellow-700 mb-2">
-                            You need to confirm your email to purchase!
+                        <div className="text-center p-4 bg-gradient-to-r from-[#bf8c13]/10 to-[#c7cc3f]/10 border border-[#bf8c13]/30 rounded-xl">
+                          <div className="w-12 h-12 bg-gradient-to-br from-[#bf8c13] to-[#c7cc3f] rounded-2xl flex items-center justify-center mx-auto mb-3">
+                            <User className="h-6 w-6 text-white" />
+                          </div>
+                          <p className="text-sm text-[#07705d] font-semibold mb-2">
+                            Confirm your email to purchase!
                           </p>
-                          <Link 
-                            href="/profile" 
-                            className="text-sm font-medium text-primaryColor hover:underline"
+                          <Link
+                            href="/profile"
+                            className="inline-flex items-center px-4 py-2 text-sm font-semibold bg-[#07705d] text-white rounded-xl hover:bg-[#07705d]/90 transition-colors"
                           >
-                            Go to your profile to activate
+                            Go to Profile
+                            <ChevronRight className="h-4 w-4 ml-1" />
                           </Link>
                         </div>
                       ) : (
-                        <div className="text-center p-3 bg-gray-50 border border-gray-100 rounded-lg">
-                          <p className="text-sm text-gray-700 mb-2">
-                            You need to sign in to purchase!
+                        <div className="text-center p-4 bg-gradient-to-r from-[#c7cc3f]/10 to-[#bf8c13]/10 border border-[#c7cc3f]/30 rounded-xl">
+                          <div className="w-12 h-12 bg-gradient-to-br from-[#07705d] to-[#bf8c13] rounded-2xl flex items-center justify-center mx-auto mb-3">
+                            <Users className="h-6 w-6 text-white" />
+                          </div>
+                          <p className="text-sm text-[#07705d] font-semibold mb-4">
+                            Join thousands of students learning with us!
                           </p>
-                          <div className="flex justify-center gap-3">
-                            <Link 
-                              href="/login" 
-                              className="px-4 py-1 text-sm font-medium bg-primaryColor text-white rounded-full hover:bg-primaryColor/90 transition-colors"
+                          <div className="flex flex-col gap-3">
+                            <Link
+                              href="/login"
+                              className="px-6 py-2 text-sm font-semibold bg-[#07705d] text-white rounded-xl hover:bg-[#07705d]/90 transition-colors"
                             >
                               Log in
                             </Link>
                             <Link
-                              href="/signup" 
-                              className="px-4 py-1 text-sm font-medium border border-primaryColor text-primaryColor rounded-full hover:bg-primaryColor/5 transition-colors"
+                              href="/signup"
+                              className="px-6 py-2 text-sm font-semibold border-2 border-[#07705d] text-[#07705d] rounded-xl hover:bg-[#07705d]/5 transition-colors"
                             >
-                              Sign Up
+                              Sign Up Free
                             </Link>
                           </div>
                         </div>
@@ -556,7 +616,7 @@ export default function PackageDetailsRendered(props: any) {
                     </div>
                   )}
                 </div>
-              </motion.div>
+              </div>
             </div>
           </div>
         </div>

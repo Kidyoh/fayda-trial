@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 127.12 139.44">
+  <defs>
+    <style>
+      .cls-1 {
+        mix-blend-mode: color-dodge;
+        opacity: .75;
+      }
+
+      .cls-2 {
+        isolation: isolate;
+      }
+
+      .cls-3 {
+        fill: #757575;
+        font-family: NotoSansEthiopic-ExtraCondensedBlack, 'Noto Sans Ethiopic';
+        font-size: 128.29px;
+        font-weight: 800;
+      }
+    </style>
+  </defs>
+  <g class="cls-2">
+    <g id="Layer_2" data-name="Layer 2">
+      <g id="Layer_1-2" data-name="Layer 1">
+        <g class="cls-1">
+          <text class="cls-3" transform="translate(66.49 125.65) rotate(-37.21)"><tspan x="0" y="0">፪</tspan></text>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

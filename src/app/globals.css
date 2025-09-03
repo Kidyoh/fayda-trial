@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Sendako";
+  src: url("/fonts/SENDAKO.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --color-primary: #de933d;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -74,5 +86,32 @@
       brightness(100%) contrast(100%);
     font-weight: bold;
   }
-} 
+}
 
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #ffffff; /* white */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #2e6d5e;
+  border-radius: 9999px;
+  border: 2px solid #ffffff;
+}
+
+@keyframes shine {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shine {
+  animation: shine linear infinite;
+}

@@ -1,3 +1,5 @@
+const { Send } = require("lucide-react");
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
@@ -8,11 +10,23 @@ module.exports = {
     "./src/**/*.{ts,tsx}",
   ],
   theme: {
+    fontFamily: {
+      Sendako: ["Sendako", "sans-serif"],
+    },
     container: {
       center: true,
       padding: "2rem",
     },
     extend: {
+      keyframes: {
+        shine: {
+          "0%": { "background-position": "100%" },
+          "100%": { "background-position": "-100%" },
+        },
+      },
+      animation: {
+        shine: "shine 5s linear infinite",
+      },
       screens: {
         xxsm: "350px",
         xsm: "440px",
