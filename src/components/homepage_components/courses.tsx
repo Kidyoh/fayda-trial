@@ -1,74 +1,73 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { CoursePurchaseDialog } from "../custom_components/coursePurchaseDialog";
 
 const cards = [
   {
-    title: "Carousel Template Kit",
-    instructor: "Chris Do",
+    id: "course-1",
+    title: "Ethiopian Mathematics Grade 12",
+    instructor: "Dr. Alemayehu Tadesse",
     instructorImg: "https://randomuser.me/api/portraits/men/33.jpg",
-    price: "$19",
+    price: "299",
+    temporaryPrice: "199",
+    discountStatus: true,
+    discountExpiryDate: "2025-10-01",
+    status: true,
+    displayOnHome: true,
+    thumbnail: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
     img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
-    description:
-      "Slow that scroll, create captivating social media content in no time, and have an Instagram feed that looks like money (without hiring a designer).",
-    cta: "Add to Cart",
-    link: "#"
+    courseDescription: "Comprehensive mathematics course covering all Grade 12 topics including calculus, statistics, and advanced algebra concepts.",
+    parts: "12",
+    partName: "Mathematical Foundations",
+    courseIntroductionVideo: "/course.mp4",
+    description: "Master Grade 12 mathematics with Ethiopian curriculum standards. Perfect preparation for university entrance exams.",
+    cta: "Enroll Now",
+    link: "/course/course-1"
   },
   {
-    title: "Brand Strategy Fundamentals",
-    instructor: "Anneli Hansson",
+    id: "course-2",
+    title: "Physics for Ethiopian Students",
+    instructor: "Prof. Hanan Mohammed",
     instructorImg: "https://randomuser.me/api/portraits/women/65.jpg",
-    price: "$199",
+    price: "399",
+    temporaryPrice: "299",
+    discountStatus: true,
+    discountExpiryDate: "2025-09-15",
+    status: true,
+    displayOnHome: true,
+    thumbnail: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
     img: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
-    description:
-      "Learn the most important frameworks and exercises to lead successful brand strategy sessions.",
-    cta: "Add to Cart",
-    link: "#"
+    courseDescription: "Advanced physics covering mechanics, thermodynamics, electromagnetism, and modern physics concepts.",
+    parts: "8",
+    partName: "Physics Fundamentals",
+    courseIntroductionVideo: "/course.mp4",
+    description: "Learn physics concepts with practical applications and laboratory experiments designed for Ethiopian curriculum.",
+    cta: "Enroll Now",
+    link: "/course/course-2"
   },
   {
-    title: "Design Thinking Guidebook",
-    instructor: "Eric Moore",
-    instructorImg: "https://randomuser.me/api/portraits/men/32.jpg",
-    price: "$79",
-    img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
-    description:
-      "Whip up some tasty solutions to your clients’ toughest challenges with design thinking methods and become their most trusted advisor.",
-    cta: "Add to Cart",
-    link: "#"
+    id: "course-2",
+    title: "Physics for Ethiopian Students",
+    instructor: "Prof. Hanan Mohammed",
+    instructorImg: "https://randomuser.me/api/portraits/women/65.jpg",
+    price: "399",
+    temporaryPrice: "299",
+    discountStatus: true,
+    discountExpiryDate: "2025-09-15",
+    status: true,
+    displayOnHome: true,
+    thumbnail: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
+    img: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
+    courseDescription: "Advanced physics covering mechanics, thermodynamics, electromagnetism, and modern physics concepts.",
+    parts: "8",
+    partName: "Physics Fundamentals",
+    courseIntroductionVideo: "/course.mp4",
+    description: "Learn physics concepts with practical applications and laboratory experiments designed for Ethiopian curriculum.",
+    cta: "Enroll Now",
+    link: "/course/course-2"
   },
-  {
-    title: "Illustration for Designers",
-    instructor: "Greg Gunn",
-    instructorImg: "https://randomuser.me/api/portraits/men/34.jpg",
-    price: "$49",
-    img: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80",
-    description:
-      "Master the art of illustration and elevate your design work with professional drawing techniques.",
-    cta: "Add to Cart",
-    link: "#"
-  },
-  {
-    title: "Grids & Layout",
-    instructor: "Jane Doe",
-    instructorImg: "https://randomuser.me/api/portraits/women/66.jpg",
-    price: "$99",
-    img: "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=400&q=80",
-    description:
-      "Learn how to create grids that provide structure and clarity to all your design projects.",
-    cta: "Add to Cart",
-    link: "#"
-  },
-  {
-    title: "Advanced Typography",
-    instructor: "Alex Lee",
-    instructorImg: "https://randomuser.me/api/portraits/men/35.jpg",
-    price: "$59",
-    img: "https://images.unsplash.com/photo-1472289065668-ce650ac443d2?auto=format&fit=crop&w=400&q=80",
-    description:
-      "Unlock the secrets of beautiful type and learn advanced techniques for working with fonts and lettering.",
-    cta: "Add to Cart",
-    link: "#"
-  }
+
 ];
 
 function AnimatedCourseCard({ card }) {
@@ -113,9 +112,27 @@ function AnimatedCourseCard({ card }) {
               {card.instructor}
             </span>
           </div>
-          <span className="font-semibold text-2xl text-gray-900 font-Sendako">
-            {card.price}
-          </span>
+          <div className="flex flex-col items-end">
+            {card.discountStatus ? (
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-lg text-gray-500 line-through font-Sendako">
+                  {card.price} Birr
+                </span>
+                <span className="font-semibold text-2xl text-[#07705d] font-Sendako">
+                  {card.temporaryPrice} Birr
+                </span>
+              </div>
+            ) : (
+              <span className="font-semibold text-2xl text-gray-900 font-Sendako">
+                {card.price} Birr
+              </span>
+            )}
+            {card.discountStatus && (
+              <span className="text-xs text-red-500 font-medium">
+                Until {new Date(card.discountExpiryDate).toLocaleDateString()}
+              </span>
+            )}
+          </div>
         </div>
 
         <AnimatePresence initial={false}>
@@ -132,12 +149,23 @@ function AnimatedCourseCard({ card }) {
                 {card.description}
               </div>
               <div className="w-full justify-between flex items-center gap-4">
-                <a
-                  href={card.link}
-                  className="bg-primaryColor text-white font-semibold font-Sendako py-2 px-7 rounded-full"
-                >
-                  {card.cta}
-                </a>
+                {card.id ? (
+                  <CoursePurchaseDialog
+                    courseId={card.id}
+                    courseName={card.title}
+                    price={card.price}
+                    temporaryPrice={card.temporaryPrice}
+                    discountStatus={card.discountStatus}
+                    discountExpiryDate={card.discountExpiryDate}
+                  />
+                ) : (
+                  <a
+                    href={card.link}
+                    className="bg-primaryColor text-white font-semibold font-Sendako py-2 px-7 rounded-full"
+                  >
+                    {card.cta}
+                  </a>
+                )}
                 <a
                   href={card.link}
                   className="flex items-center font-Sendako font-medium text-gray-900 hover:underline ml-2"
