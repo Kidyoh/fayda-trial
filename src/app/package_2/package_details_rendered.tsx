@@ -185,6 +185,25 @@ export default function PackageDetailsRendered(props: any) {
                 </div>
               </div>
 
+              <div>
+                <div className="mb-8">
+                  <h2 className="text-2xl font-bold mb-4 text-[#07705d] flex items-center">
+                    <Play className="h-6 w-6 mr-3 text-[#bf8c13]" />
+                    Package Introduction Video
+                  </h2>
+                  <div className="rounded-2xl overflow-hidden border border-[#c7cc3f]/30 bg-gradient-to-r from-[#c7cc3f]/10 to-[#bf8c13]/10">
+                    <video
+                      controls
+                      src="/course.mp4"
+                      className="w-full h-64 md:h-96 object-cover"
+                      poster={data?.imgUrl}
+                    >
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                </div>
+              </div>
+
 
               <div className="bg-white rounded-2xl overflow-hidden">
                 <Tabs
