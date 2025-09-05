@@ -30,7 +30,7 @@ export default function Home() {
           <CoverHome />
           <Info />
           <WelcomeSection />
-          <AdSlider/>
+          {/* <AdSlider/> */}
           <div className="relative overflow-hidden">
             <div className="w-[150vw] h-[250vh] absolute left-[45%] opacity-10 -z-10 -translate-x-1/2">
               <Image
