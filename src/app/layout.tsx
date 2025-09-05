@@ -36,7 +36,7 @@ export default function RootLayout({
           </div> */}
           
           {/* Footer */}
-          <footer className="w-full">
+          <footer className="w-full pt-11">
             <Footer />
           </footer>
         </LanguageProvider>

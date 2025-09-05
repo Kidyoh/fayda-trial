@@ -1,14 +1,16 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Blocks, BookOpenCheck, ChevronRight, Pause, Play, Trophy, Vote, PiIcon, FlaskConical, AtomIcon, Globe, Orbit } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Blocks, BookOpenCheck, ChevronRight, Pause, Play, Trophy, Vote, PiIcon, FlaskConical, AtomIcon, Globe, Orbit, X } from "lucide-react";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
 
 export default function WelcomeSection() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const modalVideoRef = useRef<HTMLVideoElement>(null);
 
   const handleVideoClick = () => {
     if (videoRef.current) {
@@ -23,6 +25,20 @@ export default function WelcomeSection() {
   const handlePlayPause = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent video click event from firing
     handleVideoClick();
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+    if (modalVideoRef.current) {
+      modalVideoRef.current.play();
+    }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    if (modalVideoRef.current) {
+      modalVideoRef.current.pause();
+    }
   };
 
   return (
@@ -101,60 +117,35 @@ export default function WelcomeSection() {
                 <div className="relative max-w-5xl mx-auto">
                   {/* Video Container with Perspective */}
                   <div
-                    className="relative aspect-video rounded-2xl overflow-hidden transform hover:scale-[1.02] transition-transform duration-500 shadow-2xl group"
+                    className="relative aspect-video rounded-2xl overflow-hidden transform hover:scale-[1.02] transition-transform duration-500 shadow-2xl group cursor-pointer"
                     onMouseEnter={() => setIsHovering(true)}
                     onMouseLeave={() => setIsHovering(false)}
+                    onClick={openModal}
                   >
                     <div className={`absolute inset-0 bg-black/40 backdrop-blur-sm z-10 transition-opacity duration-300 ${isHovering ? 'opacity-0' : 'opacity-100'}`} />
-                    <video
-                      ref={videoRef}
-                      id="welcome-video"
-                      poster="/common_files/intro_thumbnail.png"
+                    <Image
+                      src="/common_files/intro_thumbnail.png"
+                      alt="Video Thumbnail"
+                      fill
                       className="w-full h-full object-cover"
-                      onClick={handleVideoClick}
-                      onPlay={() => setIsPlaying(true)}
-                      onPause={() => setIsPlaying(false)}
-                      controlsList="nodownload"
-                    >
-                      <source src="/common_files/intro.mp4" type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
+                    />
 
-                    {/* Enhanced Play/Pause Button Overlay */}
+                    {/* Enhanced Play Button Overlay */}
                     <motion.div
                       initial={false}
-                      animate={{ opacity: isHovering || !isPlaying ? 1 : 0 }}
+                      animate={{ opacity: isHovering ? 1 : 0.8 }}
                       transition={{ duration: 0.2 }}
                       className="absolute inset-0 flex items-center justify-center z-20"
                     >
                       <motion.button
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
-                        onClick={handlePlayPause}
-                        className={`${isPlaying ? 'bg-black/40' : 'bg-white/30'} backdrop-blur-md p-6 rounded-full transition-colors duration-300 hover:bg-primaryColor/80`}
+                        onClick={openModal}
+                        className="bg-white/30 backdrop-blur-md p-6 rounded-full transition-colors duration-300 hover:bg-primaryColor/80"
                       >
-                        {isPlaying ? (
-                          <Pause className="w-12 h-12 text-white" />
-                        ) : (
-                          <Play className="w-12 h-12 text-white" />
-                        )}
+                        <Play className="w-12 h-12 text-white" />
                       </motion.button>
                     </motion.div>
-
-                    {/* Video Progress Bar */}
-                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-200/20 z-20 group">
-                      <motion.div
-                        className="h-full bg-primaryColor"
-                        initial={{ width: "0%" }}
-                        animate={{ width: isPlaying ? "100%" : "0%" }}
-                        transition={{
-                          duration: videoRef.current?.duration || 0,
-                          ease: "linear",
-                          repeat: 0
-                        }}
-                      />
-                    </div>
-
 
                     {/* Video Info */}
                     <div className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 z-10 transition-opacity duration-300 ${isHovering ? 'opacity-100' : 'opacity-0'}`}>
@@ -166,6 +157,7 @@ export default function WelcomeSection() {
                         <motion.button
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
+                          onClick={openModal}
                           className="flex items-center gap-2 bg-primaryColor/80 backdrop-blur-sm px-4 py-2 rounded-lg hover:bg-primaryColor transition-colors duration-200"
                         >
                           <span>Learn More</span>
@@ -173,7 +165,6 @@ export default function WelcomeSection() {
                         </motion.button>
                       </div>
                     </div>
-                    <button className="">Learn More</button>
                   </div>
 
                   {/* Video Decorative Elements */}
@@ -186,6 +177,46 @@ export default function WelcomeSection() {
           </div>
         </div>
       </section>
+
+      {/* Modal */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+            onClick={closeModal}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              className="relative max-w-4xl w-full aspect-video bg-black rounded-lg overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <video
+                ref={modalVideoRef}
+                className="w-full h-full object-cover"
+                controls
+                controlsList="nodownload"
+                onPlay={() => setIsPlaying(true)}
+                onPause={() => setIsPlaying(false)}
+              >
+                <source src="/common_files/intro.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              <button
+                onClick={closeModal}
+                className="absolute top-4 right-4 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
+
 }

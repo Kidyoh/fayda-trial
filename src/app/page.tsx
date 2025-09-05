@@ -59,7 +59,7 @@ export default function Home() {
             <Testimonials />
           </div>
           <Blog />
-          <Marquee />
+          {/* <Marquee /> */}
         </>
       )
       }
