@@ -9,11 +9,11 @@ import {
   Instagram,
   Linkedin,
   Youtube,
-  PhoneCall,
   Send,
   Mail,
   MapPin,
   ChevronRight,
+  PhoneCall,
 } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTiktok } from "@fortawesome/free-brands-svg-icons";
@@ -48,7 +48,6 @@ const containerVariants = {
     opacity: 1,
     transition: {
       staggerChildren: 0.1,
-      delayChildren: 0.3,
     },
   },
 };
@@ -58,202 +57,181 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5 }
+    transition: { duration: 0.5 },
   },
 };
 
+
 export default function Footer() {
   return (
-    <footer className="text-black relative md:h-[80dvh]">
-      {/* Background Images */}
+    <footer className="bg-white relative py-4 text-white">
       <Image
         width={1080}
         height={720}
         src="/Background/footer1.png"
         alt="footer image"
-        className="absolute z-10 w-full bottom-0 h-[75%] object-cover object-center"
+        className="hidden lg:flex absolute z-10 w-full bottom-0 h-[75%] object-cover object-center"
       />
       <Image
         width={1080}
         height={720}
         src="/Background/footer2.png"
         alt="footer image"
-        className="absolute z-20 w-full bottom-0 h-[45%] object-cover object-center"
+        className="hidden lg:flex absolute z-20 w-full bottom-0 h-[45%] object-cover object-center"
       />
       <Image
         width={1080}
         height={720}
         src="/Background/footer3.png"
         alt="footer image"
-        className="absolute z-30 w-full bottom-0 h-[25%] object-cover object-center"
+        className="hidden lg:flex absolute z-30 w-full bottom-0 h-[25%] object-cover object-center"
       />
+      <div className="w-full flex justify-start lg:justify-center">
+        <img
+          className="h-16 mb-3"
+          src="/common_files/main/smallfulllogo.png"
+          alt="Fayida Academy logo"
+        />
+      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-primaryColor relative z-40 flex flex-col h-full justify-between">
-        {/* Main Footer Content */}
-        <div className="py-12 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-12 gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-40 flex flex-col h-full justify-between mix-blend-difference">
+        <div className="flex flex-col gap-10 md:gap-0 md:flex-row md:justify-between md:items-start w-full">
           {/* Logo and Description */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="lg:col-span-4"
+            className="flex-1 min-w-[220px] max-w-xs mb-8 md:mb-0"
           >
             <motion.div variants={itemVariants}>
-              <img
-                className="h-20 w-auto"
-                src="/Images/faydagreenlogo.png"
-                alt="Fayida Academy"
-              />
-              <p className="mt-4 text-sm text-gray-700 leading-relaxed">
+              <p className="text-sm leading-relaxed max-w-[250px]">
                 Empowering learners worldwide with quality education. Join our community of passionate learners and expert instructors.
               </p>
             </motion.div>
-
-            {/* Contact Information */}
-            <motion.div variants={itemVariants} className="mt-6 space-y-3">
-              <div className="flex items-center space-x-3 text-sm text-gray-700">
+            <motion.div variants={itemVariants} className="mt-6 space-y-2">
+              <div className="flex items-center gap-2 text-sm">
                 <PhoneCall className="w-4 h-4" />
-                <div>
-                  <p>+251970483333</p>
-                  <p>+251970493333</p>
-                </div>
+                <span>+251970483333</span>
               </div>
-              <div className="flex items-center space-x-3 text-sm text-gray-700">
+              <div className="flex items-center gap-2 text-sm">
+                <PhoneCall className="w-4 h-4 opacity-70" />
+                <span>+251970493333</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm">
                 <Mail className="w-4 h-4" />
-                <p>contact@fayidaacademy.com</p>
+                <span>contact@fayidaacademy.com</span>
               </div>
-              <div className="flex items-center space-x-3 text-sm text-gray-700">
+              <div className="flex items-center gap-2 text-sm">
                 <MapPin className="w-4 h-4" />
-                <p>Addis Ababa, Ethiopia</p>
+                <span>Addis Ababa, Ethiopia</span>
               </div>
             </motion.div>
           </motion.div>
 
-          {/* Quick Links */}
-          <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-8">
-            {/* Company Links */}
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              <motion.h3 variants={itemVariants} className="text-lg font-semibold mb-4">
+          <div className="flex-1 w-full grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 md:gap-6">
+            {/* Company */}
+            <motion.div variants={containerVariants} initial="hidden" animate="visible">
+              <motion.h3 variants={itemVariants} className="text-base font-semibold mb-3">
                 Company
               </motion.h3>
-              <motion.ul variants={containerVariants} className="space-y-2">
+              <motion.ul variants={containerVariants} className="space-y-1">
                 {footerLinks.company.map((link, index) => (
                   <motion.li key={index} variants={itemVariants}>
                     <Link
                       href={link.href}
-                      className="text-gray-600 transition-colors duration-200 flex items-center group"
+                      className="hover:text-[#c7cc3f] transition-colors duration-200 flex items-center gap-2 py-1"
                     >
-                      <ChevronRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-200" />
+                      <ChevronRight className="w-4 h-4 opacity-60" />
                       {link.name}
                     </Link>
                   </motion.li>
                 ))}
               </motion.ul>
             </motion.div>
-
-            {/* Resources Links */}
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              <motion.h3 variants={itemVariants} className="text-lg font-semibold mb-4">
+            {/* Resources */}
+            <motion.div variants={containerVariants} initial="hidden" animate="visible">
+              <motion.h3 variants={itemVariants} className="text-base font-semibold mb-3">
                 Resources
               </motion.h3>
-              <motion.ul variants={containerVariants} className="space-y-2">
+              <motion.ul variants={containerVariants} className="space-y-1">
                 {footerLinks.resources.map((link, index) => (
                   <motion.li key={index} variants={itemVariants}>
                     <Link
                       href={link.href}
-                      className="text-gray-600 transition-colors duration-200 flex items-center group"
+                      className="hover:text-[#c7cc3f] transition-colors duration-200 flex items-center gap-2 py-1"
                     >
-                      <ChevronRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-200" />
+                      <ChevronRight className="w-4 h-4 opacity-60" />
                       {link.name}
                     </Link>
                   </motion.li>
                 ))}
               </motion.ul>
             </motion.div>
-
-            {/* Courses Links */}
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              <motion.h3 variants={itemVariants} className="text-lg font-semibold mb-4">
+            {/* Courses */}
+            <motion.div variants={containerVariants} initial="hidden" animate="visible">
+              <motion.h3 variants={itemVariants} className="text-base font-semibold mb-3">
                 Courses
               </motion.h3>
-              <motion.ul variants={containerVariants} className="space-y-2">
+              <motion.ul variants={containerVariants} className="space-y-1">
                 {footerLinks.courses.map((link, index) => (
                   <motion.li key={index} variants={itemVariants}>
                     <Link
                       href={link.href}
-                      className="text-gray-600 transition-colors duration-200 flex items-center group"
+                      className="hover:text-[#c7cc3f] transition-colors duration-200 flex items-center gap-2 py-1"
                     >
-                      <ChevronRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-200" />
+                      <ChevronRight className="w-4 h-4 opacity-60" />
                       {link.name}
                     </Link>
-                  </motion.li>  
+                  </motion.li>
                 ))}
               </motion.ul>
             </motion.div>
           </div>
         </div>
 
-        {/* Divider */}
-        <div className="border-t border-white/10">
-          <div className="py-6 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            {/* Copyright */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="flex items-center space-x-2 text-sm text-gray-300"
-            >
-              <Copyright className="w-4 h-4" />
-              <p>{new Date().getFullYear()} Fayida Academy. All Rights Reserved</p>
-            </motion.div>
-
-            {/* Social Links */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-              className="flex items-center space-x-4"
-            >
-              {[
-                { icon: Facebook, href: "https://www.facebook.com/profile.php?id=61557674511552" },
-                { icon: Instagram, href: "https://www.instagram.com/fayidaacademy" },
-                { icon: Linkedin, href: "https://www.linkedin.com/company/ethlook/" },
-                { icon: Youtube, href: "https://www.youtube.com/@FayidaAcademyOfficial" },
-                { icon: Send, href: "https://t.me/fayidaacademy" },
-              ].map((social, index) => (
-                <Link
-                  key={index}
-                  href={social.href}
-                  target="_blank"
-                  className="p-2 rounded-full text-white"
-                >
-                  <social.icon className="w-5 h-5" />
-                </Link>
-              ))}
+        <div className="mt-8 pt-6 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-4 mix-blend-difference text-white">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="flex items-center space-x-2 text-xs"
+          >
+            <Copyright className="w-4 h-4" />
+            <p>{new Date().getFullYear()} Fayida Academy. All Rights Reserved</p>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="flex items-center space-x-3"
+          >
+            {[
+              { icon: Facebook, href: "https://www.facebook.com/profile.php?id=61557674511552" },
+              { icon: Instagram, href: "https://www.instagram.com/fayidaacademy" },
+              { icon: Linkedin, href: "https://www.linkedin.com/company/ethlook/" },
+              { icon: Youtube, href: "https://www.youtube.com/@FayidaAcademyOfficial" },
+              { icon: Send, href: "https://t.me/fayidaacademy" },
+            ].map((social, index) => (
               <Link
-                href="https://www.tiktok.com/@fayidaacademy"
+                key={index}
+                href={social.href}
                 target="_blank"
-                className="p-2 rounded-full text-white"
+                className="p-2 rounded-full hover:bg-[#c7cc3f]/20 transition-colors"
               >
-                <FontAwesomeIcon
-                  icon={faTiktok}
-                  className="w-5 h-5"
-                />
+                <social.icon className="w-5 h-5" />
               </Link>
-            </motion.div>
-          </div>
+            ))}
+            <Link
+              href="https://www.tiktok.com/@fayidaacademy"
+              target="_blank"
+              className="p-2 rounded-full hover:bg-[#c7cc3f]/20 transition-colors"
+            >
+              <FontAwesomeIcon
+                icon={faTiktok}
+                className="w-5 h-5"
+              />
+            </Link>
+          </motion.div>
         </div>
       </div>
     </footer>

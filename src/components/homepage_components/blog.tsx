@@ -197,7 +197,7 @@ const Blog = () => {
   );
 
   return (
-    <section className="pt-16 px-4 bg-white relative overflow-hidden">
+    <section className="pt-2 lg:pt-16 px-4 bg-white relative overflow-hidden">
       {/* Ethiopian Pattern Background */}
       <div className="absolute inset-0 opacity-5">
         <div
@@ -225,7 +225,7 @@ const Blog = () => {
 
         {/* Filter Tabs */}
         {!isLoading && (
-          <div className="flex flex-wrap justify-center gap-2 mb-12">
+          <div className="flex flex-wrap justify-center gap-1 mb-12">
             {categories.map((category) => (
               <button
                 key={category}

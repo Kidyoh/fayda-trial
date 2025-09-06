@@ -132,7 +132,7 @@ export default function CourseList2() {
                     </div>
                     
                     <div className="relative z-10 p-6">
-                      <div className="flex items-start space-x-6">
+                      <div className="flex flex-col md:flex-row justify-center items-center gap-6">
                         <div className="flex-shrink-0">
                           {course?.packageImgUrl ? (
                             <img
@@ -148,17 +148,17 @@ export default function CourseList2() {
                         </div>
 
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between mb-2">
+                          <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                             <p className="text-sm text-gray-600">
                               Package | {course?.Packages?.packageName}
                             </p>
                             {isCompleted ? (
-                              <div className="flex items-center space-x-2 bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+                              <div className="flex items-center space-x-2 bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs md:text-sm">
                                 <CheckCircle className="w-4 h-4" />
                                 <span>Completed</span>
                               </div>
                             ) : (
-                              <div className="flex items-center space-x-2 bg-[#bf8c13]/10 text-[#bf8c13] px-3 py-1 rounded-full text-sm">
+                              <div className="flex items-center space-x-2 bg-[#bf8c13]/10 text-[#bf8c13] px-3 py-1 rounded-full text-xs md:text-sm">
                                 <Clock className="w-4 h-4" />
                                 <span>In Progress</span>
                               </div>

@@ -49,7 +49,7 @@ function QuoteIcon() {
 
 export default function Testimonials() {
   return (
-    <section className="w-full px-4 pt-6 pb-8">
+    <section className="w-full px-4 pt-6 md:pb-8">
       <div className="max-w-4xl mx-auto mb-10 relative flex flex-col items-center">
         <Image
           src="/svg/Asset 21.svg"

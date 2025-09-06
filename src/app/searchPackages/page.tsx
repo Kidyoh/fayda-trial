@@ -196,11 +196,9 @@ export default function SearchPackages() {
 
   return (
     <div className="min-h-screen bg-white relative">
-      {/* Geometric Ethiopian pattern background */}
-      <div className="absolute inset-0 pointer-events-none opacity-10 z-0" style={{ backgroundImage: `url('data:image/svg+xml,%3Csvg width=\'80\' height=\'80\' viewBox=\'0 0 80 80\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'#bf8c13\' fill-opacity=\'0.12\'%3E%3Cpath d=\'M40 40l20-20v40l-20-20zm0 0l-20-20v40l20-20z\'/%3E%3C/g%3E%3C/svg%3E')`, backgroundSize: '80px 80px' }} />
 
       {/* Hero Section */}
-      <section className="relative bg-[url(/Background/landing-bg.jpg)] bg-cover bg-center text-white pb-16 md:pt-24">
+      <section className="relative pt-20 bg-[url(/Background/landing-bg.jpg)] bg-cover bg-center text-white pb-16 md:pt-24">
         <div className="container mx-auto px-6 z-10 relative">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl sm:text-5xl font-bold mb-6">Find Your Perfect Learning Package</h1>

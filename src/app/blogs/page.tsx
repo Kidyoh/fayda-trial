@@ -61,7 +61,7 @@ export default function Blogs() {
   };
 
   return (
-    <div className="min-h-screen bg-white relative">
+    <div className="min-h-screen bg-white relative pt-16">
       {/* Geometric Ethiopian pattern background */}
       <div className="absolute inset-0 pointer-events-none opacity-10 z-0" style={{ backgroundImage: `url('data:image/svg+xml,%3Csvg width=\'80\' height=\'80\' viewBox=\'0 0 80 80\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'#bf8c13\' fill-opacity=\'0.12\'%3E%3Cpath d=\'M40 40l20-20v40l-20-20zm0 0l-20-20v40l20-20z\'/%3E%3C/g%3E%3C/svg%3E')`, backgroundSize: '80px 80px' }} />
 
@@ -88,7 +88,7 @@ export default function Blogs() {
               className="w-full pl-10 pr-4 py-2 rounded-lg border border-[#bf8c13] focus:outline-none focus:ring-2 focus:ring-[#bf8c13]/30 focus:border-[#bf8c13] bg-white font-medium"
             />
           </div>
-          <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0">
+          <div className="flex flex-wrap justify-center gap-2 overflow-x-auto pb-2 sm:pb-0">
             {categories.map((category) => (
               <button
                 key={category}
