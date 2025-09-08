@@ -3,7 +3,7 @@ import { apiUrl } from "@/apiConfig";
 import React, { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ConfirmationDialog from "@/components/custom_components/confirmationDialog";
-import { setAccessToken, getAccessToken, clearAccessToken } from "../../lib/tokenManager";
+import { setAccessToken, getAccessToken, clearAccessToken } from "../../../lib/tokenManager";
 import { Gift, Award, History, Clock, Check, Package, AlertCircle } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 

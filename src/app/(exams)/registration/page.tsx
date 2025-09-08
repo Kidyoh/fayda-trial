@@ -5,11 +5,11 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RegisterExamTakerSchema } from "../validation/registerExamTakerValidation";
+import { RegisterExamTakerSchema } from "../../validation/registerExamTakerValidation";
 import { Phone, User, School, MapPin, Building, GraduationCap, BookOpen } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import useTemporaryPhonenumberStore from "../store/temporaryphonenumberStore";
+import useTemporaryPhonenumberStore from "../../store/temporaryphonenumberStore";
 
 type Inputs = {
   phoneNumber: string;
