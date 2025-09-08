@@ -156,7 +156,26 @@ export function AddToCartButton({
 }
 
 // Specialized components for different contexts
-export function PackageAddToCartButton({ packageData, className = "", variant = 'default', size = 'default' }) {
+interface PackageAddToCartButtonProps {
+  packageData: any;
+  className?: string;
+  variant?: 'default' | 'outline' | 'ghost';
+  size?: 'sm' | 'default' | 'lg';
+}
+
+interface CourseAddToCartButtonProps {
+  courseData: any;
+  className?: string;
+  variant?: 'default' | 'outline' | 'ghost';
+  size?: 'sm' | 'default' | 'lg';
+}
+
+export function PackageAddToCartButton({ 
+  packageData, 
+  className = "", 
+  variant = 'default', 
+  size = 'default' 
+}: PackageAddToCartButtonProps) {
   return (
     <AddToCartButton 
       type="package" 
@@ -168,7 +187,12 @@ export function PackageAddToCartButton({ packageData, className = "", variant = 
   );
 }
 
-export function CourseAddToCartButton({ courseData, className = "", variant = 'default', size = 'default' }) {
+export function CourseAddToCartButton({ 
+  courseData, 
+  className = "", 
+  variant = 'default', 
+  size = 'default' 
+}: CourseAddToCartButtonProps) {
   return (
     <AddToCartButton 
       type="course" 
