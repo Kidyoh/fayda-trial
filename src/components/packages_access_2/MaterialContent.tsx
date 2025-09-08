@@ -1,8 +1,8 @@
 import React from "react";
-import VideoDetails from "../../app/packages_access_2/[single_course_id]/components/videoDetails";
-import AssessmentDetails from "../../app/packages_access_2/[single_course_id]/components/assessmentDetails";
-import FileDetails from "../../app/packages_access_2/[single_course_id]/components/fileDetails";
-import LinkDetails from "../../app/packages_access_2/[single_course_id]/components/linkDetails";
+import VideoDetails from "../../app/(packages)/access/[single_course_id]/components/videoDetails";
+import AssessmentDetails from "../../app/(packages)/access/[single_course_id]/components/assessmentDetails";
+import FileDetails from "../../app/(packages)/access/[single_course_id]/components/fileDetails";
+import LinkDetails from "../../app/(packages)/access/[single_course_id]/components/linkDetails";
 
 interface MaterialContentProps {
   activeMaterialtype: string;
