@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { CoursePurchaseDialog } from "../custom_components/coursePurchaseDialog";
+import { CourseAddToCartButton } from "../cart/AddToCartButton";
 
 const cards = [
   {
@@ -150,14 +151,28 @@ function AnimatedCourseCard({ card }) {
               </div>
               <div className="w-full justify-between flex items-center gap-4">
                 {card.id ? (
-                  <CoursePurchaseDialog
-                    courseId={card.id}
-                    courseName={card.title}
-                    price={card.price}
-                    temporaryPrice={card.temporaryPrice}
-                    discountStatus={card.discountStatus}
-                    discountExpiryDate={card.discountExpiryDate}
-                  />
+                  <div className="flex flex-col gap-2 flex-1">
+                    <CourseAddToCartButton 
+                      courseData={{
+                        id: card.id,
+                        courseName: card.title,
+                        price: parseFloat(card.price),
+                        temporaryPrice: card.temporaryPrice ? parseFloat(card.temporaryPrice) : undefined,
+                        discountStatus: card.discountStatus,
+                        discountExpiryDate: card.discountExpiryDate,
+                        courseDescription: card.courseDescription
+                      }}
+                      size="sm"
+                    />
+                    <CoursePurchaseDialog
+                      courseId={card.id}
+                      courseName={card.title}
+                      price={card.price}
+                      temporaryPrice={card.temporaryPrice}
+                      discountStatus={card.discountStatus}
+                      discountExpiryDate={card.discountExpiryDate}
+                    />
+                  </div>
                 ) : (
                   <a
                     href={card.link}

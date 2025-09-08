@@ -26,7 +26,7 @@ import {
   PopoverTrigger,
 } from "@radix-ui/react-popover";
 import { apiUrl } from "@/apiConfig";
-import CheckPhoneNumber from "@/app/mock_package/mock_package_components/checkphonenumber";
+import CheckPhoneNumber from "@/app/(exams)/mock/mock_package_components/checkphonenumber";
 import useDrawerStatus from "@/app/store/navbarDrawerStore";
 
 export default function NavBarForMobile(props: any) {
@@ -184,7 +184,7 @@ export default function NavBarForMobile(props: any) {
                 <div className="nav_bar_hover">
                   <h1
                     className={
-                      routerPathname.startsWith("/mock_package")
+                      routerPathname.startsWith("/mock")
                         ? "text-primaryColor nav_bar_hover_dropdown "
                         : "text-fourthColor nav_bar_hover_dropdown "
                     }
@@ -192,7 +192,7 @@ export default function NavBarForMobile(props: any) {
                     <div className="flex space-x-2">
                       <Book />
                       <CheckPhoneNumber
-                        pushto={"/mock_package/selectmainfolder"}
+                        pushto={"/mock/selectmainfolder"}
                       />
                     </div>
                   </h1>
@@ -239,11 +239,11 @@ export default function NavBarForMobile(props: any) {
                 </Link>
               </div> */}
               <div>
-                <Link href={"/about_us"}>
+                <Link href={"/about"}>
                   <div className="nav_bar_hover">
                     <h1
                       className={
-                        routerPathname == "/about_us"
+                        routerPathname == "/about"
                           ? "text-primaryColor nav_bar_hover_dropdown "
                           : "text-fourthColor nav_bar_hover_dropdown "
                       }

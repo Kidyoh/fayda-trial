@@ -2,6 +2,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { apiUrl } from "@/apiConfig";
+import { PackageAddToCartButton } from "../cart/AddToCartButton";
 
 // Package interface based on API structure
 interface Package {
@@ -76,11 +77,18 @@ const Card: React.FC<CardProps> = ({ package: pkg, bg, border, text }) => (
         {pkg.price} Birr
       </div>
 
-      <Link href={`/package_2/${pkg.id}`} className="w-full mb-6">
-        <button className="w-full bg-white text-[#07705d] font-bold py-3 px-6 rounded-2xl transition-all duration-200 hover:bg-white/90 hover:scale-105 group-hover:shadow-lg border-2 border-transparent hover:border-white/30">
-          BUY NOW
-        </button>
-      </Link>
+      <div className="w-full mb-6 space-y-2">
+        <PackageAddToCartButton 
+          packageData={pkg}
+          className="w-full bg-white text-[#07705d] hover:bg-white/90"
+          size="default"
+        />
+        <Link href={`/details/${pkg.id}`} className="w-full block">
+          <button className="w-full bg-white/20 backdrop-blur-sm text-white font-bold py-2 px-6 rounded-2xl transition-all duration-200 hover:bg-white/30 border border-white/30">
+            VIEW DETAILS
+          </button>
+        </Link>
+      </div>
 
       <div className="text-white/90 text-sm space-y-3 text-left font-medium w-full">
         <div className="flex items-start">
@@ -201,7 +209,7 @@ const Card: React.FC<CardProps> = ({ package: pkg, bg, border, text }) => (
 
       {/* Call to Action */}
       <div className="text-center mt-12">
-        <Link href="/searchPackages">
+        <Link href="/search">
           <button className="bg-primaryColor backdrop-blur-sm text-white font-bold py-4 px-8 rounded-2xl border-2 transition-all duration-300 hover:scale-105">
             View All Packages
           </button>
@@ -216,7 +224,7 @@ const Card: React.FC<CardProps> = ({ package: pkg, bg, border, text }) => (
           </div>
           <h3 className="text-xl font-bold text-white mb-2">No Featured Packages Available</h3>
           <p className="text-white/80 mb-6">Check back soon for new learning opportunities!</p>
-          <Link href="/searchPackages">
+          <Link href="/search">
             <button className="bg-white text-[#07705d] font-bold py-3 px-6 rounded-2xl hover:bg-white/90 transition-colors">
               Browse All Packages
             </button>

@@ -14,6 +14,8 @@ import {
   MapPin,
   ChevronRight,
   PhoneCall,
+  ArrowRight,
+  Heart,
 } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTiktok } from "@fortawesome/free-brands-svg-icons";
@@ -64,7 +66,8 @@ const itemVariants = {
 
 export default function Footer() {
   return (
-    <footer className="bg-white relative py-4 text-white">
+    <footer className="bg-white relative py-8 text-white overflow-hidden">
+      {/* Original Background Images */}
       <Image
         width={1080}
         height={720}
@@ -86,101 +89,119 @@ export default function Footer() {
         alt="footer image"
         className="hidden lg:flex absolute z-30 w-full bottom-0 h-[25%] object-cover object-center"
       />
-      <div className="w-full flex justify-start lg:justify-center">
+      
+      {/* Dark overlay for better text readability */}
+      <div className="absolute inset-0 bg-black/40 z-35 hidden lg:block"></div>
+
+      {/* Logo Section */}
+      <div className="w-full flex justify-center relative z-40 mb-8">
         <img
-          className="h-16 mb-3"
+          className="h-20 mb-3"
           src="/common_files/main/smallfulllogo.png"
           alt="Fayida Academy logo"
         />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-40 flex flex-col h-full justify-between mix-blend-difference">
-        <div className="flex flex-col gap-10 md:gap-0 md:flex-row md:justify-between md:items-start w-full">
-          {/* Logo and Description */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-40">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-12">
+          {/* Brand Section */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="flex-1 min-w-[220px] max-w-xs mb-8 md:mb-0"
+            className="lg:col-span-1"
           >
-            <motion.div variants={itemVariants}>
-              <p className="text-sm leading-relaxed max-w-[250px]">
+            <motion.div variants={itemVariants} className="mb-6">
+              <p className="text-white text-sm leading-relaxed max-w-xs lg:text-white/90">
                 Empowering learners worldwide with quality education. Join our community of passionate learners and expert instructors.
               </p>
             </motion.div>
-            <motion.div variants={itemVariants} className="mt-6 space-y-2">
-              <div className="flex items-center gap-2 text-sm">
-                <PhoneCall className="w-4 h-4" />
-                <span>+251970483333</span>
+
+            {/* Contact Info */}
+            <motion.div variants={itemVariants} className="space-y-3">
+              <div className="flex items-center gap-3 text-white text-sm lg:text-white/90">
+                <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
+                  <PhoneCall className="w-4 h-4" />
+                </div>
+                <div>
+                  <div>+251970483333</div>
+                  <div className="text-xs opacity-70">+251970493333</div>
+                </div>
               </div>
-              <div className="flex items-center gap-2 text-sm">
-                <PhoneCall className="w-4 h-4 opacity-70" />
-                <span>+251970493333</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <Mail className="w-4 h-4" />
+              <div className="flex items-center gap-3 text-white text-sm lg:text-white/90">
+                <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
+                  <Mail className="w-4 h-4" />
+                </div>
                 <span>contact@fayidaacademy.com</span>
               </div>
-              <div className="flex items-center gap-2 text-sm">
-                <MapPin className="w-4 h-4" />
+              <div className="flex items-center gap-3 text-white text-sm lg:text-white/90">
+                <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
+                  <MapPin className="w-4 h-4" />
+                </div>
                 <span>Addis Ababa, Ethiopia</span>
               </div>
             </motion.div>
           </motion.div>
 
-          <div className="flex-1 w-full grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 md:gap-6">
+          {/* Links Sections */}
+          <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-8">
             {/* Company */}
             <motion.div variants={containerVariants} initial="hidden" animate="visible">
-              <motion.h3 variants={itemVariants} className="text-base font-semibold mb-3">
+              <motion.h3 variants={itemVariants} className="text-white font-bold text-lg mb-6 relative">
                 Company
+                <div className="absolute bottom-0 left-0 w-12 h-0.5 bg-gradient-to-r from-[#c7cc3f] to-[#bf8c13] rounded-full"></div>
               </motion.h3>
-              <motion.ul variants={containerVariants} className="space-y-1">
+              <motion.ul variants={containerVariants} className="space-y-3">
                 {footerLinks.company.map((link, index) => (
                   <motion.li key={index} variants={itemVariants}>
                     <Link
                       href={link.href}
-                      className="hover:text-[#c7cc3f] transition-colors duration-200 flex items-center gap-2 py-1"
+                      className="text-white lg:text-white/90 hover:text-[#c7cc3f] transition-all duration-200 flex items-center gap-2 py-1 group"
                     >
-                      <ChevronRight className="w-4 h-4 opacity-60" />
-                      {link.name}
+                      <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all duration-200" />
+                      <span className="group-hover:translate-x-1 transition-transform duration-200">{link.name}</span>
                     </Link>
                   </motion.li>
                 ))}
               </motion.ul>
             </motion.div>
+
             {/* Resources */}
             <motion.div variants={containerVariants} initial="hidden" animate="visible">
-              <motion.h3 variants={itemVariants} className="text-base font-semibold mb-3">
+              <motion.h3 variants={itemVariants} className="text-white font-bold text-lg mb-6 relative">
                 Resources
+                <div className="absolute bottom-0 left-0 w-12 h-0.5 bg-gradient-to-r from-[#c7cc3f] to-[#bf8c13] rounded-full"></div>
               </motion.h3>
-              <motion.ul variants={containerVariants} className="space-y-1">
+              <motion.ul variants={containerVariants} className="space-y-3">
                 {footerLinks.resources.map((link, index) => (
                   <motion.li key={index} variants={itemVariants}>
                     <Link
                       href={link.href}
-                      className="hover:text-[#c7cc3f] transition-colors duration-200 flex items-center gap-2 py-1"
+                      className="text-white lg:text-white/90 hover:text-[#c7cc3f] transition-all duration-200 flex items-center gap-2 py-1 group"
                     >
-                      <ChevronRight className="w-4 h-4 opacity-60" />
-                      {link.name}
+                      <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all duration-200" />
+                      <span className="group-hover:translate-x-1 transition-transform duration-200">{link.name}</span>
                     </Link>
                   </motion.li>
                 ))}
               </motion.ul>
             </motion.div>
+
             {/* Courses */}
             <motion.div variants={containerVariants} initial="hidden" animate="visible">
-              <motion.h3 variants={itemVariants} className="text-base font-semibold mb-3">
+              <motion.h3 variants={itemVariants} className="text-white font-bold text-lg mb-6 relative">
                 Courses
+                <div className="absolute bottom-0 left-0 w-12 h-0.5 bg-gradient-to-r from-[#c7cc3f] to-[#bf8c13] rounded-full"></div>
               </motion.h3>
-              <motion.ul variants={containerVariants} className="space-y-1">
+              <motion.ul variants={containerVariants} className="space-y-3">
                 {footerLinks.courses.map((link, index) => (
                   <motion.li key={index} variants={itemVariants}>
                     <Link
                       href={link.href}
-                      className="hover:text-[#c7cc3f] transition-colors duration-200 flex items-center gap-2 py-1"
+                      className="text-white lg:text-white/90 hover:text-[#c7cc3f] transition-all duration-200 flex items-center gap-2 py-1 group"
                     >
-                      <ChevronRight className="w-4 h-4 opacity-60" />
-                      {link.name}
+                      <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all duration-200" />
+                      <span className="group-hover:translate-x-1 transition-transform duration-200">{link.name}</span>
                     </Link>
                   </motion.li>
                 ))}
@@ -189,49 +210,54 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-4 mix-blend-difference text-white">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="flex items-center space-x-2 text-xs"
-          >
-            <Copyright className="w-4 h-4" />
-            <p>{new Date().getFullYear()} Fayida Academy. All Rights Reserved</p>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="flex items-center space-x-3"
-          >
-            {[
-              { icon: Facebook, href: "https://www.facebook.com/profile.php?id=61557674511552" },
-              { icon: Instagram, href: "https://www.instagram.com/fayidaacademy" },
-              { icon: Linkedin, href: "https://www.linkedin.com/company/ethlook/" },
-              { icon: Youtube, href: "https://www.youtube.com/@FayidaAcademyOfficial" },
-              { icon: Send, href: "https://t.me/fayidaacademy" },
-            ].map((social, index) => (
-              <Link
-                key={index}
-                href={social.href}
-                target="_blank"
-                className="p-2 rounded-full hover:bg-[#c7cc3f]/20 transition-colors"
-              >
-                <social.icon className="w-5 h-5" />
-              </Link>
-            ))}
-            <Link
-              href="https://www.tiktok.com/@fayidaacademy"
-              target="_blank"
-              className="p-2 rounded-full hover:bg-[#c7cc3f]/20 transition-colors"
+        {/* Bottom Bar */}
+        <div className="mt-12 pt-8 border-t border-white/20">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="flex flex-col sm:flex-row items-center gap-2 text-white text-sm"
             >
-              <FontAwesomeIcon
-                icon={faTiktok}
-                className="w-5 h-5"
-              />
-            </Link>
-          </motion.div>
+              <div className="flex items-center gap-2">
+                <Copyright className="w-4 h-4" />
+                <span>{new Date().getFullYear()} Fayida Academy. All Rights Reserved</span>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="flex items-center gap-3"
+            >
+              {[
+                { icon: Facebook, href: "https://www.facebook.com/profile.php?id=61557674511552", color: "hover:bg-blue-600" },
+                { icon: Instagram, href: "https://www.instagram.com/fayidaacademy", color: "hover:bg-pink-600" },
+                { icon: Linkedin, href: "https://www.linkedin.com/company/ethlook/", color: "hover:bg-blue-700" },
+                { icon: Youtube, href: "https://www.youtube.com/@FayidaAcademyOfficial", color: "hover:bg-red-600" },
+                { icon: Send, href: "https://t.me/fayidaacademy", color: "hover:bg-blue-500" },
+              ].map((social, index) => (
+                <Link
+                  key={index}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`w-10 h-10 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center text-white hover:text-white ${social.color} transition-all duration-200 hover:scale-110 hover:shadow-lg`}
+                >
+                  <social.icon className="w-4 h-4" />
+                </Link>
+              ))}
+              <Link
+                href="https://www.tiktok.com/@fayidaacademy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center text-white hover:text-white hover:bg-black transition-all duration-200 hover:scale-110 hover:shadow-lg"
+              >
+                <FontAwesomeIcon icon={faTiktok} className="w-4 h-4" />
+              </Link>
+            </motion.div>
+          </div>
         </div>
       </div>
     </footer>

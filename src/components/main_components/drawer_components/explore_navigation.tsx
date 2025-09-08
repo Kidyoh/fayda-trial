@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { ChevronRight, BookOpen, Package, Book, Trophy, Info, Bot } from "lucide-react";
 import Link from "next/link";
 import { apiUrl } from "@/apiConfig";
-import CheckPhoneNumber from "@/app/mock_package/mock_package_components/checkphonenumber";
+import CheckPhoneNumber from "@/app/(exams)/mock/mock_package_components/checkphonenumber";
 
 export default function ExploreNavigation() {
   const [slectedMenu, setSlectedMenu] = useState("");
@@ -55,7 +55,7 @@ export default function ExploreNavigation() {
               <ChevronRight size={16} className="ml-auto" />
             </div>
 
-            <Link href={"/searchPackages"}>
+            <Link href={"/search"}>
               <div className="flex items-center space-x-3 cursor-pointer p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200 text-gray-700">
                 <Package size={18} className="text-primaryColor" />
                 <h1 className="font-medium">Packages List</h1>
@@ -73,6 +73,20 @@ export default function ExploreNavigation() {
               <div className="flex items-center space-x-3 cursor-pointer p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200 text-gray-700">
                 <Trophy size={18} className="text-primaryColor" />
                 <h1 className="font-medium">Leader Board</h1>
+              </div>
+            </Link>
+
+            <Link href={"/competitions"}>
+              <div className="flex items-center space-x-3 cursor-pointer p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200 text-gray-700">
+                <Trophy size={18} className="text-primaryColor" />
+                <h1 className="font-medium">Competitions</h1>
+              </div>
+            </Link>
+
+            <Link href={"/competitions/demo"}>
+              <div className="flex items-center space-x-3 cursor-pointer p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200 text-gray-700">
+                <Trophy size={18} className="text-primaryColor" />
+                <h1 className="font-medium">Competitions Demo</h1>
               </div>
             </Link>
 
@@ -98,7 +112,7 @@ export default function ExploreNavigation() {
               <h1 className="text-xl font-semibold text-gray-800 mb-6">Academic Categories</h1>
               <div className="grid grid-cols-2 gap-4">
                 <Link
-                  href={`/packages_access/filter_packages/grade9`}
+                  href={`/filter_packages/grade9`}
                   className="group p-4 rounded-xl border border-gray-200 hover:border-primaryColor/50 hover:bg-primaryColor/5 transition-all duration-200"
                 >
                   <h2 className="text-lg font-medium text-gray-800 group-hover:text-primaryColor transition-colors duration-200">
@@ -108,7 +122,7 @@ export default function ExploreNavigation() {
                 </Link>
 
                 <Link
-                  href={`/packages_access/filter_packages/grade10`}
+                  href={`/filter_packages/grade10`}
                   className="group p-4 rounded-xl border border-gray-200 hover:border-primaryColor/50 hover:bg-primaryColor/5 transition-all duration-200"
                 >
                   <h2 className="text-lg font-medium text-gray-800 group-hover:text-primaryColor transition-colors duration-200">
@@ -118,7 +132,7 @@ export default function ExploreNavigation() {
                 </Link>
 
                 <Link
-                  href={`/packages_access/filter_packages/grade11`}
+                  href={`/filter_packages/grade11`}
                   className="group p-4 rounded-xl border border-gray-200 hover:border-primaryColor/50 hover:bg-primaryColor/5 transition-all duration-200"
                 >
                   <h2 className="text-lg font-medium text-gray-800 group-hover:text-primaryColor transition-colors duration-200">
@@ -128,7 +142,7 @@ export default function ExploreNavigation() {
                 </Link>
 
                 <Link
-                  href={`/packages_access/filter_packages/grade12`}
+                  href={`/filter_packages/grade12`}
                   className="group p-4 rounded-xl border border-gray-200 hover:border-primaryColor/50 hover:bg-primaryColor/5 transition-all duration-200"
                 >
                   <h2 className="text-lg font-medium text-gray-800 group-hover:text-primaryColor transition-colors duration-200">
@@ -145,7 +159,7 @@ export default function ExploreNavigation() {
               <h1 className="text-xl font-semibold text-gray-800 mb-6">Multidisciplinary Skills</h1>
               <div className="grid grid-cols-2 gap-4">
                 <Link
-                  href={`/packages_access/filter_packages/computer`}
+                  href={`/filter_packages/computer`}
                   className="group p-4 rounded-xl border border-gray-200 hover:border-primaryColor/50 hover:bg-primaryColor/5 transition-all duration-200"
                 >
                   <h2 className="text-lg font-medium text-gray-800 group-hover:text-primaryColor transition-colors duration-200">
@@ -155,7 +169,7 @@ export default function ExploreNavigation() {
                 </Link>
 
                 <Link
-                  href={`/packages_access/filter_packages/language`}
+                  href={`/filter_packages/language`}
                   className="group p-4 rounded-xl border border-gray-200 hover:border-primaryColor/50 hover:bg-primaryColor/5 transition-all duration-200"
                 >
                   <h2 className="text-lg font-medium text-gray-800 group-hover:text-primaryColor transition-colors duration-200">
@@ -165,7 +179,7 @@ export default function ExploreNavigation() {
                 </Link>
 
                 <Link
-                  href={`/packages_access/filter_packages/artlitrature`}
+                  href={`/filter_packages/artlitrature`}
                   className="group p-4 rounded-xl border border-gray-200 hover:border-primaryColor/50 hover:bg-primaryColor/5 transition-all duration-200"
                 >
                   <h2 className="text-lg font-medium text-gray-800 group-hover:text-primaryColor transition-colors duration-200">
@@ -175,7 +189,7 @@ export default function ExploreNavigation() {
                 </Link>
 
                 <Link
-                  href={`/packages_access/filter_packages/other`}
+                  href={`/filter_packages/other`}
                   className="group p-4 rounded-xl border border-gray-200 hover:border-primaryColor/50 hover:bg-primaryColor/5 transition-all duration-200"
                 >
                   <h2 className="text-lg font-medium text-gray-800 group-hover:text-primaryColor transition-colors duration-200">

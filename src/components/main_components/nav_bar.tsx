@@ -23,7 +23,7 @@ import { stringify } from "querystring";
 import { usePathname } from "next/navigation";
 import NavBarForMobile from "./responsive_navbar";
 import axios from "axios";
-import CheckPhoneNumber from "@/app/mock_package/mock_package_components/checkphonenumber";
+import CheckPhoneNumber from "@/app/(exams)/mock/mock_package_components/checkphonenumber";
 import LanguageChanger from "../LanguageChanger";
 
 import { useTranslation } from "react-i18next";
@@ -44,6 +44,8 @@ import NavBarMobile from "./nav_bar_mobile";
 
 import { setAccessToken, getAccessToken, clearAccessToken } from "../../lib/tokenManager";
 import LanguageSelector from "../LanguageSelector";
+import { CartIcon } from "../cart/CartIcon";
+import { CartDrawer } from "../cart/CartDrawer";
 
 export default function NavBar(response3: any) {
   const profile = response3;
@@ -273,7 +275,7 @@ export default function NavBar(response3: any) {
                       }
                     }}
                   />
-                  <Link href={"/searchPackages"} onClick={() => handleSearch()}>
+                  <Link href={"/search"} onClick={() => handleSearch()}>
                     <div className="absolute right-2 top-1/2 -translate-y-1/2 bg-primaryColor text-white p-1.5 rounded-full hover:bg-primaryColor/90 transition-colors duration-200">
                       <Search size={16} />
                     </div>
@@ -283,6 +285,9 @@ export default function NavBar(response3: any) {
 
               <div className="flex items-center space-x-4">
                <LanguageSelector />
+               
+               {/* Cart Icon */}
+               <CartIcon />
                 
                 <Link href={"/notifications"} className="relative">
                   <div className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200">
@@ -326,6 +331,9 @@ export default function NavBar(response3: any) {
       <div className="block xxmd:hidden fixed w-full z-50">
         <NavBarMobile data={data} notificationNumber={notificationNumber} />
       </div>
+      
+      {/* Cart Drawer */}
+      <CartDrawer />
     </>
   );
 }

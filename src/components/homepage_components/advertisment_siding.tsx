@@ -78,7 +78,7 @@ export default function AdvertismentSliding() {
                 className="w-full"
                 // className="-mt-1 h-[200px]"
               >
-                <Link href={`/advertisment_details/${ad?.id}`}>
+                <Link href={`/advertisements/${ad?.id}`}>
                   {/* <div className="flex flex-col  bg-primaryColor rounded-md md:px-4 py-6 shadow-md">
                     <div className="md:flex items-center mx-auto ">
                       <img

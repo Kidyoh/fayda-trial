@@ -10,6 +10,7 @@ import LanguageChanger from "../LanguageChanger";
 import { usePathname } from "next/navigation";
 import { apiUrl } from "@/apiConfig";
 import { clearAccessToken, getAccessToken } from "../../lib/tokenManager";
+import { CartIcon } from "../cart/CartIcon";
 
 export default function NavBarMobile({ data, notificationNumber }: any) {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,7 +45,7 @@ export default function NavBarMobile({ data, notificationNumber }: any) {
     e.preventDefault();
     if (searchQuery.trim()) {
       setIsOpen(false);
-      window.location.href = `/searchPackages?query=${encodeURIComponent(searchQuery)}`;
+      window.location.href = `/search?query=${encodeURIComponent(searchQuery)}`;
     }
   };
 
@@ -66,6 +67,8 @@ export default function NavBarMobile({ data, notificationNumber }: any) {
         </Link>
         
         <div className="flex items-center space-x-2">
+          <CartIcon />
+          
           <Link href="/notifications" className="relative p-2">
             <Bell size={20} className="text-gray-600" />
             {notificationNumber > 0 && (
@@ -166,22 +169,22 @@ export default function NavBarMobile({ data, notificationNumber }: any) {
                       exit={{ height: 0, opacity: 0 }}
                       className="bg-gray-50 overflow-hidden"
                     >
-                      <Link href="/packages_access/filter_packages/grade9">
+                      <Link href="/filter_packages/grade9">
                         <div className="px-12 py-2 text-gray-600 hover:text-primaryColor">
                           Grade 9
                         </div>
                       </Link>
-                      <Link href="/packages_access/filter_packages/grade10">
+                      <Link href="/filter_packages/grade10">
                         <div className="px-12 py-2 text-gray-600 hover:text-primaryColor">
                           Grade 10
                         </div>
                       </Link>
-                      <Link href="/packages_access/filter_packages/grade11">
+                      <Link href="/filter_packages/grade11">
                         <div className="px-12 py-2 text-gray-600 hover:text-primaryColor">
                           Grade 11
                         </div>
                       </Link>
-                      <Link href="/packages_access/filter_packages/grade12">
+                      <Link href="/filter_packages/grade12">
                         <div className="px-12 py-2 text-gray-600 hover:text-primaryColor">
                           Grade 12
                         </div>
@@ -191,8 +194,8 @@ export default function NavBarMobile({ data, notificationNumber }: any) {
                 </div>
 
                 {/* Other menu items */}
-                <Link href="/searchPackages">
-                  <div className={`flex items-center px-4 py-3 ${pathname.includes('/searchPackages') ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
+                <Link href="/search">
+                  <div className={`flex items-center px-4 py-3 ${pathname.includes('/search') ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
                     <Package size={20} className="mr-3" />
                     <span className="font-medium">Packages</span>
                   </div>
@@ -209,6 +212,20 @@ export default function NavBarMobile({ data, notificationNumber }: any) {
                   <div className={`flex items-center px-4 py-3 ${pathname.includes('/leaderboard') ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
                     <Trophy size={20} className="mr-3" />
                     <span className="font-medium">Leaderboard</span>
+                  </div>
+                </Link>
+
+                <Link href="/competitions">
+                  <div className={`flex items-center px-4 py-3 ${pathname.includes('/competitions') && !pathname.includes('/demo') ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
+                    <Trophy size={20} className="mr-3" />
+                    <span className="font-medium">Competitions</span>
+                  </div>
+                </Link>
+
+                <Link href="/competitions/demo">
+                  <div className={`flex items-center px-4 py-3 ${pathname.includes('/competitions/demo') ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
+                    <Trophy size={20} className="mr-3" />
+                    <span className="font-medium">Competitions Demo</span>
                   </div>
                 </Link>
                 
@@ -274,10 +291,10 @@ export default function NavBarMobile({ data, notificationNumber }: any) {
           </div>
         </Link>
         
-        <Link href="/searchPackages">
-          <div className={`flex flex-col items-center justify-center ${pathname.includes('/searchPackages') || pathname.includes('/packages_access') ? 'text-primaryColor' : 'text-gray-500'}`}>
+        <Link href="/search">
+          <div className={`flex flex-col items-center justify-center ${pathname.includes('/search') || pathname.includes('/packages_access') ? 'text-primaryColor' : 'text-gray-500'}`}>
             <Package size={20} />
-            <span className="text-xs mt-1">Packages</span>
+            <span className="text-xs mt-1">Search</span>
           </div>
         </Link>
         

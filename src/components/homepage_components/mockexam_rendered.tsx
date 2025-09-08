@@ -8,7 +8,7 @@ import { apiUrl } from "@/apiConfig";
 import "swiper/css/pagination";
 
 import Link from "next/link";
-import CheckPhoneNumber from "@/app/mock_package/mock_package_components/checkphonenumber";
+import CheckPhoneNumber from "@/app/(exams)/mock/mock_package_components/checkphonenumber";
 
 export default function MockExamRendered() {
   const [data, setData] = useState<any>([]);
@@ -111,7 +111,7 @@ export default function MockExamRendered() {
       <div className="w-full py-5">
         <div className="mx-auto w-fit border-2 border-primaryColor px-2 py-1 rounded-xl hover:scale-105 duration-300 hover:bg-primaryColor hover:text-white">
           {" "}
-          <CheckPhoneNumber pushto={"/mock_package/selectmainfolder"} />
+          <CheckPhoneNumber pushto="/mock/selectmainfolder" />
         </div>
       </div>
     </div>

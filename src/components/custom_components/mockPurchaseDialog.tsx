@@ -33,7 +33,7 @@ export function MockPurchaseDialogCustom() {
   useEffect(() => {
     console.log("Component mounted");
     if (mockPackageSelected.id == undefined) {
-      push("/mock_package");
+      push("/mock");
     }
   }, []); //
 
