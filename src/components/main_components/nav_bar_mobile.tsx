@@ -215,28 +215,28 @@ export default function NavBarMobile({ data, notificationNumber }: any) {
                   </div>
                 </Link>
 
-                <Link href="/competitions">
+                <Link href="/(competitions)/list">
                   <div className={`flex items-center px-4 py-3 ${pathname.includes('/competitions') && !pathname.includes('/demo') ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
                     <Trophy size={20} className="mr-3" />
                     <span className="font-medium">Competitions</span>
                   </div>
                 </Link>
 
-                <Link href="/competitions/demo">
+                <Link href="/(competitions)/list/demo">
                   <div className={`flex items-center px-4 py-3 ${pathname.includes('/competitions/demo') ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
                     <Trophy size={20} className="mr-3" />
                     <span className="font-medium">Competitions Demo</span>
                   </div>
                 </Link>
                 
-                <Link href="/to_bot">
-                  <div className={`flex items-center px-4 py-3 ${pathname.includes('/to_bot') ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
+                <Link href="/bot">
+                  <div className={`flex items-center px-4 py-3 ${pathname.includes('/bot') ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
                     <Bot size={20} className="mr-3" />
                     <span className="font-medium">Telegram Bot</span>
                   </div>
                 </Link>
 
-                <Link href="/about_us">
+                <Link href="/about">
                   <div className={`flex items-center px-4 py-3 ${pathname.includes('/about_us') ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
                     <Info size={20} className="mr-3" />
                     <span className="font-medium">About Us</span>

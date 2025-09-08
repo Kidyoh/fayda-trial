@@ -310,7 +310,7 @@ const CompetitionsDemoPage: React.FC = () => {
             View Live Competitions
           </Button>
           <Button 
-            onClick={() => router.push('/explore_packages')}
+            onClick={() => router.push('/explore')}
             className="bg-orange-500 hover:bg-orange-600 text-white"
           >
             Browse Packages

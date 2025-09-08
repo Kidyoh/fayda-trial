@@ -90,14 +90,14 @@ export default function ExploreNavigation() {
               </div>
             </Link>
 
-            <Link href={"/about_us"}>
+            <Link href={"/about"}>
               <div className="flex items-center space-x-3 cursor-pointer p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200 text-gray-700">
                 <Info size={18} className="text-primaryColor" />
                 <h1 className="font-medium">About</h1>
               </div>
             </Link>
 
-            <Link href={"/to_bot"}>
+            <Link href={"/bot"}>
               <div className="flex items-center space-x-3 cursor-pointer p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200 text-gray-700">
                 <Bot size={18} className="text-primaryColor" />
                 <h1 className="font-medium">Telegram Bot</h1>
