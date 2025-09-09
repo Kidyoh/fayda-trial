@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Accordion,
   AccordionItem,
@@ -59,6 +59,33 @@ const TopAccordionNav: React.FC<TopAccordionNavProps> = ({
   const grouped = groupByUnitAndPart(materials);
   const sortedUnits = Object.keys(grouped).sort((a, b) => parseInt(a) - parseInt(b));
 
+  // Find which unit and part contains the active material
+  const findActiveUnitAndPart = () => {
+    if (!activeMaterialId) return { activeUnit: null, activePart: null };
+    
+    for (const unit of sortedUnits) {
+      for (const part of Object.keys(grouped[unit])) {
+        if (grouped[unit][part].some(material => material.id === activeMaterialId)) {
+          return { activeUnit: unit, activePart: part };
+        }
+      }
+    }
+    return { activeUnit: null, activePart: null };
+  };
+
+  const { activeUnit, activePart } = findActiveUnitAndPart();
+  
+  const defaultUnit = activeUnit || (sortedUnits.length > 0 ? sortedUnits[0] : "");
+  const defaultPart = activePart || 
+    (defaultUnit && grouped[defaultUnit] ? 
+      Object.keys(grouped[defaultUnit]).sort((a, b) => parseInt(a) - parseInt(b))[0] : 
+      "");
+
+  const openUnit = defaultUnit ? `unit-${defaultUnit}` : "";
+  const openPart = (unit: string) => {
+    return unit === defaultUnit && defaultPart ? `part-${defaultPart}` : "";
+  };
+
   return (
     <div className="w-full lg:w-1/2 mb-4">
       {/* Progress Bar Component */}
@@ -88,14 +115,25 @@ const TopAccordionNav: React.FC<TopAccordionNavProps> = ({
       </div>
 
       {/* Navigation Accordion */}
-      <Accordion type="single" collapsible className="w-full">
+      <Accordion 
+        key={`accordion-${activeMaterialId}`}
+        type="single" 
+        collapsible 
+        defaultValue={openUnit}
+        className="w-full"
+      >
       {sortedUnits.map((unit) => (
         <AccordionItem key={unit} value={`unit-${unit}`} className="border rounded-lg bg-white mb-2">
           <AccordionTrigger className="px-4 py-3 font-bold text-[#07705d] text-base md:text-lg">
             Unit {unit}
           </AccordionTrigger>
           <AccordionContent className="px-2 pb-2">
-            <Accordion type="single" collapsible>
+            <Accordion 
+              key={`part-accordion-${activeMaterialId}-${unit}`}
+              type="single" 
+              collapsible 
+              defaultValue={openPart(unit)}
+            >
               {Object.keys(grouped[unit]).sort((a, b) => parseInt(a) - parseInt(b)).map((part) => (
                 <AccordionItem key={part} value={`part-${part}`} className="border rounded-lg bg-white mb-2">
                   <AccordionTrigger className="px-4 py-2 font-semibold text-[#07705d] text-sm md:text-base">

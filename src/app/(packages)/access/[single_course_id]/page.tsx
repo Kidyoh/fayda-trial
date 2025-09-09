@@ -44,9 +44,7 @@ export default function SingleCourse() {
   );
 
   const params = useParams();
-  console.log("URL Params:", params);
   const courseId = params.single_course_id;
-  console.log("Course ID:", courseId);
 
   const calculateProgress = (materials: any[], studentId: string) => {
     if (!materials || !studentId) return 0;
@@ -64,27 +62,16 @@ export default function SingleCourse() {
     materialtype: any,
     materialAccess: any
   ) => {
-    console.log("Material Clicked:", {
-      materialId,
-      materialtype,
-      materialAccess,
-      currentActiveId: activeMaterialId
-    });
-
+    console.log("MaterialClicked called:", { materialId, materialtype, materialAccess });
     if (materialAccess == "unlocked") {
       setActiveMaterialId(materialId);
       setActiveMaterialtype(materialtype);
-    } else {
-      console.log("Material is locked, not updating state");
+      console.log("Material set:", { materialId, materialtype });
     }
-  }, [activeMaterialId, setActiveMaterialId, setActiveMaterialtype]);
+  }, [setActiveMaterialId, setActiveMaterialtype]);
 
   useEffect(() => {
     const fetchData = () => {
-      console.log("Fetching data with courseId:", courseId);
-      console.log("Using API URL:", `${apiUrl}/purchaselist/specificStudentSingleCourse/${courseId}`);
-      console.log("Access Token:", accessToken);
-
       fetch(`${apiUrl}/purchaselist/specificStudentSingleCourse/${courseId}`, {
         method: "GET",
         headers: {
@@ -92,45 +79,38 @@ export default function SingleCourse() {
           Authorization: `Bearer ${accessToken}`,
         },
       })
-        .then((response) => {
-          console.log("API Response Status:", response.status);
-          return response.json();
-        })
+        .then((response) => response.json())
         .then((jsonData) => {
-          console.log("Received Data:", jsonData);
           setData(jsonData);
-          console.log("Total Parts:", jsonData[0]?.Courses?.parts);
           setTotalPartNumber(jsonData[0]?.Courses?.parts);
 
-          if (jsonData[0]?.Courses?.materials?.[0]) {
-            // Only set the first material if nothing is selected yet
-            if (!activeMaterialId) {
-              console.log("First Material:", {
-                id: jsonData[0].Courses.materials[0].id,
-                type: jsonData[0].Courses.materials[0].materialType,
-                access: jsonData[0].Courses.materials[0].Access
-              });
-              MaterialClicked(
-                jsonData[0].Courses.materials[0].id,
-                jsonData[0].Courses.materials[0].materialType,
-                jsonData[0].Courses.materials[0].Access
+          if (jsonData[0]?.Courses?.materials?.length > 0) {
+            const materials = jsonData[0].Courses.materials;
+            
+            if (!activeMaterialId || !activeMaterialtype) {
+              const firstUnlockedVideo = materials.find(material => 
+                material.materialType === "video" && 
+                material.Access === "unlocked"
               );
+              
+              const selectedMaterial = firstUnlockedVideo || 
+                                       materials.find(m => m.Access === "unlocked") || 
+                                       materials[0];
+              
+              MaterialClicked(selectedMaterial.id, selectedMaterial.materialType, selectedMaterial.Access);
             }
-          } else {
-            console.log("No materials found in the response");
           }
         })
         .catch((error) => {
-          console.error("API Error:", error);
+          console.error("Error loading course data:", error);
         });
     };
 
     fetchData();
-  }, [seenMaterialsFetch, accessToken, courseId, MaterialClicked, activeMaterialId]);
+  }, [seenMaterialsFetch, accessToken, courseId, MaterialClicked, activeMaterialId, activeMaterialtype, setActiveMaterialId, setActiveMaterialtype]);
 
   useEffect(() => {
     const getCourse = async () => {
-      console.log("Fetching forum data for courseId:", courseId);
       try {
         const res = await fetch(`${apiUrl}/forums/checkcourseforum/${courseId}`, {
           next: {
@@ -142,12 +122,10 @@ export default function SingleCourse() {
             Authorization: `Bearer ${accessToken}`,
           },
         });
-        console.log("Forum API Response Status:", res.status);
         const course = await res.json();
-        console.log("Forum Data:", course);
         setForumId(course[0]?.id);
       } catch (error) {
-        console.error("Forum API Error:", error);
+        console.error("Error loading forum data:", error);
       }
     };
 
@@ -158,6 +136,8 @@ export default function SingleCourse() {
     setMaterialDrawer(!materialDrawer);
   };
 
+  console.log("Render state:", { activeMaterialId, activeMaterialtype, hasData: !!data[0] });
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#c7cc3f]/10 to-white pt-16">
       <div className="mx-auto px-4 md:px-6 lg:px-8 py-6 md:py-8">
@@ -168,19 +148,47 @@ export default function SingleCourse() {
         <ForumButton forumId={forumId} />
         <div className="flex flex-col lg:flex-row gap-6">
           <div className="bg-white rounded-xl border border-[#bf8c13]/20 min-h-[400px] w-full h-full p-4 md:p-6 backdrop-blur-sm">
-            <MaterialContent
-              activeMaterialtype={activeMaterialtype}
-              activeMaterialId={activeMaterialId}
-              studentId={data[0]?.studentsId}
-            />
+            {data[0]?.studentsId ? (
+              <MaterialContent
+                activeMaterialtype={activeMaterialtype}
+                activeMaterialId={activeMaterialId}
+                studentId={data[0]?.studentsId}
+              />
+            ) : (
+              <div className="flex items-center justify-center h-[500px]">
+                <div className="flex flex-col items-center gap-4 text-center">
+                  <div className="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center shadow-lg animate-pulse">
+                    <span className="text-blue-500 text-3xl">⏳</span>
+                  </div>
+                  <div className="text-blue-600 font-semibold text-lg">Loading Course Content...</div>
+                  <div className="text-gray-600 max-w-md">
+                    <p className="text-sm text-gray-500">Please wait while we load your course materials and progress.</p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
-          <TopAccordionNav
-            materials={data[0]?.Courses?.materials || []}
-            activeMaterialId={activeMaterialId}
-            onMaterialClick={MaterialClicked}
-            studentId={data[0]?.studentsId}
-            courseProgress={calculateProgress(data[0]?.Courses?.materials || [], data[0]?.studentsId || "")}
-          />
+          {data[0]?.Courses?.materials?.length > 0 ? (
+            <TopAccordionNav
+              materials={data[0].Courses.materials}
+              activeMaterialId={activeMaterialId}
+              onMaterialClick={MaterialClicked}
+              studentId={data[0]?.studentsId}
+              courseProgress={calculateProgress(data[0].Courses.materials, data[0]?.studentsId || "")}
+            />
+          ) : (
+            <div className="w-full lg:w-1/2 mb-4 bg-white rounded-xl border border-[#bf8c13]/20 p-4 backdrop-blur-sm">
+              <div className="flex items-center justify-center h-[400px]">
+                <div className="text-center">
+                  <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
+                    <span className="text-gray-400 text-2xl">📚</span>
+                  </div>
+                  <p className="text-gray-500 font-medium">Loading course materials...</p>
+                  <p className="text-gray-400 text-sm mt-2">Please wait while we prepare your content</p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
