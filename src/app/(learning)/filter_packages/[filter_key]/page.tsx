@@ -149,7 +149,7 @@ export default function FilteredPackage({ params }: any) {
                   key={singlePackage.id}
                   className="group relative bg-white rounded-2xl border border-gray-100 hover:border-[#07705d]/30 overflow-hidden transition-all duration-300 hover:-translate-y-1 h-[400px] flex flex-col"
                 >
-                  <Link href={`/package_2/${singlePackage.id}`} className="flex flex-col h-full">
+                  <Link href={`/details/${singlePackage.id}`} className="flex flex-col h-full">
                     {/* Image Container */}
                     <div className="relative overflow-hidden h-48 w-full">
                       {singlePackage.imgUrl ? (

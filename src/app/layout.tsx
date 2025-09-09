@@ -18,12 +18,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="flex flex-col min-h-screen justify-center items-center">
+      <body className="flex flex-col min-h-screen">
         <LanguageProvider>
           <Toaster />
           
           {/* Header */}
-            <NavBar />
+          <NavBar />
           
           {/* Main content */}
           <main className="flex-grow w-full">

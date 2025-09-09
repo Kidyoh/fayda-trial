@@ -71,7 +71,7 @@ const AboutBot = () => {
               >
                 Start Using Bot <ArrowRight className="ml-2 h-4 w-4" />
               </a>
-              <Link href="/package_2" className="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 rounded-full font-medium hover:bg-gray-50 transition duration-300 text-center justify-center">
+              <Link href="/search" className="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 rounded-full font-medium hover:bg-gray-50 transition duration-300 text-center justify-center">
                 Explore Courses
               </Link>
             </div>

@@ -115,3 +115,24 @@
 .animate-shine {
   animation: shine linear infinite;
 }
+
+/* Hide potentially interfering navigation elements on 404 page */
+.not-found-page main > div:not(.not-found-container) {
+  display: none !important;
+}
+
+/* Hide material navigation specifically on 404 pages */
+.not-found-page .grid.grid-cols-8 {
+  display: none !important;
+}
+
+/* Hide any course-specific navigation on non-course pages */
+body:not([data-route*="single_course_id"]) .grid.grid-cols-8 {
+  display: none !important;
+}
+
+/* Ensure proper layout for contact and other content pages */
+.content-page {
+  width: 100%;
+  min-height: calc(100vh - 200px);
+}

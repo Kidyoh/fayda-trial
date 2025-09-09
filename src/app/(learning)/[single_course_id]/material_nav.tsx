@@ -13,10 +13,26 @@ export default function MaterialNav() {
   const [activeMaterial, setActiveMaterial] = useState("");
   const [totalPartNumber, setTotalPartNumber] = useState("1");
   const [forumId, setForumId] = useState("");
+  const [hasValidData, setHasValidData] = useState(false);
 
   const params = useParams();
-  console.log(params);
   const courseId = params.single_course_id;
+
+  // Don't render if no courseId is available or if it's not a valid course ID format
+  if (!courseId || typeof courseId !== 'string') {
+    return null;
+  }
+
+  // Don't render for non-course routes (like careers, contact, etc.)
+  const invalidRoutes = ['careers', 'contact', 'about', 'terms_of_service', 'privacy-policy', 'help', 'f_a_q', 'blogs', 'teach', 'courses', 'competitions'];
+  if (invalidRoutes.includes(courseId.toLowerCase())) {
+    return null;
+  }
+
+  // Only render for actual numeric course IDs or valid course identifiers
+  if (!/^\d+$/.test(courseId) && !courseId.startsWith('course_')) {
+    return null;
+  }
 
   useEffect(() => {
     const fetchData = () => {
@@ -25,34 +41,46 @@ export default function MaterialNav() {
       })
         .then((response) => response.json())
         .then((jsonData) => {
-          setData(jsonData);
-          setTotalPartNumber(jsonData[0].Courses.parts);
-          //  console.log(jsonData[0].Courses.materials);
+          if (jsonData && jsonData[0] && jsonData[0].Courses) {
+            setData(jsonData);
+            setTotalPartNumber(jsonData[0].Courses.parts);
+            setHasValidData(true);
+          } else {
+            setHasValidData(false);
+          }
+          setIsLoading(false);
         })
         .catch((error) => {
           console.log("Error:", error);
+          setHasValidData(false);
+          setIsLoading(false);
         });
     };
 
-    fetchData();
-  }, []);
+    if (courseId) {
+      fetchData();
+    }
+  }, [courseId]);
   useEffect(() => {
     const getCourse = async () => {
-      const res = await fetch(`${apiUrl}/forums/checkcourseforum/${courseId}`, {
-        next: {
-          revalidate: 0,
-        },
-        credentials: "include",
-      });
-      const course = await res.json();
-      //  setCourse(course);
-      setForumId(course[0]?.id);
-      // console.log("COurses: " + course?.id);
-      // console.log("Course ID: " + courseId);
+      try {
+        const res = await fetch(`${apiUrl}/forums/checkcourseforum/${courseId}`, {
+          next: {
+            revalidate: 0,
+          },
+          credentials: "include",
+        });
+        const course = await res.json();
+        setForumId(course[0]?.id);
+      } catch (error) {
+        console.log("Forum error:", error);
+      }
     };
 
-    getCourse();
-  }, []);
+    if (courseId) {
+      getCourse();
+    }
+  }, [courseId]);
 
   const changePage = () => {
     var tempNumber = partNumber;
@@ -85,6 +113,20 @@ export default function MaterialNav() {
 
     return <div className="flex flex-wrap gap-y-2 space-x-3 mx-2">{divs}</div>;
   };
+
+  // Don't render if still loading or no valid data
+  if (isLoading) {
+    return (
+      <div className="mt-12 lg:mt-0 flex items-center justify-center p-4">
+        <div className="text-gray-500">Loading...</div>
+      </div>
+    );
+  }
+
+  // Don't render if no valid course data
+  if (!hasValidData || !data[0]?.Courses) {
+    return null;
+  }
 
   return (
     <div className="mt-12 lg:mt-0">
