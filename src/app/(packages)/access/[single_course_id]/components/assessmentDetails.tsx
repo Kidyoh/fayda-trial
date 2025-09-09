@@ -166,7 +166,7 @@ export default function AssessmentDetails({ assessment_id, student_id }: any) {
       {/* Start Button */}
       <div className="flex justify-center pt-4">
         <Link
-          href={`/packages_access/assessment_questions/${data?.assementId?.id}`}
+          href={`/assessment_questions/${data?.assementId?.id}`}
           onClick={CheckAssessmentIfSeen}
           className="inline-flex items-center gap-2 px-8 py-4 bg-primaryColor text-white rounded-xl font-semibold text-lg shadow-lg hover:bg-primaryColor/90 transition-all hover:scale-105 hover:shadow-xl active:scale-100"
         >

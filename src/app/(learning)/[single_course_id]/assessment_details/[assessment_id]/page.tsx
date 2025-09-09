@@ -22,6 +22,7 @@ export default function AssessmentDetails({ params }: any) {
         .then((response) => response.json())
         .then((jsonData) => {
           setData(jsonData);
+          console.log(jsonData);
           //  setVideoLocation(jsonData[0].location);
           //  console.log(jsonData[0].Courses.materials);
         })
@@ -29,7 +30,6 @@ export default function AssessmentDetails({ params }: any) {
           console.log("Error:", error);
         });
     };
-
     fetchData();
   }, []);
   //{data[0]?.id}
@@ -55,7 +55,7 @@ export default function AssessmentDetails({ params }: any) {
           submitting! If you do your result may be taken as invalid permanently.
         </h1>
       </div>
-      <Link href={`/packages_access/assessment_questions/${AssessmentId}`}>
+      <Link href={`/assessment_questions/${AssessmentId}`}>
         <div className="my-4 w-fit">
           <h1 className="px-3 py-1 bg-secondaryColor text-white rounded-md">
             Start
