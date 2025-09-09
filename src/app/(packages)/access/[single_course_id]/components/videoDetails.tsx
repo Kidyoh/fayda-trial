@@ -57,7 +57,7 @@ export default function VideoDetial({ video_id, student_id }: any) {
         </p>
       </div>
 
-      <div className="relative w-full aspect-video bg-gray-100 rounded-lg overflow-hidden">
+      <div className="relative w-full aspect-video border border-primaryColor/10 bg-gray-100 rounded-lg overflow-hidden">
         {data?.videoUrl ? (
           <video
             className="w-full h-full object-cover"
