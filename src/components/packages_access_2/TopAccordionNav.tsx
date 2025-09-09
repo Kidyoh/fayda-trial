@@ -10,6 +10,8 @@ interface TopAccordionNavProps {
   materials: any[];
   activeMaterialId: string;
   onMaterialClick: (materialId: any, materialType: any, materialAccess: any) => void;
+  studentId?: string;
+  courseProgress?: number;
 }
 
 const partNames = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"];
@@ -51,12 +53,42 @@ const TopAccordionNav: React.FC<TopAccordionNavProps> = ({
   materials,
   activeMaterialId,
   onMaterialClick,
+  studentId = "",
+  courseProgress = 0,
 }) => {
   const grouped = groupByUnitAndPart(materials);
   const sortedUnits = Object.keys(grouped).sort((a, b) => parseInt(a) - parseInt(b));
 
   return (
-    <Accordion type="single" collapsible className="w-full lg:w-1/2 mb-4">
+    <div className="w-full lg:w-1/2 mb-4">
+      {/* Progress Bar Component */}
+      <div className="bg-white rounded-xl border border-[#bf8c13]/20 p-4 mb-4 backdrop-blur-sm">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-lg font-semibold text-[#07705d]">Course Progress</h3>
+          <span className="text-2xl font-bold text-[#bf8c13]">{courseProgress}%</span>
+        </div>
+        <div className="w-full bg-gray-200 rounded-full h-3">
+          <div 
+            className="bg-gradient-to-r from-[#07705d] to-[#bf8c13] h-3 rounded-full transition-all duration-300 ease-in-out"
+            style={{ width: `${courseProgress}%` }}
+          />
+        </div>
+        <p className="text-sm text-gray-600 mt-2">
+          {courseProgress === 100 
+            ? "🎉 Congratulations! Course completed!" 
+            : courseProgress > 75 
+            ? "Almost there! Keep going!" 
+            : courseProgress > 50 
+            ? "Great progress! You're halfway there!" 
+            : courseProgress > 25 
+            ? "Good start! Keep learning!" 
+            : "Start your learning journey!"
+          }
+        </p>
+      </div>
+
+      {/* Navigation Accordion */}
+      <Accordion type="single" collapsible className="w-full">
       {sortedUnits.map((unit) => (
         <AccordionItem key={unit} value={`unit-${unit}`} className="border rounded-lg bg-white mb-2">
           <AccordionTrigger className="px-4 py-3 font-bold text-[#07705d] text-base md:text-lg">
@@ -94,7 +126,8 @@ const TopAccordionNav: React.FC<TopAccordionNavProps> = ({
           </AccordionContent>
         </AccordionItem>
       ))}
-    </Accordion>
+      </Accordion>
+    </div>
   );
 };
 

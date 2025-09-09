@@ -48,6 +48,16 @@ export default function SingleCourse() {
   const courseId = params.single_course_id;
   console.log("Course ID:", courseId);
 
+  const calculateProgress = (materials: any[], studentId: string) => {
+    if (!materials || !studentId) return 0;
+    const completedMaterials = materials.filter(material =>
+      material?.StudentMaterial?.find((item: any) =>
+        item.StudentId === studentId && item.Done === true
+      )
+    );
+    return materials.length > 0 ? Math.round((completedMaterials.length / materials.length) * 100) : 0;
+  };
+
   // Move MaterialClicked above useEffect to avoid ReferenceError
   const MaterialClicked = React.useCallback((
     materialId: any,
@@ -116,7 +126,7 @@ export default function SingleCourse() {
     };
 
     fetchData();
-  }, [seenMaterialsFetch, accessToken, courseId, MaterialClicked]);
+  }, [seenMaterialsFetch, accessToken, courseId, MaterialClicked, activeMaterialId]);
 
   useEffect(() => {
     const getCourse = async () => {
@@ -157,11 +167,6 @@ export default function SingleCourse() {
         />
         <ForumButton forumId={forumId} />
         <div className="flex flex-col lg:flex-row gap-6">
-          <TopAccordionNav
-            materials={data[0]?.Courses?.materials || []}
-            activeMaterialId={activeMaterialId}
-            onMaterialClick={MaterialClicked}
-          />
           <div className="bg-white rounded-xl border border-[#bf8c13]/20 min-h-[400px] w-full h-full p-4 md:p-6 backdrop-blur-sm">
             <MaterialContent
               activeMaterialtype={activeMaterialtype}
@@ -169,6 +174,13 @@ export default function SingleCourse() {
               studentId={data[0]?.studentsId}
             />
           </div>
+          <TopAccordionNav
+            materials={data[0]?.Courses?.materials || []}
+            activeMaterialId={activeMaterialId}
+            onMaterialClick={MaterialClicked}
+            studentId={data[0]?.studentsId}
+            courseProgress={calculateProgress(data[0]?.Courses?.materials || [], data[0]?.studentsId || "")}
+          />
         </div>
       </div>
     </div>
