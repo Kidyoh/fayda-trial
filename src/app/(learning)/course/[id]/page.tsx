@@ -228,7 +228,7 @@ export default function CourseDetailPage() {
                     id: course.id,
                     courseName: course.courseName,
                     price: parseFloat(priceInfo.currentPrice),
-                    temporaryPrice: priceInfo.isDiscounted ? parseFloat(priceInfo.originalPrice!) : undefined,
+                    temporaryPrice: priceInfo.isDiscounted && priceInfo.originalPrice ? parseFloat(priceInfo.originalPrice) : undefined,
                     discountStatus: priceInfo.isDiscounted,
                     discountExpiryDate: priceInfo.discountExpiry,
                     courseDescription: course.courseDescription
@@ -240,9 +240,9 @@ export default function CourseDetailPage() {
                   courseId={course.id}
                   courseName={course.courseName}
                   price={priceInfo.currentPrice}
-                  temporaryPrice={priceInfo.isDiscounted ? priceInfo.originalPrice : undefined}
+                  temporaryPrice={priceInfo.isDiscounted ? priceInfo.originalPrice || undefined : undefined}
                   discountStatus={priceInfo.isDiscounted}
-                  discountExpiryDate={priceInfo.discountExpiry}
+                  discountExpiryDate={priceInfo.discountExpiry || undefined}
                 />
               </div>
 

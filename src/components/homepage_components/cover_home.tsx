@@ -2,8 +2,6 @@
 
 import Image from "next/image";
 import ScrollDown from "./scroll_down";
-import GetStarted from "./get_started";
-import FaqButton from "./faq_button";
 import ShinyText from "../custom_components/shiny_text";
 
 export default function CoverHome() {
@@ -91,9 +89,28 @@ export default function CoverHome() {
           </div>
         </div>
         
-        {/* Side buttons positioned relative to content wrapper */}
-        <GetStarted />
-        <FaqButton />
+        {/* Desktop side buttons - only visible on large screens */}
+        <div className="hidden xl:block absolute left-4 top-1/2 -translate-y-1/2 w-[240px] h-auto flex-col items-center justify-center px-3">
+          <div className="mb-4">
+            <Image src="/Images/eth.png" alt="Ethiopia" width={80} height={80} className="w-24 xl:w-28 object-contain" />
+          </div>
+          <a href='#course'>
+            <button className="bg-yellow-400 hover:bg-yellow-300 text-white hover:scale-105 active:scale-95 transition-all font-bold px-4 py-3 h-12 xl:h-14 text-base xl:text-lg font-Sendako rounded-full">
+              Learn
+            </button>
+          </a>
+        </div>
+
+        <div className="hidden xl:block absolute right-4 top-1/2 -translate-y-1/2 w-[240px] h-auto flex-col items-center justify-center px-3">
+          <div className="mb-4">
+            <Image src="/Images/eth.png" alt="Ethiopia" width={80} height={80} className="w-24 xl:w-28 object-contain" />  
+          </div>
+          <a href="/faq">
+            <button className="bg-yellow-400 hover:bg-yellow-300 text-white hover:scale-105 active:scale-95 transition-all font-bold px-6 py-3 h-12 xl:h-14 text-lg xl:text-xl font-Sendako rounded-full">
+              FAQ
+            </button>
+          </a>
+        </div>
       </div>
       
       {/* Decorative element with improved responsive positioning */}
@@ -105,32 +122,32 @@ export default function CoverHome() {
         className="w-12 h-12 xxsm:w-14 xxsm:h-14 xsm:w-16 xsm:h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 xl:w-32 xl:h-32 absolute bottom-4 xxsm:bottom-6 sm:bottom-8 md:bottom-12 lg:bottom-16 xl:bottom-20 xxmd:bottom-24 z-10 right-[5%] xxsm:right-[6%] xsm:right-[7%] sm:right-[8%] md:right-[10%] lg:right-[12%] xl:right-[15%] xxmd:right-[18%]"
       />
       
-       {/* Sticky mobile buttons for FAQ and Get Started - only visible on mobile/tablet and only on cover home section */}
-       <div className="xl:hidden absolute bottom-24 left-4 right-4 z-50 flex justify-between items-end pointer-events-none">
-         {/* Get Started floating button */}
-         <div className="pointer-events-auto">
-           <a href='#course' className="flex flex-col items-center gap-2 group">
-             <div className="w-14 h-14 bg-primaryColor/90 backdrop-blur-sm rounded-full shadow-2xl border-2 border-white/30 flex items-center justify-center hover:scale-110 transition-all duration-300 hover:shadow-3xl hover:bg-primaryColor">
-               <Image src="/Images/eth.png" alt="Ethiopia" width={24} height={24} className="w-7 h-7 object-contain" />
-             </div>
-             <button className="bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-500 hover:to-amber-600 text-white font-bold px-4 py-2.5 text-sm font-Sendako rounded-full shadow-2xl border-2 border-white/20 hover:scale-105 active:scale-95 transition-all duration-200 hover:shadow-3xl">
-               Learn
-             </button>
-           </a>
-         </div>
+      {/* Mobile/Tablet floating buttons - positioned to avoid navbar conflicts */}
+      <div className="xl:hidden fixed bottom-6 left-4 right-4 z-40 flex justify-between items-end pointer-events-none">
+        {/* Get Started floating button */}
+        <div className="pointer-events-auto">
+          <a href='#course' className="flex flex-col items-center gap-2 group">
+            <div className="w-12 h-12 bg-primaryColor/90 backdrop-blur-sm rounded-full shadow-2xl border-2 border-white/30 flex items-center justify-center hover:scale-110 transition-all duration-300 hover:shadow-3xl hover:bg-primaryColor">
+              <Image src="/Images/eth.png" alt="Ethiopia" width={20} height={20} className="w-5 h-5 object-contain" />
+            </div>
+            <button className="bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-500 hover:to-amber-600 text-white font-bold px-3 py-2 text-xs font-Sendako rounded-full shadow-2xl border-2 border-white/20 hover:scale-105 active:scale-95 transition-all duration-200 hover:shadow-3xl">
+              Learn
+            </button>
+          </a>
+        </div>
 
-         {/* FAQ floating button */}
-         <div className="pointer-events-auto">
-           <a href="/faq" className="flex flex-col items-center gap-2 group">
-             <div className="w-14 h-14 bg-primaryColor/90 backdrop-blur-sm rounded-full shadow-2xl border-2 border-white/30 flex items-center justify-center hover:scale-110 transition-all duration-300 hover:shadow-3xl hover:bg-primaryColor">
-               <Image src="/Images/eth.png" alt="Ethiopia" width={24} height={24} className="w-7 h-7 object-contain" />
-             </div>
-             <button className="bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-500 hover:to-amber-600 text-white font-bold px-4 py-2.5 text-sm font-Sendako rounded-full shadow-2xl border-2 border-white/20 hover:scale-105 active:scale-95 transition-all duration-200 hover:shadow-3xl">
-               FAQ
-             </button>
-           </a>
-         </div>
-       </div>
+        {/* FAQ floating button */}
+        <div className="pointer-events-auto">
+          <a href="/faq" className="flex flex-col items-center gap-2 group">
+            <div className="w-12 h-12 bg-primaryColor/90 backdrop-blur-sm rounded-full shadow-2xl border-2 border-white/30 flex items-center justify-center hover:scale-110 transition-all duration-300 hover:shadow-3xl hover:bg-primaryColor">
+              <Image src="/Images/eth.png" alt="Ethiopia" width={20} height={20} className="w-5 h-5 object-contain" />
+            </div>
+            <button className="bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-500 hover:to-amber-600 text-white font-bold px-3 py-2 text-xs font-Sendako rounded-full shadow-2xl border-2 border-white/20 hover:scale-105 active:scale-95 transition-all duration-200 hover:shadow-3xl">
+              FAQ
+            </button>
+          </a>
+        </div>
+      </div>
 
        {/* Action components */}
        <ScrollDown />
