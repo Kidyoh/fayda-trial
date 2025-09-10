@@ -78,7 +78,7 @@ const Card: React.FC<CardProps> = ({ package: pkg, bg, border, text }) => (
       </div>
 
       <div className="w-full mb-6 space-y-2">
-        <PackageAddToCartButton 
+        <PackageAddToCartButton
           packageData={pkg}
           className="w-full bg-white text-[#07705d] hover:bg-white/90"
           size="default"
@@ -207,30 +207,24 @@ const Card: React.FC<CardProps> = ({ package: pkg, bg, border, text }) => (
         ))}
       </div>
 
-      {/* Call to Action */}
-      <div className="text-center mt-12">
-        <Link href="/search">
-          <button className="bg-primaryColor backdrop-blur-sm text-white font-bold py-4 px-8 rounded-2xl border-2 transition-all duration-300 hover:scale-105">
-            View All Packages
-          </button>
-        </Link>
-      </div>
-
       {/* No packages fallback */}
-      {!isLoading && packages.length === 0 && (
+      {!isLoading && packages.length === 0 ? (
         <div className="text-center py-12">
           <div className="mx-auto w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center mb-4">
-            <span className="text-2xl">📚</span>
+            <span className="text-3xl">📚</span>
           </div>
-          <h3 className="text-xl font-bold text-white mb-2">No Featured Packages Available</h3>
-          <p className="text-white/80 mb-6">Check back soon for new learning opportunities!</p>
+          <h3 className="text-xl font-Sendako font-semi bold text-black mb-2">No Featured Packages Available</h3>
+          <p className="text-black/80 mb-6">Check back soon for new learning opportunities!</p>
+        </div>
+      ) :
+        <div className="text-center mt-12">
           <Link href="/search">
-            <button className="bg-white text-[#07705d] font-bold py-3 px-6 rounded-2xl hover:bg-white/90 transition-colors">
-              Browse All Packages
+          <button className="bg-primaryColor backdrop-blur-sm text-white font-bold py-4 px-8 rounded-2xl border-2 transition-all duration-300 hover:scale-105">
+              View All Packages
             </button>
           </Link>
         </div>
-      )}
-    </div>
+      }
+    </div >
   );
 }
