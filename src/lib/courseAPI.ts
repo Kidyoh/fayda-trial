@@ -10,7 +10,7 @@ export interface Course {
   price: string;
   temporaryPrice?: string;
   discountStatus: boolean;
-  discountExpiryDate?: Date;
+  discountExpiryDate?: string;
   status: boolean;
   displayOnHome: boolean;
   thumbnail?: string;
@@ -19,6 +19,18 @@ export interface Course {
   courseIntroductionVideo?: string;
   extra1?: string;
   extra2?: string;
+  packages?: any[];
+  Forum?: any;
+  CourseUnitsList?: CourseUnit[];
+  videoUrl?: string;
+  createdAt?: string;
+}
+
+export interface CourseUnit {
+  id: number;
+  UnitNumber: number;
+  UnitName: string;
+  UnitDescription: string;
 }
 
 export interface CoursePurchase {
@@ -115,36 +127,110 @@ export async function checkCoursePurchaseStatus(
 }
 
 /**
- * Get all courses with pricing information
+ * Get all courses with pricing information (requires authentication)
  */
-export async function getCoursesWithPricing(): Promise<Course[]> {
-  const response = await fetch(`${apiUrl}/courses/pricing`);
+export async function getAllCourses(accessToken: string): Promise<Course[] | { Error: string }> {
+  const response = await fetch(`${apiUrl}/courses`, {
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    }
+  });
+
+  const data = await response.json();
 
   if (!response.ok) {
-    throw new Error("Failed to fetch courses");
+    if (response.status === 401) {
+      // Return the error response as an object so the calling code can handle it
+      return data;
+    }
+    throw new Error(`Failed to fetch courses: ${response.status} ${response.statusText}`);
+  }
+
+  return data;
+}
+
+/**
+ * Get all public courses (no authentication required)
+ */
+export async function getPublicCourses(): Promise<Course[]> {
+  const response = await fetch(`${apiUrl}/courses/public`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error('❌ Public courses API error:', errorText);
+    throw new Error(`Failed to fetch public courses: ${response.status} ${response.statusText}`);
   }
 
   return response.json();
 }
 
 /**
- * Get courses that should be displayed on homepage
+ * Get single public course (no authentication required)
  */
-export async function getHomepageCourses(): Promise<Course[]> {
-  const response = await fetch(`${apiUrl}/courses/homepage`);
+export async function getPublicCourse(courseId: string): Promise<Course> {
+  const response = await fetch(`${apiUrl}/courses/public/${courseId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
 
   if (!response.ok) {
-    throw new Error("Failed to fetch homepage courses");
+    throw new Error(`Failed to fetch public course: ${response.status} ${response.statusText}`);
   }
 
   return response.json();
+}
+
+/**
+ * Get courses that should be displayed on homepage (requires authentication)
+ */
+export async function getHomepageCourses(accessToken: string): Promise<Course[]> {
+  const allCourses = await getAllCourses(accessToken);
+  
+  // Check if the response is an error object
+  if (allCourses && typeof allCourses === 'object' && 'Error' in allCourses) {
+    throw new Error(allCourses.Error);
+  }
+  
+  // Ensure it's an array before filtering
+  if (!Array.isArray(allCourses)) {
+    throw new Error('Invalid course data format received from server');
+  }
+  
+  return allCourses.filter(course => course.displayOnHome && course.status);
+}
+
+/**
+ * Get public courses that should be displayed on homepage (no authentication required)
+ */
+export async function getPublicHomepageCourses(): Promise<Course[]> {
+  const allCourses = await getPublicCourses();
+  
+  // Filter out courses with empty names or missing IDs
+  const homepageCourses = allCourses.filter(course => {
+    return course.courseName && course.courseName.trim() !== '' && course.id;
+  });
+  
+  return homepageCourses;
 }
 
 /**
  * Get single course details including pricing
  */
-export async function getCourseDetails(courseId: string): Promise<Course> {
-  const response = await fetch(`${apiUrl}/courses/${courseId}/details`);
+export async function getCourseDetails(courseId: string, accessToken: string): Promise<Course> {
+  const response = await fetch(`${apiUrl}/courses/${courseId}`, {
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    }
+  });
 
   if (!response.ok) {
     throw new Error("Failed to fetch course details");
@@ -273,9 +359,39 @@ export function calculateCoursePrice(course: Course): {
 /**
  * Check if discount is still valid
  */
-export function isDiscountValid(discountExpiryDate?: Date): boolean {
+export function isDiscountValid(discountExpiryDate?: string): boolean {
   if (!discountExpiryDate) return false;
   return new Date(discountExpiryDate) > new Date();
+}
+
+/**
+ * Get display price information for a course
+ */
+export function getDisplayPrice(course: Course): {
+  currentPrice: string;
+  originalPrice: string | null;
+  isDiscounted: boolean;
+  discountExpiry: string | null;
+} {
+  const isDiscounted = course.discountStatus && 
+    course.temporaryPrice && 
+    (!course.discountExpiryDate || new Date(course.discountExpiryDate) > new Date());
+  
+  if (isDiscounted) {
+    return {
+      currentPrice: course.temporaryPrice!,
+      originalPrice: course.price,
+      isDiscounted: true,
+      discountExpiry: course.discountExpiryDate || null
+    };
+  }
+  
+  return {
+    currentPrice: course.price,
+    originalPrice: null,
+    isDiscounted: false,
+    discountExpiry: null
+  };
 }
 
 // Example usage for integrating with existing components:

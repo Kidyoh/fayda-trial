@@ -1,78 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { CoursePurchaseDialog } from "../custom_components/coursePurchaseDialog";
 import { CourseAddToCartButton } from "../cart/AddToCartButton";
+import { getPublicHomepageCourses, Course, getDisplayPrice } from "@/lib/courseAPI";
+import { useLanguage } from "@/lib/language-context";
 
-const cards = [
-  {
-    id: "course-1",
-    title: "Ethiopian Mathematics Grade 12",
-    instructor: "Dr. Alemayehu Tadesse",
-    instructorImg: "https://randomuser.me/api/portraits/men/33.jpg",
-    price: "299",
-    temporaryPrice: "199",
-    discountStatus: true,
-    discountExpiryDate: "2025-10-01",
-    status: true,
-    displayOnHome: true,
-    thumbnail: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
-    img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
-    courseDescription: "Comprehensive mathematics course covering all Grade 12 topics including calculus, statistics, and advanced algebra concepts.",
-    parts: "12",
-    partName: "Mathematical Foundations",
-    courseIntroductionVideo: "/course.mp4",
-    description: "Master Grade 12 mathematics with Ethiopian curriculum standards. Perfect preparation for university entrance exams.",
-    cta: "Enroll Now",
-    link: "/course/course-1"
-  },
-  {
-    id: "course-2",
-    title: "Physics for Ethiopian Students",
-    instructor: "Prof. Hanan Mohammed",
-    instructorImg: "https://randomuser.me/api/portraits/women/65.jpg",
-    price: "399",
-    temporaryPrice: "299",
-    discountStatus: true,
-    discountExpiryDate: "2025-09-15",
-    status: true,
-    displayOnHome: true,
-    thumbnail: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
-    img: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
-    courseDescription: "Advanced physics covering mechanics, thermodynamics, electromagnetism, and modern physics concepts.",
-    parts: "8",
-    partName: "Physics Fundamentals",
-    courseIntroductionVideo: "/course.mp4",
-    description: "Learn physics concepts with practical applications and laboratory experiments designed for Ethiopian curriculum.",
-    cta: "Enroll Now",
-    link: "/course/course-2"
-  },
-  {
-    id: "course-2",
-    title: "Physics for Ethiopian Students",
-    instructor: "Prof. Hanan Mohammed",
-    instructorImg: "https://randomuser.me/api/portraits/women/65.jpg",
-    price: "399",
-    temporaryPrice: "299",
-    discountStatus: true,
-    discountExpiryDate: "2025-09-15",
-    status: true,
-    displayOnHome: true,
-    thumbnail: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
-    img: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
-    courseDescription: "Advanced physics covering mechanics, thermodynamics, electromagnetism, and modern physics concepts.",
-    parts: "8",
-    partName: "Physics Fundamentals",
-    courseIntroductionVideo: "/course.mp4",
-    description: "Learn physics concepts with practical applications and laboratory experiments designed for Ethiopian curriculum.",
-    cta: "Enroll Now",
-    link: "/course/course-2"
-  },
+// Helper function to get course thumbnail
+const getCourseThumbnail = (course: Course): string => {
+  if (course.thumbnail) {
+    return course.thumbnail;
+  }
+  
+  // Map course names to appropriate images
+  const courseImages: { [key: string]: string } = {
+    'Math': '/course/Math.png',
+    'Physics': '/course/Physics.png',
+    'Chemistry': '/course/Chemistry.png',
+    'Biology': '/course/Biology.png',
+    'History': '/course/History.png',
+    'Economics': '/course/Economics.png'
+  };
+  
+  // Try to match course name with available images
+  for (const [key, image] of Object.entries(courseImages)) {
+    if (course.courseName.toLowerCase().includes(key.toLowerCase())) {
+      return image;
+    }
+  }
+  
+  // Default fallback
+  return '/course/Math.png';
+};
 
-];
+interface AnimatedCourseCardProps {
+  course: Course;
+}
 
-function AnimatedCourseCard({ card }) {
+function AnimatedCourseCard({ course }: AnimatedCourseCardProps) {
   const [hovered, setHovered] = useState(false);
+  const { language } = useLanguage();
+
+  const thumbnail = getCourseThumbnail(course);
+  const priceInfo = getDisplayPrice(course);
 
   return (
     <motion.div
@@ -91,8 +61,8 @@ function AnimatedCourseCard({ card }) {
         style={{ height: 260 }}
       >
         <motion.img
-          src={card.img}
-          alt={card.title}
+          src={thumbnail}
+          alt={course.courseName}
           className="w-full h-[120%] object-cover"
           animate={{ scale: hovered ? 1.03 : 1 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
@@ -101,36 +71,36 @@ function AnimatedCourseCard({ card }) {
       </motion.div>
 
       <div className="px-6 py-6">
-        <div className="font-semibold text-2xl mb-3 font-Sendako">{card.title}</div>
+        <div className="font-semibold text-2xl mb-3 font-Sendako">{course.courseName}</div>
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
-            <img
-              src={card.instructorImg}
-              alt={card.instructor}
-              className="w-9 h-9 rounded-full object-cover border border-gray-200"
-            />
+            <div className="w-9 h-9 rounded-full bg-primaryColor/10 flex items-center justify-center">
+              <span className="text-primaryColor font-bold text-sm">
+                {course.parts}
+              </span>
+            </div>
             <span className="uppercase text-sm tracking-wider font-semibold text-gray-900">
-              {card.instructor}
+              {course.partName || 'Course'}
             </span>
           </div>
           <div className="flex flex-col items-end">
-            {card.discountStatus ? (
+            {priceInfo.isDiscounted ? (
               <div className="flex items-center gap-2">
                 <span className="font-semibold text-lg text-gray-500 line-through font-Sendako">
-                  {card.price} Birr
+                  {priceInfo.originalPrice} Birr
                 </span>
                 <span className="font-semibold text-2xl text-[#07705d] font-Sendako">
-                  {card.temporaryPrice} Birr
+                  {priceInfo.currentPrice} Birr
                 </span>
               </div>
             ) : (
               <span className="font-semibold text-2xl text-gray-900 font-Sendako">
-                {card.price} Birr
+                {priceInfo.currentPrice} Birr
               </span>
             )}
-            {card.discountStatus && (
+            {priceInfo.isDiscounted && priceInfo.discountExpiry && (
               <span className="text-xs text-red-500 font-medium">
-                Until {new Date(card.discountExpiryDate).toLocaleDateString()}
+                Until {new Date(priceInfo.discountExpiry).toLocaleDateString()}
               </span>
             )}
           </div>
@@ -147,42 +117,33 @@ function AnimatedCourseCard({ card }) {
               className="overflow-hidden"
             >
               <div className="text-gray-700 text-base mb-6 mt-2">
-                {card.description}
+                {course.courseDescription}
               </div>
               <div className="w-full justify-between flex items-center gap-4">
-                {card.id ? (
                   <div className="flex flex-col gap-2 flex-1">
                     <CourseAddToCartButton 
                       courseData={{
-                        id: card.id,
-                        courseName: card.title,
-                        price: parseFloat(card.price),
-                        temporaryPrice: card.temporaryPrice ? parseFloat(card.temporaryPrice) : undefined,
-                        discountStatus: card.discountStatus,
-                        discountExpiryDate: card.discountExpiryDate,
-                        courseDescription: card.courseDescription
+                      id: course.id,
+                      courseName: course.courseName,
+                      price: parseFloat(priceInfo.currentPrice),
+                      temporaryPrice: priceInfo.isDiscounted ? parseFloat(priceInfo.originalPrice!) : undefined,
+                      discountStatus: priceInfo.isDiscounted,
+                      discountExpiryDate: priceInfo.discountExpiry,
+                      courseDescription: course.courseDescription
                       }}
                       size="sm"
                     />
                     <CoursePurchaseDialog
-                      courseId={card.id}
-                      courseName={card.title}
-                      price={card.price}
-                      temporaryPrice={card.temporaryPrice}
-                      discountStatus={card.discountStatus}
-                      discountExpiryDate={card.discountExpiryDate}
+                    courseId={course.id}
+                    courseName={course.courseName}
+                    price={priceInfo.currentPrice}
+                    temporaryPrice={priceInfo.isDiscounted ? priceInfo.originalPrice || undefined : undefined}
+                    discountStatus={priceInfo.isDiscounted}
+                    discountExpiryDate={priceInfo.discountExpiry || undefined}
                     />
                   </div>
-                ) : (
-                  <a
-                    href={card.link}
-                    className="bg-primaryColor text-white font-semibold font-Sendako py-2 px-7 rounded-full"
-                  >
-                    {card.cta}
-                  </a>
-                )}
                 <a
-                  href={card.link}
+                  href={`/course/${course.id}`}
                   className="flex items-center font-Sendako font-medium text-gray-900 hover:underline ml-2"
                 >
                   Learn More
@@ -206,6 +167,180 @@ function AnimatedCourseCard({ card }) {
 }
 
 export default function AnimatedCourseGrid() {
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [coursesPerPage] = useState(6); // Show 6 courses per page
+  const { language } = useLanguage();
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // Use public courses API - no authentication required
+        const coursesData = await getPublicHomepageCourses();
+        
+        // Ensure coursesData is an array
+        if (!Array.isArray(coursesData)) {
+          console.error('❌ API returned non-array data:', coursesData);
+          throw new Error('Invalid course data format received from server');
+        }
+        
+        console.log('✅ Loaded', coursesData.length, 'courses');
+        
+        setCourses(coursesData);
+      } catch (err) {
+        console.error('❌ Error fetching courses:', err);
+        let errorMessage = 'Failed to load courses';
+        
+        if (err instanceof Error) {
+          if (err.message.includes('fetch')) {
+            errorMessage = 'Unable to connect to server. Please check your internet connection.';
+          } else {
+            errorMessage = err.message;
+          }
+        }
+        
+        console.error('💥 Setting error message:', errorMessage);
+        setError(errorMessage);
+        setCourses([]);
+      } finally {
+        console.log('🏁 Finished fetching courses, setting loading to false');
+        setLoading(false);
+      }
+    };
+
+    fetchCourses();
+  }, []);
+
+  // Calculate pagination
+  const totalPages = Math.ceil(courses.length / coursesPerPage);
+  const startIndex = (currentPage - 1) * coursesPerPage;
+  const endIndex = startIndex + coursesPerPage;
+  const currentCourses = courses.slice(startIndex, endIndex);
+
+  // Reset to first page when courses change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [courses]);
+
+  // Loading skeleton component
+  const LoadingSkeleton = () => (
+    <div className="bg-white shadow-2xl shadow-primaryColor/10 overflow-hidden w-full rounded-2xl animate-pulse" style={{ minHeight: 420, maxWidth: 420 }}>
+      <div className="w-full h-64 bg-gray-300"></div>
+      <div className="px-6 py-6">
+        <div className="h-6 bg-gray-300 rounded mb-3"></div>
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <div className="w-9 h-9 bg-gray-300 rounded-full"></div>
+            <div className="h-4 w-20 bg-gray-300 rounded"></div>
+          </div>
+          <div className="h-6 w-16 bg-gray-300 rounded"></div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Error component
+  const ErrorMessage = () => {
+    return (
+      <div className="col-span-full flex flex-col items-center justify-center py-12">
+        <div className="text-red-500 text-lg font-semibold mb-4">
+          Failed to load courses
+        </div>
+        <div className="text-gray-600 text-center mb-4 max-w-md">
+          {error}
+        </div>
+        <button 
+          onClick={() => window.location.reload()} 
+          className="bg-primaryColor text-white px-6 py-2 rounded-full font-semibold hover:bg-primaryColor/90 transition-colors"
+        >
+          Try Again
+        </button>
+      </div>
+    );
+  };
+
+  // Pagination component
+  const Pagination = () => {
+    if (totalPages <= 1) return null;
+
+    const pageNumbers: number[] = [];
+    const maxVisiblePages = 5;
+    
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+
+    return (
+      <div className="flex justify-center items-center space-x-2 mt-8">
+        <button
+          onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+          disabled={currentPage === 1}
+          className="px-3 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Previous
+        </button>
+        
+        {startPage > 1 && (
+          <>
+            <button
+              onClick={() => setCurrentPage(1)}
+              className="px-3 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50"
+            >
+              1
+            </button>
+            {startPage > 2 && <span className="text-gray-400">...</span>}
+          </>
+        )}
+        
+        {pageNumbers.map(page => (
+          <button
+            key={page}
+            onClick={() => setCurrentPage(page)}
+            className={`px-3 py-2 rounded-lg border ${
+              currentPage === page
+                ? 'bg-primaryColor text-white border-primaryColor'
+                : 'border-gray-300 text-gray-600 hover:bg-gray-50'
+            }`}
+          >
+            {page}
+          </button>
+        ))}
+        
+        {endPage < totalPages && (
+          <>
+            {endPage < totalPages - 1 && <span className="text-gray-400">...</span>}
+            <button
+              onClick={() => setCurrentPage(totalPages)}
+              className="px-3 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50"
+            >
+              {totalPages}
+            </button>
+          </>
+        )}
+        
+        <button
+          onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+          disabled={currentPage === totalPages}
+          className="px-3 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Next
+        </button>
+      </div>
+    );
+  };
+
   return (
     <section id="course" className="min-h-screen py-10 px-4 relative">
       {/* Decorative Brush2.png */}
@@ -222,7 +357,7 @@ export default function AnimatedCourseGrid() {
         alt="Brush Decoration"
         width={300}
         height={180}
-        className="w-28 absolute top-1/2 left-0 md:right-0 opacity-80 pointer-events-none select-none"
+        className="w-28 absolute top-1/2 left-0 md:left-0 opacity-80 pointer-events-none select-none"
       />
       <div className="max-w-4xl mx-auto mb-10 relative flex flex-col items-center">
         <Image
@@ -235,12 +370,40 @@ export default function AnimatedCourseGrid() {
         <h2 className="text-3xl md:text-4xl font-extrabold font-Sendako tracking-wide uppercase text-white z-20 my-8">
           Courses
         </h2>
+        {!loading && !error && courses.length > 0 && (
+          <div className="text-white/80 text-sm mt-2">
+            Showing {startIndex + 1}-{Math.min(endIndex, courses.length)} of {courses.length} courses
+          </div>
+        )}
       </div>
       <div className="max-w-7xl mx-auto grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        {cards.map((card, idx) => (
-          <AnimatedCourseCard key={idx} card={card} />
-        ))}
+        {loading ? (
+          // Show loading skeletons
+          Array.from({ length: 6 }).map((_, idx) => (
+            <LoadingSkeleton key={idx} />
+          ))
+        ) : error ? (
+          <ErrorMessage />
+        ) : courses.length === 0 ? (
+          <div className="col-span-full flex flex-col items-center justify-center py-12">
+            <div className="text-gray-600 text-lg font-semibold mb-4">
+              No courses available
+            </div>
+            <div className="text-gray-500 text-center">
+              Check back later for new courses!
+            </div>
+          </div>
+        ) : (
+          <>
+            {currentCourses.map((course) => (
+              <AnimatedCourseCard key={course.id} course={course} />
+            ))}
+          </>
+        )}
       </div>
+      
+      {/* Pagination */}
+      <Pagination />
     </section>
   );
 }

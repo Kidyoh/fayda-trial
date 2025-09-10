@@ -15,54 +15,43 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  // Use useState and useEffect to safely handle client-side code
-  const [isClient, setIsClient] = useState(false);
   const { t } = useLanguage();
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   return (
     <>
-      {isClient && (
-        <>
-          <CoverHome />
-          <Info />
-          <WelcomeSection />
-          {/* <AdSlider/> */}
-          <div className="relative overflow-hidden">
-            <div className="w-[150vw] h-[250vh] absolute left-[45%] opacity-10 -z-10 -translate-x-1/2">
-              <Image
-                src="/Images/Flowgreen1.png"
-                alt="background"
-                width={2000}
-                height={1000}
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <PackageCards />
-            <CourseGrid />
-          </div>
-          <div className="relative overflow-hidden">
-            <div className="w-[150vw] h-[250vh] absolute top-0 left-[44.5%] opacity-20 -z-10 -translate-x-1/2">
-              <Image
-                src="/Images/Floworange.png"
-                alt="background"
-                width={2000}
-                height={1000}
-                className="w-full h-full absolute opacity-100 rotate- -z-10 object-cover"
-              />
-            </div>
-            <WhatWeOffer />
-            <PackageDiscountSlider />
-            <Testimonials />
-          </div>
-          <Blog />
-          {/* <Marquee /> */}
-        </>
-      )
-      }
+      <CoverHome />
+      <Info />
+      <WelcomeSection />
+      {/* <AdSlider/> */}
+      <div className="relative overflow-hidden">
+        <div className="w-[150vw] h-[250vh] absolute left-[45%] opacity-10 -z-10 -translate-x-1/2">
+          <Image
+            src="/Images/Flowgreen1.png"
+            alt="background"
+            width={2000}
+            height={1000}
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <PackageCards />
+        <CourseGrid />
+      </div>
+      <div className="relative overflow-hidden">
+        <div className="w-[150vw] h-[250vh] absolute top-0 left-[44.5%] opacity-20 -z-10 -translate-x-1/2">
+          <Image
+            src="/Images/Floworange.png"
+            alt="background"
+            width={2000}
+            height={1000}
+            className="w-full h-full absolute opacity-100 rotate- -z-10 object-cover"
+          />
+        </div>
+        <WhatWeOffer />
+        <PackageDiscountSlider />
+        <Testimonials />
+      </div>
+      <Blog />
+      {/* <Marquee /> */}
     </>
   );
 }

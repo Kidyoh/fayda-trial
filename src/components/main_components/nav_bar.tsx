@@ -217,19 +217,19 @@ export default function NavBar(response3: any) {
 
   return (
     <>
-      <div className="hidden xxmd:block fixed top-0 z-50 bg-white shadow-2xl shadow-primaryColor/10 rounded-full mx-auto mt-4 w-10/11">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-8">
+      <div className="hidden xxmd:block fixed top-0 left-1/2 transform -translate-x-1/2 z-50 bg-white shadow-2xl shadow-primaryColor/10 rounded-full mt-4 w-10/12 max-w-6xl">
+        <div className="px-3 sm:px-4 lg:px-6">
+          <div className="flex justify-between items-center h-14">
+            <div className="flex items-center space-x-6">
               <Link href={"/"} className="flex-shrink-0">
                 <img
-                  className="h-12 w-auto"
+                  className="h-10 w-auto"
                   src="/common_files/main/smallfulllogo.png"
                   alt="fayida"
                 />
               </Link>
               
-              <div className="hidden md:flex items-center space-x-8">
+              <div className="hidden md:flex items-center space-x-6">
                 <Link href={"/"} className="group">
                   <h1 className={`text-sm font-medium transition-colors duration-200 ${
                     routerPathname === "/" 
@@ -259,13 +259,13 @@ export default function NavBar(response3: any) {
               </div>
             </div>
 
-            <div className="flex items-center space-x-6">
+            <div className="flex items-center space-x-4">
               <div className="relative">
                 <div className="flex items-center">
                   <input
                     type="text"
                     id="search"
-                    className="w-64 pl-4 pr-10 py-2 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor text-sm transition-all duration-200"
+                    className="w-48 pl-3 pr-8 py-1.5 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor text-sm transition-all duration-200"
                     placeholder="Search..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
@@ -276,14 +276,14 @@ export default function NavBar(response3: any) {
                     }}
                   />
                   <Link href={"/search"} onClick={() => handleSearch()}>
-                    <div className="absolute right-2 top-1/2 -translate-y-1/2 bg-primaryColor text-white p-1.5 rounded-full hover:bg-primaryColor/90 transition-colors duration-200">
-                      <Search size={16} />
+                    <div className="absolute right-1.5 top-1/2 -translate-y-1/2 bg-primaryColor text-white p-1 rounded-full hover:bg-primaryColor/90 transition-colors duration-200">
+                      <Search size={14} />
                     </div>
                   </Link>
                 </div>
               </div>
 
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-3">
                <LanguageSelector />
                
                {/* Cart Icon */}
