@@ -104,9 +104,11 @@ const TopAccordionNav: React.FC<TopAccordionNavProps> = ({
   };
 
   const getPartCompletion = (materials: any[]) => {
-    if (!materials.length) return { completed: 0, total: 0, percentage: 0 };
-    const completed = materials.filter(material => isCompleted(material)).length;
-    const total = materials.length;
+    // Only consider unlocked materials for completion calculation
+    const unlockedMaterials = materials.filter(material => material.Access !== "locked");
+    if (!unlockedMaterials.length) return { completed: 0, total: 0, percentage: 0 };
+    const completed = unlockedMaterials.filter(material => isCompleted(material)).length;
+    const total = unlockedMaterials.length;
     const percentage = Math.round((completed / total) * 100);
     return { completed, total, percentage };
   };
@@ -156,7 +158,9 @@ const TopAccordionNav: React.FC<TopAccordionNavProps> = ({
                 >
                   Unit {unit}
                   <span className="ml-2 px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-600">
-                    {Object.keys(grouped[unit]).length} parts
+                    {Object.keys(grouped[unit]).filter(part => 
+                      grouped[unit][part].some(material => material.Access !== "locked")
+                    ).length} parts
                   </span>
                 </button>
               ))}
@@ -174,35 +178,42 @@ const TopAccordionNav: React.FC<TopAccordionNavProps> = ({
               defaultValue={openPart(activeTab)}
               className="w-full"
             >
-              {Object.keys(grouped[activeTab]).sort((a, b) => parseInt(a) - parseInt(b)).map((part) => {
-                const partMaterials = grouped[activeTab][part];
-                const completion = getPartCompletion(partMaterials);
-                const isPartComplete = completion.percentage === 100;
+              {Object.keys(grouped[activeTab]).sort((a, b) => parseInt(a) - parseInt(b))
+                .filter((part) => {
+                  // Only show parts that have unlocked materials
+                  const partMaterials = grouped[activeTab][part];
+                  return partMaterials.some(material => material.Access !== "locked");
+                })
+                .map((part) => {
+                  const partMaterials = grouped[activeTab][part];
+                  const completion = getPartCompletion(partMaterials);
+                  const isPartComplete = completion.percentage === 100;
 
-                return (
-                  <AccordionItem key={part} value={`part-${part}`} className="border rounded-lg bg-gray-50 mb-2">
-                    <AccordionTrigger className="px-4 py-2 font-semibold text-[#07705d] text-sm md:text-base">
-                      <div className="flex items-center gap-2 flex-1">
-                        <span>Part {partNames[parseInt(part) - 1] || part}</span>
-                        {isPartComplete && <span className="text-green-600">✅</span>}
-                      </div>
-                      <span className="text-xs text-gray-500 ml-2">
-                        {completion.completed}/{completion.total} materials
-                        {completion.percentage > 0 && ` (${completion.percentage}%)`}
-                      </span>
-                    </AccordionTrigger>
+                  return (
+                    <AccordionItem key={part} value={`part-${part}`} className="border rounded-lg bg-gray-50 mb-2">
+                      <AccordionTrigger className="px-4 py-2 font-semibold text-[#07705d] text-sm md:text-base">
+                        <div className="flex items-center gap-2 flex-1">
+                          <span>Part {partNames[parseInt(part) - 1] || part}</span>
+                          {isPartComplete && <span className="text-green-600">✅</span>}
+                        </div>
+                        <span className="text-xs text-gray-500 ml-2">
+                          {completion.completed}/{completion.total} materials
+                          {completion.percentage > 0 && ` (${completion.percentage}%)`}
+                        </span>
+                      </AccordionTrigger>
                     <AccordionContent className="px-4 pb-2 flex flex-col gap-2">
-                      {partMaterials.map((material: any) => {
-                        const completed = isCompleted(material);
-                        return (
-                          <button
-                            key={material.id}
-                            onClick={() => onMaterialClick(material.id, material.materialType, material.Access)}
-                            className={`w-full text-left px-3 py-2 rounded-lg border transition-all duration-200 text-xs md:text-sm font-medium flex items-center gap-2
-                              ${material.id === activeMaterialId ? 'bg-gradient-to-r from-[#07705d] to-[#bf8c13] text-white border-transparent shadow-md' : 'hover:bg-[#c7cc3f]/10 text-gray-700 border-transparent hover:border-[#c7cc3f]/30 bg-white'}
-                              ${material.Access === "locked" ? 'opacity-60' : ''}`}
-                            disabled={material.Access === "locked"}
-                          >
+                      {partMaterials
+                        .filter((material: any) => material.Access !== "locked")
+                        .map((material: any) => {
+                          const completed = isCompleted(material);
+                          return (
+                            <button
+                              key={material.id}
+                              onClick={() => onMaterialClick(material.id, material.materialType, material.Access)}
+                              className={`w-full text-left px-3 py-2 rounded-lg border transition-all duration-200 text-xs md:text-sm font-medium flex items-center gap-2
+                                ${material.id === activeMaterialId ? 'bg-gradient-to-r from-[#07705d] to-[#bf8c13] text-white border-transparent shadow-md' : 'hover:bg-[#c7cc3f]/10 text-gray-700 border-transparent hover:border-[#c7cc3f]/30 bg-white'}
+                                cursor-pointer hover:shadow-sm`}
+                            >
                             <div className="flex items-center gap-2 flex-1">
                               <span>
                                 {material.materialType === "file" && "📄 Note: "}
@@ -224,8 +235,8 @@ const TopAccordionNav: React.FC<TopAccordionNavProps> = ({
                       })}
                     </AccordionContent>
                   </AccordionItem>
-                );
-              })}
+                  );
+                })}
             </Accordion>
           )}
         </div>
