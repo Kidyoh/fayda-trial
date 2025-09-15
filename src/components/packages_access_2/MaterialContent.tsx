@@ -13,13 +13,13 @@ interface MaterialContentProps {
 const MaterialContent: React.FC<MaterialContentProps> = ({ activeMaterialtype, activeMaterialId, studentId }) => {
 
   if (activeMaterialtype === "video")
-    return <VideoDetails video_id={activeMaterialId} student_id={studentId} />;
+    return <VideoDetails key={`video-${activeMaterialId}`} video_id={activeMaterialId} student_id={studentId} />;
   if (activeMaterialtype === "assessment")
-    return <AssessmentDetails assessment_id={activeMaterialId} student_id={studentId} />;
+    return <AssessmentDetails key={`assessment-${activeMaterialId}`} assessment_id={activeMaterialId} student_id={studentId} />;
   if (activeMaterialtype === "file")
-    return <FileDetails file_id={activeMaterialId} student_id={studentId} />;
+    return <FileDetails key={`file-${activeMaterialId}`} file_id={activeMaterialId} student_id={studentId} />;
   if (activeMaterialtype === "link")
-    return <LinkDetails link_id={activeMaterialId} student_id={studentId} />;
+    return <LinkDetails key={`link-${activeMaterialId}`} link_id={activeMaterialId} student_id={studentId} />;
 
   return (
     <div className="flex items-center justify-center h-[500px]">

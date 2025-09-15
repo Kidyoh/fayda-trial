@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
 import {
   Accordion,
+  AccordionContent,
   AccordionItem,
   AccordionTrigger,
-  AccordionContent,
 } from "@/components/ui/accordion";
+import { CheckCircle } from "lucide-react";
+import React, { useEffect, useState } from "react";
 
 interface TopAccordionNavProps {
   materials: any[];
@@ -62,7 +63,7 @@ const TopAccordionNav: React.FC<TopAccordionNavProps> = ({
   // Find which unit and part contains the active material
   const findActiveUnitAndPart = () => {
     if (!activeMaterialId) return { activeUnit: null, activePart: null };
-    
+
     for (const unit of sortedUnits) {
       for (const part of Object.keys(grouped[unit])) {
         if (grouped[unit][part].some(material => material.id === activeMaterialId)) {
@@ -74,11 +75,11 @@ const TopAccordionNav: React.FC<TopAccordionNavProps> = ({
   };
 
   const { activeUnit, activePart } = findActiveUnitAndPart();
-  
+
   const defaultUnit = activeUnit || (sortedUnits.length > 0 ? sortedUnits[0] : "");
-  const defaultPart = activePart || 
-    (defaultUnit && grouped[defaultUnit] ? 
-      Object.keys(grouped[defaultUnit]).sort((a, b) => parseInt(a) - parseInt(b))[0] : 
+  const defaultPart = activePart ||
+    (defaultUnit && grouped[defaultUnit] ?
+      Object.keys(grouped[defaultUnit]).sort((a, b) => parseInt(a) - parseInt(b))[0] :
       "");
 
   // State for managing active tab (unit)
@@ -95,6 +96,21 @@ const TopAccordionNav: React.FC<TopAccordionNavProps> = ({
     return unit === activeTab && defaultPart ? `part-${defaultPart}` : "";
   };
 
+  const isCompleted = (material: any) => {
+    if (!studentId || !material.StudentMaterial) return false;
+    return material.StudentMaterial.some((sm: any) =>
+      sm.StudentId === studentId && sm.Done === true
+    );
+  };
+
+  const getPartCompletion = (materials: any[]) => {
+    if (!materials.length) return { completed: 0, total: 0, percentage: 0 };
+    const completed = materials.filter(material => isCompleted(material)).length;
+    const total = materials.length;
+    const percentage = Math.round((completed / total) * 100);
+    return { completed, total, percentage };
+  };
+
   return (
     <div className="w-full lg:w-1/2 mb-4">
       {/* Progress Bar Component */}
@@ -104,21 +120,21 @@ const TopAccordionNav: React.FC<TopAccordionNavProps> = ({
           <span className="text-2xl font-bold text-[#bf8c13]">{courseProgress}%</span>
         </div>
         <div className="w-full bg-gray-200 rounded-full h-3">
-          <div 
+          <div
             className="bg-gradient-to-r from-[#07705d] to-[#bf8c13] h-3 rounded-full transition-all duration-300 ease-in-out"
             style={{ width: `${courseProgress}%` }}
           />
         </div>
         <p className="text-sm text-gray-600 mt-2">
-          {courseProgress === 100 
-            ? "🎉 Congratulations! Course completed!" 
-            : courseProgress > 75 
-            ? "Almost there! Keep going!" 
-            : courseProgress > 50 
-            ? "Great progress! You're halfway there!" 
-            : courseProgress > 25 
-            ? "Good start! Keep learning!" 
-            : "Start your learning journey!"
+          {courseProgress === 100
+            ? "🎉 Congratulations! Course completed!"
+            : courseProgress > 75
+              ? "Almost there! Keep going!"
+              : courseProgress > 50
+                ? "Great progress! You're halfway there!"
+                : courseProgress > 25
+                  ? "Good start! Keep learning!"
+                  : "Start your learning journey!"
           }
         </p>
       </div>
@@ -133,11 +149,10 @@ const TopAccordionNav: React.FC<TopAccordionNavProps> = ({
                 <button
                   key={unit}
                   onClick={() => setActiveTab(unit)}
-                  className={`px-6 py-3 text-sm font-semibold whitespace-nowrap border-b-2 transition-all duration-200 ${
-                    activeTab === unit
-                      ? 'border-[#07705d] text-[#07705d] bg-gradient-to-b from-[#07705d]/5 to-transparent'
-                      : 'border-transparent text-gray-600 hover:text-[#07705d] hover:border-gray-300'
-                  }`}
+                  className={`px-6 py-3 text-sm font-semibold whitespace-nowrap border-b-2 transition-all duration-200 ${activeTab === unit
+                    ? 'border-[#07705d] text-[#07705d] bg-gradient-to-b from-[#07705d]/5 to-transparent'
+                    : 'border-transparent text-gray-600 hover:text-[#07705d] hover:border-gray-300'
+                    }`}
                 >
                   Unit {unit}
                   <span className="ml-2 px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-600">
@@ -152,39 +167,65 @@ const TopAccordionNav: React.FC<TopAccordionNavProps> = ({
         {/* Parts Accordion Content for Active Tab */}
         <div className="p-4">
           {activeTab && grouped[activeTab] && (
-            <Accordion 
+            <Accordion
               key={`part-accordion-${activeMaterialId}-${activeTab}`}
-              type="single" 
-              collapsible 
+              type="single"
+              collapsible
               defaultValue={openPart(activeTab)}
               className="w-full"
             >
-              {Object.keys(grouped[activeTab]).sort((a, b) => parseInt(a) - parseInt(b)).map((part) => (
-                <AccordionItem key={part} value={`part-${part}`} className="border rounded-lg bg-gray-50 mb-2">
-                  <AccordionTrigger className="px-4 py-2 font-semibold text-[#07705d] text-sm md:text-base">
-                    Part {partNames[parseInt(part) - 1] || part}
-                    <span className="ml-2 text-xs text-gray-500">{grouped[activeTab][part].length} materials</span>
-                  </AccordionTrigger>
-                  <AccordionContent className="px-4 pb-2 flex flex-col gap-2">
-                    {grouped[activeTab][part].map((material: any) => (
-                      <button
-                        key={material.id}
-                        onClick={() => onMaterialClick(material.id, material.materialType, material.Access)}
-                        className={`w-full text-left px-3 py-2 rounded-lg border transition-all duration-200 text-xs md:text-sm font-medium flex items-center gap-2
-                          ${material.id === activeMaterialId ? 'bg-gradient-to-r from-[#07705d] to-[#bf8c13] text-white border-transparent shadow-md' : 'hover:bg-[#c7cc3f]/10 text-gray-700 border-transparent hover:border-[#c7cc3f]/30 bg-white'}
-                          ${material.Access === "locked" ? 'opacity-60' : ''}`}
-                        disabled={material.Access === "locked"}
-                      >
-                        {material.materialType === "file" && "Note: "}
-                        {material.materialType === "video" && "Video: "}
-                        {material.materialType === "assessment" && "Assessment: "}
-                        {material.materialType === "link" && "Link: "}
-                        {material?.video?.vidTitle || material?.assementId?.assesmentTitle || material?.file?.title || material?.link?.title || `Part ${part} ${material.materialType}`}
-                      </button>
-                    ))}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
+              {Object.keys(grouped[activeTab]).sort((a, b) => parseInt(a) - parseInt(b)).map((part) => {
+                const partMaterials = grouped[activeTab][part];
+                const completion = getPartCompletion(partMaterials);
+                const isPartComplete = completion.percentage === 100;
+
+                return (
+                  <AccordionItem key={part} value={`part-${part}`} className="border rounded-lg bg-gray-50 mb-2">
+                    <AccordionTrigger className="px-4 py-2 font-semibold text-[#07705d] text-sm md:text-base">
+                      <div className="flex items-center gap-2 flex-1">
+                        <span>Part {partNames[parseInt(part) - 1] || part}</span>
+                        {isPartComplete && <span className="text-green-600">✅</span>}
+                      </div>
+                      <span className="text-xs text-gray-500 ml-2">
+                        {completion.completed}/{completion.total} materials
+                        {completion.percentage > 0 && ` (${completion.percentage}%)`}
+                      </span>
+                    </AccordionTrigger>
+                    <AccordionContent className="px-4 pb-2 flex flex-col gap-2">
+                      {partMaterials.map((material: any) => {
+                        const completed = isCompleted(material);
+                        return (
+                          <button
+                            key={material.id}
+                            onClick={() => onMaterialClick(material.id, material.materialType, material.Access)}
+                            className={`w-full text-left px-3 py-2 rounded-lg border transition-all duration-200 text-xs md:text-sm font-medium flex items-center gap-2
+                              ${material.id === activeMaterialId ? 'bg-gradient-to-r from-[#07705d] to-[#bf8c13] text-white border-transparent shadow-md' : 'hover:bg-[#c7cc3f]/10 text-gray-700 border-transparent hover:border-[#c7cc3f]/30 bg-white'}
+                              ${material.Access === "locked" ? 'opacity-60' : ''}`}
+                            disabled={material.Access === "locked"}
+                          >
+                            <div className="flex items-center gap-2 flex-1">
+                              <span>
+                                {material.materialType === "file" && "📄 Note: "}
+                                {material.materialType === "video" && "🎬 Video: "}
+                                {material.materialType === "assessment" && "📝 Assessment: "}
+                                {material.materialType === "link" && "🔗 Link: "}
+                                {material?.video?.vidTitle || material?.assementId?.assesmentTitle || material?.file?.title || material?.link?.title || `Part ${part} ${material.materialType}`}
+                              </span>
+                            </div>
+                            {completed && (
+                              <div className="flex-shrink-0">
+                                <span className={`${material.id === activeMaterialId ? 'text-white' : 'text-green-600'}`}>
+                                  <CheckCircle className="text-green-500 w-5 h-5" />
+                                </span>
+                              </div>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </AccordionContent>
+                  </AccordionItem>
+                );
+              })}
             </Accordion>
           )}
         </div>

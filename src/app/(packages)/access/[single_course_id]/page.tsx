@@ -135,8 +135,6 @@ export default function SingleCourse() {
   const MaterialDrawerClicked = () => {
     setMaterialDrawer(!materialDrawer);
   };
-
-  console.log("Render state:", { activeMaterialId, activeMaterialtype, hasData: !!data[0] });
   
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#c7cc3f]/10 to-white pt-16">
@@ -150,6 +148,7 @@ export default function SingleCourse() {
           <div className="bg-white rounded-xl border border-[#bf8c13]/20 min-h-[400px] w-full h-full p-4 md:p-6 backdrop-blur-sm">
             {data[0]?.studentsId ? (
               <MaterialContent
+                key={`material-${activeMaterialId}-${activeMaterialtype}`}
                 activeMaterialtype={activeMaterialtype}
                 activeMaterialId={activeMaterialId}
                 studentId={data[0]?.studentsId}
