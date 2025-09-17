@@ -6,7 +6,7 @@ interface CountdownTimerProps {
   examStatus: {
     timeRemaining?: number;
     countdownDisplay?: string;
-    status: 'locked' | 'active' | 'completed' | 'closed';
+    status?: 'locked' | 'active' | 'completed' | 'closed';
   };
   onTimeUp?: () => void;
   className?: string;
@@ -55,7 +55,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
     }
   }, [timeLeft]);
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status: string | undefined) => {
     switch (status) {
       case 'locked': return 'bg-gray-100 text-gray-700';
       case 'active': return 'bg-green-100 text-green-700';
@@ -65,7 +65,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
     }
   };
 
-  const getStatusIcon = (status: string) => {
+  const getStatusIcon = (status: string | undefined) => {
     switch (status) {
       case 'locked': return '🔒';
       case 'active': return '✅';

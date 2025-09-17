@@ -33,7 +33,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
       setLoading(true);
       setError(null);
 
-      const token = localStorage.getItem('authToken');
+      const token = localStorage.getItem('authToken') || undefined;
       const response = await CompetitionAPI.getLeaderboard(competitionId, limit, token);
 
       if (response.success) {

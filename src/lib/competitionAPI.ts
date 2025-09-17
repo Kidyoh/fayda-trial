@@ -66,6 +66,19 @@ export interface Sponsor {
   website: string;
 }
 
+export interface UserPackage {
+  id: string;
+  packageName: string;
+  packageDescription: string;
+  price: number;
+  imgUrl: string;
+  tag: string;
+  courses?: any[];
+  purchasedAt?: string;
+  expiryDate?: string;
+  isActive?: boolean;
+}
+
 export interface UserRegistration {
   id: string;
   examId: string;
