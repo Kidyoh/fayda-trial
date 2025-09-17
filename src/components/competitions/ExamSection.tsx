@@ -54,7 +54,6 @@ const ExamSection: React.FC<ExamSectionProps> = ({
       if (!token) return;
 
       const response = await CompetitionAPI.checkExamAccess(
-        competitionId,
         examSectionId,
         token
       );
@@ -96,7 +95,7 @@ const ExamSection: React.FC<ExamSectionProps> = ({
     }
 
     // Navigate to exam page
-    router.push(`/competitions/${competitionId}/exam/${selectedExamSection.id}?examId=${examId}`);
+    router.push(`/competitions/exam/${selectedExamSection.id}?examId=${examId}`);
   };
 
   const getExamStatusIcon = (section: ExamSectionType) => {
@@ -367,6 +366,7 @@ const ExamSection: React.FC<ExamSectionProps> = ({
 };
 
 export default ExamSection;
+
 
 
 

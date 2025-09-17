@@ -71,6 +71,7 @@ export default function PackageDetailsRendered(props: any) {
         });
 
         const jsonData = await response.json();
+        console.log("Package data:", jsonData);
         setData(jsonData);
 
         // Map tag values to URL slugs

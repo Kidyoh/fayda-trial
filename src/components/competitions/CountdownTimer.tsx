@@ -1,81 +1,88 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { calculateTimeRemaining } from '@/lib/competitionAPI';
-import { Clock } from 'lucide-react';
 
 interface CountdownTimerProps {
-  targetDate: string;
-  onComplete?: () => void;
+  examStatus: {
+    timeRemaining?: number;
+    countdownDisplay?: string;
+    status: 'locked' | 'active' | 'completed' | 'closed';
+  };
+  onTimeUp?: () => void;
   className?: string;
 }
 
 const CountdownTimer: React.FC<CountdownTimerProps> = ({ 
-  targetDate, 
-  onComplete,
-  className = ""
+  examStatus, 
+  onTimeUp, 
+  className = '' 
 }) => {
-  const [timeRemaining, setTimeRemaining] = useState(calculateTimeRemaining(targetDate));
+  const [timeLeft, setTimeLeft] = useState(examStatus.timeRemaining || 0);
+  const [display, setDisplay] = useState(examStatus.countdownDisplay || '');
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const remaining = calculateTimeRemaining(targetDate);
-      setTimeRemaining(remaining);
+    if (!timeLeft || examStatus.status !== 'active') return;
 
-      if (remaining.total <= 0 && onComplete) {
-        onComplete();
-        clearInterval(interval);
-      }
+    const timer = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev <= 1) {
+          onTimeUp?.();
+          return 0;
+        }
+        return prev - 1;
+      });
     }, 1000);
 
-    return () => clearInterval(interval);
-  }, [targetDate, onComplete]);
+    return () => clearInterval(timer);
+  }, [timeLeft, examStatus.status, onTimeUp]);
 
-  if (timeRemaining.total <= 0) {
-    return (
-      <div className={`text-center p-4 bg-green-50 border border-green-200 rounded-lg ${className}`}>
-        <Clock className="w-6 h-6 text-green-600 mx-auto mb-2" />
-        <p className="text-green-800 font-medium">Competition Started!</p>
-      </div>
-    );
-  }
+  useEffect(() => {
+    if (timeLeft <= 0) {
+      setDisplay("Time's up!");
+      return;
+    }
+
+    const hours = Math.floor(timeLeft / 3600);
+    const minutes = Math.floor((timeLeft % 3600) / 60);
+    const seconds = timeLeft % 60;
+
+    if (hours > 0) {
+      setDisplay(`${hours}h ${minutes}m ${seconds}s`);
+    } else if (minutes > 0) {
+      setDisplay(`${minutes}m ${seconds}s`);
+    } else {
+      setDisplay(`${seconds}s`);
+    }
+  }, [timeLeft]);
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'locked': return 'bg-gray-100 text-gray-700';
+      case 'active': return 'bg-green-100 text-green-700';
+      case 'completed': return 'bg-blue-100 text-blue-700';
+      case 'closed': return 'bg-red-100 text-red-700';
+      default: return 'bg-gray-100 text-gray-700';
+    }
+  };
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'locked': return '🔒';
+      case 'active': return '✅';
+      case 'completed': return '✅';
+      case 'closed': return '⛔';
+      default: return '❓';
+    }
+  };
 
   return (
-    <div className={`text-center p-4 bg-blue-50 border border-blue-200 rounded-lg ${className}`}>
-      <div className="flex items-center justify-center gap-2 mb-2">
-        <Clock className="w-5 h-5 text-blue-600" />
-        <span className="text-blue-800 font-medium">Starts in:</span>
-      </div>
-      
-      <div className="grid grid-cols-4 gap-2 text-center">
-        <div className="bg-white rounded-lg p-2 border border-blue-200">
-          <div className="text-2xl font-bold text-blue-900">
-            {timeRemaining.days.toString().padStart(2, '0')}
-          </div>
-          <div className="text-xs text-blue-600 font-medium">Days</div>
-        </div>
-        
-        <div className="bg-white rounded-lg p-2 border border-blue-200">
-          <div className="text-2xl font-bold text-blue-900">
-            {timeRemaining.hours.toString().padStart(2, '0')}
-          </div>
-          <div className="text-xs text-blue-600 font-medium">Hours</div>
-        </div>
-        
-        <div className="bg-white rounded-lg p-2 border border-blue-200">
-          <div className="text-2xl font-bold text-blue-900">
-            {timeRemaining.minutes.toString().padStart(2, '0')}
-          </div>
-          <div className="text-xs text-blue-600 font-medium">Minutes</div>
-        </div>
-        
-        <div className="bg-white rounded-lg p-2 border border-blue-200">
-          <div className="text-2xl font-bold text-blue-900">
-            {timeRemaining.seconds.toString().padStart(2, '0')}
-          </div>
-          <div className="text-xs text-blue-600 font-medium">Seconds</div>
-        </div>
-      </div>
+    <div className={`countdown flex items-center gap-3 p-3 rounded-lg font-medium ${getStatusColor(examStatus.status)} ${className}`}>
+      <span className="time-display font-mono text-lg">
+        {display}
+      </span>
+      <span className="status-badge text-sm">
+        {getStatusIcon(examStatus.status)} {examStatus.status}
+      </span>
     </div>
   );
 };

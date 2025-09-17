@@ -26,14 +26,13 @@ const CompetitionsPage: React.FC = () => {
       setLoading(true);
       setError(null);
 
-      const status: CompetitionStatus | undefined = 
+      const status: 'upcoming' | 'active' | 'completed' | 'cancelled' | undefined = 
         activeTab === 'upcoming' ? 'upcoming' :
-        activeTab === 'past' ? 'past' :
+        activeTab === 'past' ? 'completed' :
         undefined;
 
       const response = await CompetitionAPI.getCompetitions({
         status,
-        limit: 50
       });
 
       if (response.success) {
@@ -54,18 +53,17 @@ const CompetitionsPage: React.FC = () => {
   };
 
   const getStatusColor = (competition: Competition) => {
-    const status = getCompetitionStatus(competition.startDate, competition.endDate);
-    switch (status) {
+    switch (competition.status) {
       case 'upcoming': return 'bg-blue-100 text-blue-800';
-      case 'ongoing': return 'bg-green-100 text-green-800';
-      case 'past': return 'bg-gray-100 text-gray-800';
+      case 'active': return 'bg-green-100 text-green-800';
+      case 'completed': return 'bg-gray-100 text-gray-800';
+      case 'cancelled': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getStatusText = (competition: Competition) => {
-    const status = getCompetitionStatus(competition.startDate, competition.endDate);
-    return status.charAt(0).toUpperCase() + status.slice(1);
+    return competition.status.charAt(0).toUpperCase() + competition.status.slice(1);
   };
 
   const CompetitionCard: React.FC<{ competition: Competition }> = ({ competition }) => (
@@ -84,7 +82,7 @@ const CompetitionsPage: React.FC = () => {
             Grade {competition.grade}
           </span>
           <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded-full font-medium capitalize">
-            {competition.type}
+            {competition.competitionType}
           </span>
         </div>
         <CardDescription className="text-gray-600 line-clamp-3">
@@ -102,10 +100,10 @@ const CompetitionsPage: React.FC = () => {
             </span>
           </div>
 
-          {/* Duration */}
+          {/* Exam Count */}
           <div className="flex items-center gap-2 text-sm text-gray-700">
             <Clock className="w-4 h-4 text-green-500" />
-            <span>{competition.duration} Days</span>
+            <span>{competition.examCount || 0} Exams</span>
           </div>
 
           {/* Location */}
@@ -126,10 +124,7 @@ const CompetitionsPage: React.FC = () => {
           <div className="flex items-center gap-2 text-sm text-gray-700">
             <Users className="w-4 h-4 text-purple-500" />
             <span>
-              {competition.currentParticipants} Participants
-              {competition.maxParticipants && (
-                <span className="text-gray-500"> / {competition.maxParticipants}</span>
-              )}
+              {competition.registrationCount} Participants
             </span>
           </div>
         </div>
@@ -148,7 +143,7 @@ const CompetitionsPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 py-8">
+      <div className="min-h-screen bg-gray-50 pb-8">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">Quiz Competitions</h1>
@@ -182,7 +177,7 @@ const CompetitionsPage: React.FC = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 py-8">
+      <div className="min-h-screen bg-gray-50 pb-8">
         <div className="container mx-auto px-4">
           <div className="text-center">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">Quiz Competitions</h1>
@@ -203,7 +198,7 @@ const CompetitionsPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 pb-8">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-8">

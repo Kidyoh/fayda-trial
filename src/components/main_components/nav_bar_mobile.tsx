@@ -215,14 +215,14 @@ export default function NavBarMobile({ data, notificationNumber }: any) {
                   </div>
                 </Link>
 
-                <Link href="/(competitions)/list">
+                <Link href="/competitions">
                   <div className={`flex items-center px-4 py-3 ${pathname.includes('/competitions') && !pathname.includes('/demo') ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
                     <Trophy size={20} className="mr-3" />
                     <span className="font-medium">Competitions</span>
                   </div>
                 </Link>
 
-                <Link href="/(competitions)/list/demo">
+                <Link href="/competitions/list/demo">
                   <div className={`flex items-center px-4 py-3 ${pathname.includes('/competitions/demo') ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
                     <Trophy size={20} className="mr-3" />
                     <span className="font-medium">Competitions Demo</span>

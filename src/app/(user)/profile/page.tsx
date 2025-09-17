@@ -47,13 +47,6 @@ export default function ProfileDetails() {
   const [grandName, setGrandName] = useState("");
   const [open, setOpen] = useState(false);
   const [loginInfo, setLoginInfo] = useState("");
-  const [confirmResponseData, setConfirmResponseData] = useState(null);
-  const [isConfirmLoading, setIsConfirmLoading] = useState(false);
-  const [confirmEmailButtonClicked, setConfirmEmailButtonClicked] =
-    useState(false);
-  const [checkConfirmationresponse, setCheckConfirmationResponse] =
-    useState("");
-  const [code, setCode] = useState("");
   //const [userId , setUserId] = useState("");
 
   // const setPointStore = useProfileStore((state) => state.setPoint);
@@ -192,116 +185,7 @@ export default function ProfileDetails() {
       });
   };
 
-  useEffect(() => {
-    if (!confirmEmailButtonClicked) return;
 
-    setIsConfirmLoading(true);
-
-    fetch(`${apiUrl}/login_register/sendconfirmation/${email}`, {
-      method: "GET",
-      
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setConfirmResponseData(data);
-        setIsConfirmLoading(false);
-        //console.log(confirmResponseData);
-        if (data.ok) {
-          console.log("Response is okey");
-        } else {
-          console.log("Response is not okey");
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        setIsConfirmLoading(false);
-      });
-  }, [confirmEmailButtonClicked]);
-
-  const handleButtonClick = () => {
-    setConfirmEmailButtonClicked(true);
-  };
-
-  const handleCheckConfirmationSubmit = async (e: any) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch(
-        `${apiUrl}/login_register/check_confirmation`,
-        {
-          method: "POST",
-         // credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-          body: JSON.stringify({ code: code }),
-        }
-      );
-
-      console.log("first");
-      console.log(response.status);
-
-      if (response.status === 201) {
-        // The request was successful (status code 201)
-        const data = await response.json();
-        setCheckConfirmationResponse("true");
-        toast({
-          title: `Success!`,
-          description: `Account Activated`,
-        });
-        window.location.href = "/profile";
-        //setConfirmEmailButtonClicked(data.message);
-        console.log("good");
-      } else {
-        toast({
-          title: `Filed!`,
-          description: `Incorrect Code!`,
-        });
-        // The request was not successful
-        //console.error("Request failed with status:", response.status);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
-  // const handleCheckConfirmationSubmit = async (e: any) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     const response = await fetch(
-  //       `${apiUrl}/login_register/check_confirmation`,
-  //       {
-  //         method: "POST",
-  //         credentials: "include",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({ code: code }),
-  //       }
-  //     );
-  //     const data = await response.json();
-  //     setConfirmEmailButtonClicked(data.message);
-  //     console.log("first");
-  //     console.log(response.status);
-  //     if (response.status == 201) {
-  //       // The request was successful (status code 200-299)
-  //       const data = await response.json();
-  //       setConfirmEmailButtonClicked(data.message);
-  //       console.log("good");
-  //     } else {
-  //       // The request was not successful
-  //       console.error("Request failed with status:", response.status);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  // };
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -317,23 +201,15 @@ export default function ProfileDetails() {
                     className="w-full h-full rounded-full object-cover border-4 border-primaryColor bg-secondaryColor bg-opacity-20"
                     alt={`${firstName} ${lastName}`}
                   />
-                  {status === "active" && (
-                    <div className="absolute -bottom-1 -right-1 bg-green-400 rounded-full p-2 border-2 border-white">
-                      <div className="w-2 h-2 rounded-full bg-white" />
-                    </div>
-                  )}
+                  <div className="absolute -bottom-1 -right-1 bg-green-400 rounded-full p-2 border-2 border-white">
+                    <div className="w-2 h-2 rounded-full bg-white" />
+                  </div>
                 </div>
                 <h2 className="text-xl font-bold text-gray-900">{firstName} {lastName}</h2>
                 <p className="text-gray-500">{accountType}</p>
-                {status === "active" ? (
-                  <span className="mt-2 px-3 py-1 text-sm font-medium text-green-700 bg-green-100 rounded-full">
-                    Active Account
-                  </span>
-                ) : (
-                  <span className="mt-2 px-3 py-1 text-sm font-medium text-yellow-700 bg-yellow-100 rounded-full">
-                    Pending Activation
-                  </span>
-                )}
+                <span className="mt-2 px-3 py-1 text-sm font-medium text-green-700 bg-green-100 rounded-full">
+                  Active Account
+                </span>
                 <div className="mt-4 w-full">
                   <div className="bg-gray-100 rounded-lg p-4 text-center">
                     <p className="text-sm text-gray-600">Points Scored</p>
@@ -437,16 +313,14 @@ export default function ProfileDetails() {
                         <p className="text-sm text-gray-500">Email</p>
                         <p className="text-gray-900">{email}</p>
                       </div>
-                      {status !== "active" && (
-                        <EditCellDialog
-                          type="students"
-                          id={studentId}
-                          field="email"
-                          content={email}
-                          dataType="email"
-                          formType="default"
-                        />
-                      )}
+                      <EditCellDialog
+                        type="students"
+                        id={studentId}
+                        field="email"
+                        content={email}
+                        dataType="email"
+                        formType="default"
+                      />
                     </div>
 
                     <div className="flex justify-between items-center">
@@ -567,46 +441,6 @@ export default function ProfileDetails() {
                 </div>
               </div>
 
-              {/* Email Confirmation Section */}
-              {status !== "active" && (
-                <div className="mt-8 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-                  <h3 className="text-lg font-medium text-yellow-800">Email Confirmation Required</h3>
-                  <p className="mt-1 text-sm text-yellow-600">
-                    Your email needs to be confirmed to activate your account. Once confirmed, this will be your permanent email address.
-                  </p>
-                  
-                  {email && !confirmEmailButtonClicked && (
-                    <button
-                      onClick={handleButtonClick}
-                      className="mt-4 py-2 px-4 bg-yellow-100 text-yellow-800 rounded-lg hover:bg-yellow-200 transition-colors duration-200"
-                    >
-                      Send Confirmation Email
-                    </button>
-                  )}
-
-                  {confirmEmailButtonClicked && (
-                    <div className="mt-4 space-y-4">
-                      <p className="text-sm text-yellow-600">
-                        A confirmation code has been sent to your email address.
-                      </p>
-                      <form onSubmit={handleCheckConfirmationSubmit} className="flex space-x-4">
-                        <input
-                          type="text"
-                          placeholder="Enter confirmation code"
-                          onChange={(e) => setCode(e.target.value)}
-                          className="flex-1 px-3 py-2 border border-yellow-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500/20 focus:border-yellow-500"
-                        />
-                        <button
-                          type="submit"
-                          className="px-4 py-2 bg-yellow-100 text-yellow-800 rounded-lg hover:bg-yellow-200 transition-colors duration-200"
-                        >
-                          Verify
-                        </button>
-                      </form>
-                    </div>
-                  )}
-                </div>
-              )}
             </div>
           </div>
         </div>
@@ -664,13 +498,9 @@ export default function ProfileDetails() {
 
             <div className="flex space-x-2">
               <h1>Account Status: </h1>
-              {status == "active" ? (
-                <div className="px-2 py-1 text-black bg-green-300 rounded-3xl">
-                  <h1>Active</h1>
-                </div>
-              ) : (
-                <div>InActive</div>
-              )}
+              <div className="px-2 py-1 text-black bg-green-300 rounded-3xl">
+                <h1>Active</h1>
+              </div>
             </div>
             <div className="py-3 ">
               <Dialog open={open} onOpenChange={setOpen}>
@@ -804,51 +634,15 @@ export default function ProfileDetails() {
               <h1 className="font-semibold">Email:</h1>
 
               <h1 className="px-3">{email}</h1>
-              {status != "active" && (
-                <EditCellDialog
-                  type="students"
-                  id={studentId}
-                  field="email"
-                  content={email}
-                  dataType="email"
-                  formType={"default"}
-                />
-              )}
+              <EditCellDialog
+                type="students"
+                id={studentId}
+                field="email"
+                content={email}
+                dataType="email"
+                formType={"default"}
+              />
             </div>
-            {status != "active" && (
-              <div>
-                {" "}
-                <h1>
-                  Email is not confirmed. You need to confirm to activate your
-                  account!{" "}
-                </h1>
-                <h1>
-                  <span> Note</span> that once you confirm your email, it will
-                  be a permanent information of you.
-                </h1>
-              </div>
-            )}
-            {status != "active" && email != null && (
-              <div className="my-1 border-2 w-fit px-1 border-red-500">
-                <button onClick={handleButtonClick}>Send Confirmation</button>
-              </div>
-            )}
-            {confirmEmailButtonClicked && (
-              <div>
-                <h1>Confirmation Code has been sent to your email.</h1>
-                <form onSubmit={handleCheckConfirmationSubmit}>
-                  <label htmlFor="">Code: </label>
-                  <input
-                    onChange={(e) => setCode(e.target.value)}
-                    className="border-2 w-1/3"
-                    type="text"
-                  />
-                  <button type="submit" className="mx-2 bg-green-300 px-1">
-                    Done
-                  </button>
-                </form>
-              </div>
-            )}
             <div className="py-3 flex space-x-1">
               <h1 className="font-semibold">Preffered Language:</h1>
               <h1 className="px-3">
