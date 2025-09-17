@@ -48,12 +48,18 @@ export default function SingleCourse() {
 
   const calculateProgress = (materials: any[], studentId: string) => {
     if (!materials || !studentId) return 0;
-    const completedMaterials = materials.filter(material =>
+    
+    // Only consider unlocked materials for progress calculation
+    const unlockedMaterials = materials.filter(material => material.Access !== "locked");
+    if (unlockedMaterials.length === 0) return 0;
+    
+    const completedUnlockedMaterials = unlockedMaterials.filter(material =>
       material?.StudentMaterial?.find((item: any) =>
         item.StudentId === studentId && item.Done === true
       )
     );
-    return materials.length > 0 ? Math.round((completedMaterials.length / materials.length) * 100) : 0;
+    
+    return Math.round((completedUnlockedMaterials.length / unlockedMaterials.length) * 100);
   };
 
   // Move MaterialClicked above useEffect to avoid ReferenceError
@@ -88,16 +94,18 @@ export default function SingleCourse() {
             const materials = jsonData[0].Courses.materials;
             
             if (!activeMaterialId || !activeMaterialtype) {
-              const firstUnlockedVideo = materials.find(material => 
-                material.materialType === "video" && 
-                material.Access === "unlocked"
-              );
+              // Only consider unlocked materials for auto-selection
+              const unlockedMaterials = materials.filter(m => m.Access !== "locked");
               
-              const selectedMaterial = firstUnlockedVideo || 
-                                       materials.find(m => m.Access === "unlocked") || 
-                                       materials[0];
-              
-              MaterialClicked(selectedMaterial.id, selectedMaterial.materialType, selectedMaterial.Access);
+              if (unlockedMaterials.length > 0) {
+                const firstUnlockedVideo = unlockedMaterials.find(material => 
+                  material.materialType === "video"
+                );
+                
+                const selectedMaterial = firstUnlockedVideo || unlockedMaterials[0];
+                
+                MaterialClicked(selectedMaterial.id, selectedMaterial.materialType, selectedMaterial.Access);
+              }
             }
           }
         })
@@ -135,8 +143,6 @@ export default function SingleCourse() {
   const MaterialDrawerClicked = () => {
     setMaterialDrawer(!materialDrawer);
   };
-
-  console.log("Render state:", { activeMaterialId, activeMaterialtype, hasData: !!data[0] });
   
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#c7cc3f]/10 to-white pt-16">
@@ -150,6 +156,7 @@ export default function SingleCourse() {
           <div className="bg-white rounded-xl border border-[#bf8c13]/20 min-h-[400px] w-full h-full p-4 md:p-6 backdrop-blur-sm">
             {data[0]?.studentsId ? (
               <MaterialContent
+                key={`material-${activeMaterialId}-${activeMaterialtype}`}
                 activeMaterialtype={activeMaterialtype}
                 activeMaterialId={activeMaterialId}
                 studentId={data[0]?.studentsId}
