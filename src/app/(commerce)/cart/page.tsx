@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import Link from "next/link";
 import { processCartCheckout, validateCartItems, formatEthiopianPhoneNumber } from "@/lib/cartAPI";
 import { getAccessToken } from "@/lib/tokenManager";
@@ -30,6 +31,7 @@ export default function CartPage() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
+  const [showProviderModal, setShowProviderModal] = useState(false);
 
   const totalPrice = getTotalPrice();
   const totalItems = getTotalItems();
@@ -70,7 +72,7 @@ export default function CartPage() {
       : courseItem.price;
   };
 
-  const handleCheckout = async () => {
+  const handleCheckout = async (provider: 'santimpay' | 'chapa') => {
     if (!accessToken) {
       toast({
         title: "Authentication Required",
@@ -110,7 +112,7 @@ export default function CartPage() {
         description: "Please wait while we process your order...",
       });
 
-      const result = await processCartCheckout(items, formattedPhoneNumber, accessToken);
+      const result = await processCartCheckout(items, formattedPhoneNumber, accessToken, provider);
 
       if (result.success) {
         toast({
@@ -387,7 +389,7 @@ export default function CartPage() {
                   ) : (
                     <Button 
                       className="w-full bg-gradient-to-r from-[#07705d] to-[#bf8c13] hover:from-[#07705d]/90 hover:to-[#bf8c13]/90"
-                      onClick={handleCheckout}
+                      onClick={() => setShowProviderModal(true)}
                       disabled={isLoading || !phoneNumber}
                     >
                       <CreditCard className="h-4 w-4 mr-2" />
@@ -404,6 +406,51 @@ export default function CartPage() {
           </div>
         </div>
       </div>
+
+      {/* Payment Provider Modal */}
+      <Dialog open={showProviderModal} onOpenChange={setShowProviderModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-center text-[#07705d]">Choose Payment Method</DialogTitle>
+            <DialogDescription className="text-center">
+              Select your preferred payment provider to complete your purchase.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid grid-cols-1 gap-4 py-4">
+            <Button
+              onClick={() => {
+                setShowProviderModal(false);
+                handleCheckout('santimpay');
+              }}
+              className="w-full bg-gradient-to-r from-[#07705d] to-[#bf8c13] hover:from-[#07705d]/90 hover:to-[#bf8c13]/90 h-16 text-lg"
+              disabled={isLoading}
+            >
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                  <span className="text-[#07705d] font-bold text-sm">S</span>
+                </div>
+                <span>SantiPay</span>
+              </div>
+            </Button>
+            <Button
+              onClick={() => {
+                setShowProviderModal(false);
+                handleCheckout('chapa');
+              }}
+              variant="outline"
+              className="w-full border-[#07705d] text-[#07705d] hover:bg-[#07705d]/10 h-16 text-lg"
+              disabled={isLoading}
+            >
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 bg-[#07705d] rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">C</span>
+                </div>
+                <span>Chapa</span>
+              </div>
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -136,3 +136,40 @@ body:not([data-route*="single_course_id"]) .grid.grid-cols-8 {
   width: 100%;
   min-height: calc(100vh - 200px);
 }
+
+/* Hide Google Translate UI elements but keep functionality */
+.goog-te-banner-frame,
+.goog-te-menu-frame,
+.goog-te-balloon-frame {
+  display: none !important;
+}
+
+/* Hide Google Translate bar at top of page */
+body > .skiptranslate {
+  display: none !important;
+}
+
+/* Hide the Google Translate gadget but allow select to work */
+.google-translate-container .goog-te-gadget {
+  visibility: hidden !important;
+  position: relative !important;
+}
+
+.google-translate-container .goog-te-gadget .goog-te-combo {
+  visibility: visible !important;
+  position: absolute !important;
+  opacity: 1 !important;
+  left: 0 !important;
+  top: 0 !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+/* Style adjustments for when page is translated */
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+
+html[lang] body {
+  top: 0 !important;
+}

@@ -6,7 +6,7 @@ import {
   Menu, X, Home, Search, Package, BookOpen, User, 
   Bell, ChevronRight, LogOut, Bot, Book, Trophy, Info 
 } from "lucide-react";
-import LanguageChanger from "../LanguageChanger";
+import TranslateButton from "../TranslateButton";
 import { usePathname } from "next/navigation";
 import { apiUrl } from "@/apiConfig";
 import { clearAccessToken, getAccessToken } from "../../lib/tokenManager";
@@ -117,7 +117,9 @@ export default function NavBarMobile({ data, notificationNumber }: any) {
                   </button>
                   <span className="ml-2 font-medium text-gray-900">Menu</span>
                 </div>
-                <LanguageChanger />
+                <div className="flex items-center space-x-2">
+                  <TranslateButton />
+                </div>
               </div>
 
               {/* Search bar */}

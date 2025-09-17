@@ -24,7 +24,7 @@ import { usePathname } from "next/navigation";
 import NavBarForMobile from "./responsive_navbar";
 import axios from "axios";
 import CheckPhoneNumber from "@/app/(exams)/mock/mock_package_components/checkphonenumber";
-import LanguageChanger from "../LanguageChanger";
+import TranslateButton from "../TranslateButton";
 
 import { useTranslation } from "react-i18next";
 
@@ -43,7 +43,6 @@ import useFetchStore from "../../app/store/fetchStore";
 import NavBarMobile from "./nav_bar_mobile";
 
 import { setAccessToken, getAccessToken, clearAccessToken } from "../../lib/tokenManager";
-import LanguageSelector from "../LanguageSelector";
 import { CartIcon } from "../cart/CartIcon";
 import { CartDrawer } from "../cart/CartDrawer";
 
@@ -284,7 +283,7 @@ export default function NavBar(response3: any) {
               </div>
 
               <div className="flex items-center space-x-3">
-               <LanguageSelector />
+               <TranslateButton />
                
                {/* Cart Icon */}
                <CartIcon />

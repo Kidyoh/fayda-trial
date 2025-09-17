@@ -3,6 +3,7 @@ import { apiUrl } from "@/apiConfig";
 import { useToast } from "@/components/ui/use-toast";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { setAccessToken } from "../../../lib/tokenManager";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 //import { zodResolver } from "@hookform/resolvers/zod";
 //import * as z from "zod";
@@ -164,11 +165,14 @@ export default function SignUp() {
       .then((responseData) => {
         // Handle the response data
         console.log(responseData);
+        if (responseData.accessToken) {
+          setAccessToken(responseData.accessToken);
+        }
         toast({
           title: `Success!`,
           description: `${responseData.message}`,
         });
-        push("/login");
+        push("/");
       })
       .catch((error) => {
         // Handle any errors during the request

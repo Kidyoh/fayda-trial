@@ -88,6 +88,7 @@ export default function SingleCourse() {
         .then((response) => response.json())
         .then((jsonData) => {
           setData(jsonData);
+          console.log("Fetched course data:", jsonData);
           setTotalPartNumber(jsonData[0]?.Courses?.parts);
 
           if (jsonData[0]?.Courses?.materials?.length > 0) {

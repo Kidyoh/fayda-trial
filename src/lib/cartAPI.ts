@@ -16,7 +16,7 @@ export interface BulkPurchaseRequest {
   }[];
   totalAmount: number;
   phoneNumber: string;
-  paymentMethod: string;
+  provider: string;
 }
 
 export interface BulkPurchaseResponse {
@@ -43,6 +43,7 @@ export async function createBulkPurchase(
   accessToken: string
 ): Promise<BulkPurchaseResponse> {
   try {
+    console.log("Sending bulk purchase data:", data);
     const response = await fetch(`${apiUrl}/cart/bulk-purchase`, {
       method: "POST",
       headers: {
@@ -57,7 +58,9 @@ export async function createBulkPurchase(
       throw new Error(errorData.message || "Failed to create bulk purchase");
     }
 
-    return response.json();
+    const result = await response.json();
+    console.log("Bulk purchase response:", result);
+    return result;
   } catch (error) {
     console.error("Error creating bulk purchase:", error);
     throw error;
@@ -73,11 +76,12 @@ export async function initiateBulkPayment(
     phoneNumber: string;
     totalAmount: number;
     items: CartItem[];
+    provider?: string;
   },
   accessToken: string
 ) {
   try {
-    const response = await fetch(`${apiUrl}/paymenthandler/bulk-checkout/`, {
+    const response = await fetch(`${apiUrl}/cart/bulk-purchase/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -105,7 +109,8 @@ export async function initiateBulkPayment(
 export async function processCartCheckout(
   cartItems: CartItem[],
   phoneNumber: string,
-  accessToken: string
+  accessToken: string,
+  provider: 'santimpay' | 'chapa' = 'santimpay'
 ): Promise<BulkPurchaseResponse> {
   try {
     // First, try the bulk purchase approach
@@ -164,25 +169,36 @@ export async function processCartCheckout(
         courses,
         totalAmount,
         phoneNumber,
-        paymentMethod: "santipay"
+        provider: provider
       };
 
       // Try bulk purchase
       const purchaseResult = await createBulkPurchase(bulkPurchaseData, accessToken);
 
-      if (purchaseResult.success && purchaseResult.purchaseId) {
-        // Initiate payment
-        const paymentResult = await initiateBulkPayment({
-          purchaseId: purchaseResult.purchaseId,
-          phoneNumber,
-          totalAmount,
-          items: cartItems
-        }, accessToken);
+      if (purchaseResult.success) {
+        // If bulk purchase already returned a payment URL, use it directly
+        if (purchaseResult.paymentUrl) {
+          console.log("Using payment URL from bulk purchase:", purchaseResult.paymentUrl);
+          return purchaseResult;
+        }
 
-        return {
-          ...purchaseResult,
-          paymentUrl: paymentResult.paymentUrl
-        };
+        // Otherwise, initiate payment separately (legacy path)
+        if (purchaseResult.purchaseId) {
+          console.log("Bulk purchase successful, initiating payment for purchaseId:", purchaseResult.purchaseId);
+          // Initiate payment
+          const paymentResult = await initiateBulkPayment({
+            purchaseId: purchaseResult.purchaseId,
+            phoneNumber,
+            totalAmount,
+            items: cartItems
+          }, accessToken);
+          console.log("Bulk payment initiation result:", paymentResult);
+
+          return {
+            ...purchaseResult,
+            paymentUrl: paymentResult.paymentUrl
+          };
+        }
       }
 
       return purchaseResult;
@@ -190,7 +206,7 @@ export async function processCartCheckout(
       console.log("Bulk purchase not available, falling back to individual purchases");
       
       // Fallback to individual purchases
-      const individualResult = await processIndividualPurchases(cartItems, phoneNumber, accessToken);
+      const individualResult = await processIndividualPurchases(cartItems, phoneNumber, accessToken, provider);
       
       if (individualResult.success && individualResult.results.length > 0) {
         // Get the first payment URL from successful purchases
@@ -220,7 +236,8 @@ export async function processCartCheckout(
 export async function processIndividualPurchases(
   cartItems: CartItem[],
   phoneNumber: string,
-  accessToken: string
+  accessToken: string,
+  provider: 'santimpay' | 'chapa' = 'santimpay'
 ): Promise<{ success: boolean; results: any[]; errors: any[] }> {
   const results: any[] = [];
   const errors: any[] = [];
