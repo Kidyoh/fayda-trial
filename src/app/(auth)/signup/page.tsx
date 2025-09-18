@@ -62,6 +62,8 @@ export default function SignUp() {
   const [regionChoices, setRegionChoices] = useState<Choice[]>([]);
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedReferralSource, setSelectedReferralSource] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [serverError, setServerError] = useState<string>("");
 
   const { toast } = useToast();
   const { push } = useRouter();
@@ -70,7 +72,7 @@ export default function SignUp() {
     control,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<zodInputs>({
     defaultValues: {
       firstName: "",
@@ -144,48 +146,77 @@ export default function SignUp() {
     fetchSectionChoices();
   }, []);
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    setIsSubmitting(true);
+    setServerError("");
+    
     //this line is included so that 'confirm password' is not sent to server
     const { confirmPassword, ...formData } = data;
     console.log(formData);
-    fetch(`${apiUrl}/login_register/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-          //console.log(response.json());
-        }
-        throw new Error("Error: " + response.status);
-      })
-      .then((responseData) => {
-        // Handle the response data
+    
+    try {
+      const response = await fetch(`${apiUrl}/login_register/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const responseData = await response.json();
+
+      if (response.ok) {
+        // Handle successful registration
         console.log(responseData);
         if (responseData.accessToken) {
           setAccessToken(responseData.accessToken);
         }
         toast({
-          title: `Success!`,
-          description: `${responseData.message}`,
+          title: "Success!",
+          description: responseData.message || "Account created successfully!",
+          variant: "default",
         });
         push("/");
-      })
-      .catch((error) => {
-        // Handle any errors during the request
-        console.error("Error:", error);
+      } else {
+        // Handle server errors (like email already registered)
+        const errorMessage = responseData.message || responseData.error || "Registration failed. Please try again.";
+        setServerError(errorMessage);
+        toast({
+          title: "Registration Failed",
+          description: errorMessage,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      // Handle network or other errors
+      console.error("Error:", error);
+      const errorMessage = "Network error. Please check your connection and try again.";
+      setServerError(errorMessage);
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
       });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const nextStep = () => {
     setCurrentStep(currentStep + 1);
+    setServerError(""); // Clear any server errors when moving to next step
   };
 
   const prevStep = () => {
     setCurrentStep(currentStep - 1);
+    setServerError(""); // Clear any server errors when going back
+  };
+
+  // Clear server error when user starts typing
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    if (serverError) {
+      setServerError("");
+    }
   };
 
   // Animation variants
@@ -235,6 +266,23 @@ export default function SignUp() {
               </div>
 
               <form onSubmit={handleSubmit(onSubmit)}>
+                {/* Server Error Display */}
+                {serverError && (
+                  <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <div className="flex items-start">
+                      <div className="flex-shrink-0">
+                        <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                      <div className="ml-3">
+                        <h3 className="text-sm font-medium text-red-800">Registration Error</h3>
+                        <p className="mt-1 text-sm text-red-700">{serverError}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {currentStep === 1 && (
                   <motion.div
                     variants={formVariants}
@@ -358,6 +406,10 @@ export default function SignUp() {
                         type="email"
                         placeholder="Enter your email address"
                         {...register("email")}
+                        onChange={(e) => {
+                          register("email").onChange(e);
+                          handleInputChange(e);
+                        }}
                       />
                       {errors.email && (
                         <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
@@ -560,9 +612,24 @@ export default function SignUp() {
                       </button>
                       <button
                         type="submit"
-                        className="px-6 py-2 bg-primaryColor text-white rounded-lg hover:bg-primaryColor/90 transition-colors"
+                        disabled={isSubmitting}
+                        className={`px-6 py-2 rounded-lg transition-colors flex items-center justify-center ${
+                          isSubmitting 
+                            ? "bg-gray-400 cursor-not-allowed" 
+                            : "bg-primaryColor text-white hover:bg-primaryColor/90"
+                        }`}
                       >
-                        Create Account
+                        {isSubmitting ? (
+                          <>
+                            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Creating Account...
+                          </>
+                        ) : (
+                          "Create Account"
+                        )}
                       </button>
                     </div>
                   </motion.div>

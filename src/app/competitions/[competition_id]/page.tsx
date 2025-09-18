@@ -37,6 +37,7 @@ const CompetitionDetailPage: React.FC = () => {
   const [applying, setApplying] = useState(false);
   const [showPackageDialog, setShowPackageDialog] = useState(false);
   const [applyMessage, setApplyMessage] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<'overview' | 'schedule' | 'prizes' | 'sponsors'>('overview');
 
   useEffect(() => {
     fetchCompetitionDetails();
@@ -286,22 +287,37 @@ const CompetitionDetailPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 pb-8">
-        <div className="container mx-auto px-4">
-          <div className="animate-pulse">
-            <div className="h-8 bg-gray-300 rounded w-1/2 mb-4"></div>
-            <div className="h-64 bg-gray-300 rounded mb-8"></div>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2 space-y-6">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="h-48 bg-gray-300 rounded"></div>
-                ))}
-              </div>
-              <div className="space-y-6">
-                <div className="h-32 bg-gray-300 rounded"></div>
-                <div className="h-48 bg-gray-300 rounded"></div>
+      <div className="min-h-screen bg-white relative">
+        {/* Hero Section Skeleton */}
+        <section className="relative pt-20 bg-[url(/Background/landing-bg.jpg)] bg-cover bg-center text-white pb-16 md:pt-24">
+          <div className="absolute inset-0 bg-black/40"></div>
+          <div className="container mx-auto px-6 z-10 relative">
+            <div className="max-w-4xl mx-auto">
+              <div className="animate-pulse">
+                <div className="h-16 bg-white/20 rounded w-3/4 mx-auto mb-6"></div>
+                <div className="flex flex-wrap justify-center items-center gap-6 mb-8">
+                  <div className="h-6 bg-white/20 rounded w-32"></div>
+                  <div className="h-6 bg-white/20 rounded w-32"></div>
+                  <div className="h-6 bg-white/20 rounded w-32"></div>
+                </div>
+                <div className="h-12 bg-white/20 rounded w-48 mx-auto mb-12"></div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div key={i} className="bg-white/10 backdrop-blur-md rounded-2xl p-6 h-24"></div>
+                  ))}
+                </div>
+                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 h-24"></div>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* Content Skeleton */}
+        <div className="container mx-auto px-6 pb-16 relative z-10">
+          <div className="mt-8 space-y-8">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="bg-white/80 backdrop-blur-md rounded-2xl p-8 h-48 animate-pulse"></div>
+            ))}
           </div>
         </div>
       </div>
@@ -310,16 +326,26 @@ const CompetitionDetailPage: React.FC = () => {
 
   if (error || !competition) {
     return (
-      <div className="min-h-screen bg-gray-50 pb-8">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md mx-auto">
-              <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-              <p className="text-red-800 mb-4">{error || 'Competition not found'}</p>
+      <div className="min-h-screen bg-white relative">
+        {/* Hero Section with Error */}
+        <section className="relative pt-20 bg-[url(/Background/landing-bg.jpg)] bg-cover bg-center text-white pb-16 md:pt-24">
+          <div className="absolute inset-0 bg-black/40"></div>
+          <div className="container mx-auto px-6 z-10 relative">
+            <div className="max-w-4xl mx-auto text-center">
+              <h1 className="text-5xl sm:text-6xl font-bold mb-6">Competition Not Found</h1>
+              <p className="text-xl mb-8 text-white/90">The competition you're looking for doesn't exist or has been removed</p>
+            </div>
+          </div>
+        </section>
+
+        <div className="container mx-auto px-6 pb-16 relative z-10">
+          <div className="text-center mt-8">
+            <div className="bg-white/80 backdrop-blur-md rounded-2xl p-8 border border-[#c7cc3f]/30 shadow-lg max-w-md mx-auto">
+              <AlertCircle className="w-16 h-16 text-[#07705d] mx-auto mb-4" />
+              <p className="text-[#07705d] mb-6 text-lg">{error || 'Competition not found'}</p>
               <Button 
                 onClick={() => router.push('/competitions')}
-                variant="outline"
-                className="border-red-300 text-red-700 hover:bg-red-50"
+                className="bg-[#07705d] hover:bg-[#07705d]/90 text-white px-6 py-3 rounded-xl"
               >
                 Back to Competitions
               </Button>
@@ -332,177 +358,295 @@ const CompetitionDetailPage: React.FC = () => {
 
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-8">
-      <div className="container mx-auto px-4">
-        {/* Event Info Header */}
-        <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-            <div className="flex-1">
-              <h1 className="text-4xl font-bold text-gray-900 mb-2">
-                {competition.title}
-              </h1>
-              <div className="flex items-center gap-3 mb-4">
-                <Badge className="bg-orange-100 text-orange-800 border-0 font-medium px-3 py-1">
-                  Grade {competition.grade}
-                </Badge>
-                <Badge className={`border-0 font-medium px-3 py-1 ${
-                  competition.status === 'upcoming' ? 'bg-blue-100 text-blue-800' :
-                  competition.status === 'active' ? 'bg-green-100 text-green-800' :
-                  competition.status === 'completed' ? 'bg-gray-100 text-gray-800' :
-                  'bg-red-100 text-red-800'
-                }`}>
-                  {competition.status.charAt(0).toUpperCase() + competition.status.slice(1)}
-                </Badge>
+    <div className="min-h-screen bg-white relative">
+      {/* Hero Section with Background Image */}
+      <section className="relative pt-20 bg-[url(/Background/landing-bg.jpg)] bg-cover bg-center text-white pb-16 md:pt-24">
+        <div className="absolute inset-0 bg-black/40"></div>
+        <div className="container mx-auto px-6 z-10 relative">
+          <div className="max-w-4xl mx-auto">
+            {/* Event Title */}
+            <h1 className="text-5xl sm:text-6xl font-bold mb-6 text-center">
+              {competition.title}
+            </h1>
+            
+            {/* Event Metadata */}
+            <div className="flex flex-wrap justify-center items-center gap-6 mb-8 text-lg">
+              <div className="flex items-center gap-2">
+                <MapPin className="w-5 h-5 text-[#c7cc3f]" />
+                <span>Fayida Academy Platform</span>
               </div>
-
-              {/* Event Info Icons */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                <div className="flex items-center gap-2 text-sm text-gray-700">
-                  <Trophy className="w-5 h-5 text-yellow-500" />
-                  <div>
-                    <div className="font-medium">{competition.totalPrizes} Total Prizes</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-gray-700">
-                  <Calendar className="w-5 h-5 text-blue-500" />
-                  <div>
-                    <div className="font-medium">
-                      {formatCompetitionDate(competition.startDate)} - {formatCompetitionDate(competition.endDate)}
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-gray-700">
-                  <Clock className="w-5 h-5 text-green-500" />
-                  <div>
-                    <div className="font-medium">{competition.examCount || 0} Exams</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-gray-700">
-                  <Users className="w-5 h-5 text-purple-500" />
-                  <div>
-                    <div className="font-medium">{competition.registrationCount} Participants</div>
-                  </div>
-                </div>
+              <div className="flex items-center gap-2">
+                <Calendar className="w-5 h-5 text-[#c7cc3f]" />
+                <span>{formatCompetitionDate(competition.startDate)}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Users className="w-5 h-5 text-[#c7cc3f]" />
+                <span>{competition.registrationCount} participants</span>
               </div>
             </div>
 
-            {/* Action Button Area */}
-            <div className="lg:w-80">
+            {/* Action Button */}
+            <div className="text-center mb-12">
               {competition && (
                 <Button 
                   onClick={handleButtonClick}
                   disabled={applying}
-                  className={`w-full text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${getButtonClass(competition.buttonState)}`}
+                  className={`text-white font-semibold px-8 py-4 rounded-2xl text-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${getButtonClass(competition.buttonState)}`}
                 >
                   {getButtonIcon(competition.buttonState)}
                   {applying ? 'Applying...' : competition.buttonText}
                 </Button>
               )}
             </div>
-          </div>
 
-          {/* Success/Error Messages */}
-          {applyMessage && (
-            <Alert className="mt-4 border-green-200 bg-green-50">
-              <CheckCircle className="h-4 w-4 text-green-600" />
-              <AlertDescription className="text-green-800">
+            {/* Glassmorphism Metrics Cards */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 text-center border border-white/20">
+                <Users className="w-8 h-8 text-[#c7cc3f] mx-auto mb-2" />
+                <div className="text-2xl font-bold text-white">{competition.registrationCount}</div>
+                <div className="text-sm text-white/80">Participants</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 text-center border border-white/20">
+                <Trophy className="w-8 h-8 text-[#c7cc3f] mx-auto mb-2" />
+                <div className="text-2xl font-bold text-white">{competition.totalPrizes}</div>
+                <div className="text-sm text-white/80">Prizes</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 text-center border border-white/20">
+                <Clock className="w-8 h-8 text-[#c7cc3f] mx-auto mb-2" />
+                <div className="text-2xl font-bold text-white">{competition.examCount || 0}</div>
+                <div className="text-sm text-white/80">Exams</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 text-center border border-white/20">
+                <Calendar className="w-8 h-8 text-[#c7cc3f] mx-auto mb-2" />
+                <div className="text-2xl font-bold text-white">{formatCompetitionDate(competition.startDate)}</div>
+                <div className="text-sm text-white/80">Event Date</div>
+              </div>
+            </div>
+
+            {/* Registration Progress Bar */}
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold text-white">Registration Progress</h3>
+                <span className="text-[#c7cc3f] font-bold">{competition.registrationCount}%</span>
+              </div>
+              <div className="w-full bg-white/20 rounded-full h-3 mb-2">
+                <div 
+                  className="bg-gradient-to-r from-[#07705d] to-[#c7cc3f] h-3 rounded-full transition-all duration-500"
+                  style={{ width: `${Math.min(competition.registrationCount, 100)}%` }}
+                ></div>
+              </div>
+              <p className="text-sm text-white/80">
+                {Math.max(0, 100 - competition.registrationCount)} spots remaining
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Navigation Tabs */}
+      <div className="container mx-auto px-6 -mt-8 relative z-10">
+        <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-[#c7cc3f]/30 shadow-lg">
+          <div className="flex flex-wrap">
+            <button 
+              onClick={() => setActiveTab('overview')}
+              className={`flex-1 px-6 py-4 text-center font-semibold transition-colors rounded-tl-2xl ${
+                activeTab === 'overview' 
+                  ? 'text-[#07705d] bg-[#c7cc3f]/10 border-b-2 border-[#07705d]' 
+                  : 'text-gray-600 hover:text-[#07705d] hover:bg-[#c7cc3f]/5'
+              }`}
+            >
+              Overview
+            </button>
+            <button 
+              onClick={() => setActiveTab('schedule')}
+              className={`flex-1 px-6 py-4 text-center font-semibold transition-colors ${
+                activeTab === 'schedule' 
+                  ? 'text-[#07705d] bg-[#c7cc3f]/10 border-b-2 border-[#07705d]' 
+                  : 'text-gray-600 hover:text-[#07705d] hover:bg-[#c7cc3f]/5'
+              }`}
+            >
+              Schedule
+            </button>
+            <button 
+              onClick={() => setActiveTab('prizes')}
+              className={`flex-1 px-6 py-4 text-center font-semibold transition-colors ${
+                activeTab === 'prizes' 
+                  ? 'text-[#07705d] bg-[#c7cc3f]/10 border-b-2 border-[#07705d]' 
+                  : 'text-gray-600 hover:text-[#07705d] hover:bg-[#c7cc3f]/5'
+              }`}
+            >
+              Prizes
+            </button>
+            <button 
+              onClick={() => setActiveTab('sponsors')}
+              className={`flex-1 px-6 py-4 text-center font-semibold transition-colors rounded-tr-2xl ${
+                activeTab === 'sponsors' 
+                  ? 'text-[#07705d] bg-[#c7cc3f]/10 border-b-2 border-[#07705d]' 
+                  : 'text-gray-600 hover:text-[#07705d] hover:bg-[#c7cc3f]/5'
+              }`}
+            >
+              Sponsors
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-6 pb-16 relative z-10">
+        {/* Success/Error Messages */}
+        {applyMessage && (
+          <div className="mt-8">
+            <Alert className="border-[#07705d]/20 bg-[#07705d]/5">
+              <CheckCircle className="h-4 w-4 text-[#07705d]" />
+              <AlertDescription className="text-[#07705d]">
                 {applyMessage}
               </AlertDescription>
             </Alert>
+          </div>
+        )}
+
+        {/* Tab Content */}
+        <div className="mt-8">
+          {activeTab === 'overview' && (
+            <div className="space-y-8">
+              {/* About the Event Section */}
+              <div className="bg-white/80 backdrop-blur-md rounded-2xl p-8 border border-[#c7cc3f]/30 shadow-lg">
+                <h2 className="text-3xl font-bold text-[#07705d] mb-6">About the Event</h2>
+                <div className="prose prose-lg max-w-none">
+                  <p className="text-gray-700 leading-relaxed text-lg">
+                    {competition.description}
+                  </p>
+                </div>
+              </div>
+
+              {/* Requirements Section */}
+              <div className="bg-white/80 backdrop-blur-md rounded-2xl p-8 border border-[#c7cc3f]/30 shadow-lg">
+                <h2 className="text-3xl font-bold text-[#07705d] mb-6">Requirements</h2>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 bg-[#07705d] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                      <CheckCircle className="w-4 h-4 text-white" />
+                    </div>
+                    <p className="text-gray-700">Valid Grade {competition.grade} package covering the full tournament duration</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 bg-[#07705d] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                      <CheckCircle className="w-4 h-4 text-white" />
+                    </div>
+                    <p className="text-gray-700">Stable internet connection for online participation</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 bg-[#07705d] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                      <CheckCircle className="w-4 h-4 text-white" />
+                    </div>
+                    <p className="text-gray-700">Device with camera and microphone for exam monitoring</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Call to Action Section */}
+              <div className="bg-gradient-to-r from-[#07705d] to-[#c7cc3f] rounded-2xl p-8 text-center text-white">
+                <h2 className="text-3xl font-bold mb-4">Ready to participate?</h2>
+                <p className="text-xl mb-6 text-white/90">Join {competition.registrationCount}+ participants in this exciting competition</p>
+                {competition && (
+                  <Button 
+                    onClick={handleButtonClick}
+                    disabled={applying}
+                    className="bg-white text-[#07705d] hover:bg-white/90 font-semibold px-8 py-4 rounded-2xl text-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {getButtonIcon(competition.buttonState)}
+                    {applying ? 'Applying...' : competition.buttonText} →
+                  </Button>
+                )}
+              </div>
+            </div>
           )}
-        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Content */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Description Section */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-2xl font-bold text-gray-900">Description</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-700 leading-relaxed">
-                  {competition.description}
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Exams Section */}
-            {competition.exams && competition.exams.length > 0 && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-2xl font-bold text-gray-900">Exams</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
+          {activeTab === 'schedule' && (
+            <div className="space-y-8">
+              {/* Exams Schedule Section */}
+              {competition.exams && competition.exams.length > 0 ? (
+                <div className="bg-white/80 backdrop-blur-md rounded-2xl p-8 border border-[#c7cc3f]/30 shadow-lg">
+                  <h2 className="text-3xl font-bold text-[#07705d] mb-6">Exam Schedule</h2>
+                  <div className="space-y-6">
                     {competition.exams.map((exam, index) => (
-                      <div key={exam.id} className="border border-gray-200 rounded-lg p-4">
-                        <div className="flex items-center justify-between mb-2">
-                          <h4 className="font-semibold text-gray-900">
+                      <div key={exam.id} className="bg-white/60 backdrop-blur-sm rounded-xl p-6 border border-[#c7cc3f]/20">
+                        <div className="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                          <h4 className="text-xl font-semibold text-[#07705d] mb-2 md:mb-0">
                             Day {exam.day} - {exam.title}
                           </h4>
-                          <Badge variant="outline" className="text-sm">
-                            {formatCompetitionDate(exam.scheduledDateTime)} at {formatCompetitionTime(exam.scheduledDateTime)}
-                          </Badge>
+                          <div className="flex items-center gap-2">
+                            <Badge className="bg-[#c7cc3f]/20 text-[#07705d] border-0 px-3 py-1">
+                              {formatCompetitionDate(exam.scheduledDateTime)}
+                            </Badge>
+                            <Badge className="bg-[#07705d]/20 text-[#07705d] border-0 px-3 py-1">
+                              {formatCompetitionTime(exam.scheduledDateTime)}
+                            </Badge>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-4 text-sm text-gray-500">
-                          <span>{exam.totalQuestions} Questions</span>
-                          <span>{exam.duration} Minutes</span>
+                        <div className="flex items-center gap-6 text-sm text-gray-600">
+                          <div className="flex items-center gap-2">
+                            <Clock className="w-4 h-4 text-[#c7cc3f]" />
+                            <span>{exam.totalQuestions} Questions</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Trophy className="w-4 h-4 text-[#c7cc3f]" />
+                            <span>{exam.duration} Minutes Duration</span>
+                          </div>
                         </div>
                       </div>
                     ))}
                   </div>
-                </CardContent>
-              </Card>
-            )}
+                </div>
+              ) : (
+                <div className="bg-white/80 backdrop-blur-md rounded-2xl p-8 border border-[#c7cc3f]/30 shadow-lg text-center">
+                  <Clock className="w-16 h-16 text-[#c7cc3f] mx-auto mb-4" />
+                  <h2 className="text-2xl font-bold text-[#07705d] mb-4">No Schedule Available</h2>
+                  <p className="text-gray-600">Exam schedule will be announced soon. Check back later for updates.</p>
+                </div>
+              )}
+            </div>
+          )}
 
-          </div>
-
-          {/* Sidebar */}
-          <div className="space-y-8">
-            {/* Prizes Section */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-xl font-bold text-gray-900">Prizes</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
+          {activeTab === 'prizes' && (
+            <div className="space-y-8">
+              {/* Prizes Section */}
+              <div className="bg-white/80 backdrop-blur-md rounded-2xl p-8 border border-[#c7cc3f]/30 shadow-lg">
+                <h2 className="text-3xl font-bold text-[#07705d] mb-6">Prizes & Awards</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {competition.prizes.map((prize, index) => (
-                    <div key={index} className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg">
-                      <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div key={index} className="bg-white/60 backdrop-blur-sm rounded-xl p-6 border border-[#c7cc3f]/20 text-center">
+                      <div className="w-16 h-16 bg-gradient-to-br from-[#07705d] to-[#c7cc3f] rounded-full flex items-center justify-center mx-auto mb-4">
                         {prize.image ? (
-                          <img src={prize.image} alt={prize.prizeName} className="w-8 h-8 object-cover rounded" />
+                          <img src={prize.image} alt={prize.prizeName} className="w-10 h-10 object-cover rounded-full" />
                         ) : (
-                          <Trophy className="w-6 h-6 text-yellow-500" />
+                          <Trophy className="w-8 h-8 text-white" />
                         )}
                       </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <Badge variant="outline" className="text-xs">
-                            {prize.rank === 1 ? '🥇 1st' : 
-                             prize.rank === 2 ? '🥈 2nd' :
-                             prize.rank === 3 ? '🥉 3rd' :
-                             `${prize.rank}th`}
-                          </Badge>
-                        </div>
-                        <h5 className="font-medium text-gray-900 text-sm">{prize.prizeName}</h5>
-                        <p className="text-gray-600 text-xs">{prize.description}</p>
-                        <p className="text-yellow-600 text-xs font-medium">Value: {prize.value}</p>
+                      <div className="mb-2">
+                        <Badge className="bg-[#c7cc3f]/20 text-[#07705d] border-0 px-3 py-1">
+                          {prize.rank === 1 ? '🥇 1st Place' : 
+                           prize.rank === 2 ? '🥈 2nd Place' :
+                           prize.rank === 3 ? '🥉 3rd Place' :
+                           `${prize.rank}th Place`}
+                        </Badge>
                       </div>
+                      <h5 className="font-semibold text-[#07705d] text-lg mb-2">{prize.prizeName}</h5>
+                      <p className="text-gray-600 text-sm mb-2">{prize.description}</p>
+                      <p className="text-[#c7cc3f] font-bold">Value: {prize.value}</p>
                     </div>
                   ))}
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
+          )}
 
-            {/* Sponsors Section */}
-            {competition.sponsors && competition.sponsors.length > 0 && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-xl font-bold text-gray-900">Sponsors</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-2 gap-4">
+          {activeTab === 'sponsors' && (
+            <div className="space-y-8">
+              {/* Sponsors Section */}
+              {competition.sponsors && competition.sponsors.length > 0 ? (
+                <div className="bg-white/80 backdrop-blur-md rounded-2xl p-8 border border-[#c7cc3f]/30 shadow-lg">
+                  <h2 className="text-3xl font-bold text-[#07705d] mb-6">Our Sponsors</h2>
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {competition.sponsors.map((sponsor, index) => (
                       <div key={index} className="text-center">
                         {sponsor.website ? (
@@ -510,34 +654,39 @@ const CompetitionDetailPage: React.FC = () => {
                             href={sponsor.website} 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="block hover:opacity-80 transition-opacity"
+                            className="block hover:opacity-80 transition-opacity bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-[#c7cc3f]/20"
                           >
                             <img 
                               src={sponsor.logo} 
                               alt={sponsor.name} 
-                              className="w-full h-16 object-contain mb-2"
+                              className="w-full h-16 object-contain mb-3"
                             />
-                            <span className="text-sm text-gray-600">{sponsor.name}</span>
-                            <ExternalLink className="w-3 h-3 inline ml-1" />
+                            <span className="text-sm text-[#07705d] font-medium">{sponsor.name}</span>
+                            <ExternalLink className="w-3 h-3 inline ml-1 text-[#c7cc3f]" />
                           </a>
                         ) : (
-                          <div>
+                          <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-[#c7cc3f]/20">
                             <img 
                               src={sponsor.logo} 
                               alt={sponsor.name} 
-                              className="w-full h-16 object-contain mb-2"
+                              className="w-full h-16 object-contain mb-3"
                             />
-                            <span className="text-sm text-gray-600">{sponsor.name}</span>
+                            <span className="text-sm text-[#07705d] font-medium">{sponsor.name}</span>
                           </div>
                         )}
                       </div>
                     ))}
                   </div>
-                </CardContent>
-              </Card>
-            )}
-
-          </div>
+                </div>
+              ) : (
+                <div className="bg-white/80 backdrop-blur-md rounded-2xl p-8 border border-[#c7cc3f]/30 shadow-lg text-center">
+                  <Trophy className="w-16 h-16 text-[#c7cc3f] mx-auto mb-4" />
+                  <h2 className="text-2xl font-bold text-[#07705d] mb-4">No Sponsors Yet</h2>
+                  <p className="text-gray-600">Sponsor information will be updated soon. Check back later for updates.</p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
 

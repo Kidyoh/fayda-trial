@@ -81,11 +81,16 @@ export default function search() {
     })
       .then((res) => res.json())
       .then((data) => {
-        setPackagesData(data);
+        // Ensure data is an array and filter out any invalid items
+        const validPackages = Array.isArray(data) 
+          ? data.filter(item => item && typeof item === 'object')
+          : [];
+        setPackagesData(validPackages);
         setLoading(false);
       })
       .catch(error => {
         console.error("Error fetching packages:", error);
+        setPackagesData([]);
         setLoading(false);
       });
   }, []);
@@ -152,8 +157,11 @@ export default function search() {
 
   // Filter the packages based on search query and selected filters
   const filteredPackages = packageData.filter((item: any) => {
-    // Check if package name includes search query
-    if (!item.packageName.toLowerCase().includes(searchQuery.toLowerCase())) {
+    // Check if package name includes search query (with null safety)
+    const packageName = item.packageName || "";
+    const searchQueryLower = searchQuery.toLowerCase();
+    
+    if (!packageName.toLowerCase().includes(searchQueryLower)) {
       return false;
     }
 
@@ -162,16 +170,17 @@ export default function search() {
       return true;
     }
 
-    // Check if any of the selected filters match the package tag
+    // Check if any of the selected filters match the package tag (with null safety)
+    const packageTag = item.tag || "";
     const tagConditions = [
-      filters.grade9 && item.tag.toLowerCase().includes("Grade 9".toLowerCase()),
-      filters.grade10 && item.tag.toLowerCase().includes("Grade 10".toLowerCase()),
-      filters.grade11 && item.tag.toLowerCase().includes("Grade 11".toLowerCase()),
-      filters.grade12 && item.tag.toLowerCase().includes("Grade 12".toLowerCase()),
-      filters.computer && item.tag.toLowerCase().includes("Computer".toLowerCase()),
-      filters.language && item.tag.toLowerCase().includes("Language".toLowerCase()),
-      filters.artLiterature && item.tag.toLowerCase().includes("Art Litrature".toLowerCase()),
-      filters.other && item.tag.toLowerCase().includes("Other".toLowerCase()),
+      filters.grade9 && packageTag.toLowerCase().includes("Grade 9".toLowerCase()),
+      filters.grade10 && packageTag.toLowerCase().includes("Grade 10".toLowerCase()),
+      filters.grade11 && packageTag.toLowerCase().includes("Grade 11".toLowerCase()),
+      filters.grade12 && packageTag.toLowerCase().includes("Grade 12".toLowerCase()),
+      filters.computer && packageTag.toLowerCase().includes("Computer".toLowerCase()),
+      filters.language && packageTag.toLowerCase().includes("Language".toLowerCase()),
+      filters.artLiterature && packageTag.toLowerCase().includes("Art Litrature".toLowerCase()),
+      filters.other && packageTag.toLowerCase().includes("Other".toLowerCase()),
     ];
 
     return tagConditions.some(condition => condition);
@@ -398,29 +407,29 @@ export default function search() {
                         <div className="relative overflow-hidden h-48">
                           <img
                             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                            src={singlePackage.imgUrl}
-                            alt={singlePackage.packageName}
+                            src={singlePackage.imgUrl || "/common_files/cover.png"}
+                            alt={singlePackage.packageName || "Package"}
                           />
                           <div className="absolute top-3 left-3">
                             <Badge variant="outline" className="text-xs font-semibold bg-[#bf8c13]/90 text-white border-none backdrop-blur-sm">
-                              {singlePackage.tag}
+                              {singlePackage.tag || "Package"}
                             </Badge>
                           </div>
 
                           <div className="absolute bottom-3 right-3">
                             <div className="bg-white/95 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-bold text-[#07705d]">
-                              {singlePackage.price} Birr
+                              {singlePackage.price || "0"} Birr
                             </div>
                           </div>
                         </div>
 
                         <div className="p-6 flex-1 flex flex-col">
                           <h3 className="text-lg font-bold text-[#07705d] mb-2 group-hover:text-[#bf8c13] transition-colors">
-                            {singlePackage.packageName}
+                            {singlePackage.packageName || "Untitled Package"}
                           </h3>
 
                           <p className="text-sm text-gray-600 mb-4 line-clamp-2 flex-grow">
-                            {singlePackage.packageDescription}
+                            {singlePackage.packageDescription || "No description available"}
                           </p>
 
                           <div className="flex items-center justify-between mt-auto pt-4 border-t border-[#c7cc3f]/30">
