@@ -90,25 +90,40 @@ export function AddToCartButton({
   // For packages, show duration selection interface
   if (type === 'package' && showDurationSelect && !itemInCart) {
     return (
-      <div className="space-y-3 p-4 bg-gray-50 rounded-lg border">
-        <Label className="text-sm font-medium">Select Duration</Label>
+      <div className="space-y-3 p-4 bg-white/95 backdrop-blur-md rounded-2xl border-2 border-white/50 shadow-lg">
+        <Label className="text-sm font-bold text-[#07705d]">Select Duration</Label>
         <Select
           value={selectedDuration.toString()}
           onValueChange={(value) => setSelectedDuration(parseInt(value) as 1 | 3 | 6)}
         >
-          <SelectTrigger>
+          <SelectTrigger className="bg-white/90 border-2 border-[#c7cc3f]/30 text-[#07705d] font-medium">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="1">1 Month - {data.discountStatus && data.temporaryPrice ? data.temporaryPrice : data.price} Birr</SelectItem>
-            <SelectItem value="3">3 Months - {data.discountStatus && data.temporaryPrice2 ? data.temporaryPrice2 : data.price2 || data.price} Birr</SelectItem>
-            <SelectItem value="6">6 Months - {data.discountStatus && data.temporaryPrice3 ? data.temporaryPrice3 : data.price3 || data.price} Birr</SelectItem>
+          <SelectContent className="bg-white border-2 border-[#c7cc3f]/30 shadow-lg">
+            <SelectItem 
+              value="1" 
+              className="text-[#07705d] hover:bg-[#c7cc3f]/10 focus:bg-[#c7cc3f]/10"
+            >
+              1 Month - {data.discountStatus && data.temporaryPrice ? data.temporaryPrice : data.price} Birr
+            </SelectItem>
+            <SelectItem 
+              value="3" 
+              className="text-[#07705d] hover:bg-[#c7cc3f]/10 focus:bg-[#c7cc3f]/10"
+            >
+              3 Months - {data.discountStatus && data.temporaryPrice2 ? data.temporaryPrice2 : data.price2 || data.price} Birr
+            </SelectItem>
+            <SelectItem 
+              value="6" 
+              className="text-[#07705d] hover:bg-[#c7cc3f]/10 focus:bg-[#c7cc3f]/10"
+            >
+              6 Months - {data.discountStatus && data.temporaryPrice3 ? data.temporaryPrice3 : data.price3 || data.price} Birr
+            </SelectItem>
           </SelectContent>
         </Select>
         <div className="flex space-x-2">
           <Button
             onClick={handleAddToCart}
-            className={`flex-1 bg-gradient-to-r from-[#07705d] to-[#bf8c13] hover:from-[#07705d]/90 hover:to-[#bf8c13]/90 ${className}`}
+            className="flex-1 bg-gradient-to-r from-[#07705d] to-[#c7cc3f] hover:from-[#07705d]/90 hover:to-[#c7cc3f]/90 text-white font-bold"
             size={size}
           >
             <ShoppingCart className="h-4 w-4 mr-2" />
@@ -117,6 +132,7 @@ export function AddToCartButton({
           <Button
             variant="outline"
             onClick={() => setShowDurationSelect(false)}
+            className="border-2 border-[#c7cc3f] text-[#07705d] hover:bg-[#c7cc3f]/10 font-bold"
             size={size}
           >
             Cancel
@@ -132,7 +148,7 @@ export function AddToCartButton({
       <Button
         variant="outline"
         onClick={handleViewCart}
-        className={`border-[#07705d] text-[#07705d] hover:bg-[#07705d]/10 ${className}`}
+        className={`border-2 border-white/50 bg-white/90 backdrop-blur-sm text-[#07705d] hover:bg-white hover:text-[#07705d] font-bold ${className}`}
         size={size}
       >
         <Check className="h-4 w-4 mr-2" />
@@ -146,7 +162,7 @@ export function AddToCartButton({
     <Button
       variant={variant}
       onClick={handleAddToCart}
-      className={variant === 'default' ? `bg-gradient-to-r from-[#07705d] to-[#bf8c13] hover:from-[#07705d]/90 hover:to-[#bf8c13]/90 ${className}` : className}
+      className={variant === 'default' && !className.includes('bg-') ? `bg-gradient-to-r from-[#07705d] to-[#bf8c13] hover:from-[#07705d]/90 hover:to-[#bf8c13]/90 ${className}` : className}
       size={size}
     >
       <ShoppingCart className="h-4 w-4 mr-2" />

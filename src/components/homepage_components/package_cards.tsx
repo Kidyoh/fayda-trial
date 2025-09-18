@@ -80,11 +80,11 @@ const Card: React.FC<CardProps> = ({ package: pkg, bg, border, text }) => (
       <div className="w-full mb-6 space-y-2">
         <PackageAddToCartButton
           packageData={pkg}
-          className="w-full bg-white text-[#07705d] hover:bg-white/90"
+          className="w-full bg-white/90 backdrop-blur-sm text-[#07705d] hover:bg-white hover:text-[#07705d] border-2 border-white/50 font-bold py-2 px-6 rounded-2xl transition-all duration-200 hover:scale-105 shadow-lg"
           size="default"
         />
         <Link href={`/details/${pkg.id}`} className="w-full block">
-          <button className="w-full bg-white/20 backdrop-blur-sm text-white font-bold py-2 px-6 rounded-2xl transition-all duration-200 hover:bg-white/30 border border-white/30">
+          <button className="w-full bg-white/20 backdrop-blur-sm text-white font-bold py-2 px-6 rounded-2xl transition-all duration-200 hover:bg-white/30 border border-white/30 hover:scale-105">
             VIEW DETAILS
           </button>
         </Link>
