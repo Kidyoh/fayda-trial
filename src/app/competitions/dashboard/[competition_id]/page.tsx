@@ -104,29 +104,29 @@ const CompetitionDashboardPage: React.FC = () => {
   };
 
   const ExamStatusCard: React.FC<{ exam: Exam }> = ({ exam }) => (
-    <Card className={`h-full transition-all duration-300 hover:shadow-lg ${getStatusColor(exam.status || 'locked')}`}>
-      <CardHeader className="pb-4">
+    <div className={`h-full transition-all duration-300 hover:shadow-lg bg-white/60 backdrop-blur-sm rounded-xl p-6 border border-[#c7cc3f]/20 ${getStatusColor(exam.status || 'locked')}`}>
+      <div className="pb-4">
         <div className="flex justify-between items-start mb-2">
-          <CardTitle className="text-lg font-bold text-gray-900">
+          <h3 className="text-lg font-bold text-[#07705d]">
             {exam.title}
-          </CardTitle>
+          </h3>
           <span className={`status-icon text-2xl`}>
             {getStatusIcon(exam.status || 'locked')}
           </span>
         </div>
         
         <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
-          <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full font-medium">
+          <span className="bg-[#c7cc3f]/20 text-[#07705d] px-3 py-1 rounded-full font-medium">
             Day {exam.day}
           </span>
         </div>
-      </CardHeader>
+      </div>
 
-      <CardContent className="pb-4">
+      <div className="pb-4">
         <div className="space-y-3">
           {/* Date & Time */}
           <div className="flex items-center gap-2 text-sm text-gray-700">
-            <Calendar className="w-4 h-4 text-blue-500" />
+            <Calendar className="w-4 h-4 text-[#c7cc3f]" />
             <span>
               {formatCompetitionDate(exam.scheduledDateTime)} at {formatCompetitionTime(exam.scheduledDateTime)}
             </span>
@@ -134,13 +134,13 @@ const CompetitionDashboardPage: React.FC = () => {
 
           {/* Duration */}
           <div className="flex items-center gap-2 text-sm text-gray-700">
-            <Clock className="w-4 h-4 text-green-500" />
+            <Clock className="w-4 h-4 text-[#c7cc3f]" />
             <span>{exam.duration} minutes</span>
           </div>
 
           {/* Questions */}
           <div className="flex items-center gap-2 text-sm text-gray-700">
-            <Trophy className="w-4 h-4 text-purple-500" />
+            <Trophy className="w-4 h-4 text-[#c7cc3f]" />
             <span>{exam.totalQuestions} questions</span>
           </div>
         </div>
@@ -164,13 +164,13 @@ const CompetitionDashboardPage: React.FC = () => {
 
         {/* Results Display */}
         {exam.status === 'completed' && exam.submission && (
-          <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+          <div className="mt-4 p-3 bg-[#c7cc3f]/10 rounded-lg border border-[#c7cc3f]/20">
             <div className="flex justify-between items-center">
               <div>
-                <p className="text-sm font-medium text-blue-900">
+                <p className="text-sm font-medium text-[#07705d]">
                   Score: {exam.submission.score}/{exam.submission.totalQuestions}
                 </p>
-                <p className="text-xs text-blue-700">
+                <p className="text-xs text-gray-600">
                   Time: {Math.floor(exam.submission.timeSpent / 60)}m {exam.submission.timeSpent % 60}s
                 </p>
               </div>
@@ -178,7 +178,7 @@ const CompetitionDashboardPage: React.FC = () => {
                 size="sm"
                 variant="outline"
                 onClick={() => handleViewResults(exam.id)}
-                className="border-blue-300 text-blue-700 hover:bg-blue-100"
+                className="border-[#c7cc3f] text-[#07705d] hover:bg-[#c7cc3f]/10"
               >
                 <Eye className="w-4 h-4 mr-1" />
                 View Results
@@ -186,12 +186,12 @@ const CompetitionDashboardPage: React.FC = () => {
             </div>
           </div>
         )}
-      </CardContent>
+      </div>
 
-      <CardContent className="pt-0">
+      <div className="pt-0">
         {exam.status === 'active' && (
           <Button 
-            className="w-full bg-green-500 hover:bg-green-600 text-white"
+            className="w-full bg-gradient-to-r from-[#07705d] to-[#c7cc3f] hover:from-[#07705d]/90 hover:to-[#c7cc3f]/90 text-white font-semibold"
             onClick={() => handleStartExam(exam.id)}
           >
             <Play className="w-4 h-4 mr-2" />
@@ -218,14 +218,29 @@ const CompetitionDashboardPage: React.FC = () => {
             Exam Closed
           </Button>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 pb-8">
-        <div className="container mx-auto px-4">
+      <div className="min-h-screen bg-gray-50">
+        {/* Hero Section Skeleton */}
+        <section className="relative pt-20 bg-[url(/Background/landing-bg.jpg)] bg-cover bg-center text-white pb-16 md:pt-24">
+          <div className="absolute inset-0 bg-black/40"></div>
+          <div className="container mx-auto px-6 z-10 relative">
+            <div className="max-w-4xl mx-auto">
+              <div className="animate-pulse">
+                <div className="h-16 bg-white/20 rounded-lg mb-6"></div>
+                <div className="h-8 bg-white/20 rounded-lg w-2/3 mx-auto mb-8"></div>
+                <div className="h-12 bg-white/20 rounded-lg w-1/3 mx-auto"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Content Skeleton */}
+        <div className="container mx-auto px-6 pb-16 relative z-10">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-300 rounded w-1/2 mb-4"></div>
             <div className="h-64 bg-gray-300 rounded mb-8"></div>
@@ -242,138 +257,167 @@ const CompetitionDashboardPage: React.FC = () => {
 
   if (error || !dashboard) {
     return (
-      <div className="min-h-screen bg-gray-50 pb-8">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md mx-auto">
-              <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-              <p className="text-red-800 mb-4">{error || 'Dashboard not found'}</p>
-              <Button 
-                onClick={() => router.push('/competitions')}
-                variant="outline"
-                className="border-red-300 text-red-700 hover:bg-red-50"
-              >
-                Back to Competitions
-              </Button>
+      <div className="min-h-screen bg-gray-50">
+        {/* Hero Section */}
+        <section className="relative pt-20 bg-[url(/Background/landing-bg.jpg)] bg-cover bg-center text-white pb-16 md:pt-24">
+          <div className="absolute inset-0 bg-black/40"></div>
+          <div className="container mx-auto px-6 z-10 relative">
+            <div className="max-w-4xl mx-auto text-center">
+              <h1 className="text-5xl sm:text-6xl font-bold mb-6 text-center">
+                Competition Dashboard
+              </h1>
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 max-w-md mx-auto">
+                <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
+                <p className="text-white mb-6 text-lg">{error || 'Dashboard not found'}</p>
+                <Button 
+                  onClick={() => router.push('/competitions')}
+                  className="bg-white text-red-600 hover:bg-white/90 font-semibold px-6 py-3 rounded-2xl"
+                >
+                  Back to Competitions
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
+        </section>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-8">
-      <div className="container mx-auto px-4">
-        {/* Header */}
-        <div className="flex items-center gap-4 mb-8">
-          <Button 
-            variant="outline" 
-            onClick={() => router.push('/competitions')}
-            className="flex items-center gap-2"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Competitions
-          </Button>
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">
+    <div className="min-h-screen bg-gray-50">
+      {/* Hero Section */}
+      <section className="relative pt-20 bg-[url(/Background/landing-bg.jpg)] bg-cover bg-center text-white pb-16 md:pt-24">
+        <div className="absolute inset-0 bg-black/40"></div>
+        <div className="container mx-auto px-6 z-10 relative">
+          <div className="max-w-4xl mx-auto">
+            {/* Back Button */}
+            <div className="mb-8">
+              <Button 
+                variant="outline" 
+                onClick={() => router.push('/competitions')}
+                className="flex items-center gap-2 bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/20"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Back to Competitions
+              </Button>
+            </div>
+
+            {/* Competition Title */}
+            <h1 className="text-5xl sm:text-6xl font-bold mb-6 text-center">
               {dashboard.competition.title}
             </h1>
-            <p className="text-gray-600">Grade {dashboard.competition.grade} • {dashboard.competition.status}</p>
+            
+            {/* Competition Info */}
+            <div className="flex flex-wrap justify-center items-center gap-6 mb-8 text-lg">
+              <div className="flex items-center gap-2">
+                <Trophy className="w-5 h-5 text-[#c7cc3f]" />
+                <span>Grade {dashboard.competition.grade}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Users className="w-5 h-5 text-[#c7cc3f]" />
+                <span>Dashboard</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-[#c7cc3f]" />
+                <span>{dashboard.competition.status}</span>
+              </div>
+            </div>
+
+            {/* Glassmorphism Stats Cards */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 text-center border border-white/20">
+                <Trophy className="w-8 h-8 text-[#c7cc3f] mx-auto mb-2" />
+                <div className="text-2xl font-bold text-white">#{dashboard.leaderboard.rank}</div>
+                <div className="text-sm text-white/80">Current Rank</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 text-center border border-white/20">
+                <CheckCircle className="w-8 h-8 text-[#c7cc3f] mx-auto mb-2" />
+                <div className="text-2xl font-bold text-white">{dashboard.leaderboard.totalScore}</div>
+                <div className="text-sm text-white/80">Total Score</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 text-center border border-white/20">
+                <Clock className="w-8 h-8 text-[#c7cc3f] mx-auto mb-2" />
+                <div className="text-2xl font-bold text-white">{dashboard.completedExams}/{dashboard.totalExams}</div>
+                <div className="text-sm text-white/80">Exams Done</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 text-center border border-white/20">
+                <Calendar className="w-8 h-8 text-[#c7cc3f] mx-auto mb-2" />
+                <div className="text-2xl font-bold text-white">{Math.floor(dashboard.leaderboard.totalTimeSpent / 60)}m</div>
+                <div className="text-sm text-white/80">Time Spent</div>
+              </div>
+            </div>
           </div>
         </div>
+      </section>
+
+      {/* Main Content */}
+      <div className="container mx-auto px-6 pb-16 relative z-10">
 
         {/* Registration Info */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle className="text-xl font-bold text-gray-900">Registration Details</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center gap-2 text-gray-700">
-              <CheckCircle className="w-5 h-5 text-green-500" />
-              <span>Exam ID: <strong>{dashboard.registration.examId}</strong></span>
+        <div className="bg-white/80 backdrop-blur-md rounded-2xl p-8 border border-[#c7cc3f]/30 shadow-lg mb-8">
+          <h2 className="text-3xl font-bold text-[#07705d] mb-6">Registration Details</h2>
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-6 h-6 bg-[#07705d] rounded-full flex items-center justify-center flex-shrink-0">
+                <CheckCircle className="w-4 h-4 text-white" />
+              </div>
+              <span className="text-gray-700 text-lg">Exam ID: <strong className="text-[#07705d]">{dashboard.registration.examId}</strong></span>
             </div>
-            <div className="flex items-center gap-2 text-gray-700 mt-2">
-              <Calendar className="w-5 h-5 text-blue-500" />
-              <span>Registered: {formatCompetitionDate(dashboard.registration.registeredAt)}</span>
+            <div className="flex items-center gap-3">
+              <div className="w-6 h-6 bg-[#07705d] rounded-full flex items-center justify-center flex-shrink-0">
+                <Calendar className="w-4 h-4 text-white" />
+              </div>
+              <span className="text-gray-700 text-lg">Registered: {formatCompetitionDate(dashboard.registration.registeredAt)}</span>
             </div>
-          </CardContent>
-        </Card>
-
-        {/* Progress Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card>
-            <CardContent className="p-6 text-center">
-              <div className="text-3xl font-bold text-blue-600 mb-2">
-                {dashboard.leaderboard.rank}
-              </div>
-              <div className="text-gray-600">Current Rank</div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-6 text-center">
-              <div className="text-3xl font-bold text-green-600 mb-2">
-                {dashboard.leaderboard.totalScore}
-              </div>
-              <div className="text-gray-600">Total Score</div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-6 text-center">
-              <div className="text-3xl font-bold text-purple-600 mb-2">
-                {dashboard.completedExams}/{dashboard.totalExams}
-              </div>
-              <div className="text-gray-600">Exams Completed</div>
-            </CardContent>
-          </Card>
+          </div>
         </div>
 
         {/* Exam Status Cards */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Exam Status</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {dashboard.examStatus.map((exam) => (
-              <ExamStatusCard key={exam.id} exam={exam} />
-            ))}
+          <div className="bg-white/80 backdrop-blur-md rounded-2xl p-8 border border-[#c7cc3f]/30 shadow-lg">
+            <h2 className="text-3xl font-bold text-[#07705d] mb-6">Exam Status</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {dashboard.examStatus.map((exam) => (
+                <ExamStatusCard key={exam.id} exam={exam} />
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Leaderboard Preview */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-xl font-bold text-gray-900">Your Performance</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600">
-                  #{dashboard.leaderboard.rank}
-                </div>
-                <div className="text-sm text-gray-600">Rank</div>
+        {/* Performance Overview */}
+        <div className="bg-white/80 backdrop-blur-md rounded-2xl p-8 border border-[#c7cc3f]/30 shadow-lg">
+          <h2 className="text-3xl font-bold text-[#07705d] mb-6">Your Performance</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 border border-[#c7cc3f]/20 text-center">
+              <Trophy className="w-8 h-8 text-[#c7cc3f] mx-auto mb-3" />
+              <div className="text-3xl font-bold text-[#07705d] mb-2">
+                #{dashboard.leaderboard.rank}
               </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-green-600">
-                  {dashboard.leaderboard.totalScore}
-                </div>
-                <div className="text-sm text-gray-600">Total Score</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-purple-600">
-                  {Math.floor(dashboard.leaderboard.totalTimeSpent / 60)}m
-                </div>
-                <div className="text-sm text-gray-600">Time Spent</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-orange-600">
-                  {dashboard.leaderboard.examsCompleted}
-                </div>
-                <div className="text-sm text-gray-600">Exams Done</div>
-              </div>
+              <div className="text-sm text-gray-600 font-medium">Current Rank</div>
             </div>
-          </CardContent>
-        </Card>
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 border border-[#c7cc3f]/20 text-center">
+              <CheckCircle className="w-8 h-8 text-[#c7cc3f] mx-auto mb-3" />
+              <div className="text-3xl font-bold text-[#07705d] mb-2">
+                {dashboard.leaderboard.totalScore}
+              </div>
+              <div className="text-sm text-gray-600 font-medium">Total Score</div>
+            </div>
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 border border-[#c7cc3f]/20 text-center">
+              <Clock className="w-8 h-8 text-[#c7cc3f] mx-auto mb-3" />
+              <div className="text-3xl font-bold text-[#07705d] mb-2">
+                {Math.floor(dashboard.leaderboard.totalTimeSpent / 60)}m
+              </div>
+              <div className="text-sm text-gray-600 font-medium">Time Spent</div>
+            </div>
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 border border-[#c7cc3f]/20 text-center">
+              <Users className="w-8 h-8 text-[#c7cc3f] mx-auto mb-3" />
+              <div className="text-3xl font-bold text-[#07705d] mb-2">
+                {dashboard.leaderboard.examsCompleted}
+              </div>
+              <div className="text-sm text-gray-600 font-medium">Exams Done</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

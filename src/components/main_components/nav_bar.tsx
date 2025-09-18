@@ -216,8 +216,8 @@ export default function NavBar(response3: any) {
 
   return (
     <>
-      <div className="hidden xxmd:block fixed top-0 left-1/2 transform -translate-x-1/2 z-50 bg-white shadow-2xl shadow-primaryColor/10 rounded-full mt-4 w-10/12 max-w-6xl">
-        <div className="px-3 sm:px-4 lg:px-6">
+      <div className="hidden xxmd:block fixed top-0 left-1/2 transform -translate-x-1/2 z-50 bg-white shadow-2xl shadow-primaryColor/10 rounded-full mt-4 w-11/12 max-w-7xl">
+        <div className="px-3 sm:px-4 md:px-6 lg:px-8">
           <div className="flex justify-between items-center h-14">
             <div className="flex items-center space-x-6">
               <Link href={"/"} className="flex-shrink-0">
@@ -258,13 +258,13 @@ export default function NavBar(response3: any) {
               </div>
             </div>
 
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 md:space-x-4">
               <div className="relative">
                 <div className="flex items-center">
                   <input
                     type="text"
                     id="search"
-                    className="w-48 pl-3 pr-8 py-1.5 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor text-sm transition-all duration-200"
+                    className="w-32 sm:w-40 md:w-48 lg:w-56 pl-3 pr-8 py-1.5 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor text-sm transition-all duration-200"
                     placeholder="Search..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
@@ -282,8 +282,10 @@ export default function NavBar(response3: any) {
                 </div>
               </div>
 
-              <div className="flex items-center space-x-3">
-               <TranslateButton />
+              <div className="flex items-center space-x-1 md:space-x-3">
+               <div className="hidden sm:block">
+                 <TranslateButton />
+               </div>
                
                {/* Cart Icon */}
                <CartIcon />
@@ -300,22 +302,22 @@ export default function NavBar(response3: any) {
                 </Link>
 
                 {data == null ? (
-                  <div className="flex items-center space-x-3">
+                  <div className="flex items-center space-x-2 md:space-x-3">
                     <Link href={"/login"}>
-                      <button className="px-4 py-2 text-sm font-medium text-primaryColor border border-primaryColor rounded-full hover:bg-primaryColor/5 transition-colors duration-200">
+                      <button className="px-3 md:px-4 py-2 text-xs md:text-sm font-medium text-primaryColor border border-primaryColor rounded-full hover:bg-primaryColor/5 transition-colors duration-200">
                         Login
                       </button>
                     </Link>
                     <Link href={"/signup"}>
-                      <button className="px-4 py-2 text-sm font-medium text-white bg-primaryColor rounded-full hover:bg-primaryColor/90 transition-colors duration-200">
+                      <button className="px-3 md:px-4 py-2 text-xs md:text-sm font-medium text-white bg-primaryColor rounded-full hover:bg-primaryColor/90 transition-colors duration-200">
                         Sign Up
                       </button>
                     </Link>
                   </div>
                 ) : (
-                  <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-2 md:space-x-4">
                     <Link href={"/dashboard"}>
-                      <button className="px-4 py-2 text-sm font-medium text-white bg-primaryColor rounded-full hover:bg-primaryColor/90 transition-colors duration-200">
+                      <button className="px-3 md:px-4 py-2 text-xs md:text-sm font-medium text-white bg-primaryColor rounded-full hover:bg-primaryColor/90 transition-colors duration-200">
                         Dashboard
                       </button>
                     </Link>

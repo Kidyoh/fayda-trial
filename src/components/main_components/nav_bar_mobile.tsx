@@ -57,7 +57,7 @@ export default function NavBarMobile({ data, notificationNumber }: any) {
   return (
     <>
       {/* Fixed header with logo and menu button */}
-      <div className="fixed top-0 left-0 right-0 h-16 bg-white shadow-sm z-50 px-4 flex items-center justify-between">
+      <div className="fixed top-0 left-0 right-0 h-16 bg-white shadow-sm z-50 px-4 sm:px-6 flex items-center justify-between">
         <Link href="/" className="flex-shrink-0">
           <img
             className="h-8 w-auto"
@@ -66,7 +66,7 @@ export default function NavBarMobile({ data, notificationNumber }: any) {
           />
         </Link>
         
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-1 sm:space-x-2">
           <CartIcon />
           
           <Link href="/notifications" className="relative p-2">
@@ -80,7 +80,7 @@ export default function NavBarMobile({ data, notificationNumber }: any) {
           
           <button 
             onClick={() => setIsOpen(true)}
-            className="p-2 text-gray-600 focus:outline-none"
+            className="p-2 text-gray-600 focus:outline-none hover:bg-gray-100 rounded-full transition-colors"
             aria-label="Open menu"
           >
             <Menu size={24} />
@@ -103,7 +103,7 @@ export default function NavBarMobile({ data, notificationNumber }: any) {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="absolute top-0 right-0 w-[85%] max-w-sm h-full bg-white overflow-y-auto"
+              className="absolute top-0 right-0 w-[90%] sm:w-[85%] max-w-sm h-full bg-white overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="p-4 border-b border-gray-100 flex items-center justify-between">

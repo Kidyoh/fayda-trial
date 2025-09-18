@@ -379,10 +379,6 @@ const CompetitionDetailPage: React.FC = () => {
                 <Calendar className="w-5 h-5 text-[#c7cc3f]" />
                 <span>{formatCompetitionDate(competition.startDate)}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Users className="w-5 h-5 text-[#c7cc3f]" />
-                <span>{competition.registrationCount} participants</span>
-              </div>
             </div>
 
             {/* Action Button */}
@@ -400,12 +396,7 @@ const CompetitionDetailPage: React.FC = () => {
             </div>
 
             {/* Glassmorphism Metrics Cards */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 text-center border border-white/20">
-                <Users className="w-8 h-8 text-[#c7cc3f] mx-auto mb-2" />
-                <div className="text-2xl font-bold text-white">{competition.registrationCount}</div>
-                <div className="text-sm text-white/80">Participants</div>
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
               <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 text-center border border-white/20">
                 <Trophy className="w-8 h-8 text-[#c7cc3f] mx-auto mb-2" />
                 <div className="text-2xl font-bold text-white">{competition.totalPrizes}</div>
@@ -421,23 +412,6 @@ const CompetitionDetailPage: React.FC = () => {
                 <div className="text-2xl font-bold text-white">{formatCompetitionDate(competition.startDate)}</div>
                 <div className="text-sm text-white/80">Event Date</div>
               </div>
-            </div>
-
-            {/* Registration Progress Bar */}
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold text-white">Registration Progress</h3>
-                <span className="text-[#c7cc3f] font-bold">{competition.registrationCount}%</span>
-              </div>
-              <div className="w-full bg-white/20 rounded-full h-3 mb-2">
-                <div 
-                  className="bg-gradient-to-r from-[#07705d] to-[#c7cc3f] h-3 rounded-full transition-all duration-500"
-                  style={{ width: `${Math.min(competition.registrationCount, 100)}%` }}
-                ></div>
-              </div>
-              <p className="text-sm text-white/80">
-                {Math.max(0, 100 - competition.registrationCount)} spots remaining
-              </p>
             </div>
           </div>
         </div>
@@ -546,7 +520,7 @@ const CompetitionDetailPage: React.FC = () => {
               {/* Call to Action Section */}
               <div className="bg-gradient-to-r from-[#07705d] to-[#c7cc3f] rounded-2xl p-8 text-center text-white">
                 <h2 className="text-3xl font-bold mb-4">Ready to participate?</h2>
-                <p className="text-xl mb-6 text-white/90">Join {competition.registrationCount}+ participants in this exciting competition</p>
+                <p className="text-xl mb-6 text-white/90">Join this exciting competition and test your skills</p>
                 {competition && (
                   <Button 
                     onClick={handleButtonClick}
