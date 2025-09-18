@@ -18,12 +18,14 @@ interface ShowResultProps {
   reslultText: string;
   incorrectquestions: number[];
   questions: any[];
+  courseId?: string;
 }
 
 export default function ShowResult({
   reslultText,
   incorrectquestions,
   questions,
+  courseId,
 }: ShowResultProps) {
   const [open, setOpen] = useState(true);
   const [selectedQuestion, setSelectedQuestion] = useState<number | null>(null);
@@ -116,7 +118,7 @@ export default function ShowResult({
   const scoreColor = score >= 80 ? 'text-green-500' : score >= 60 ? 'text-yellow-500' : 'text-red-500';
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-4xl mx-auto px-4 pt-16 pb-8">
       {/* Results Dialog */}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-md">
@@ -145,11 +147,11 @@ export default function ShowResult({
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold text-gray-900">Assessment Results</h1>
             <Link
-              href="/mock_package/selectmainfolder"
+              href={courseId ? `/access/${courseId}` : "/access"}
               className="inline-flex items-center gap-2 text-gray-500 hover:text-gray-700"
             >
               <ArrowLeft className="w-4 h-4" />
-              Back to Packages
+              Back to Course Access
             </Link>
           </div>
 

@@ -1,6 +1,7 @@
 import React from "react";
 import VideoDetails from "../../app/(packages)/access/[single_course_id]/components/videoDetails";
 import AssessmentDetails from "../../app/(packages)/access/[single_course_id]/components/assessmentDetails";
+import AssessmentExamMode from "./AssessmentExamMode";
 import FileDetails from "../../app/(packages)/access/[single_course_id]/components/fileDetails";
 import LinkDetails from "../../app/(packages)/access/[single_course_id]/components/linkDetails";
 
