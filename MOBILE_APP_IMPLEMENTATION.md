@@ -1251,3 +1251,5 @@ export const config = {
 This mobile implementation provides a complete cart and payment system that mirrors the web application's functionality while being optimized for mobile devices. The system uses the same backend APIs, ensuring consistency across platforms.
 
 
+
+

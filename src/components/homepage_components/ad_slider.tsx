@@ -1,44 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import Image from "next/image";
-
-const parallaxSlides = [
-  {
-    id: 1,
-    backgroundImage: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80",
-    title: "Tech Innovators",
-    subtitle: "Leading the Future",
-    description: "Discover cutting-edge solutions from Tech Innovators, your partner in digital transformation and IT excellence.",
-    overlayColor: "from-green-950/80 to-black/50",
-  },
-  {
-    id: 2,
-    backgroundImage: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1600&q=80",
-    title: "Green Energy Co.",
-    subtitle: "Powering Tomorrow",
-    description: "Join Green Energy Co. in building a sustainable future with clean, renewable energy for homes and businesses.",
-    overlayColor: "from-green-950/80 to-black/50",
-  },
-  {
-    id: 3,
-    backgroundImage: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=1600&q=80",
-    title: "Urban Eats",
-    subtitle: "Taste the City",
-    description: "Experience culinary delights from Urban Eats, serving fresh flavors and gourmet experiences across the city.",
-    overlayColor: "from-green-950/80 to-black/50",
-  },
-  {
-    id: 4,
-    backgroundImage: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=1600&q=80",
-    title: "TravelSphere",
-    subtitle: "Explore the World",
-    description: "Adventure awaits with TravelSphere. Book your next journey and discover new destinations with expert guides.",
-    overlayColor: "from-green-950/80 to-black/50",
-  },
-];
+import { apiUrl } from "@/apiConfig";
+import Link from "next/link";
 
 const ParallaxSlider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [advertisements, setAdvertisements] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
   const autoPlayRef = useRef<NodeJS.Timeout>();
 
@@ -59,10 +28,34 @@ const ParallaxSlider = () => {
   const smoothScale = useSpring(scale, { stiffness: 400, damping: 40 });
 
 
+  // Fetch advertisements from API
   useEffect(() => {
+    const fetchAdvertisements = async () => {
+      try {
+        const response = await fetch(`${apiUrl}/advertisment/displayhome`, {
+          credentials: "include",
+        });
+        const data = await response.json();
+        setAdvertisements(data || []);
+        console.log("Advertisements fetched:", data);
+        console.log("First ad image URL:", data[0]?.imgUrl);
+      } catch (error) {
+        console.error("Error fetching advertisements:", error);
+        setAdvertisements([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAdvertisements();
+  }, []);
+
+  useEffect(() => {
+    if (advertisements.length === 0) return;
+
     const startAutoPlay = () => {
       autoPlayRef.current = setInterval(() => {
-        setCurrentSlide((prev) => (prev + 1) % parallaxSlides.length);
+        setCurrentSlide((prev) => (prev + 1) % advertisements.length);
       }, 5000);
     };
 
@@ -73,7 +66,7 @@ const ParallaxSlider = () => {
         clearInterval(autoPlayRef.current);
       }
     };
-  }, []);
+  }, [advertisements]);
 
   const handleSlideChange = (index: number) => {
     setCurrentSlide(index);
@@ -82,10 +75,40 @@ const ParallaxSlider = () => {
     }
     setTimeout(() => {
       autoPlayRef.current = setInterval(() => {
-        setCurrentSlide((prev) => (prev + 1) % parallaxSlides.length);
+        setCurrentSlide((prev) => (prev + 1) % advertisements.length);
       }, 5000);
     }, 1000);
   };
+
+  // Don't render if no advertisements or still loading
+  if (isLoading) {
+    return (
+      <div className="w-full h-[60vh] mb-12 flex items-center justify-center">
+        <div className="animate-pulse bg-gray-200 rounded-lg w-full h-full"></div>
+      </div>
+    );
+  }
+
+  // Debug: Log the first advertisement data
+  console.log("Rendering advertisements:", advertisements);
+  console.log("First ad data:", advertisements[0]);
+  
+  // Temporary test - if no ads, show a test banner
+  if (advertisements.length === 0) {
+    return (
+      <div className="relative w-full h-[60vh] mb-12 overflow-hidden">
+        <img
+          src="/common_files/main/webbannernew.png"
+          alt="Test Banner"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-green-950/80 to-black/50" />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <h1 className="text-white text-4xl font-bold">Test Advertisement</h1>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -93,9 +116,9 @@ const ParallaxSlider = () => {
       className="relative w-full h-[60vh] mb-12 overflow-hidden"
     >
       {/* Background slides with parallax */}
-      {parallaxSlides.map((slide, index) => (
+      {advertisements.map((ad, index) => (
         <motion.div
-          key={slide.id}
+          key={ad.id}
           className="absolute inset-0"
           initial={{ opacity: 0 }}
           animate={{
@@ -107,17 +130,26 @@ const ParallaxSlider = () => {
           <motion.div
             className="absolute inset-0 w-full h-full"
           >
-            <Image
-              src={slide.backgroundImage}
-              alt={slide.title}
-              fill
-              className="object-cover"
-              priority={index === 0}
+            <img
+              src={ad.imgUrl || "/common_files/main/webbannernew.png"}
+              alt={ad.title || "Advertisement"}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                console.log("Image failed to load:", ad.imgUrl);
+                // Try multiple fallback images
+                if (e.currentTarget.src.includes("webbannernew.png")) {
+                  e.currentTarget.src = "/common_files/main/webbanner1.jpg";
+                } else if (e.currentTarget.src.includes("webbanner1.jpg")) {
+                  e.currentTarget.src = "/common_files/main/web banner.jpg";
+                } else {
+                  e.currentTarget.src = "/common_files/main/cover.jpg";
+                }
+              }}
             />
           </motion.div>
 
           {/* Gradient overlay */}
-          <div className={`absolute inset-0 bg-gradient-to-br ${slide.overlayColor}`} />
+          <div className="absolute inset-0 bg-gradient-to-br from-green-950/80 to-black/50" />
 
           {/* Ethiopian pattern overlay */}
           <div className="absolute inset-0 opacity-10">
@@ -145,47 +177,49 @@ const ParallaxSlider = () => {
             exit={{ opacity: 0, y: -60 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            {/* Amharic Title */}
+            {/* Advertisement Title */}
             <motion.h1
               className="text-4xl md:text-6xl lg:text-7xl font-bold font-Sendako mb-4"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2, duration: 0.6 }}
             >
-              {parallaxSlides[currentSlide].title}
+              {advertisements[currentSlide]?.title}
             </motion.h1>
 
-            {/* English Subtitle */}
+            {/* Advertisement Subtitle */}
             <motion.h2
               className="text-xl md:text-2xl lg:text-3xl font-semibold mb-6 opacity-90"
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.4, duration: 0.6 }}
             >
-              {parallaxSlides[currentSlide].subtitle}
+              {advertisements[currentSlide]?.subtitle}
             </motion.h2>
 
-            {/* Description */}
+            {/* Advertisement Description */}
             <motion.p
               className="text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-8 opacity-80"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.6 }}
             >
-              {parallaxSlides[currentSlide].description}
+              {advertisements[currentSlide]?.text}
             </motion.p>
 
             {/* CTA Button */}
-            <motion.button
-              className="bg-white/20 backdrop-blur-md text-white px-8 py-4 rounded-full font-semibold text-lg border border-white/30 hover:bg-white/30 transition-all duration-300"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.8, duration: 0.6 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-             Explore More
-            </motion.button>
+            <Link href={`/advertisements/${advertisements[currentSlide]?.id}`}>
+              <motion.button
+                className="bg-white/20 backdrop-blur-md text-white px-8 py-4 rounded-full font-semibold text-lg border border-white/30 hover:bg-white/30 transition-all duration-300"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.8, duration: 0.6 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {advertisements[currentSlide]?.info || "Learn More"}
+              </motion.button>
+            </Link>
           </motion.div>
         </div>
       </motion.div>
@@ -193,7 +227,7 @@ const ParallaxSlider = () => {
       {/* Navigation dots */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30">
         <div className="flex space-x-3">
-          {parallaxSlides.map((_, index) => (
+          {advertisements.map((_, index) => (
             <motion.button
               key={index}
               onClick={() => handleSlideChange(index)}
@@ -211,9 +245,9 @@ const ParallaxSlider = () => {
       {/* Side navigation */}
       <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-30 hidden md:block">
         <div className="flex flex-col space-y-4">
-          {parallaxSlides.map((slide, index) => (
+          {advertisements.map((ad, index) => (
             <motion.button
-              key={slide.id}
+              key={ad.id}
               onClick={() => handleSlideChange(index)}
               className={`w-1 h-8 rounded-full transition-all duration-300 ${currentSlide === index
                   ? 'bg-white'
