@@ -33,7 +33,7 @@ export function Toaster() {
           </Toast>
         );
       })}
-      <ToastViewport />
+      <ToastViewport className="fixed top-4 right-4 z-[100] m-0 w-96 max-w-[100vw] list-none outline-none" />
     </ToastProvider>
   );
 }
