@@ -4,10 +4,21 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 8080",
-    "build": "next build --no-lint",
-    "start": "next start -p 8080",
-    "lint": "next lint",
-    "translate": "node scripts/translate.js"
+    "build": "next build",
+    "start": "node server.js",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint \"src/**/*.+(ts|js|tsx)\"",
+    "lint:fix": "eslint \"src/**/*.+(ts|js|tsx)\" --fix",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
+    "format:ci": "prettier --list-different .",
+    "postinstall": "husky"
+  },
+  "lint-staged": {
+    "./src/**/*.{ts,js,jsx,tsx}": [
+      "eslint \"src/**/*.+(ts|js|tsx)\" --fix",
+      "prettier . --write"
+    ]
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
@@ -56,6 +67,7 @@
     "eslint": "8.51.0",
     "eslint-config-next": "13.5.4",
     "framer-motion": "^11.3.2",
+    "husky": "^9.1.7",
     "i18next": "^23.11.5",
     "i18next-resources-to-backend": "^1.2.1",
     "js-cookie": "^3.0.5",

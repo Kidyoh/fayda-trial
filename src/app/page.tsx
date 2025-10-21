@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const { t } = useLanguage();
+  const date = new Date();
 
   return (
     <>
