@@ -20,7 +20,7 @@ const Skeleton = ({ className = "" }) => {
   return <div className={`animate-pulse rounded ${className}`} />;
 };
 
-export default function search() {
+export default function Search() {
   const [packageData, setPackagesData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);

@@ -18,22 +18,6 @@ export default function MaterialNav() {
   const params = useParams();
   const courseId = params.single_course_id;
 
-  // Don't render if no courseId is available or if it's not a valid course ID format
-  if (!courseId || typeof courseId !== 'string') {
-    return null;
-  }
-
-  // Don't render for non-course routes (like careers, contact, etc.)
-  const invalidRoutes = ['careers', 'contact', 'about', 'terms_of_service', 'privacy-policy', 'help', 'f_a_q', 'blogs', 'teach', 'courses', 'competitions'];
-  if (invalidRoutes.includes(courseId.toLowerCase())) {
-    return null;
-  }
-
-  // Only render for actual numeric course IDs or valid course identifiers
-  if (!/^\d+$/.test(courseId) && !courseId.startsWith('course_')) {
-    return null;
-  }
-
   useEffect(() => {
     const fetchData = () => {
       fetch(`${apiUrl}/purchaselist/specificStudentSingleCourse/${courseId}`, {
@@ -81,6 +65,22 @@ export default function MaterialNav() {
       getCourse();
     }
   }, [courseId]);
+
+  // Don't render if no courseId is available or if it's not a valid course ID format
+  if (!courseId || typeof courseId !== 'string') {
+    return null;
+  }
+
+  // Don't render for non-course routes (like careers, contact, etc.)
+  const invalidRoutes = ['careers', 'contact', 'about', 'terms_of_service', 'privacy-policy', 'help', 'f_a_q', 'blogs', 'teach', 'courses', 'competitions'];
+  if (invalidRoutes.includes(courseId.toLowerCase())) {
+    return null;
+  }
+
+  // Only render for actual numeric course IDs or valid course identifiers
+  if (!/^\d+$/.test(courseId) && !courseId.startsWith('course_')) {
+    return null;
+  }
 
   const changePage = () => {
     var tempNumber = partNumber;

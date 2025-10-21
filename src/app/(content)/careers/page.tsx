@@ -94,8 +94,8 @@ export default function Careers() {
             variants={itemVariants}
             className="text-lg text-gray-600 max-w-2xl mx-auto"
           >
-            Help us transform education in Ethiopia. We're looking for passionate individuals 
-            who want to make a real impact on students' lives.
+            Help us transform education in Ethiopia. We&apos;re looking for passionate individuals 
+            who want to make a real impact on students&apos; lives.
           </motion.p>
         </motion.div>
 
@@ -155,7 +155,7 @@ export default function Careers() {
                 No Current Openings
               </h3>
               <p className="text-gray-600 mb-6">
-                We don't have any open positions right now, but we're always looking for talented individuals.
+                We don&apos;t have any open positions right now, but we&apos;re always looking for talented individuals.
               </p>
               <p className="text-gray-600">
                 Send us your resume at{" "}
@@ -234,13 +234,13 @@ export default function Careers() {
             variants={itemVariants}
             className="text-3xl font-bold mb-4"
           >
-            Don't See Your Role?
+            Don&apos;t See Your Role?
           </motion.h2>
           <motion.p
             variants={itemVariants}
             className="text-lg mb-8 opacity-90"
           >
-            We're always interested in hearing from talented individuals who share our passion 
+            We&apos;re always interested in hearing from talented individuals who share our passion 
             for education and technology.
           </motion.p>
           <motion.div
