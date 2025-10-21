@@ -12,7 +12,8 @@
     "format": "prettier . --write",
     "format:check": "prettier . --check",
     "format:ci": "prettier --list-different .",
-    "postinstall": "husky"
+    "postinstall": "husky",
+    "prepare": "husky"
   },
   "lint-staged": {
     "./src/**/*.{ts,js,jsx,tsx}": [
@@ -67,7 +68,6 @@
     "eslint": "8.51.0",
     "eslint-config-next": "13.5.4",
     "framer-motion": "^11.3.2",
-    "husky": "^9.1.7",
     "i18next": "^23.11.5",
     "i18next-resources-to-backend": "^1.2.1",
     "js-cookie": "^3.0.5",
@@ -90,5 +90,11 @@
     "typescript": "5.2.2",
     "zod": "^3.22.4",
     "zustand": "^4.4.3"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.5"
   }
 }
