@@ -1,5 +1,5 @@
-'use client';
-import AdSlider from "@/components/homepage_components/ad_slider";
+"use client";
+import AdSlider from "@/components/homepage_components/ad-slider";
 import Blog from "@/components/homepage_components/blog";
 import CourseGrid from "@/components/homepage_components/courses";
 import CoverHome from "@/components/homepage_components/cover_home";
@@ -22,7 +22,7 @@ export default function Home() {
       <CoverHome />
       <Info />
       <WelcomeSection />
-      <AdSlider/>
+      <AdSlider />
       <div className="relative overflow-hidden">
         <div className="w-[150vw] h-[250vh] absolute left-[45%] opacity-10 -z-10 -translate-x-1/2">
           <Image

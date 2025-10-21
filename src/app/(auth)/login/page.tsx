@@ -57,7 +57,13 @@ export default function LoginPage() {
 
       const responseData = await response.json();
       console.log(responseData);
-      setAccessToken(responseData.data.ccessToken);
+
+      // Handle the new response structure
+      if (responseData.success && responseData.data) {
+        setAccessToken(responseData.data.accessToken);
+      } else {
+        throw new Error("Invalid response structure");
+      }
 
       toast({
         title: "Success!",

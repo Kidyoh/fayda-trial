@@ -1,5 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionValue,
+  useSpring,
+} from "framer-motion";
 import Image from "next/image";
 import { apiUrl } from "@/apiConfig";
 import Link from "next/link";
@@ -14,7 +20,7 @@ const ParallaxSlider = () => {
   // Scroll-based parallax
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "end start"]
+    offset: ["start end", "end start"],
   });
 
   // Parallax transforms
@@ -23,10 +29,12 @@ const ParallaxSlider = () => {
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.2, 1, 0.8]);
 
   // Smooth spring animations
-  const smoothBackgroundY = useSpring(backgroundY, { stiffness: 400, damping: 40 });
+  const smoothBackgroundY = useSpring(backgroundY, {
+    stiffness: 400,
+    damping: 40,
+  });
   const smoothTextY = useSpring(textY, { stiffness: 400, damping: 40 });
   const smoothScale = useSpring(scale, { stiffness: 400, damping: 40 });
-
 
   // Fetch advertisements from API
   useEffect(() => {
@@ -92,7 +100,7 @@ const ParallaxSlider = () => {
   // Debug: Log the first advertisement data
   console.log("Rendering advertisements:", advertisements);
   console.log("First ad data:", advertisements[0]);
-  
+
   // Temporary test - if no ads, show a test banner
   if (advertisements.length === 0) {
     return (
@@ -123,13 +131,11 @@ const ParallaxSlider = () => {
           initial={{ opacity: 0 }}
           animate={{
             opacity: currentSlide === index ? 1 : 0,
-            scale: currentSlide === index ? 1 : 1.1
+            scale: currentSlide === index ? 1 : 1.1,
           }}
           transition={{ duration: 1, ease: "easeInOut" }}
         >
-          <motion.div
-            className="absolute inset-0 w-full h-full"
-          >
+          <motion.div className="absolute inset-0 w-full h-full">
             <img
               src={ad.imgUrl || "/common_files/main/webbannernew.png"}
               alt={ad.title || "Advertisement"}
@@ -157,7 +163,7 @@ const ParallaxSlider = () => {
               className="w-full h-full"
               style={{
                 backgroundImage: `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='white' fill-opacity='0.1'%3E%3Cpath d='M40 40l20-20v40l-20-20zm0 0l-20-20v40l20-20z'/%3E%3C/g%3E%3C/svg%3E")`,
-                backgroundSize: '80px 80px'
+                backgroundSize: "80px 80px",
               }}
             />
           </div>
@@ -231,10 +237,11 @@ const ParallaxSlider = () => {
             <motion.button
               key={index}
               onClick={() => handleSlideChange(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${currentSlide === index
-                  ? 'bg-white scale-125'
-                  : 'bg-white/50 hover:bg-white/70'
-                }`}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                currentSlide === index
+                  ? "bg-white scale-125"
+                  : "bg-white/50 hover:bg-white/70"
+              }`}
               whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 0.9 }}
             />
@@ -249,10 +256,11 @@ const ParallaxSlider = () => {
             <motion.button
               key={ad.id}
               onClick={() => handleSlideChange(index)}
-              className={`w-1 h-8 rounded-full transition-all duration-300 ${currentSlide === index
-                  ? 'bg-white'
-                  : 'bg-white/30 hover:bg-white/50'
-                }`}
+              className={`w-1 h-8 rounded-full transition-all duration-300 ${
+                currentSlide === index
+                  ? "bg-white"
+                  : "bg-white/30 hover:bg-white/50"
+              }`}
               whileHover={{ scaleY: 1.2 }}
             />
           ))}
@@ -278,4 +286,3 @@ const AdSlider = () => {
 };
 
 export default AdSlider;
-
