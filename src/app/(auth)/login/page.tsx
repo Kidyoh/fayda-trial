@@ -11,7 +11,7 @@ import { Eye, EyeOff, Mail, Phone, ArrowRight, Loader2 } from "lucide-react";
 import { setAccessToken } from "../../../lib/tokenManager";
 import { motion } from "framer-motion";
 
-type SignInMethod = 'email' | 'phone';
+type SignInMethod = "email" | "phone";
 
 interface SignInInputs {
   email?: string;
@@ -20,7 +20,7 @@ interface SignInInputs {
 }
 
 export default function LoginPage() {
-  const [signInMethod, setSignInMethod] = useState<SignInMethod>('email');
+  const [signInMethod, setSignInMethod] = useState<SignInMethod>("email");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -44,7 +44,7 @@ export default function LoginPage() {
   const onSubmit: SubmitHandler<SignInInputs> = async (data) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${apiUrl}/newlogin/login`, {
+      const response = await fetch(`${apiUrl}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -52,12 +52,13 @@ export default function LoginPage() {
       });
 
       if (!response.ok) {
-        throw new Error('Invalid credentials');
+        throw new Error("Invalid credentials");
       }
 
       const responseData = await response.json();
-      setAccessToken(responseData.accessToken);
-      
+      console.log(responseData);
+      setAccessToken(responseData.data.ccessToken);
+
       toast({
         title: "Success!",
         description: "Login successful. Redirecting...",
@@ -65,9 +66,9 @@ export default function LoginPage() {
 
       window.location.href = "/";
     } catch (error) {
-      setError('root', {
-        type: 'manual',
-        message: 'Invalid credentials. Please try again.',
+      setError("root", {
+        type: "manual",
+        message: "Invalid credentials. Please try again.",
       });
     } finally {
       setIsLoading(false);
@@ -104,13 +105,13 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={() => {
-                setSignInMethod('email');
+                setSignInMethod("email");
                 clearErrors();
               }}
               className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
-                signInMethod === 'email'
-                  ? 'bg-primaryColor text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                signInMethod === "email"
+                  ? "bg-primaryColor text-white"
+                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
               }`}
             >
               <Mail className="w-5 h-5 mr-2" />
@@ -119,13 +120,13 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={() => {
-                setSignInMethod('phone');
+                setSignInMethod("phone");
                 clearErrors();
               }}
               className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
-                signInMethod === 'phone'
-                  ? 'bg-primaryColor text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                signInMethod === "phone"
+                  ? "bg-primaryColor text-white"
+                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
               }`}
             >
               <Phone className="w-5 h-5 mr-2" />
@@ -140,9 +141,12 @@ export default function LoginPage() {
               </div>
             )}
 
-            {signInMethod === 'email' ? (
+            {signInMethod === "email" ? (
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Email address
                 </label>
                 <div className="mt-1">
@@ -153,13 +157,18 @@ export default function LoginPage() {
                     placeholder="Enter your email"
                   />
                   {errors.email && (
-                    <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.email.message}
+                    </p>
                   )}
                 </div>
               </div>
             ) : (
               <div>
-                <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="phoneNumber"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Phone number
                 </label>
                 <div className="mt-1">
@@ -170,14 +179,19 @@ export default function LoginPage() {
                     placeholder="Enter your phone number"
                   />
                   {errors.phoneNumber && (
-                    <p className="mt-1 text-sm text-red-600">{errors.phoneNumber.message}</p>
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.phoneNumber.message}
+                    </p>
                   )}
                 </div>
               </div>
             )}
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Password
               </label>
               <div className="mt-1 relative">
@@ -200,7 +214,9 @@ export default function LoginPage() {
                 </button>
               </div>
               {errors.password && (
-                <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.password.message}
+                </p>
               )}
             </div>
 
@@ -242,7 +258,9 @@ export default function LoginPage() {
                 <div className="w-full border-t border-gray-300" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">New to Fayida?</span>
+                <span className="px-2 bg-white text-gray-500">
+                  New to Fayida?
+                </span>
               </div>
             </div>
 

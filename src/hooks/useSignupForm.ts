@@ -77,17 +77,14 @@ export const useSignupForm = (): UseSignupFormReturn => {
           gread: grade, // Backend expects 'gread' field
         };
 
-        const response = await fetch(
-          `http://localhost:5000/login_register/register`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(backendData),
-            signal: AbortSignal.timeout(30000), // 30 second timeout
-          }
-        );
+        const response = await fetch(`${apiUrl}/auth/register`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(backendData),
+          signal: AbortSignal.timeout(30000), // 30 second timeout
+        });
 
         const responseData = await response.json();
 
