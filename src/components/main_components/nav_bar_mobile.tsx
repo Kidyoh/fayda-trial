@@ -2,9 +2,21 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { 
-  Menu, X, Home, Search, Package, BookOpen, User, 
-  Bell, ChevronRight, LogOut, Bot, Book, Trophy, Info 
+import {
+  Menu,
+  X,
+  Home,
+  Search,
+  Package,
+  BookOpen,
+  User,
+  Bell,
+  ChevronRight,
+  LogOut,
+  Bot,
+  Book,
+  Trophy,
+  Info,
 } from "lucide-react";
 import TranslateButton from "../TranslateButton";
 import { usePathname } from "next/navigation";
@@ -65,10 +77,10 @@ export default function NavBarMobile({ data, notificationNumber }: any) {
             alt="Fayida"
           />
         </Link>
-        
+
         <div className="flex items-center space-x-1 sm:space-x-2">
           <CartIcon />
-          
+
           <Link href="/notifications" className="relative p-2">
             <Bell size={20} className="text-gray-600" />
             {notificationNumber > 0 && (
@@ -77,8 +89,8 @@ export default function NavBarMobile({ data, notificationNumber }: any) {
               </span>
             )}
           </Link>
-          
-          <button 
+
+          <button
             onClick={() => setIsOpen(true)}
             className="p-2 text-gray-600 focus:outline-none hover:bg-gray-100 rounded-full transition-colors"
             aria-label="Open menu"
@@ -91,14 +103,14 @@ export default function NavBarMobile({ data, notificationNumber }: any) {
       {/* Full screen menu overlay */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm"
             onClick={() => setIsOpen(false)}
           >
-            <motion.div 
+            <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
@@ -108,7 +120,7 @@ export default function NavBarMobile({ data, notificationNumber }: any) {
             >
               <div className="p-4 border-b border-gray-100 flex items-center justify-between">
                 <div className="flex items-center">
-                  <button 
+                  <button
                     onClick={() => setIsOpen(false)}
                     className="p-2 -ml-2 text-gray-600 focus:outline-none"
                     aria-label="Close menu"
@@ -132,8 +144,11 @@ export default function NavBarMobile({ data, notificationNumber }: any) {
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full px-4 py-2 pl-10 pr-4 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primaryColor/20 text-sm"
                   />
-                  <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                  <button 
+                  <Search
+                    size={16}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                  />
+                  <button
                     type="submit"
                     className="absolute right-3 top-1/2 -translate-y-1/2 bg-primaryColor text-white p-1 rounded-full"
                   >
@@ -145,7 +160,9 @@ export default function NavBarMobile({ data, notificationNumber }: any) {
               {/* Menu links */}
               <div className="py-2">
                 <Link href="/">
-                  <div className={`flex items-center px-4 py-3 ${pathname === '/' ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
+                  <div
+                    className={`flex items-center px-4 py-3 ${pathname === "/" ? "text-primaryColor bg-primaryColor/5" : "text-gray-700"}`}
+                  >
                     <Home size={20} className="mr-3" />
                     <span className="font-medium">Home</span>
                   </div>
@@ -153,21 +170,24 @@ export default function NavBarMobile({ data, notificationNumber }: any) {
 
                 {/* Academic Categories */}
                 <div>
-                  <div 
+                  <div
                     className="flex items-center justify-between px-4 py-3 text-gray-700 cursor-pointer"
-                    onClick={() => toggleMenu('academic')}
+                    onClick={() => toggleMenu("academic")}
                   >
                     <div className="flex items-center">
                       <BookOpen size={20} className="mr-3" />
                       <span className="font-medium">Academic</span>
                     </div>
-                    <ChevronRight size={18} className={`transition-transform duration-200 ${expandedMenu === 'academic' ? 'rotate-90' : ''}`} />
+                    <ChevronRight
+                      size={18}
+                      className={`transition-transform duration-200 ${expandedMenu === "academic" ? "rotate-90" : ""}`}
+                    />
                   </div>
-                  
-                  {expandedMenu === 'academic' && (
+
+                  {expandedMenu === "academic" && (
                     <motion.div
                       initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
+                      animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       className="bg-gray-50 overflow-hidden"
                     >
@@ -197,49 +217,63 @@ export default function NavBarMobile({ data, notificationNumber }: any) {
 
                 {/* Other menu items */}
                 <Link href="/search">
-                  <div className={`flex items-center px-4 py-3 ${pathname.includes('/search') ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
+                  <div
+                    className={`flex items-center px-4 py-3 ${pathname.includes("/search") ? "text-primaryColor bg-primaryColor/5" : "text-gray-700"}`}
+                  >
                     <Package size={20} className="mr-3" />
                     <span className="font-medium">Packages</span>
                   </div>
                 </Link>
 
                 <Link href="/blogs">
-                  <div className={`flex items-center px-4 py-3 ${pathname.includes('/blogs') ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
+                  <div
+                    className={`flex items-center px-4 py-3 ${pathname.includes("/blogs") ? "text-primaryColor bg-primaryColor/5" : "text-gray-700"}`}
+                  >
                     <Book size={20} className="mr-3" />
                     <span className="font-medium">Blogs</span>
                   </div>
                 </Link>
 
                 <Link href="/leaderboard">
-                  <div className={`flex items-center px-4 py-3 ${pathname.includes('/leaderboard') ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
+                  <div
+                    className={`flex items-center px-4 py-3 ${pathname.includes("/leaderboard") ? "text-primaryColor bg-primaryColor/5" : "text-gray-700"}`}
+                  >
                     <Trophy size={20} className="mr-3" />
                     <span className="font-medium">Leaderboard</span>
                   </div>
                 </Link>
 
                 <Link href="/competitions">
-                  <div className={`flex items-center px-4 py-3 ${pathname.includes('/competitions') && !pathname.includes('/demo') ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
+                  <div
+                    className={`flex items-center px-4 py-3 ${pathname.includes("/competitions") && !pathname.includes("/demo") ? "text-primaryColor bg-primaryColor/5" : "text-gray-700"}`}
+                  >
                     <Trophy size={20} className="mr-3" />
                     <span className="font-medium">Competitions</span>
                   </div>
                 </Link>
 
                 <Link href="/competitions/list/demo">
-                  <div className={`flex items-center px-4 py-3 ${pathname.includes('/competitions/demo') ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
+                  <div
+                    className={`flex items-center px-4 py-3 ${pathname.includes("/competitions/demo") ? "text-primaryColor bg-primaryColor/5" : "text-gray-700"}`}
+                  >
                     <Trophy size={20} className="mr-3" />
                     <span className="font-medium">Competitions Demo</span>
                   </div>
                 </Link>
-                
+
                 <Link href="/bot">
-                  <div className={`flex items-center px-4 py-3 ${pathname.includes('/bot') ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
+                  <div
+                    className={`flex items-center px-4 py-3 ${pathname.includes("/bot") ? "text-primaryColor bg-primaryColor/5" : "text-gray-700"}`}
+                  >
                     <Bot size={20} className="mr-3" />
                     <span className="font-medium">Telegram Bot</span>
                   </div>
                 </Link>
 
                 <Link href="/about">
-                  <div className={`flex items-center px-4 py-3 ${pathname.includes('/about_us') ? 'text-primaryColor bg-primaryColor/5' : 'text-gray-700'}`}>
+                  <div
+                    className={`flex items-center px-4 py-3 ${pathname.includes("/about_us") ? "text-primaryColor bg-primaryColor/5" : "text-gray-700"}`}
+                  >
                     <Info size={20} className="mr-3" />
                     <span className="font-medium">About Us</span>
                   </div>
@@ -256,7 +290,7 @@ export default function NavBarMobile({ data, notificationNumber }: any) {
                         <span className="font-medium">Dashboard</span>
                       </div>
                     </Link>
-                    <button 
+                    <button
                       onClick={handleLogout}
                       className="flex items-center w-full px-4 py-3 text-gray-700 rounded-xl border border-gray-200"
                     >
@@ -287,34 +321,42 @@ export default function NavBarMobile({ data, notificationNumber }: any) {
       {/* Bottom navigation */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40 flex items-center justify-around h-16">
         <Link href="/">
-          <div className={`flex flex-col items-center justify-center ${pathname === '/' ? 'text-primaryColor' : 'text-gray-500'}`}>
+          <div
+            className={`flex flex-col items-center justify-center ${pathname === "/" ? "text-primaryColor" : "text-gray-500"}`}
+          >
             <Home size={20} />
             <span className="text-xs mt-1">Home</span>
           </div>
         </Link>
-        
+
         <Link href="/search">
-          <div className={`flex flex-col items-center justify-center ${pathname.includes('/search') || pathname.includes('/packages_access') ? 'text-primaryColor' : 'text-gray-500'}`}>
+          <div
+            className={`flex flex-col items-center justify-center ${pathname.includes("/search") || pathname.includes("/packages_access") ? "text-primaryColor" : "text-gray-500"}`}
+          >
             <Package size={20} />
             <span className="text-xs mt-1">Search</span>
           </div>
         </Link>
-        
+
         <Link href="/blogs">
-          <div className={`flex flex-col items-center justify-center ${pathname.includes('/blogs') ? 'text-primaryColor' : 'text-gray-500'}`}>
+          <div
+            className={`flex flex-col items-center justify-center ${pathname.includes("/blogs") ? "text-primaryColor" : "text-gray-500"}`}
+          >
             <Book size={20} />
             <span className="text-xs mt-1">Blogs</span>
           </div>
         </Link>
-        
+
         <Link href={data ? "/dashboard" : "/login"}>
-          <div className={`flex flex-col items-center justify-center ${pathname.includes('/dashboard') || pathname.includes('/login') ? 'text-primaryColor' : 'text-gray-500'}`}>
+          <div
+            className={`flex flex-col items-center justify-center ${pathname.includes("/dashboard") || pathname.includes("/login") ? "text-primaryColor" : "text-gray-500"}`}
+          >
             <User size={20} />
             <span className="text-xs mt-1">{data ? "Profile" : "Login"}</span>
           </div>
         </Link>
       </div>
-      
+
       {/* Space to prevent content from being hidden behind the bottom navigation */}
       <div className="h-16 w-full"></div>
     </>

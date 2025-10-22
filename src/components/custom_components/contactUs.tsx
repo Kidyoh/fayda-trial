@@ -121,7 +121,8 @@ export default function ContactUs() {
             variants={itemVariants}
             className="text-lg text-gray-600 max-w-2xl mx-auto"
           >
-            Have questions about our courses or need support? We're here to help you on your learning journey.
+            Have questions about our courses or need support? We're here to help
+            you on your learning journey.
           </motion.p>
         </motion.div>
 
@@ -140,7 +141,7 @@ export default function ContactUs() {
             >
               Contact Information
             </motion.h2>
-            
+
             <div className="space-y-6">
               {contactInfo.map((info, index) => (
                 <motion.div
@@ -151,20 +152,28 @@ export default function ContactUs() {
                 >
                   <Link
                     href={info.link}
-                    target={info.link.startsWith('http') ? '_blank' : '_self'}
-                    rel={info.link.startsWith('http') ? 'noopener noreferrer' : ''}
+                    target={info.link.startsWith("http") ? "_blank" : "_self"}
+                    rel={
+                      info.link.startsWith("http") ? "noopener noreferrer" : ""
+                    }
                     className="flex items-start space-x-4 p-6 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-[#c7cc3f]/20"
                   >
-                    <div className={`p-3 rounded-full ${info.bgColor} group-hover:scale-110 transition-transform duration-300`}>
+                    <div
+                      className={`p-3 rounded-full ${info.bgColor} group-hover:scale-110 transition-transform duration-300`}
+                    >
                       <info.icon className={`w-6 h-6 ${info.color}`} />
                     </div>
                     <div className="flex-1">
                       <h3 className="text-lg font-semibold text-gray-900 mb-1">
                         {info.title}
                       </h3>
-                      <p className="text-gray-700 font-medium">{info.content}</p>
+                      <p className="text-gray-700 font-medium">
+                        {info.content}
+                      </p>
                       {info.subContent && (
-                        <p className="text-gray-500 text-sm mt-1">{info.subContent}</p>
+                        <p className="text-gray-500 text-sm mt-1">
+                          {info.subContent}
+                        </p>
                       )}
                     </div>
                   </Link>
@@ -207,7 +216,7 @@ export default function ContactUs() {
             >
               Find Us
             </motion.h2>
-            
+
             <motion.div
               variants={itemVariants}
               className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100"
@@ -267,8 +276,9 @@ export default function ContactUs() {
             variants={itemVariants}
             className="text-gray-600 mb-6 max-w-2xl mx-auto"
           >
-            Join thousands of students who are already learning with Fayida Academy. 
-            Explore our courses and start your educational journey today.
+            Join thousands of students who are already learning with Fayida
+            Academy. Explore our courses and start your educational journey
+            today.
           </motion.p>
           <motion.div
             variants={itemVariants}

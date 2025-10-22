@@ -1,4 +1,4 @@
-// Course Purchase API Integration 
+// Course Purchase API Integration
 // This file demonstrates how to integrate the new course schema with payment systems
 
 import { apiUrl } from "@/apiConfig";
@@ -41,7 +41,7 @@ export interface CoursePurchase {
   paymentMethod: string;
   phoneNumber: string;
   transactionId?: string;
-  status: 'pending' | 'completed' | 'failed';
+  status: "pending" | "completed" | "failed";
   createdAt: Date;
   updatedAt: Date;
 }
@@ -61,12 +61,15 @@ export interface TransactionIdGenerator {
 /**
  * Create a new course purchase record
  */
-export async function createCoursePurchase(data: {
-  courseId: string;
-  price: string;
-  phoneNumber: string;
-  paymentMethod: string;
-}, accessToken: string): Promise<CoursePurchase> {
+export async function createCoursePurchase(
+  data: {
+    courseId: string;
+    price: string;
+    phoneNumber: string;
+    paymentMethod: string;
+  },
+  accessToken: string,
+): Promise<CoursePurchase> {
   const response = await fetch(`${apiUrl}/coursepurchase/create`, {
     method: "POST",
     headers: {
@@ -86,12 +89,15 @@ export async function createCoursePurchase(data: {
 /**
  * Initiate payment through SantiPay for course purchase
  */
-export async function initiateCoursePayment(data: {
-  courseId: string;
-  price: string;
-  phoneNumber: string;
-  purchaseId: string;
-}, accessToken: string) {
+export async function initiateCoursePayment(
+  data: {
+    courseId: string;
+    price: string;
+    phoneNumber: string;
+    purchaseId: string;
+  },
+  accessToken: string,
+) {
   const response = await fetch(`${apiUrl}/paymenthandler/course-checkout/`, {
     method: "POST",
     headers: {
@@ -113,10 +119,10 @@ export async function initiateCoursePayment(data: {
  */
 export async function checkCoursePurchaseStatus(
   courseId: string,
-  phoneNumber: string
+  phoneNumber: string,
 ): Promise<{ purchased: boolean; status: string }> {
   const response = await fetch(
-    `${apiUrl}/coursepurchase/check/${phoneNumber}/${courseId}`
+    `${apiUrl}/coursepurchase/check/${phoneNumber}/${courseId}`,
   );
 
   if (!response.ok) {
@@ -129,12 +135,14 @@ export async function checkCoursePurchaseStatus(
 /**
  * Get all courses with pricing information (requires authentication)
  */
-export async function getAllCourses(accessToken: string): Promise<Course[] | { Error: string }> {
+export async function getAllCourses(
+  accessToken: string,
+): Promise<Course[] | { Error: string }> {
   const response = await fetch(`${apiUrl}/courses`, {
     headers: {
-      'Authorization': `Bearer ${accessToken}`,
-      'Content-Type': 'application/json'
-    }
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
   });
 
   const data = await response.json();
@@ -144,7 +152,9 @@ export async function getAllCourses(accessToken: string): Promise<Course[] | { E
       // Return the error response as an object so the calling code can handle it
       return data;
     }
-    throw new Error(`Failed to fetch courses: ${response.status} ${response.statusText}`);
+    throw new Error(
+      `Failed to fetch courses: ${response.status} ${response.statusText}`,
+    );
   }
 
   return data;
@@ -155,16 +165,18 @@ export async function getAllCourses(accessToken: string): Promise<Course[] | { E
  */
 export async function getPublicCourses(): Promise<Course[]> {
   const response = await fetch(`${apiUrl}/courses/public`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json'
-    }
+      "Content-Type": "application/json",
+    },
   });
 
   if (!response.ok) {
     const errorText = await response.text();
-    console.error('❌ Public courses API error:', errorText);
-    throw new Error(`Failed to fetch public courses: ${response.status} ${response.statusText}`);
+    console.error("❌ Public courses API error:", errorText);
+    throw new Error(
+      `Failed to fetch public courses: ${response.status} ${response.statusText}`,
+    );
   }
 
   return response.json();
@@ -175,14 +187,16 @@ export async function getPublicCourses(): Promise<Course[]> {
  */
 export async function getPublicCourse(courseId: string): Promise<Course> {
   const response = await fetch(`${apiUrl}/courses/public/${courseId}`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json'
-    }
+      "Content-Type": "application/json",
+    },
   });
 
   if (!response.ok) {
-    throw new Error(`Failed to fetch public course: ${response.status} ${response.statusText}`);
+    throw new Error(
+      `Failed to fetch public course: ${response.status} ${response.statusText}`,
+    );
   }
 
   return response.json();
@@ -191,20 +205,22 @@ export async function getPublicCourse(courseId: string): Promise<Course> {
 /**
  * Get courses that should be displayed on homepage (requires authentication)
  */
-export async function getHomepageCourses(accessToken: string): Promise<Course[]> {
+export async function getHomepageCourses(
+  accessToken: string,
+): Promise<Course[]> {
   const allCourses = await getAllCourses(accessToken);
-  
+
   // Check if the response is an error object
-  if (allCourses && typeof allCourses === 'object' && 'Error' in allCourses) {
+  if (allCourses && typeof allCourses === "object" && "Error" in allCourses) {
     throw new Error(allCourses.Error);
   }
-  
+
   // Ensure it's an array before filtering
   if (!Array.isArray(allCourses)) {
-    throw new Error('Invalid course data format received from server');
+    throw new Error("Invalid course data format received from server");
   }
-  
-  return allCourses.filter(course => course.displayOnHome && course.status);
+
+  return allCourses.filter((course) => course.displayOnHome && course.status);
 }
 
 /**
@@ -212,24 +228,27 @@ export async function getHomepageCourses(accessToken: string): Promise<Course[]>
  */
 export async function getPublicHomepageCourses(): Promise<Course[]> {
   const allCourses = await getPublicCourses();
-  
+
   // Filter out courses with empty names or missing IDs
-  const homepageCourses = allCourses.filter(course => {
-    return course.courseName && course.courseName.trim() !== '' && course.id;
+  const homepageCourses = allCourses.filter((course) => {
+    return course.courseName && course.courseName.trim() !== "" && course.id;
   });
-  
+
   return homepageCourses;
 }
 
 /**
  * Get single course details including pricing
  */
-export async function getCourseDetails(courseId: string, accessToken: string): Promise<Course> {
+export async function getCourseDetails(
+  courseId: string,
+  accessToken: string,
+): Promise<Course> {
   const response = await fetch(`${apiUrl}/courses/${courseId}`, {
     headers: {
-      'Authorization': `Bearer ${accessToken}`,
-      'Content-Type': 'application/json'
-    }
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
   });
 
   if (!response.ok) {
@@ -244,7 +263,7 @@ export async function getCourseDetails(courseId: string, accessToken: string): P
  */
 export async function verifyCourseAccess(
   courseId: string,
-  accessToken: string
+  accessToken: string,
 ): Promise<{ hasAccess: boolean; purchaseDetails?: CoursePurchase }> {
   const response = await fetch(`${apiUrl}/courses/${courseId}/verify-access`, {
     method: "GET",
@@ -290,15 +309,18 @@ export async function generateTransactionId(data: {
 export async function updateTransactionStatus(
   transactionId: string,
   status: string,
-  paymentData?: any
+  paymentData?: any,
 ) {
-  const response = await fetch(`${apiUrl}/transaction/${transactionId}/status`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
+  const response = await fetch(
+    `${apiUrl}/transaction/${transactionId}/status`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ status, paymentData }),
     },
-    body: JSON.stringify({ status, paymentData }),
-  });
+  );
 
   if (!response.ok) {
     throw new Error("Failed to update transaction status");
@@ -314,17 +336,17 @@ export async function updateTransactionStatus(
  */
 export function formatEthiopianPhoneNumber(phoneNumber: string): string {
   // Remove all non-digits
-  const digits = phoneNumber.replace(/\D/g, '');
-  
+  const digits = phoneNumber.replace(/\D/g, "");
+
   // Handle different formats
-  if (digits.startsWith('251')) {
+  if (digits.startsWith("251")) {
     return `+${digits}`;
-  } else if (digits.startsWith('09') || digits.startsWith('07')) {
+  } else if (digits.startsWith("09") || digits.startsWith("07")) {
     return `+251${digits.substring(1)}`;
   } else if (digits.length === 9) {
     return `+251${digits}`;
   }
-  
+
   return phoneNumber;
 }
 
@@ -338,21 +360,25 @@ export function calculateCoursePrice(course: Course): {
   isDiscounted: boolean;
 } {
   const originalPrice = parseFloat(course.price);
-  const temporaryPrice = course.temporaryPrice ? parseFloat(course.temporaryPrice) : null;
-  
-  const isDiscounted = Boolean(course.discountStatus && 
-                      temporaryPrice !== null && 
-                      course.discountExpiryDate && 
-                      new Date(course.discountExpiryDate) > new Date());
-  
+  const temporaryPrice = course.temporaryPrice
+    ? parseFloat(course.temporaryPrice)
+    : null;
+
+  const isDiscounted = Boolean(
+    course.discountStatus &&
+      temporaryPrice !== null &&
+      course.discountExpiryDate &&
+      new Date(course.discountExpiryDate) > new Date(),
+  );
+
   const finalPrice = isDiscounted ? temporaryPrice! : originalPrice;
   const discountAmount = isDiscounted ? originalPrice - temporaryPrice! : 0;
-  
+
   return {
     originalPrice,
     finalPrice,
     discountAmount,
-    isDiscounted
+    isDiscounted,
   };
 }
 
@@ -373,24 +399,26 @@ export function getDisplayPrice(course: Course): {
   isDiscounted: boolean;
   discountExpiry: string | null;
 } {
-  const isDiscounted = course.discountStatus && 
-    course.temporaryPrice && 
-    (!course.discountExpiryDate || new Date(course.discountExpiryDate) > new Date());
-  
+  const isDiscounted =
+    course.discountStatus &&
+    course.temporaryPrice &&
+    (!course.discountExpiryDate ||
+      new Date(course.discountExpiryDate) > new Date());
+
   if (isDiscounted) {
     return {
       currentPrice: course.temporaryPrice!,
       originalPrice: course.price,
       isDiscounted: true,
-      discountExpiry: course.discountExpiryDate || null
+      discountExpiry: course.discountExpiryDate || null,
     };
   }
-  
+
   return {
     currentPrice: course.price,
     originalPrice: null,
     isDiscounted: false,
-    discountExpiry: null
+    discountExpiry: null,
   };
 }
 

@@ -4,7 +4,15 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Play, BookOpen, Clock, Users, Star, CheckCircle } from "lucide-react";
+import {
+  ArrowLeft,
+  Play,
+  BookOpen,
+  Clock,
+  Users,
+  Star,
+  CheckCircle,
+} from "lucide-react";
 import { getPublicCourse, Course, getDisplayPrice } from "@/lib/courseAPI";
 import { CoursePurchaseDialog } from "@/components/custom_components/coursePurchaseDialog";
 import { CourseAddToCartButton } from "@/components/cart/AddToCartButton";
@@ -12,7 +20,7 @@ import { CourseAddToCartButton } from "@/components/cart/AddToCartButton";
 export default function CourseDetailPage() {
   const params = useParams();
   const courseId = params.id as string;
-  
+
   const [course, setCourse] = useState<Course | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -22,12 +30,12 @@ export default function CourseDetailPage() {
       try {
         setLoading(true);
         setError(null);
-        
+
         const courseData = await getPublicCourse(courseId);
         setCourse(courseData);
       } catch (err) {
-        console.error('Error fetching course:', err);
-        setError(err instanceof Error ? err.message : 'Failed to load course');
+        console.error("Error fetching course:", err);
+        setError(err instanceof Error ? err.message : "Failed to load course");
       } finally {
         setLoading(false);
       }
@@ -151,19 +159,27 @@ export default function CourseDetailPage() {
 
             {/* Course Description */}
             <div className="mb-8">
-              <h2 className="text-xl font-semibold text-gray-900 mb-3">About This Course</h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-3">
+                About This Course
+              </h2>
               <p className="text-gray-700 leading-relaxed">
-                {course.courseDescription || "No description available for this course."}
+                {course.courseDescription ||
+                  "No description available for this course."}
               </p>
             </div>
 
             {/* Course Units */}
             {course.CourseUnitsList && course.CourseUnitsList.length > 0 && (
               <div className="mb-8">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">Course Units</h2>
+                <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                  Course Units
+                </h2>
                 <div className="space-y-3">
                   {course.CourseUnitsList.map((unit) => (
-                    <div key={unit.id} className="bg-white p-4 rounded-lg border border-gray-200">
+                    <div
+                      key={unit.id}
+                      className="bg-white p-4 rounded-lg border border-gray-200"
+                    >
                       <h3 className="font-semibold text-gray-900 mb-2">
                         Unit {unit.UnitNumber}: {unit.UnitName}
                       </h3>
@@ -178,8 +194,12 @@ export default function CourseDetailPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
               <div className="bg-white p-4 rounded-lg border border-gray-200 text-center">
                 <BookOpen className="w-8 h-8 text-primaryColor mx-auto mb-2" />
-                <div className="font-semibold text-gray-900">{course.parts} Parts</div>
-                <div className="text-sm text-gray-600">Comprehensive Content</div>
+                <div className="font-semibold text-gray-900">
+                  {course.parts} Parts
+                </div>
+                <div className="text-sm text-gray-600">
+                  Comprehensive Content
+                </div>
               </div>
               <div className="bg-white p-4 rounded-lg border border-gray-200 text-center">
                 <Clock className="w-8 h-8 text-primaryColor mx-auto mb-2" />
@@ -189,7 +209,9 @@ export default function CourseDetailPage() {
               <div className="bg-white p-4 rounded-lg border border-gray-200 text-center">
                 <Users className="w-8 h-8 text-primaryColor mx-auto mb-2" />
                 <div className="font-semibold text-gray-900">All Levels</div>
-                <div className="text-sm text-gray-600">Beginner to Advanced</div>
+                <div className="text-sm text-gray-600">
+                  Beginner to Advanced
+                </div>
               </div>
             </div>
           </div>
@@ -199,7 +221,9 @@ export default function CourseDetailPage() {
             <div className="bg-white rounded-lg border border-gray-200 p-6 sticky top-8">
               {/* Pricing */}
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">Course Price</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                  Course Price
+                </h3>
                 {priceInfo.isDiscounted ? (
                   <div className="space-y-2">
                     <div className="flex items-center space-x-2">
@@ -223,24 +247,31 @@ export default function CourseDetailPage() {
 
               {/* Action Buttons */}
               <div className="space-y-3">
-                <CourseAddToCartButton 
+                <CourseAddToCartButton
                   courseData={{
                     id: course.id,
                     courseName: course.courseName,
                     price: parseFloat(priceInfo.currentPrice),
-                    temporaryPrice: priceInfo.isDiscounted && priceInfo.originalPrice ? parseFloat(priceInfo.originalPrice) : undefined,
+                    temporaryPrice:
+                      priceInfo.isDiscounted && priceInfo.originalPrice
+                        ? parseFloat(priceInfo.originalPrice)
+                        : undefined,
                     discountStatus: priceInfo.isDiscounted,
                     discountExpiryDate: priceInfo.discountExpiry,
-                    courseDescription: course.courseDescription
+                    courseDescription: course.courseDescription,
                   }}
                   size="lg"
                 />
-                
+
                 <CoursePurchaseDialog
                   courseId={course.id}
                   courseName={course.courseName}
                   price={priceInfo.currentPrice}
-                  temporaryPrice={priceInfo.isDiscounted ? priceInfo.originalPrice || undefined : undefined}
+                  temporaryPrice={
+                    priceInfo.isDiscounted
+                      ? priceInfo.originalPrice || undefined
+                      : undefined
+                  }
                   discountStatus={priceInfo.isDiscounted}
                   discountExpiryDate={priceInfo.discountExpiry || undefined}
                 />
@@ -248,7 +279,9 @@ export default function CourseDetailPage() {
 
               {/* Course Info */}
               <div className="mt-6 pt-6 border-t border-gray-200">
-                <h4 className="font-semibold text-gray-900 mb-3">What's Included</h4>
+                <h4 className="font-semibold text-gray-900 mb-3">
+                  What's Included
+                </h4>
                 <ul className="space-y-2 text-sm text-gray-600">
                   <li className="flex items-center">
                     <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
@@ -281,24 +314,24 @@ function getCourseThumbnail(course: Course): string {
   if (course.thumbnail) {
     return course.thumbnail;
   }
-  
+
   // Map course names to appropriate images
   const courseImages: { [key: string]: string } = {
-    'Math': '/course/Math.png',
-    'Physics': '/course/Physics.png',
-    'Chemistry': '/course/Chemistry.png',
-    'Biology': '/course/Biology.png',
-    'History': '/course/History.png',
-    'Economics': '/course/Economics.png'
+    Math: "/course/Math.png",
+    Physics: "/course/Physics.png",
+    Chemistry: "/course/Chemistry.png",
+    Biology: "/course/Biology.png",
+    History: "/course/History.png",
+    Economics: "/course/Economics.png",
   };
-  
+
   // Try to match course name with available images
   for (const [key, image] of Object.entries(courseImages)) {
     if (course.courseName.toLowerCase().includes(key.toLowerCase())) {
       return image;
     }
   }
-  
+
   // Default fallback
-  return '/course/Math.png';
+  return "/course/Math.png";
 }

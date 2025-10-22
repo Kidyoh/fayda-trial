@@ -1,55 +1,51 @@
 📄 Fayida Academy – Quiz Tournament Competition Documentation
-1. Overview
-Fayida Academy is launching a digital quiz tournament hosted via its website and mobile application. The competition can be:
-One-Time Competition (single event).
-Tournament Mode (multi-day, e.g., 5 days).
-Other Key Features:
-Grade-Specific Participation: Grade 9 & Grade 10
-Real-Time Leaderboards
-Exam Auto-Scoring with Answer and Explanation Review
-Prizes Displayed with Images and Rank Assignment
-Exam ID Distribution via Email & SMS
-Anti-Cheating Measures: Single-device Exam ID, Screenshot Prevention
-Package Validity Check: Must cover full tournament duration
-2. Competition Page
-2.1 Main Competition Page
-The main Competition Page should have the following sections:
-Tabs/Filters:
-Upcoming Competitions
-Past Competitions
-All Competitions
-Event Card Details:
-Event Name
-Event Date & Time
-Place: Online (Fayida Academy platform)
-"Show detail" Button
 
+1. Overview
+   Fayida Academy is launching a digital quiz tournament hosted via its website and mobile application. The competition can be:
+   One-Time Competition (single event).
+   Tournament Mode (multi-day, e.g., 5 days).
+   Other Key Features:
+   Grade-Specific Participation: Grade 9 & Grade 10
+   Real-Time Leaderboards
+   Exam Auto-Scoring with Answer and Explanation Review
+   Prizes Displayed with Images and Rank Assignment
+   Exam ID Distribution via Email & SMS
+   Anti-Cheating Measures: Single-device Exam ID, Screenshot Prevention
+   Package Validity Check: Must cover full tournament duration
+2. Competition Page
+   2.1 Main Competition Page
+   The main Competition Page should have the following sections:
+   Tabs/Filters:
+   Upcoming Competitions
+   Past Competitions
+   All Competitions
+   Event Card Details:
+   Event Name
+   Event Date & Time
+   Place: Online (Fayida Academy platform)
+   "Show detail" Button
 
 3. Event Detail Page
-The Event Detail Page is divided into multiple sections:
-Event Info Header
-Overview section
-Schedule section
-Prize section
-Sponsors section
-Quiz section
-Leaderboard
-3.1 Event Info Header 
-3.1.1 Components
-Event Title
-Large, prominent at the top of the Event Detail Page
-Example: Quiz Tournament
-Specific Grade below the event title that represent the quiz grade
-Event Info Icons / Thumbnails 
-🏆 Total Prizes
-📅 Event Dates: “Sept 15 – Sept 19, 2025”
-⏳ Duration: “5 Days”
-Dynamic Action Button Area: “Apply Now” Button
-Conditional “Apply Now” based on login, package purchase, and package validity
-
-
-
-
+   The Event Detail Page is divided into multiple sections:
+   Event Info Header
+   Overview section
+   Schedule section
+   Prize section
+   Sponsors section
+   Quiz section
+   Leaderboard
+   3.1 Event Info Header
+   3.1.1 Components
+   Event Title
+   Large, prominent at the top of the Event Detail Page
+   Example: Quiz Tournament
+   Specific Grade below the event title that represent the quiz grade
+   Event Info Icons / Thumbnails
+   🏆 Total Prizes
+   📅 Event Dates: “Sept 15 – Sept 19, 2025”
+   ⏳ Duration: “5 Days”
+   Dynamic Action Button Area: “Apply Now” Button
+   Conditional “Apply Now” based on login, package purchase, and package validity
 
 Dynamic Button Logic
 User Status
@@ -58,14 +54,13 @@ Behavior
 Not logged In
 [Sign Up/Log in]
 
-
 Logged In, No Package
 [Apply Now]
-Pop up message with “View Package” on bottom 
+Pop up message with “View Package” on bottom
 If the quiz is grade 9
 “To apply You need to purchase a Grade 9 package to apply for this tournament.”
 🛒 View Packages → Redirect to Package List Page filtered to his/her grade
-Logged in, Specific grade package purchase 
+Logged in, Specific grade package purchase
 [Apply Now]
 Generates Exam ID, sends to email + SMS, confirms registration
 Already Applied
@@ -74,7 +69,7 @@ Shows Exam ID info, prevents multiple applications
 Click [Go to Dashboard] 🡪 Comptition
 Logged In, Package expires before tournament ends and want to apply tournament
 [Apply Now]
-Pop up message with “View Package” on bottom 
+Pop up message with “View Package” on bottom
 If the quiz is grade 9
 “Your current package expires early and didn’t cover the full tournament duration. Buy new package”
 🛒 View Packages → Redirect to Package List Page filtered to his/her grade
@@ -98,7 +93,7 @@ Requirements:
 Must be a registered student
 Must Sign Up / Log In
 Must purchase 1-month package for corresponding grade
-Grade-specific restriction 
+Grade-specific restriction
 Grade 9 Tournament → requires Grade 9 (at least 1 month) package.
 Grade 10 Tournament → requires Grade 10 (at least 1 month) package.
 At prize claim:
@@ -134,7 +129,7 @@ Noise-cancelling wireless headset.
 🎫 Voucher
 Bookstore Card
 2,000 ETB bookstore gift voucher.
-      10th
+10th
 🎒 Backpack
 Study Backpack
 Stylish backpack with study tools.
@@ -147,50 +142,50 @@ Each logo clickable → redirects to sponsor website
 The Exam Section is visible for all applied students (not hidden), but its state changes depending on time.
 
 1. General Structure
-Each day of the tournament has its own card or block in the Exam Section.
-Components of each day’s exam card:
-Thumbnail Image representing the day or topic 
-Title (e.g., “Day 1: Foundation & Warm-Up”)
-Small description 
-Scheduled Exam Date & Time
-Countdown Timer until unlock
-Status Button:
-🔒 Locked (before start)
-✅ Enter Exam (during exam)
-⛔ Closed (after exam ends)
-Exam Start Rules
-Each exam has a scheduled start time set by the system.
-Countdown timer visible to applied users before start.
-Important: The exam timer starts at the scheduled start time, regardless of when the student logs in.
-Example: Exam scheduled for 7:00 PM, duration 20 minutes.
-Student logs in at 7:05 PM → remaining time = 15 minutes.
-Submission Rules
-Must answer all questions to submit
-Single attempt per Exam ID per day
-Anti-cheating: single-device enforcement, screenshot prevention
-Exam Access & Session 
-Before Exam Day
-Quiz section visible but locked.
-Thumbnail, title, small description, Scheduled exam date and time
-⏳ Shows Countdown Timer until exam opens.
-🔒 “Locked” state → button disabled.
-Example
-[Thumbnail Image] Day 1: Foundation & Warm-Up
-Contains: “General Science Basic, Arithmetic Math, Simple Social Studies, a bit of Aptitude”
-Exam starts: Sept 15, 7:00 PM
-Countdown: 01 Day 03 Hours 22 Minutes 15 Seconds
-[ 🔒 Locked ]
-Student cannot access questions yet
-During Exam
-Quiz Unlocks automatically at scheduled start
-Students enter Exam ID to start the exam
-Countdown replaced with remaining exam time
-Single-device enforcement and screenshot prevention still apply
-Late Login
-If student logs in after the exam has started:
-Remaining time = scheduled duration – time elapsed.
-Example: Exam scheduled for 7:00 PM, duration 20 minutes.
-Student logs in at 7:05 PM → remaining time = 15 minutes.
+   Each day of the tournament has its own card or block in the Exam Section.
+   Components of each day’s exam card:
+   Thumbnail Image representing the day or topic
+   Title (e.g., “Day 1: Foundation & Warm-Up”)
+   Small description
+   Scheduled Exam Date & Time
+   Countdown Timer until unlock
+   Status Button:
+   🔒 Locked (before start)
+   ✅ Enter Exam (during exam)
+   ⛔ Closed (after exam ends)
+   Exam Start Rules
+   Each exam has a scheduled start time set by the system.
+   Countdown timer visible to applied users before start.
+   Important: The exam timer starts at the scheduled start time, regardless of when the student logs in.
+   Example: Exam scheduled for 7:00 PM, duration 20 minutes.
+   Student logs in at 7:05 PM → remaining time = 15 minutes.
+   Submission Rules
+   Must answer all questions to submit
+   Single attempt per Exam ID per day
+   Anti-cheating: single-device enforcement, screenshot prevention
+   Exam Access & Session
+   Before Exam Day
+   Quiz section visible but locked.
+   Thumbnail, title, small description, Scheduled exam date and time
+   ⏳ Shows Countdown Timer until exam opens.
+   🔒 “Locked” state → button disabled.
+   Example
+   [Thumbnail Image] Day 1: Foundation & Warm-Up
+   Contains: “General Science Basic, Arithmetic Math, Simple Social Studies, a bit of Aptitude”
+   Exam starts: Sept 15, 7:00 PM
+   Countdown: 01 Day 03 Hours 22 Minutes 15 Seconds
+   [ 🔒 Locked ]
+   Student cannot access questions yet
+   During Exam
+   Quiz Unlocks automatically at scheduled start
+   Students enter Exam ID to start the exam
+   Countdown replaced with remaining exam time
+   Single-device enforcement and screenshot prevention still apply
+   Late Login
+   If student logs in after the exam has started:
+   Remaining time = scheduled duration – time elapsed.
+   Example: Exam scheduled for 7:00 PM, duration 20 minutes.
+   Student logs in at 7:05 PM → remaining time = 15 minutes.
 
 Exam will auto-submit when scheduled duration ends.
 
@@ -236,8 +231,3 @@ Messaging: Email + SMS for Exam ID distribution
 Anti-Cheating: Screenshot disabled, single-device enforcement
 Leaderboard: Auto-updated after each exam
 Scalability: Thousands of concurrent users
-
-
-
-
-

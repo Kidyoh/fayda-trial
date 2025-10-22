@@ -1,6 +1,7 @@
 # Fayida Academy Competition System - Frontend Integration Guide
 
 ## 📋 Table of Contents
+
 1. [Overview](#overview)
 2. [Authentication](#authentication)
 3. [API Endpoints](#api-endpoints)
@@ -15,8 +16,8 @@
 
 This guide provides everything needed to integrate the Fayida Academy Competition System with your frontend application. The system supports both one-time competitions and multi-day tournaments with real-time features, anti-cheating measures, and comprehensive prize management.
 
-
 ### Key Features
+
 - ✅ Real-time leaderboards
 - ✅ Dynamic button states
 - ✅ Countdown timers
@@ -30,22 +31,24 @@ This guide provides everything needed to integrate the Fayida Academy Competitio
 ## 🔐 Authentication
 
 ### JWT Token Required
+
 Most endpoints require authentication. Include the JWT token in the Authorization header:
 
 ```javascript
 const headers = {
-  'Authorization': `Bearer ${userToken}`,
-  'Content-Type': 'application/json'
+  Authorization: `Bearer ${userToken}`,
+  "Content-Type": "application/json",
 };
 ```
 
 ### Token Storage
+
 ```javascript
 // Store token after login
-localStorage.setItem('authToken', response.data.token);
+localStorage.setItem("authToken", response.data.token);
 
 // Retrieve token for API calls
-const token = localStorage.getItem('authToken');
+const token = localStorage.getItem("authToken");
 ```
 
 ---
@@ -55,16 +58,19 @@ const token = localStorage.getItem('authToken');
 ### 1. Public Endpoints (No Authentication)
 
 #### Get All Competitions
+
 ```http
 GET /competitions
 ```
 
 **Query Parameters:**
+
 - `status` (optional): `upcoming`, `active`, `completed`, `cancelled`
 - `grade` (optional): `9`, `10`
 - `type` (optional): `one-time`, `tournament`
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -104,11 +110,13 @@ GET /competitions
 ```
 
 #### Get Competition Details (Public)
+
 ```http
 GET /competitions/:id
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -146,11 +154,13 @@ GET /competitions/:id
 ```
 
 #### Get Competition Leaderboard
+
 ```http
 GET /competitions/:id/leaderboard?limit=20
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -184,11 +194,13 @@ GET /competitions/:id/leaderboard?limit=20
 ### 2. Student Endpoints (Authentication Required)
 
 #### Apply for Competition
+
 ```http
 POST /competitions/:id/apply
 ```
 
 **Headers:**
+
 ```javascript
 {
   'Authorization': `Bearer ${userToken}`,
@@ -197,6 +209,7 @@ POST /competitions/:id/apply
 ```
 
 **Success Response:**
+
 ```json
 {
   "success": true,
@@ -219,6 +232,7 @@ POST /competitions/:id/apply
 ```
 
 **Error Responses:**
+
 ```json
 // Already registered
 {
@@ -243,11 +257,13 @@ POST /competitions/:id/apply
 ```
 
 #### Get Competition Dashboard
+
 ```http
 GET /competitions/:id/dashboard
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -322,11 +338,13 @@ GET /competitions/:id/dashboard
 ```
 
 #### Get Exam Details and Questions
+
 ```http
 GET /competition-exams/:examId
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -361,11 +379,13 @@ GET /competition-exams/:examId
 ```
 
 #### Submit Exam Answers
+
 ```http
 POST /competition-exams/:examId/submit
 ```
 
 **Request Body:**
+
 ```json
 {
   "examIdCode": "A1B2C3",
@@ -386,6 +406,7 @@ POST /competition-exams/:examId/submit
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -402,11 +423,13 @@ POST /competition-exams/:examId/submit
 ```
 
 #### Get Exam Results and Review
+
 ```http
 GET /competition-exams/:examId/results
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -457,28 +480,28 @@ GET /competition-exams/:examId/results
 const CompetitionDetail = ({ competition, user }) => {
   const handleButtonClick = () => {
     switch (competition.buttonState) {
-      case 'not_logged_in':
+      case "not_logged_in":
         // Redirect to login page
-        router.push('/login');
+        router.push("/login");
         break;
-        
-      case 'needs_package':
+
+      case "needs_package":
         // Show package popup/modal
         setShowPackageModal(true);
         break;
-        
-      case 'can_apply':
+
+      case "can_apply":
         // Apply for competition
         applyForCompetition(competition.id);
         break;
-        
-      case 'already_applied':
+
+      case "already_applied":
         // Go to dashboard
         router.push(`/competitions/${competition.id}/dashboard`);
         break;
-        
+
       default:
-        console.log('Unknown button state');
+        console.log("Unknown button state");
     }
   };
 
@@ -486,16 +509,16 @@ const CompetitionDetail = ({ competition, user }) => {
     <div className="competition-detail">
       <h1>{competition.title}</h1>
       <p>Grade {competition.grade}</p>
-      
-      <button 
+
+      <button
         className={`btn ${getButtonClass(competition.buttonState)}`}
         onClick={handleButtonClick}
       >
         {competition.buttonText}
       </button>
-      
-      {competition.buttonState === 'needs_package' && (
-        <PackageModal 
+
+      {competition.buttonState === "needs_package" && (
+        <PackageModal
           isOpen={showPackageModal}
           onClose={() => setShowPackageModal(false)}
           grade={competition.grade}
@@ -507,12 +530,12 @@ const CompetitionDetail = ({ competition, user }) => {
 
 const getButtonClass = (buttonState) => {
   const classes = {
-    'not_logged_in': 'btn-secondary',
-    'needs_package': 'btn-warning',
-    'can_apply': 'btn-primary',
-    'already_applied': 'btn-success'
+    not_logged_in: "btn-secondary",
+    needs_package: "btn-warning",
+    can_apply: "btn-primary",
+    already_applied: "btn-success",
   };
-  return classes[buttonState] || 'btn-secondary';
+  return classes[buttonState] || "btn-secondary";
 };
 ```
 
@@ -525,10 +548,10 @@ const CountdownTimer = ({ examStatus, onTimeUp }) => {
   const [display, setDisplay] = useState(examStatus.countdownDisplay);
 
   useEffect(() => {
-    if (!timeLeft || examStatus.status !== 'active') return;
+    if (!timeLeft || examStatus.status !== "active") return;
 
     const timer = setInterval(() => {
-      setTimeLeft(prev => {
+      setTimeLeft((prev) => {
         if (prev <= 1) {
           onTimeUp();
           return 0;
@@ -575,21 +598,31 @@ const CountdownTimer = ({ examStatus, onTimeUp }) => {
 const ExamStatusCard = ({ exam, onStartExam, onViewResults }) => {
   const getStatusIcon = (status) => {
     switch (status) {
-      case 'locked': return '🔒';
-      case 'active': return '✅';
-      case 'completed': return '✅';
-      case 'closed': return '⛔';
-      default: return '❓';
+      case "locked":
+        return "🔒";
+      case "active":
+        return "✅";
+      case "completed":
+        return "✅";
+      case "closed":
+        return "⛔";
+      default:
+        return "❓";
     }
   };
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'locked': return 'gray';
-      case 'active': return 'green';
-      case 'completed': return 'blue';
-      case 'closed': return 'red';
-      default: return 'gray';
+      case "locked":
+        return "gray";
+      case "active":
+        return "green";
+      case "completed":
+        return "blue";
+      case "closed":
+        return "red";
+      default:
+        return "gray";
     }
   };
 
@@ -601,29 +634,39 @@ const ExamStatusCard = ({ exam, onStartExam, onViewResults }) => {
           {getStatusIcon(exam.status)}
         </span>
       </div>
-      
+
       <p className="exam-description">{exam.description}</p>
-      
+
       <div className="exam-details">
-        <p><strong>Date:</strong> {new Date(exam.scheduledDateTime).toLocaleDateString()}</p>
-        <p><strong>Time:</strong> {new Date(exam.scheduledDateTime).toLocaleTimeString()}</p>
-        <p><strong>Duration:</strong> {exam.duration} minutes</p>
-        <p><strong>Questions:</strong> {exam.totalQuestions}</p>
+        <p>
+          <strong>Date:</strong>{" "}
+          {new Date(exam.scheduledDateTime).toLocaleDateString()}
+        </p>
+        <p>
+          <strong>Time:</strong>{" "}
+          {new Date(exam.scheduledDateTime).toLocaleTimeString()}
+        </p>
+        <p>
+          <strong>Duration:</strong> {exam.duration} minutes
+        </p>
+        <p>
+          <strong>Questions:</strong> {exam.totalQuestions}
+        </p>
       </div>
 
-      {exam.status === 'locked' && exam.countdownDisplay && (
+      {exam.status === "locked" && exam.countdownDisplay && (
         <div className="countdown">
           <CountdownTimer examStatus={exam} onTimeUp={() => {}} />
         </div>
       )}
 
-      {exam.status === 'active' && (
+      {exam.status === "active" && (
         <div className="exam-actions">
-          <CountdownTimer 
-            examStatus={exam} 
-            onTimeUp={() => window.location.reload()} 
+          <CountdownTimer
+            examStatus={exam}
+            onTimeUp={() => window.location.reload()}
           />
-          <button 
+          <button
             className="btn btn-primary"
             onClick={() => onStartExam(exam.id)}
           >
@@ -632,11 +675,17 @@ const ExamStatusCard = ({ exam, onStartExam, onViewResults }) => {
         </div>
       )}
 
-      {exam.status === 'completed' && exam.submission && (
+      {exam.status === "completed" && exam.submission && (
         <div className="exam-results">
-          <p><strong>Score:</strong> {exam.submission.score}/{exam.submission.totalQuestions}</p>
-          <p><strong>Time:</strong> {Math.floor(exam.submission.timeSpent / 60)}m {exam.submission.timeSpent % 60}s</p>
-          <button 
+          <p>
+            <strong>Score:</strong> {exam.submission.score}/
+            {exam.submission.totalQuestions}
+          </p>
+          <p>
+            <strong>Time:</strong> {Math.floor(exam.submission.timeSpent / 60)}m{" "}
+            {exam.submission.timeSpent % 60}s
+          </p>
+          <button
             className="btn btn-secondary"
             onClick={() => onViewResults(exam.id)}
           >
@@ -645,7 +694,7 @@ const ExamStatusCard = ({ exam, onStartExam, onViewResults }) => {
         </div>
       )}
 
-      {exam.status === 'closed' && (
+      {exam.status === "closed" && (
         <div className="exam-closed">
           <p>This exam has ended</p>
         </div>
@@ -662,10 +711,14 @@ const ExamStatusCard = ({ exam, onStartExam, onViewResults }) => {
 const Leaderboard = ({ leaderboard, userRank, totalParticipants }) => {
   const getRankIcon = (rank) => {
     switch (rank) {
-      case 1: return '🥇';
-      case 2: return '🥈';
-      case 3: return '🥉';
-      default: return `#${rank}`;
+      case 1:
+        return "🥇";
+      case 2:
+        return "🥈";
+      case 3:
+        return "🥉";
+      default:
+        return `#${rank}`;
     }
   };
 
@@ -673,7 +726,7 @@ const Leaderboard = ({ leaderboard, userRank, totalParticipants }) => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const secs = seconds % 60;
-    
+
     if (hours > 0) {
       return `${hours}h ${minutes}m`;
     } else {
@@ -684,30 +737,32 @@ const Leaderboard = ({ leaderboard, userRank, totalParticipants }) => {
   return (
     <div className="leaderboard">
       <h2>Leaderboard</h2>
-      <p className="total-participants">Total Participants: {totalParticipants}</p>
-      
+      <p className="total-participants">
+        Total Participants: {totalParticipants}
+      </p>
+
       <div className="leaderboard-list">
         {leaderboard.map((entry, index) => (
-          <div 
-            key={entry.id} 
-            className={`leaderboard-entry ${entry.student.id === userRank?.student?.id ? 'current-user' : ''}`}
+          <div
+            key={entry.id}
+            className={`leaderboard-entry ${entry.student.id === userRank?.student?.id ? "current-user" : ""}`}
           >
-            <div className="rank">
-              {getRankIcon(entry.rank)}
-            </div>
-            
+            <div className="rank">{getRankIcon(entry.rank)}</div>
+
             <div className="student-info">
-              <img 
-                src={entry.student.profilePicture || '/default-avatar.png'} 
-                alt="Profile" 
+              <img
+                src={entry.student.profilePicture || "/default-avatar.png"}
+                alt="Profile"
                 className="profile-picture"
               />
               <div className="student-details">
-                <h4>{entry.student.firstName} {entry.student.lastName}</h4>
+                <h4>
+                  {entry.student.firstName} {entry.student.lastName}
+                </h4>
                 <p>{entry.student.schoolName}</p>
               </div>
             </div>
-            
+
             <div className="scores">
               <div className="score">
                 <span className="label">Score:</span>
@@ -715,7 +770,9 @@ const Leaderboard = ({ leaderboard, userRank, totalParticipants }) => {
               </div>
               <div className="time">
                 <span className="label">Time:</span>
-                <span className="value">{formatTime(entry.totalTimeSpent)}</span>
+                <span className="value">
+                  {formatTime(entry.totalTimeSpent)}
+                </span>
               </div>
               <div className="exams">
                 <span className="label">Exams:</span>
@@ -725,7 +782,7 @@ const Leaderboard = ({ leaderboard, userRank, totalParticipants }) => {
           </div>
         ))}
       </div>
-      
+
       {userRank && (
         <div className="user-rank">
           <h3>Your Rank</h3>
@@ -760,37 +817,37 @@ const ExamInterface = ({ exam, examId, onSubmit }) => {
     }
 
     const timer = setInterval(() => {
-      setTimeLeft(prev => prev - 1);
+      setTimeLeft((prev) => prev - 1);
     }, 1000);
 
     return () => clearInterval(timer);
   }, [timeLeft]);
 
   const handleAnswerChange = (questionId, choice) => {
-    setAnswers(prev => ({
+    setAnswers((prev) => ({
       ...prev,
-      [questionId]: choice
+      [questionId]: choice,
     }));
   };
 
   const handleSubmit = () => {
-    const answerArray = exam.questions.map(q => ({
+    const answerArray = exam.questions.map((q) => ({
       questionId: q.id,
       selectedChoice: answers[q.id] || null,
-      timeSpent: 0 // Calculate per question if needed
+      timeSpent: 0, // Calculate per question if needed
     }));
 
     onSubmit({
       examIdCode: examId,
       timeSpent: exam.duration * 60 - timeLeft,
-      answers: answerArray
+      answers: answerArray,
     });
   };
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${minutes}:${secs.toString().padStart(2, '0')}`;
+    return `${minutes}:${secs.toString().padStart(2, "0")}`;
   };
 
   return (
@@ -804,9 +861,11 @@ const ExamInterface = ({ exam, examId, onSubmit }) => {
 
       <div className="exam-progress">
         <div className="progress-bar">
-          <div 
-            className="progress-fill" 
-            style={{ width: `${((currentQuestion + 1) / exam.totalQuestions) * 100}%` }}
+          <div
+            className="progress-fill"
+            style={{
+              width: `${((currentQuestion + 1) / exam.totalQuestions) * 100}%`,
+            }}
           />
         </div>
         <span className="progress-text">
@@ -816,19 +875,23 @@ const ExamInterface = ({ exam, examId, onSubmit }) => {
 
       <div className="question-container">
         {exam.questions.map((question, index) => (
-          <div 
-            key={question.id} 
-            className={`question ${index === currentQuestion ? 'active' : 'hidden'}`}
+          <div
+            key={question.id}
+            className={`question ${index === currentQuestion ? "active" : "hidden"}`}
           >
             <h3>Question {question.questionIndex}</h3>
             <p>{question.question}</p>
-            
+
             {question.questionImage && (
-              <img src={question.questionImage} alt="Question" className="question-image" />
+              <img
+                src={question.questionImage}
+                alt="Question"
+                className="question-image"
+              />
             )}
 
             <div className="choices">
-              {['A', 'B', 'C', 'D'].map(choice => (
+              {["A", "B", "C", "D"].map((choice) => (
                 <label key={choice} className="choice-option">
                   <input
                     type="radio"
@@ -838,7 +901,9 @@ const ExamInterface = ({ exam, examId, onSubmit }) => {
                     onChange={() => handleAnswerChange(question.id, choice)}
                   />
                   <span className="choice-letter">{choice}.</span>
-                  <span className="choice-text">{question[`choice${choice}`]}</span>
+                  <span className="choice-text">
+                    {question[`choice${choice}`]}
+                  </span>
                 </label>
               ))}
             </div>
@@ -847,19 +912,19 @@ const ExamInterface = ({ exam, examId, onSubmit }) => {
       </div>
 
       <div className="exam-navigation">
-        <button 
+        <button
           className="btn btn-secondary"
-          onClick={() => setCurrentQuestion(prev => Math.max(0, prev - 1))}
+          onClick={() => setCurrentQuestion((prev) => Math.max(0, prev - 1))}
           disabled={currentQuestion === 0}
         >
           Previous
         </button>
-        
+
         <div className="question-numbers">
           {exam.questions.map((_, index) => (
             <button
               key={index}
-              className={`question-number ${index === currentQuestion ? 'active' : ''} ${answers[exam.questions[index].id] ? 'answered' : ''}`}
+              className={`question-number ${index === currentQuestion ? "active" : ""} ${answers[exam.questions[index].id] ? "answered" : ""}`}
               onClick={() => setCurrentQuestion(index)}
             >
               {index + 1}
@@ -867,17 +932,17 @@ const ExamInterface = ({ exam, examId, onSubmit }) => {
           ))}
         </div>
 
-        <button 
+        <button
           className="btn btn-primary"
           onClick={() => {
             if (currentQuestion < exam.questions.length - 1) {
-              setCurrentQuestion(prev => prev + 1);
+              setCurrentQuestion((prev) => prev + 1);
             } else {
               handleSubmit();
             }
           }}
         >
-          {currentQuestion < exam.questions.length - 1 ? 'Next' : 'Submit Exam'}
+          {currentQuestion < exam.questions.length - 1 ? "Next" : "Submit Exam"}
         </button>
       </div>
     </div>
@@ -890,6 +955,7 @@ const ExamInterface = ({ exam, examId, onSubmit }) => {
 ## ⚠️ Error Handling
 
 ### Standard Error Response Format
+
 ```json
 {
   "success": false,
@@ -899,6 +965,7 @@ const ExamInterface = ({ exam, examId, onSubmit }) => {
 ```
 
 ### Common Error Codes
+
 - `AUTHENTICATION_REQUIRED` - User not logged in
 - `INVALID_TOKEN` - JWT token invalid or expired
 - `PACKAGE_REQUIRED` - Valid package needed
@@ -910,23 +977,24 @@ const ExamInterface = ({ exam, examId, onSubmit }) => {
 - `INVALID_EXAM_ID` - Exam ID doesn't match
 
 ### Error Handling Implementation
+
 ```javascript
 const handleApiError = (error) => {
   if (error.response) {
     const { status, data } = error.response;
-    
+
     switch (status) {
       case 401:
         // Redirect to login
-        router.push('/login');
+        router.push("/login");
         break;
       case 403:
         // Show access denied message
-        showError('Access denied. Please check your permissions.');
+        showError("Access denied. Please check your permissions.");
         break;
       case 404:
         // Show not found message
-        showError('Competition not found.');
+        showError("Competition not found.");
         break;
       case 400:
         // Show validation error
@@ -934,10 +1002,10 @@ const handleApiError = (error) => {
         break;
       default:
         // Show generic error
-        showError('Something went wrong. Please try again.');
+        showError("Something went wrong. Please try again.");
     }
   } else {
-    showError('Network error. Please check your connection.');
+    showError("Network error. Please check your connection.");
   }
 };
 ```
@@ -947,6 +1015,7 @@ const handleApiError = (error) => {
 ## 🎨 UI/UX Guidelines
 
 ### 1. Button States
+
 ```css
 .btn {
   padding: 12px 24px;
@@ -984,6 +1053,7 @@ const handleApiError = (error) => {
 ```
 
 ### 2. Countdown Timer Styles
+
 ```css
 .countdown {
   display: flex;
@@ -1006,7 +1076,7 @@ const handleApiError = (error) => {
 
 .time-display {
   font-size: 1.2em;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
 }
 
 .status-badge {
@@ -1018,6 +1088,7 @@ const handleApiError = (error) => {
 ```
 
 ### 3. Exam Status Cards
+
 ```css
 .exam-card {
   border: 1px solid #dee2e6;
@@ -1053,6 +1124,7 @@ const handleApiError = (error) => {
 ```
 
 ### 4. Leaderboard Styles
+
 ```css
 .leaderboard-entry {
   display: flex;
@@ -1091,11 +1163,15 @@ const handleApiError = (error) => {
   margin-left: auto;
 }
 
-.score, .time, .exams {
+.score,
+.time,
+.exams {
   text-align: center;
 }
 
-.score .value, .time .value, .exams .value {
+.score .value,
+.time .value,
+.exams .value {
   font-weight: bold;
   font-size: 1.1em;
 }
@@ -1106,9 +1182,11 @@ const handleApiError = (error) => {
 ## 🧪 Testing
 
 ### 1. API Testing
+
 Use the provided `ApiTest/competitions.http` file with your API testing tool (VS Code REST Client, Postman, etc.).
 
 ### 2. Frontend Testing Checklist
+
 - [ ] Competition listing with filters
 - [ ] Dynamic button states
 - [ ] Countdown timers
@@ -1119,6 +1197,7 @@ Use the provided `ApiTest/competitions.http` file with your API testing tool (VS
 - [ ] Notification display
 
 ### 3. Test Scenarios
+
 1. **Not logged in user** - Should see "Sign Up/Log In" button
 2. **User without package** - Should see package requirement popup
 3. **User with valid package** - Should be able to apply
@@ -1131,18 +1210,21 @@ Use the provided `ApiTest/competitions.http` file with your API testing tool (VS
 ## 📱 Mobile Considerations
 
 ### 1. Responsive Design
+
 - Use mobile-first approach
 - Ensure touch targets are at least 44px
 - Implement swipe gestures for exam navigation
 - Use collapsible sections for long content
 
 ### 2. Performance
+
 - Implement lazy loading for images
 - Use virtual scrolling for large leaderboards
 - Cache API responses when appropriate
 - Implement offline capability for exam questions
 
 ### 3. Accessibility
+
 - Use semantic HTML elements
 - Provide alt text for images
 - Ensure sufficient color contrast
@@ -1154,18 +1236,21 @@ Use the provided `ApiTest/competitions.http` file with your API testing tool (VS
 ## 🔒 Security Considerations
 
 ### 1. Client-Side Security
+
 - Never store sensitive data in localStorage
 - Implement screenshot prevention (browser-specific)
 - Use HTTPS for all API calls
 - Validate all user inputs
 
 ### 2. Anti-Cheating Measures
+
 - Implement single-device enforcement
 - Disable right-click and keyboard shortcuts during exams
 - Implement fullscreen mode for exams
 - Add session timeout warnings
 
 ### 3. Data Protection
+
 - Encrypt sensitive data in transit
 - Implement proper error handling to avoid data leaks
 - Use secure token storage

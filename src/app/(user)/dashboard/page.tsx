@@ -20,9 +20,9 @@ export default function DashBoard() {
             Authorization: `Bearer ${accessToken}`,
           },
         });
-        
+
         if (!response.ok) throw new Error("Failed to fetch profile");
-        
+
         const data = await response.json();
         setUserData(data);
         setIsLoading(false);

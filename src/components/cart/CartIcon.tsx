@@ -28,11 +28,3 @@ export function CartIcon({ className = "" }: CartIconProps) {
     </Button>
   );
 }
-
-
-
-
-
-
-
-

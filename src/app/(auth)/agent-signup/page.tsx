@@ -114,7 +114,7 @@ export default function AgentSignUp() {
   // Animation variants
   const formVariants = {
     hidden: { opacity: 0, x: -20 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.3 } }
+    visible: { opacity: 1, x: 0, transition: { duration: 0.3 } },
   };
 
   return (
@@ -125,8 +125,12 @@ export default function AgentSignUp() {
             {/* Form Section */}
             <div className="md:col-span-2 p-8">
               <div className="mb-8">
-                <h2 className="text-2xl font-bold text-gray-900">Create Agent Account</h2>
-                <p className="text-gray-600 mt-2">Join Fayida Academy as an agent and help students succeed</p>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Create Agent Account
+                </h2>
+                <p className="text-gray-600 mt-2">
+                  Join Fayida Academy as an agent and help students succeed
+                </p>
               </div>
 
               {/* Progress Steps */}
@@ -134,19 +138,27 @@ export default function AgentSignUp() {
                 <div className="flex items-center justify-between">
                   {[1, 2].map((step) => (
                     <div key={step} className="flex flex-col items-center">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                        currentStep >= step ? "bg-primaryColor text-white" : "bg-gray-100 text-gray-400"
-                      }`}>
+                      <div
+                        className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                          currentStep >= step
+                            ? "bg-primaryColor text-white"
+                            : "bg-gray-100 text-gray-400"
+                        }`}
+                      >
                         {currentStep > step ? <Check size={18} /> : step}
                       </div>
-                      <span className={`text-xs mt-1 ${currentStep >= step ? "text-primaryColor" : "text-gray-400"}`}>
+                      <span
+                        className={`text-xs mt-1 ${currentStep >= step ? "text-primaryColor" : "text-gray-400"}`}
+                      >
                         {step === 1 ? "Personal Info" : "Account Setup"}
                       </span>
                     </div>
                   ))}
                   <div className="h-1 absolute left-0 right-0 w-full max-w-md mx-auto -z-10 bg-gray-200">
-                    <div className="h-1 bg-primaryColor transition-all duration-300" 
-                         style={{ width: `${(currentStep - 1) * 100}%` }}></div>
+                    <div
+                      className="h-1 bg-primaryColor transition-all duration-300"
+                      style={{ width: `${(currentStep - 1) * 100}%` }}
+                    ></div>
                   </div>
                 </div>
               </div>
@@ -163,16 +175,19 @@ export default function AgentSignUp() {
                       <div className="space-y-2">
                         <label className="text-sm font-medium text-gray-700 flex items-center">
                           <User size={16} className="mr-2 text-primaryColor" />
-                          First Name <span className="text-red-500 ml-1">*</span>
+                          First Name{" "}
+                          <span className="text-red-500 ml-1">*</span>
                         </label>
                         <input
-                          className={`w-full px-4 py-2 border ${errors.firstName ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-colors`}
+                          className={`w-full px-4 py-2 border ${errors.firstName ? "border-red-500" : "border-gray-300"} rounded-lg focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-colors`}
                           type="text"
                           placeholder="Enter your first name"
                           {...register("firstName")}
                         />
                         {errors.firstName && (
-                          <p className="text-red-500 text-xs mt-1">{errors.firstName.message}</p>
+                          <p className="text-red-500 text-xs mt-1">
+                            {errors.firstName.message}
+                          </p>
                         )}
                       </div>
 
@@ -181,13 +196,15 @@ export default function AgentSignUp() {
                           Last Name <span className="text-red-500 ml-1">*</span>
                         </label>
                         <input
-                          className={`w-full px-4 py-2 border ${errors.lastName ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-colors`}
+                          className={`w-full px-4 py-2 border ${errors.lastName ? "border-red-500" : "border-gray-300"} rounded-lg focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-colors`}
                           type="text"
                           placeholder="Enter your last name"
                           {...register("lastName")}
                         />
                         {errors.lastName && (
-                          <p className="text-red-500 text-xs mt-1">{errors.lastName.message}</p>
+                          <p className="text-red-500 text-xs mt-1">
+                            {errors.lastName.message}
+                          </p>
                         )}
                       </div>
                     </div>
@@ -197,24 +214,29 @@ export default function AgentSignUp() {
                         Grand Name <span className="text-red-500 ml-1">*</span>
                       </label>
                       <input
-                        className={`w-full px-4 py-2 border ${errors.grandName ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-colors`}
+                        className={`w-full px-4 py-2 border ${errors.grandName ? "border-red-500" : "border-gray-300"} rounded-lg focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-colors`}
                         type="text"
                         placeholder="Enter your grand name"
                         {...register("grandName")}
                       />
                       {errors.grandName && (
-                        <p className="text-red-500 text-xs mt-1">{errors.grandName.message}</p>
+                        <p className="text-red-500 text-xs mt-1">
+                          {errors.grandName.message}
+                        </p>
                       )}
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <label className="text-sm font-medium text-gray-700 flex items-center">
-                          <MapPin size={16} className="mr-2 text-primaryColor" />
+                          <MapPin
+                            size={16}
+                            className="mr-2 text-primaryColor"
+                          />
                           City <span className="text-red-500 ml-1">*</span>
                         </label>
                         <select
-                          className={`w-full px-4 py-2 border ${errors.city ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-colors bg-white`}
+                          className={`w-full px-4 py-2 border ${errors.city ? "border-red-500" : "border-gray-300"} rounded-lg focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-colors bg-white`}
                           {...register("city")}
                         >
                           <option value="">Select your city</option>
@@ -225,17 +247,22 @@ export default function AgentSignUp() {
                           ))}
                         </select>
                         {errors.city && (
-                          <p className="text-red-500 text-xs mt-1">{errors.city.message}</p>
+                          <p className="text-red-500 text-xs mt-1">
+                            {errors.city.message}
+                          </p>
                         )}
                       </div>
 
                       <div className="space-y-2">
                         <label className="text-sm font-medium text-gray-700 flex items-center">
-                          <Building size={16} className="mr-2 text-primaryColor" />
+                          <Building
+                            size={16}
+                            className="mr-2 text-primaryColor"
+                          />
                           Region <span className="text-red-500 ml-1">*</span>
                         </label>
                         <select
-                          className={`w-full px-4 py-2 border ${errors.region ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-colors bg-white`}
+                          className={`w-full px-4 py-2 border ${errors.region ? "border-red-500" : "border-gray-300"} rounded-lg focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-colors bg-white`}
                           {...register("region")}
                         >
                           <option value="">Select your region</option>
@@ -246,7 +273,9 @@ export default function AgentSignUp() {
                           ))}
                         </select>
                         {errors.region && (
-                          <p className="text-red-500 text-xs mt-1">{errors.region.message}</p>
+                          <p className="text-red-500 text-xs mt-1">
+                            {errors.region.message}
+                          </p>
                         )}
                       </div>
                     </div>
@@ -273,16 +302,19 @@ export default function AgentSignUp() {
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-gray-700 flex items-center">
                         <Mail size={16} className="mr-2 text-primaryColor" />
-                        Email Address <span className="text-red-500 ml-1">*</span>
+                        Email Address{" "}
+                        <span className="text-red-500 ml-1">*</span>
                       </label>
                       <input
-                        className={`w-full px-4 py-2 border ${errors.agent_email ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-colors`}
+                        className={`w-full px-4 py-2 border ${errors.agent_email ? "border-red-500" : "border-gray-300"} rounded-lg focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-colors`}
                         type="email"
                         placeholder="Enter your email"
                         {...register("agent_email")}
                       />
                       {errors.agent_email && (
-                        <p className="text-red-500 text-xs mt-1">{errors.agent_email.message}</p>
+                        <p className="text-red-500 text-xs mt-1">
+                          {errors.agent_email.message}
+                        </p>
                       )}
                     </div>
 
@@ -293,28 +325,33 @@ export default function AgentSignUp() {
                           Password <span className="text-red-500 ml-1">*</span>
                         </label>
                         <input
-                          className={`w-full px-4 py-2 border ${errors.password ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-colors`}
+                          className={`w-full px-4 py-2 border ${errors.password ? "border-red-500" : "border-gray-300"} rounded-lg focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-colors`}
                           type="password"
                           placeholder="Create password"
                           {...register("password")}
                         />
                         {errors.password && (
-                          <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
+                          <p className="text-red-500 text-xs mt-1">
+                            {errors.password.message}
+                          </p>
                         )}
                       </div>
 
                       <div className="space-y-2">
                         <label className="text-sm font-medium text-gray-700">
-                          Confirm Password <span className="text-red-500 ml-1">*</span>
+                          Confirm Password{" "}
+                          <span className="text-red-500 ml-1">*</span>
                         </label>
                         <input
-                          className={`w-full px-4 py-2 border ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-colors`}
+                          className={`w-full px-4 py-2 border ${errors.confirmPassword ? "border-red-500" : "border-gray-300"} rounded-lg focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-colors`}
                           type="password"
                           placeholder="Confirm password"
                           {...register("confirmPassword")}
                         />
                         {errors.confirmPassword && (
-                          <p className="text-red-500 text-xs mt-1">{errors.confirmPassword.message}</p>
+                          <p className="text-red-500 text-xs mt-1">
+                            {errors.confirmPassword.message}
+                          </p>
                         )}
                       </div>
                     </div>
@@ -355,9 +392,12 @@ export default function AgentSignUp() {
                   />
                 </div>
 
-                <h3 className="text-2xl font-bold mb-4">Welcome to Fayida Academy</h3>
+                <h3 className="text-2xl font-bold mb-4">
+                  Welcome to Fayida Academy
+                </h3>
                 <p className="mb-8 text-white/90">
-                  Join our network of agents and help connect students with quality education
+                  Join our network of agents and help connect students with
+                  quality education
                 </p>
 
                 <div className="bg-white/10 p-4 rounded-lg">

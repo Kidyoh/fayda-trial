@@ -27,7 +27,9 @@ export default function AssessmentQuestions({ params }: any) {
   const [resultText, setResultText] = useState("");
 
   const MockPackage = useSelectedMockPackageStore((state) => state.mockpackage);
-  const PhoneNumber = useTemporaryPhonenumberStore((state) => state.phoneNumber);
+  const PhoneNumber = useTemporaryPhonenumberStore(
+    (state) => state.phoneNumber,
+  );
 
   function formatTextToHTML(text: any) {
     if (!text) return "";
@@ -89,24 +91,31 @@ export default function AssessmentQuestions({ params }: any) {
   const AssessmentId = params.exam_id;
 
   const countNullValues = (arr: any[]): number => {
-    return arr.filter(value => value === undefined || value === "x" || value === "X").length;
+    return arr.filter(
+      (value) => value === undefined || value === "x" || value === "X",
+    ).length;
   };
 
   const countSelectedAnswers = (arr: any[]): number => {
-    return arr.filter(value => value !== undefined && value !== "x" && value !== "X").length;
+    return arr.filter(
+      (value) => value !== undefined && value !== "x" && value !== "X",
+    ).length;
   };
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
-    
-    if (parseInt(totalQuestionCounts) === selectedAnswers.length && countNullValues(selectedAnswers) === 0) {
+
+    if (
+      parseInt(totalQuestionCounts) === selectedAnswers.length &&
+      countNullValues(selectedAnswers) === 0
+    ) {
       try {
         const response = await axios.post(
           `${apiUrl}/assesments/submit-exam-answers/${AssessmentId}`,
           { answers: selectedAnswers },
-          { withCredentials: true }
+          { withCredentials: true },
         );
-        
+
         const responseData = response.data;
         if (response.status === 200) {
           setResultText(responseData.message);
@@ -130,16 +139,18 @@ export default function AssessmentQuestions({ params }: any) {
   };
 
   const automaticSubmit = async () => {
-    const updatedAnswers = selectedAnswers.map(item => item === null ? "X" : item);
+    const updatedAnswers = selectedAnswers.map((item) =>
+      item === null ? "X" : item,
+    );
     setSelectedAnswers(updatedAnswers);
 
     try {
       const response = await axios.post(
         `${apiUrl}/assesments/submit-exam-answers/${AssessmentId}`,
         { answers: updatedAnswers },
-        { withCredentials: true }
+        { withCredentials: true },
       );
-      
+
       if (response.status === 200) {
         setResultText(response.data.message);
         setIncorrectQuestions(response.data.incorrectQuestionNumbers);
@@ -155,7 +166,7 @@ export default function AssessmentQuestions({ params }: any) {
       try {
         const response = await fetch(
           `${apiUrl}/mockexampackagepurchase/accessexam/${PhoneNumber}/${MockPackage?.id}/${AssessmentId}`,
-          { credentials: "include" }
+          { credentials: "include" },
         );
         const jsonData = await response.json();
         setData(jsonData);
@@ -177,7 +188,7 @@ export default function AssessmentQuestions({ params }: any) {
     if (seconds <= 0) return;
 
     const timerId = setInterval(() => {
-      setSeconds(prev => {
+      setSeconds((prev) => {
         if (prev <= 1) {
           clearInterval(timerId);
           automaticSubmit();
@@ -197,7 +208,7 @@ export default function AssessmentQuestions({ params }: any) {
   };
 
   const handleAnswerSelection = (questionIndex: number, answerId: string) => {
-    setSelectedAnswers(prev => {
+    setSelectedAnswers((prev) => {
       const newAnswers = [...prev];
       newAnswers[questionIndex] = answerId;
       return newAnswers;
@@ -216,11 +227,18 @@ export default function AssessmentQuestions({ params }: any) {
   }
 
   if (!onExam) {
-    return <ShowResult reslultText={resultText} incorrectquestions={incorrectQuestions} questions={questions} />;
+    return (
+      <ShowResult
+        reslultText={resultText}
+        incorrectquestions={incorrectQuestions}
+        questions={questions}
+      />
+    );
   }
 
   const answeredQuestions = countSelectedAnswers(selectedAnswers);
-  const progressPercentage = (answeredQuestions / parseInt(totalQuestionCounts)) * 100;
+  const progressPercentage =
+    (answeredQuestions / parseInt(totalQuestionCounts)) * 100;
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
@@ -236,14 +254,18 @@ export default function AssessmentQuestions({ params }: any) {
               Complete all {totalQuestionCounts} questions within the time limit
             </p>
           </div>
-          
+
           {/* Timer Card */}
           <div className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
             <div className="flex items-center gap-3">
               <Timer className="h-5 w-5 text-primaryColor" />
               <div>
-                <p className="text-sm font-medium text-gray-500">Time Remaining</p>
-                <p className="text-xl font-bold text-gray-900">{formatTime(seconds)}</p>
+                <p className="text-sm font-medium text-gray-500">
+                  Time Remaining
+                </p>
+                <p className="text-xl font-bold text-gray-900">
+                  {formatTime(seconds)}
+                </p>
               </div>
             </div>
           </div>
@@ -268,13 +290,15 @@ export default function AssessmentQuestions({ params }: any) {
             <div className="space-y-4">
               <div className="flex items-start gap-3">
                 <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primaryColor/10 flex items-center justify-center">
-                  <span className="text-primaryColor font-semibold">{index + 1}</span>
+                  <span className="text-primaryColor font-semibold">
+                    {index + 1}
+                  </span>
                 </div>
                 <div className="space-y-4 flex-1">
                   <h3 className="text-lg font-medium text-gray-900">
                     {formatTextToHTML(question?.question)}
                   </h3>
-                  
+
                   {question?.questionImage && (
                     <img
                       src={question?.questionImageUrl}
@@ -285,7 +309,9 @@ export default function AssessmentQuestions({ params }: any) {
 
                   <RadioGroup
                     value={selectedAnswers[index]}
-                    onValueChange={(value) => handleAnswerSelection(index, value)}
+                    onValueChange={(value) =>
+                      handleAnswerSelection(index, value)
+                    }
                     className="space-y-3"
                   >
                     {[
@@ -294,7 +320,10 @@ export default function AssessmentQuestions({ params }: any) {
                       { id: "c", text: question.choiseC },
                       { id: "d", text: question.choiseD },
                     ].map((choice) => (
-                      <div key={choice.id} className="flex items-center space-x-2">
+                      <div
+                        key={choice.id}
+                        className="flex items-center space-x-2"
+                      >
                         <RadioGroupItem
                           value={choice.id}
                           id={`${question.id}-${choice.id}`}

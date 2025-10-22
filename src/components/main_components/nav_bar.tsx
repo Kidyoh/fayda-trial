@@ -42,7 +42,11 @@ import ExploreNavigation from "./drawer_components/explore_navigation";
 import useFetchStore from "../../app/store/fetchStore";
 import NavBarMobile from "./nav_bar_mobile";
 
-import { setAccessToken, getAccessToken, clearAccessToken } from "../../lib/tokenManager";
+import {
+  setAccessToken,
+  getAccessToken,
+  clearAccessToken,
+} from "../../lib/tokenManager";
 import { CartIcon } from "../cart/CartIcon";
 import { CartDrawer } from "../cart/CartDrawer";
 
@@ -56,7 +60,6 @@ export default function NavBar(response3: any) {
   const [isLoading, setLoading] = useState(true);
   const [userName, setUserName] = useState("");
   const [activeMenu, setActiveMenu] = useState("Home");
-
 
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -82,12 +85,10 @@ export default function NavBar(response3: any) {
   //     });
   // }, []);
 
-
-
   useEffect(() => {
     //const accessToken = localStorage.getItem("accessToken");
-  //const accessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxNmQzMDUwLTI5MTYtNDQ3YS04OGEyLWM0MzE2Y2U0YTJhMSIsImlhdCI6MTczMTMyMDkxM30.QSm1qpDlJMI8XrvW4snH5nm-bzSsppZk4RZ_fxlzmII'
-   console.log("AccessToken: "+ accessToken)
+    //const accessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxNmQzMDUwLTI5MTYtNDQ3YS04OGEyLWM0MzE2Y2U0YTJhMSIsImlhdCI6MTczMTMyMDkxM30.QSm1qpDlJMI8XrvW4snH5nm-bzSsppZk4RZ_fxlzmII'
+    console.log("AccessToken: " + accessToken);
     fetch(`${apiUrl}/newlogin/profile`, {
       method: "GET",
       headers: {
@@ -111,12 +112,6 @@ export default function NavBar(response3: any) {
         console.error("Error fetching profile:", error);
       });
   }, []);
-
-
-
-
-
-
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -157,8 +152,8 @@ export default function NavBar(response3: any) {
   //     });
   // }, []);
   useEffect(() => {
-   // const accessToken = getAccessToken();
-  
+    // const accessToken = getAccessToken();
+
     fetch(`${apiUrl}/notifications/count/`, {
       method: "GET",
       headers: {
@@ -174,12 +169,12 @@ export default function NavBar(response3: any) {
       })
       .then((data) => {
         setNotificationData(data.message);
-  
+
         let countx = 0;
         if (data.error !== "not authenticated") {
           countx = Object.keys(data).length;
         }
-  
+
         setNotificationNumber(countx);
         console.log("message2:", data.error);
       })
@@ -227,14 +222,16 @@ export default function NavBar(response3: any) {
                   alt="fayida"
                 />
               </Link>
-              
+
               <div className="hidden md:flex items-center space-x-6">
                 <Link href={"/"} className="group">
-                  <h1 className={`text-sm font-medium transition-colors duration-200 ${
-                    routerPathname === "/" 
-                      ? "text-primaryColor" 
-                      : "text-gray-600 hover:text-primaryColor"
-                  }`}>
+                  <h1
+                    className={`text-sm font-medium transition-colors duration-200 ${
+                      routerPathname === "/"
+                        ? "text-primaryColor"
+                        : "text-gray-600 hover:text-primaryColor"
+                    }`}
+                  >
                     Home
                   </h1>
                 </Link>
@@ -283,13 +280,13 @@ export default function NavBar(response3: any) {
               </div>
 
               <div className="flex items-center space-x-1 md:space-x-3">
-               <div className="hidden sm:block">
-                 <TranslateButton />
-               </div>
-               
-               {/* Cart Icon */}
-               <CartIcon />
-                
+                <div className="hidden sm:block">
+                  <TranslateButton />
+                </div>
+
+                {/* Cart Icon */}
+                <CartIcon />
+
                 <Link href={"/notifications"} className="relative">
                   <div className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200">
                     <Bell className="w-5 h-5 text-gray-600" />
@@ -332,7 +329,7 @@ export default function NavBar(response3: any) {
       <div className="block xxmd:hidden fixed w-full z-50">
         <NavBarMobile data={data} notificationNumber={notificationNumber} />
       </div>
-      
+
       {/* Cart Drawer */}
       <CartDrawer />
     </>

@@ -1,4 +1,12 @@
-import { School, MapPin, GraduationCap, Phone, Trophy, User, Sparkles } from "lucide-react";
+import {
+  School,
+  MapPin,
+  GraduationCap,
+  Phone,
+  Trophy,
+  User,
+  Sparkles,
+} from "lucide-react";
 
 interface StatsGridProps {
   userData: {
@@ -66,13 +74,14 @@ export default function StatsGrid({ userData }: StatsGridProps) {
           key={stat.label}
           className={`relative rounded-lg overflow-hidden border-2 ${stat.borderColor} bg-gradient-to-br ${stat.bgColor}`}
         >
-
           <div className="relative z-10 p-6">
             <div className="flex items-center mb-4">
               <div className="p-2 rounded-lg bg-white/80 text-[#07705d] mr-3">
                 {stat.icon}
               </div>
-              <h3 className="text-lg font-sendako font-bold text-[#07705d]">{stat.label}</h3>
+              <h3 className="text-lg font-sendako font-bold text-[#07705d]">
+                {stat.label}
+              </h3>
               {index === 4 && (
                 <Trophy className="w-5 h-5 text-[#bf8c13] ml-auto" />
               )}
@@ -82,14 +91,20 @@ export default function StatsGrid({ userData }: StatsGridProps) {
               {stat.items.map((item: any) => (
                 <div key={item.label} className="bg-white/50 rounded-lg p-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600 font-medium text-sm">{item.label}</span>
+                    <span className="text-gray-600 font-medium text-sm">
+                      {item.label}
+                    </span>
                     {item.label === "Points" ? (
                       <div className="flex items-center space-x-2 bg-[#07705d]/10 px-3 py-1 rounded-full">
                         <Trophy className="w-4 h-4 text-[#bf8c13]" />
-                        <span className="font-bold text-[#07705d]">{item.value}</span>
+                        <span className="font-bold text-[#07705d]">
+                          {item.value}
+                        </span>
                       </div>
                     ) : (
-                      <span className="font-medium text-[#07705d]">{item.value}</span>
+                      <span className="font-medium text-[#07705d]">
+                        {item.value}
+                      </span>
                     )}
                   </div>
                 </div>
@@ -100,4 +115,4 @@ export default function StatsGrid({ userData }: StatsGridProps) {
       ))}
     </div>
   );
-} 
+}

@@ -48,12 +48,15 @@ export default function MaterialNav() {
   useEffect(() => {
     const getCourse = async () => {
       try {
-        const res = await fetch(`${apiUrl}/forums/checkcourseforum/${courseId}`, {
-          next: {
-            revalidate: 0,
+        const res = await fetch(
+          `${apiUrl}/forums/checkcourseforum/${courseId}`,
+          {
+            next: {
+              revalidate: 0,
+            },
+            credentials: "include",
           },
-          credentials: "include",
-        });
+        );
         const course = await res.json();
         setForumId(course[0]?.id);
       } catch (error) {
@@ -67,18 +70,30 @@ export default function MaterialNav() {
   }, [courseId]);
 
   // Don't render if no courseId is available or if it's not a valid course ID format
-  if (!courseId || typeof courseId !== 'string') {
+  if (!courseId || typeof courseId !== "string") {
     return null;
   }
 
   // Don't render for non-course routes (like careers, contact, etc.)
-  const invalidRoutes = ['careers', 'contact', 'about', 'terms_of_service', 'privacy-policy', 'help', 'f_a_q', 'blogs', 'teach', 'courses', 'competitions'];
+  const invalidRoutes = [
+    "careers",
+    "contact",
+    "about",
+    "terms_of_service",
+    "privacy-policy",
+    "help",
+    "f_a_q",
+    "blogs",
+    "teach",
+    "courses",
+    "competitions",
+  ];
   if (invalidRoutes.includes(courseId.toLowerCase())) {
     return null;
   }
 
   // Only render for actual numeric course IDs or valid course identifiers
-  if (!/^\d+$/.test(courseId) && !courseId.startsWith('course_')) {
+  if (!/^\d+$/.test(courseId) && !courseId.startsWith("course_")) {
     return null;
   }
 
@@ -100,14 +115,14 @@ export default function MaterialNav() {
       const dynamicClassName = `${
         i == partNumber ? "bg-blue-600" : "bg-primaryColor"
       } text-white px-1 cursor-pointer rounded`;
-    
+
       divs.push(
         <div key={i} className="">
           {" "}
           <h1 className={dynamicClassName} onClick={() => setPartNumber(i)}>
             {i}{" "}
           </h1>
-        </div>
+        </div>,
       );
     }
 

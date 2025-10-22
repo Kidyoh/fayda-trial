@@ -13,7 +13,7 @@ export default function Info() {
           `${apiUrl}/students/checkpackageexpirydate`,
           {
             credentials: "include", // Include credentials in the request
-          }
+          },
         );
 
         const data = await response.json();

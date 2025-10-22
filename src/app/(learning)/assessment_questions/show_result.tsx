@@ -11,8 +11,16 @@ import {
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { CheckCircle2, XCircle, ArrowLeft, Brain, Trophy, Target, AlertCircle } from "lucide-react";
-import confetti from 'canvas-confetti';
+import {
+  CheckCircle2,
+  XCircle,
+  ArrowLeft,
+  Brain,
+  Trophy,
+  Target,
+  AlertCircle,
+} from "lucide-react";
+import confetti from "canvas-confetti";
 
 interface ShowResultProps {
   reslultText: string;
@@ -32,7 +40,7 @@ export default function ShowResult({
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    
+
     // Trigger confetti if all questions are correct
     if (incorrectquestions.length === 0 && questions?.length > 0) {
       const duration = 3 * 1000;
@@ -44,14 +52,14 @@ export default function ShowResult({
           angle: 60,
           spread: 55,
           origin: { x: 0 },
-          colors: ['#10B981', '#6366F1', '#8B5CF6']
+          colors: ["#10B981", "#6366F1", "#8B5CF6"],
         });
         confetti({
           particleCount: 2,
           angle: 120,
           spread: 55,
           origin: { x: 1 },
-          colors: ['#10B981', '#6366F1', '#8B5CF6']
+          colors: ["#10B981", "#6366F1", "#8B5CF6"],
         });
 
         if (Date.now() < end) {
@@ -115,7 +123,12 @@ export default function ShowResult({
 
   const correctCount = questions?.length - incorrectquestions.length;
   const score = Math.round((correctCount / questions?.length) * 100);
-  const scoreColor = score >= 80 ? 'text-green-500' : score >= 60 ? 'text-yellow-500' : 'text-red-500';
+  const scoreColor =
+    score >= 80
+      ? "text-green-500"
+      : score >= 60
+        ? "text-yellow-500"
+        : "text-red-500";
 
   return (
     <div className="max-w-4xl mx-auto px-4 pt-16 pb-8">
@@ -145,7 +158,9 @@ export default function ShowResult({
       <div className="mb-8">
         <div className="bg-white rounded-xl border shadow-sm p-6 space-y-6">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-gray-900">Assessment Results</h1>
+            <h1 className="text-2xl font-bold text-gray-900">
+              Assessment Results
+            </h1>
             <Link
               href={courseId ? `/access/${courseId}` : "/access"}
               className="inline-flex items-center gap-2 text-gray-500 hover:text-gray-700"
@@ -157,15 +172,21 @@ export default function ShowResult({
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-gray-50 rounded-lg p-4 text-center">
-              <div className="text-4xl font-bold mb-2 text-primary">{score}%</div>
+              <div className="text-4xl font-bold mb-2 text-primary">
+                {score}%
+              </div>
               <div className="text-sm text-gray-500">Overall Score</div>
             </div>
             <div className="bg-gray-50 rounded-lg p-4 text-center">
-              <div className="text-4xl font-bold mb-2 text-green-500">{correctCount}</div>
+              <div className="text-4xl font-bold mb-2 text-green-500">
+                {correctCount}
+              </div>
               <div className="text-sm text-gray-500">Correct Answers</div>
             </div>
             <div className="bg-gray-50 rounded-lg p-4 text-center">
-              <div className="text-4xl font-bold mb-2 text-red-500">{incorrectquestions.length}</div>
+              <div className="text-4xl font-bold mb-2 text-red-500">
+                {incorrectquestions.length}
+              </div>
               <div className="text-sm text-gray-500">Incorrect Answers</div>
             </div>
           </div>
@@ -197,7 +218,7 @@ export default function ShowResult({
 
         {questions?.map((que, index) => {
           const isIncorrect = incorrectquestions.includes(index);
-          
+
           return (
             <motion.div
               key={index}
@@ -205,13 +226,14 @@ export default function ShowResult({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
               className={`bg-white rounded-xl border shadow-sm overflow-hidden
-                ${isIncorrect ? 'border-red-200' : 'border-green-200'}`}
+                ${isIncorrect ? "border-red-200" : "border-green-200"}`}
             >
               <div className="p-6">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center
-                      ${isIncorrect ? 'bg-red-100' : 'bg-green-100'}`}
+                    <div
+                      className={`w-8 h-8 rounded-full flex items-center justify-center
+                      ${isIncorrect ? "bg-red-100" : "bg-green-100"}`}
                     >
                       {isIncorrect ? (
                         <XCircle className="w-5 h-5 text-red-500" />
@@ -223,16 +245,19 @@ export default function ShowResult({
                       Question {index + 1}
                     </h3>
                   </div>
-                  <div className={`px-3 py-1 rounded-full text-sm font-medium
-                    ${isIncorrect ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}
+                  <div
+                    className={`px-3 py-1 rounded-full text-sm font-medium
+                    ${isIncorrect ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"}`}
                   >
-                    {isIncorrect ? 'Incorrect' : 'Correct'}
+                    {isIncorrect ? "Incorrect" : "Correct"}
                   </div>
                 </div>
 
                 <div className="mt-4 space-y-4">
-                  <div className="text-gray-700">{formatTextToHTML(que.question)}</div>
-                  
+                  <div className="text-gray-700">
+                    {formatTextToHTML(que.question)}
+                  </div>
+
                   {que.questionImage && (
                     <img
                       src={que.questionImageUrl}
@@ -243,22 +268,24 @@ export default function ShowResult({
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {[
-                      { label: 'A', text: que.choiseA },
-                      { label: 'B', text: que.choiseB },
-                      { label: 'C', text: que.choiseC },
-                      { label: 'D', text: que.choiseD },
+                      { label: "A", text: que.choiseA },
+                      { label: "B", text: que.choiseB },
+                      { label: "C", text: que.choiseC },
+                      { label: "D", text: que.choiseD },
                     ].map((choice) => (
                       <div
                         key={choice.label}
                         className={`p-3 rounded-lg border ${
                           choice.label.toLowerCase() === que.correctChoice
-                            ? 'bg-green-50 border-green-200'
-                            : 'bg-gray-50 border-gray-200'
+                            ? "bg-green-50 border-green-200"
+                            : "bg-gray-50 border-gray-200"
                         }`}
                       >
                         <div className="flex items-center gap-2">
                           <span className="font-medium">{choice.label}:</span>
-                          <span className="text-gray-700">{formatTextToHTML(choice.text)}</span>
+                          <span className="text-gray-700">
+                            {formatTextToHTML(choice.text)}
+                          </span>
                         </div>
                       </div>
                     ))}
@@ -268,9 +295,13 @@ export default function ShowResult({
                     <div className="mt-4 p-4 bg-amber-50 rounded-lg border border-amber-200">
                       <div className="flex items-center gap-2 mb-2">
                         <AlertCircle className="w-5 h-5 text-amber-500" />
-                        <h4 className="font-medium text-amber-800">Explanation</h4>
+                        <h4 className="font-medium text-amber-800">
+                          Explanation
+                        </h4>
                       </div>
-                      <div className="text-amber-700">{formatTextToHTML(que.correction)}</div>
+                      <div className="text-amber-700">
+                        {formatTextToHTML(que.correction)}
+                      </div>
                       {que.correctionImage && (
                         <img
                           src={que.correctionImageUrl}

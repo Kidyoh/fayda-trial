@@ -27,7 +27,7 @@ export default function ExplorePackages({ params }: any) {
   };
 
   const filteredPackages = packageData.filter((item: any) =>
-    item.packageName.toLowerCase().includes(searchQuery.toLowerCase())
+    item.packageName.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (

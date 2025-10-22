@@ -2,7 +2,15 @@
 import { apiUrl } from "@/apiConfig";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { Calendar, Clock, ChevronRight, Search, Heart, User, Tag } from "lucide-react";
+import {
+  Calendar,
+  Clock,
+  ChevronRight,
+  Search,
+  Heart,
+  User,
+  Tag,
+} from "lucide-react";
 
 interface Blog {
   id: string;
@@ -33,7 +41,9 @@ export default function Blogs() {
         const enhancedData = jsonData.map((blog: Blog) => ({
           ...blog,
           readTime: `${Math.floor(Math.random() * 10) + 2} min read`,
-          category: ["Technology", "Education", "Tips", "News"][Math.floor(Math.random() * 4)]
+          category: ["Technology", "Education", "Tips", "News"][
+            Math.floor(Math.random() * 4)
+          ],
         }));
         setData(enhancedData);
       } catch (error) {
@@ -46,24 +56,37 @@ export default function Blogs() {
     fetchData();
   }, []);
 
-  const filteredBlogs = data.filter(blog => {
-    const matchesSearch = blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  const filteredBlogs = data.filter((blog) => {
+    const matchesSearch =
+      blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       blog.text.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === "all" || blog.category === selectedCategory;
+    const matchesCategory =
+      selectedCategory === "all" || blog.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
   // Ensure we have valid categories by filtering out undefined values
-  const categories = ["all", ...Array.from(new Set(data.map(blog => blog.category ?? "").filter(Boolean)))];
+  const categories = [
+    "all",
+    ...Array.from(
+      new Set(data.map((blog) => blog.category ?? "").filter(Boolean)),
+    ),
+  ];
 
   const handleLike = (id: string) => {
-    setLiked(prev => ({ ...prev, [id]: !prev[id] }));
+    setLiked((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
   return (
     <div className="min-h-screen bg-white relative pt-16">
       {/* Geometric Ethiopian pattern background */}
-      <div className="absolute inset-0 pointer-events-none opacity-10 z-0" style={{ backgroundImage: `url('data:image/svg+xml,%3Csvg width=\'80\' height=\'80\' viewBox=\'0 0 80 80\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'#bf8c13\' fill-opacity=\'0.12\'%3E%3Cpath d=\'M40 40l20-20v40l-20-20zm0 0l-20-20v40l20-20z\'/%3E%3C/g%3E%3C/svg%3E')`, backgroundSize: '80px 80px' }} />
+      <div
+        className="absolute inset-0 pointer-events-none opacity-10 z-0"
+        style={{
+          backgroundImage: `url('data:image/svg+xml,%3Csvg width=\'80\' height=\'80\' viewBox=\'0 0 80 80\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'#bf8c13\' fill-opacity=\'0.12\'%3E%3Cpath d=\'M40 40l20-20v40l-20-20zm0 0l-20-20v40l20-20z\'/%3E%3C/g%3E%3C/svg%3E')`,
+          backgroundSize: "80px 80px",
+        }}
+      />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:mt-24">
         {/* Hero Section */}
@@ -94,9 +117,11 @@ export default function Blogs() {
                 key={category}
                 onClick={() => setSelectedCategory(category)}
                 className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 whitespace-nowrap border border-[#c7cc3f] shadow-sm
-                  ${selectedCategory === category
-                    ? 'bg-[#07705d] text-white'
-                    : 'bg-white text-[#07705d] hover:bg-[#c7cc3f]/10'}`}
+                  ${
+                    selectedCategory === category
+                      ? "bg-[#07705d] text-white"
+                      : "bg-white text-[#07705d] hover:bg-[#c7cc3f]/10"
+                  }`}
               >
                 {category.charAt(0).toUpperCase() + category.slice(1)}
               </button>
@@ -108,7 +133,10 @@ export default function Blogs() {
         {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 animate-pulse">
             {[1, 2, 3].map((n) => (
-              <div key={n} className="bg-white rounded-2xl overflow-hidden shadow-lg border border-[#c7cc3f]/30">
+              <div
+                key={n}
+                className="bg-white rounded-2xl overflow-hidden shadow-lg border border-[#c7cc3f]/30"
+              >
                 <div className="h-48 bg-gradient-to-r from-[#bf8c13]/20 to-[#c7cc3f]/20" />
                 <div className="p-6 space-y-4">
                   <div className="h-4 bg-[#07705d]/20 rounded w-3/4" />
@@ -139,10 +167,13 @@ export default function Blogs() {
                   <div className="absolute bottom-2 right-2">
                     <button
                       onClick={() => handleLike(blog.id)}
-                      className={`p-2 rounded-full bg-white/80 hover:bg-[#bf8c13]/80 transition-colors duration-200 shadow ${liked[blog.id] ? 'text-[#bf8c13]' : 'text-gray-400'}`}
+                      className={`p-2 rounded-full bg-white/80 hover:bg-[#bf8c13]/80 transition-colors duration-200 shadow ${liked[blog.id] ? "text-[#bf8c13]" : "text-gray-400"}`}
                       aria-label="Like"
                     >
-                      <Heart className="w-5 h-5" fill={liked[blog.id] ? '#bf8c13' : 'none'} />
+                      <Heart
+                        className="w-5 h-5"
+                        fill={liked[blog.id] ? "#bf8c13" : "none"}
+                      />
                     </button>
                   </div>
                 </div>
@@ -160,7 +191,9 @@ export default function Blogs() {
                   <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4" />
-                      <span>{new Date(blog.createdAt).toLocaleDateString()}</span>
+                      <span>
+                        {new Date(blog.createdAt).toLocaleDateString()}
+                      </span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Clock className="w-4 h-4" />
@@ -169,7 +202,10 @@ export default function Blogs() {
                   </div>
 
                   {/* Read More Link */}
-                  <Link href={`/blogs/${blog.id}`} className="inline-flex items-center text-[#bf8c13] font-semibold hover:underline">
+                  <Link
+                    href={`/blogs/${blog.id}`}
+                    className="inline-flex items-center text-[#bf8c13] font-semibold hover:underline"
+                  >
                     Read More <ChevronRight className="w-4 h-4 ml-1" />
                   </Link>
                 </div>

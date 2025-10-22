@@ -3,7 +3,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 
 // Cart item types
 export interface CartPackageItem {
-  type: 'package';
+  type: "package";
   id: string;
   packageName: string;
   price: number;
@@ -22,7 +22,7 @@ export interface CartPackageItem {
 }
 
 export interface CartCourseItem {
-  type: 'course';
+  type: "course";
   id: string;
   courseName: string;
   price: number;
@@ -39,25 +39,33 @@ export type CartItem = CartPackageItem | CartCourseItem;
 interface CartState {
   items: CartItem[];
   isOpen: boolean;
-  
+
   // Cart actions
-  addPackageToCart: (packageData: Omit<CartPackageItem, 'type' | 'quantity'>) => void;
-  addCourseToCart: (courseData: Omit<CartCourseItem, 'type' | 'quantity'>) => void;
-  removeFromCart: (id: string, type: 'package' | 'course') => void;
-  updateQuantity: (id: string, type: 'package' | 'course', quantity: number) => void;
+  addPackageToCart: (
+    packageData: Omit<CartPackageItem, "type" | "quantity">,
+  ) => void;
+  addCourseToCart: (
+    courseData: Omit<CartCourseItem, "type" | "quantity">,
+  ) => void;
+  removeFromCart: (id: string, type: "package" | "course") => void;
+  updateQuantity: (
+    id: string,
+    type: "package" | "course",
+    quantity: number,
+  ) => void;
   updatePackageDuration: (id: string, duration: 1 | 3 | 6) => void;
   clearCart: () => void;
-  
+
   // Cart UI actions
   toggleCart: () => void;
   openCart: () => void;
   closeCart: () => void;
-  
+
   // Cart calculations
   getTotalItems: () => number;
   getTotalPrice: () => number;
-  getItemCount: (id: string, type: 'package' | 'course') => number;
-  isInCart: (id: string, type: 'package' | 'course') => boolean;
+  getItemCount: (id: string, type: "package" | "course") => number;
+  isInCart: (id: string, type: "package" | "course") => boolean;
 }
 
 const useCartStore = create<CartState>()(
@@ -70,24 +78,26 @@ const useCartStore = create<CartState>()(
       addPackageToCart: (packageData) => {
         const { items } = get();
         const existingItemIndex = items.findIndex(
-          item => item.id === packageData.id && item.type === 'package'
+          (item) => item.id === packageData.id && item.type === "package",
         );
 
         if (existingItemIndex >= 0) {
           // If item exists, update quantity
           const updatedItems = [...items];
-          const existingItem = updatedItems[existingItemIndex] as CartPackageItem;
+          const existingItem = updatedItems[
+            existingItemIndex
+          ] as CartPackageItem;
           updatedItems[existingItemIndex] = {
             ...existingItem,
-            quantity: existingItem.quantity + 1
+            quantity: existingItem.quantity + 1,
           };
           set({ items: updatedItems });
         } else {
           // Add new item
           const newItem: CartPackageItem = {
             ...packageData,
-            type: 'package',
-            quantity: 1
+            type: "package",
+            quantity: 1,
           };
           set({ items: [...items, newItem] });
         }
@@ -97,24 +107,26 @@ const useCartStore = create<CartState>()(
       addCourseToCart: (courseData) => {
         const { items } = get();
         const existingItemIndex = items.findIndex(
-          item => item.id === courseData.id && item.type === 'course'
+          (item) => item.id === courseData.id && item.type === "course",
         );
 
         if (existingItemIndex >= 0) {
           // If item exists, update quantity
           const updatedItems = [...items];
-          const existingItem = updatedItems[existingItemIndex] as CartCourseItem;
+          const existingItem = updatedItems[
+            existingItemIndex
+          ] as CartCourseItem;
           updatedItems[existingItemIndex] = {
             ...existingItem,
-            quantity: existingItem.quantity + 1
+            quantity: existingItem.quantity + 1,
           };
           set({ items: updatedItems });
         } else {
           // Add new item
           const newItem: CartCourseItem = {
             ...courseData,
-            type: 'course',
-            quantity: 1
+            type: "course",
+            quantity: 1,
           };
           set({ items: [...items, newItem] });
         }
@@ -124,7 +136,7 @@ const useCartStore = create<CartState>()(
       removeFromCart: (id, type) => {
         const { items } = get();
         const updatedItems = items.filter(
-          item => !(item.id === id && item.type === type)
+          (item) => !(item.id === id && item.type === type),
         );
         set({ items: updatedItems });
       },
@@ -137,7 +149,7 @@ const useCartStore = create<CartState>()(
         }
 
         const { items } = get();
-        const updatedItems = items.map(item => {
+        const updatedItems = items.map((item) => {
           if (item.id === id && item.type === type) {
             return { ...item, quantity };
           }
@@ -149,8 +161,8 @@ const useCartStore = create<CartState>()(
       // Update package duration
       updatePackageDuration: (id, duration) => {
         const { items } = get();
-        const updatedItems = items.map(item => {
-          if (item.id === id && item.type === 'package') {
+        const updatedItems = items.map((item) => {
+          if (item.id === id && item.type === "package") {
             return { ...item, selectedDuration: duration } as CartPackageItem;
           }
           return item;
@@ -165,7 +177,7 @@ const useCartStore = create<CartState>()(
 
       // Toggle cart drawer
       toggleCart: () => {
-        set(state => ({ isOpen: !state.isOpen }));
+        set((state) => ({ isOpen: !state.isOpen }));
       },
 
       // Open cart drawer
@@ -189,62 +201,58 @@ const useCartStore = create<CartState>()(
         const { items } = get();
         return items.reduce((total, item) => {
           let itemPrice = 0;
-          
-          if (item.type === 'package') {
+
+          if (item.type === "package") {
             const packageItem = item as CartPackageItem;
-            let basePrice = packageItem.discountStatus && packageItem.temporaryPrice 
-              ? packageItem.temporaryPrice 
-              : packageItem.price;
-            
+            let basePrice =
+              packageItem.discountStatus && packageItem.temporaryPrice
+                ? packageItem.temporaryPrice
+                : packageItem.price;
+
             // Adjust price based on selected duration
             if (packageItem.selectedDuration === 3) {
-              basePrice = packageItem.discountStatus && packageItem.temporaryPrice2 
-                ? packageItem.temporaryPrice2 
-                : packageItem.price2 || basePrice;
+              basePrice =
+                packageItem.discountStatus && packageItem.temporaryPrice2
+                  ? packageItem.temporaryPrice2
+                  : packageItem.price2 || basePrice;
             } else if (packageItem.selectedDuration === 6) {
-              basePrice = packageItem.discountStatus && packageItem.temporaryPrice3 
-                ? packageItem.temporaryPrice3 
-                : packageItem.price3 || basePrice;
+              basePrice =
+                packageItem.discountStatus && packageItem.temporaryPrice3
+                  ? packageItem.temporaryPrice3
+                  : packageItem.price3 || basePrice;
             }
-            
+
             itemPrice = basePrice;
-          } else if (item.type === 'course') {
+          } else if (item.type === "course") {
             const courseItem = item as CartCourseItem;
-            itemPrice = courseItem.discountStatus && courseItem.temporaryPrice 
-              ? courseItem.temporaryPrice 
-              : courseItem.price;
+            itemPrice =
+              courseItem.discountStatus && courseItem.temporaryPrice
+                ? courseItem.temporaryPrice
+                : courseItem.price;
           }
-          
-          return total + (itemPrice * item.quantity);
+
+          return total + itemPrice * item.quantity;
         }, 0);
       },
 
       // Get count of specific item
       getItemCount: (id, type) => {
         const { items } = get();
-        const item = items.find(item => item.id === id && item.type === type);
+        const item = items.find((item) => item.id === id && item.type === type);
         return item ? item.quantity : 0;
       },
 
       // Check if item is in cart
       isInCart: (id, type) => {
         const { items } = get();
-        return items.some(item => item.id === id && item.type === type);
-      }
+        return items.some((item) => item.id === id && item.type === type);
+      },
     }),
     {
-      name: 'fayida-cart-storage',
+      name: "fayida-cart-storage",
       storage: createJSONStorage(() => localStorage),
-    }
-  )
+    },
+  ),
 );
 
 export default useCartStore;
-
-
-
-
-
-
-
-

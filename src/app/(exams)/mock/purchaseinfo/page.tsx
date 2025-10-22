@@ -11,7 +11,7 @@ export default function MockPackagePurchaseInfo() {
   const { push } = useRouter();
 
   const mockPackageSelected = useSelectedMockPackageStore(
-    (state) => state.mockpackage
+    (state) => state.mockpackage,
   );
 
   useEffect(() => {
@@ -46,9 +46,11 @@ export default function MockPackagePurchaseInfo() {
           <div className="p-6 border-b border-gray-200">
             <div className="flex items-center gap-3 mb-4">
               <Package className="h-5 w-5 text-primaryColor" />
-              <h2 className="text-lg font-semibold text-gray-900">Package Details</h2>
+              <h2 className="text-lg font-semibold text-gray-900">
+                Package Details
+              </h2>
             </div>
-            
+
             <div className="bg-gray-50 rounded-lg p-4">
               <h3 className="text-xl font-bold text-primaryColor">
                 {mockPackageSelected.title}
@@ -74,7 +76,12 @@ export default function MockPackagePurchaseInfo() {
               </div>
               <div>
                 <p className="text-gray-700">
-                  You have not purchased the mock exam package <span className="font-semibold text-primaryColor">{mockPackageSelected.title}</span> with your phone number yet. You need to purchase it once, and you will have access to it using your phone.
+                  You have not purchased the mock exam package{" "}
+                  <span className="font-semibold text-primaryColor">
+                    {mockPackageSelected.title}
+                  </span>{" "}
+                  with your phone number yet. You need to purchase it once, and
+                  you will have access to it using your phone.
                 </p>
               </div>
             </div>
@@ -86,7 +93,7 @@ export default function MockPackagePurchaseInfo() {
               <MockPurchaseDialogCustom />
             </div>
           </div>
-          
+
           {/* Footer Note */}
           <div className="px-6 pb-6 pt-2 text-center">
             <div className="flex items-center justify-center gap-2 text-sm text-gray-500">

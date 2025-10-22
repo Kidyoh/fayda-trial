@@ -13,8 +13,11 @@ import {
 import { apiUrl } from "@/apiConfig";
 import { toast } from "../ui/use-toast";
 import useFetchStore from "../../app/store/fetchStore";
-import { setAccessToken, getAccessToken, clearAccessToken } from "../../lib/tokenManager";
-
+import {
+  setAccessToken,
+  getAccessToken,
+  clearAccessToken,
+} from "../../lib/tokenManager";
 
 //import { useToast } from "../ui/use-toast";
 
@@ -31,9 +34,8 @@ export default function MaterialSeen({
 
   const accessToken = getAccessToken();
 
-
   const setSeenMaterialsFetch = useFetchStore(
-    (state) => state.setSeenMaterials
+    (state) => state.setSeenMaterials,
   );
 
   const postData = {

@@ -1,27 +1,41 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { useRouter, useParams } from 'next/navigation';
-import { CompetitionAPI, CompetitionDashboard, Exam, handleApiError } from '@/lib/competitionAPI';
-import { getAccessToken } from '@/lib/tokenManager';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { 
-  Calendar, 
-  Clock, 
-  Trophy, 
-  Users, 
-  CheckCircle, 
-  AlertCircle, 
-  Lock, 
+import React, { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
+import {
+  CompetitionAPI,
+  CompetitionDashboard,
+  Exam,
+  handleApiError,
+} from "@/lib/competitionAPI";
+import { getAccessToken } from "@/lib/tokenManager";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  Calendar,
+  Clock,
+  Trophy,
+  Users,
+  CheckCircle,
+  AlertCircle,
+  Lock,
   Play,
   Eye,
-  ArrowLeft
-} from 'lucide-react';
-import { formatCompetitionDate, formatCompetitionTime } from '@/lib/competitionAPI';
-import CountdownTimer from '@/components/competitions/CountdownTimer';
+  ArrowLeft,
+} from "lucide-react";
+import {
+  formatCompetitionDate,
+  formatCompetitionTime,
+} from "@/lib/competitionAPI";
+import CountdownTimer from "@/components/competitions/CountdownTimer";
 
 const CompetitionDashboardPage: React.FC = () => {
   const router = useRouter();
@@ -43,30 +57,41 @@ const CompetitionDashboardPage: React.FC = () => {
 
       const token = getAccessToken();
       if (!token) {
-        router.push('/login');
+        router.push("/login");
         return;
       }
 
-      console.log('Fetching dashboard for competition:', competitionId);
-      console.log('Using token:', token ? `Token present (${token.substring(0, 20)}...)` : 'No token');
-      console.log('Token length:', token ? token.length : 0);
+      console.log("Fetching dashboard for competition:", competitionId);
+      console.log(
+        "Using token:",
+        token ? `Token present (${token.substring(0, 20)}...)` : "No token",
+      );
+      console.log("Token length:", token ? token.length : 0);
 
-      const response = await CompetitionAPI.getCompetitionDashboard(competitionId, token);
+      const response = await CompetitionAPI.getCompetitionDashboard(
+        competitionId,
+        token,
+      );
 
       if (response.success) {
-        console.log('Dashboard data received:', response.data);
+        console.log("Dashboard data received:", response.data);
         setDashboard(response.data);
       } else {
-        console.error('API returned success: false', response);
-        setError('Failed to fetch competition dashboard');
+        console.error("API returned success: false", response);
+        setError("Failed to fetch competition dashboard");
       }
     } catch (err) {
-      console.error('Error fetching competition dashboard:', err);
+      console.error("Error fetching competition dashboard:", err);
       const errorMessage = handleApiError(err);
-      
+
       // Check if the error is about not being registered
-      if (errorMessage.includes('Not registered') || errorMessage.includes('not registered')) {
-        setError('You need to apply for this competition first. Please go back to the competition page and click "Apply Now".');
+      if (
+        errorMessage.includes("Not registered") ||
+        errorMessage.includes("not registered")
+      ) {
+        setError(
+          'You need to apply for this competition first. Please go back to the competition page and click "Apply Now".',
+        );
       } else {
         setError(errorMessage);
       }
@@ -85,36 +110,46 @@ const CompetitionDashboardPage: React.FC = () => {
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'locked': return '🔒';
-      case 'active': return '✅';
-      case 'completed': return '✅';
-      case 'closed': return '⛔';
-      default: return '❓';
+      case "locked":
+        return "🔒";
+      case "active":
+        return "✅";
+      case "completed":
+        return "✅";
+      case "closed":
+        return "⛔";
+      default:
+        return "❓";
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'locked': return 'border-gray-300 bg-gray-50';
-      case 'active': return 'border-green-300 bg-green-50';
-      case 'completed': return 'border-blue-300 bg-blue-50';
-      case 'closed': return 'border-red-300 bg-red-50';
-      default: return 'border-gray-300 bg-gray-50';
+      case "locked":
+        return "border-gray-300 bg-gray-50";
+      case "active":
+        return "border-green-300 bg-green-50";
+      case "completed":
+        return "border-blue-300 bg-blue-50";
+      case "closed":
+        return "border-red-300 bg-red-50";
+      default:
+        return "border-gray-300 bg-gray-50";
     }
   };
 
   const ExamStatusCard: React.FC<{ exam: Exam }> = ({ exam }) => (
-    <div className={`h-full transition-all duration-300 hover:shadow-lg bg-white/60 backdrop-blur-sm rounded-xl p-6 border border-[#c7cc3f]/20 ${getStatusColor(exam.status || 'locked')}`}>
+    <div
+      className={`h-full transition-all duration-300 hover:shadow-lg bg-white/60 backdrop-blur-sm rounded-xl p-6 border border-[#c7cc3f]/20 ${getStatusColor(exam.status || "locked")}`}
+    >
       <div className="pb-4">
         <div className="flex justify-between items-start mb-2">
-          <h3 className="text-lg font-bold text-[#07705d]">
-            {exam.title}
-          </h3>
+          <h3 className="text-lg font-bold text-[#07705d]">{exam.title}</h3>
           <span className={`status-icon text-2xl`}>
-            {getStatusIcon(exam.status || 'locked')}
+            {getStatusIcon(exam.status || "locked")}
           </span>
         </div>
-        
+
         <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
           <span className="bg-[#c7cc3f]/20 text-[#07705d] px-3 py-1 rounded-full font-medium">
             Day {exam.day}
@@ -128,7 +163,8 @@ const CompetitionDashboardPage: React.FC = () => {
           <div className="flex items-center gap-2 text-sm text-gray-700">
             <Calendar className="w-4 h-4 text-[#c7cc3f]" />
             <span>
-              {formatCompetitionDate(exam.scheduledDateTime)} at {formatCompetitionTime(exam.scheduledDateTime)}
+              {formatCompetitionDate(exam.scheduledDateTime)} at{" "}
+              {formatCompetitionTime(exam.scheduledDateTime)}
             </span>
           </div>
 
@@ -146,35 +182,40 @@ const CompetitionDashboardPage: React.FC = () => {
         </div>
 
         {/* Countdown Timer */}
-        {exam.status === 'locked' && exam.countdownDisplay && (
+        {exam.status === "locked" && exam.countdownDisplay && (
           <div className="mt-4">
-            <CountdownTimer examStatus={exam} onTimeUp={() => window.location.reload()} />
+            <CountdownTimer
+              examStatus={exam}
+              onTimeUp={() => window.location.reload()}
+            />
           </div>
         )}
 
         {/* Active Exam Timer */}
-        {exam.status === 'active' && (
+        {exam.status === "active" && (
           <div className="mt-4">
-            <CountdownTimer 
-              examStatus={exam} 
-              onTimeUp={() => window.location.reload()} 
+            <CountdownTimer
+              examStatus={exam}
+              onTimeUp={() => window.location.reload()}
             />
           </div>
         )}
 
         {/* Results Display */}
-        {exam.status === 'completed' && exam.submission && (
+        {exam.status === "completed" && exam.submission && (
           <div className="mt-4 p-3 bg-[#c7cc3f]/10 rounded-lg border border-[#c7cc3f]/20">
             <div className="flex justify-between items-center">
               <div>
                 <p className="text-sm font-medium text-[#07705d]">
-                  Score: {exam.submission.score}/{exam.submission.totalQuestions}
+                  Score: {exam.submission.score}/
+                  {exam.submission.totalQuestions}
                 </p>
                 <p className="text-xs text-gray-600">
-                  Time: {Math.floor(exam.submission.timeSpent / 60)}m {exam.submission.timeSpent % 60}s
+                  Time: {Math.floor(exam.submission.timeSpent / 60)}m{" "}
+                  {exam.submission.timeSpent % 60}s
                 </p>
               </div>
-              <Button 
+              <Button
                 size="sm"
                 variant="outline"
                 onClick={() => handleViewResults(exam.id)}
@@ -189,8 +230,8 @@ const CompetitionDashboardPage: React.FC = () => {
       </div>
 
       <div className="pt-0">
-        {exam.status === 'active' && (
-          <Button 
+        {exam.status === "active" && (
+          <Button
             className="w-full bg-gradient-to-r from-[#07705d] to-[#c7cc3f] hover:from-[#07705d]/90 hover:to-[#c7cc3f]/90 text-white font-semibold"
             onClick={() => handleStartExam(exam.id)}
           >
@@ -199,8 +240,8 @@ const CompetitionDashboardPage: React.FC = () => {
           </Button>
         )}
 
-        {exam.status === 'locked' && (
-          <Button 
+        {exam.status === "locked" && (
+          <Button
             disabled
             className="w-full bg-gray-400 text-white cursor-not-allowed"
           >
@@ -209,8 +250,8 @@ const CompetitionDashboardPage: React.FC = () => {
           </Button>
         )}
 
-        {exam.status === 'closed' && (
-          <Button 
+        {exam.status === "closed" && (
+          <Button
             disabled
             className="w-full bg-red-400 text-white cursor-not-allowed"
           >
@@ -268,9 +309,11 @@ const CompetitionDashboardPage: React.FC = () => {
               </h1>
               <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 max-w-md mx-auto">
                 <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
-                <p className="text-white mb-6 text-lg">{error || 'Dashboard not found'}</p>
-                <Button 
-                  onClick={() => router.push('/competitions')}
+                <p className="text-white mb-6 text-lg">
+                  {error || "Dashboard not found"}
+                </p>
+                <Button
+                  onClick={() => router.push("/competitions")}
                   className="bg-white text-red-600 hover:bg-white/90 font-semibold px-6 py-3 rounded-2xl"
                 >
                   Back to Competitions
@@ -292,9 +335,9 @@ const CompetitionDashboardPage: React.FC = () => {
           <div className="max-w-4xl mx-auto">
             {/* Back Button */}
             <div className="mb-8">
-              <Button 
-                variant="outline" 
-                onClick={() => router.push('/competitions')}
+              <Button
+                variant="outline"
+                onClick={() => router.push("/competitions")}
                 className="flex items-center gap-2 bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/20"
               >
                 <ArrowLeft className="w-4 h-4" />
@@ -306,7 +349,7 @@ const CompetitionDashboardPage: React.FC = () => {
             <h1 className="text-5xl sm:text-6xl font-bold mb-6 text-center">
               {dashboard.competition.title}
             </h1>
-            
+
             {/* Competition Info */}
             <div className="flex flex-wrap justify-center items-center gap-6 mb-8 text-lg">
               <div className="flex items-center gap-2">
@@ -327,22 +370,30 @@ const CompetitionDashboardPage: React.FC = () => {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
               <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 text-center border border-white/20">
                 <Trophy className="w-8 h-8 text-[#c7cc3f] mx-auto mb-2" />
-                <div className="text-2xl font-bold text-white">#{dashboard.leaderboard.rank}</div>
+                <div className="text-2xl font-bold text-white">
+                  #{dashboard.leaderboard.rank}
+                </div>
                 <div className="text-sm text-white/80">Current Rank</div>
               </div>
               <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 text-center border border-white/20">
                 <CheckCircle className="w-8 h-8 text-[#c7cc3f] mx-auto mb-2" />
-                <div className="text-2xl font-bold text-white">{dashboard.leaderboard.totalScore}</div>
+                <div className="text-2xl font-bold text-white">
+                  {dashboard.leaderboard.totalScore}
+                </div>
                 <div className="text-sm text-white/80">Total Score</div>
               </div>
               <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 text-center border border-white/20">
                 <Clock className="w-8 h-8 text-[#c7cc3f] mx-auto mb-2" />
-                <div className="text-2xl font-bold text-white">{dashboard.completedExams}/{dashboard.totalExams}</div>
+                <div className="text-2xl font-bold text-white">
+                  {dashboard.completedExams}/{dashboard.totalExams}
+                </div>
                 <div className="text-sm text-white/80">Exams Done</div>
               </div>
               <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 text-center border border-white/20">
                 <Calendar className="w-8 h-8 text-[#c7cc3f] mx-auto mb-2" />
-                <div className="text-2xl font-bold text-white">{Math.floor(dashboard.leaderboard.totalTimeSpent / 60)}m</div>
+                <div className="text-2xl font-bold text-white">
+                  {Math.floor(dashboard.leaderboard.totalTimeSpent / 60)}m
+                </div>
                 <div className="text-sm text-white/80">Time Spent</div>
               </div>
             </div>
@@ -352,22 +403,31 @@ const CompetitionDashboardPage: React.FC = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-6 pb-16 relative z-10">
-
         {/* Registration Info */}
         <div className="bg-white/80 backdrop-blur-md rounded-2xl p-8 border border-[#c7cc3f]/30 shadow-lg mb-8">
-          <h2 className="text-3xl font-bold text-[#07705d] mb-6">Registration Details</h2>
+          <h2 className="text-3xl font-bold text-[#07705d] mb-6">
+            Registration Details
+          </h2>
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-6 h-6 bg-[#07705d] rounded-full flex items-center justify-center flex-shrink-0">
                 <CheckCircle className="w-4 h-4 text-white" />
               </div>
-              <span className="text-gray-700 text-lg">Exam ID: <strong className="text-[#07705d]">{dashboard.registration.examId}</strong></span>
+              <span className="text-gray-700 text-lg">
+                Exam ID:{" "}
+                <strong className="text-[#07705d]">
+                  {dashboard.registration.examId}
+                </strong>
+              </span>
             </div>
             <div className="flex items-center gap-3">
               <div className="w-6 h-6 bg-[#07705d] rounded-full flex items-center justify-center flex-shrink-0">
                 <Calendar className="w-4 h-4 text-white" />
               </div>
-              <span className="text-gray-700 text-lg">Registered: {formatCompetitionDate(dashboard.registration.registeredAt)}</span>
+              <span className="text-gray-700 text-lg">
+                Registered:{" "}
+                {formatCompetitionDate(dashboard.registration.registeredAt)}
+              </span>
             </div>
           </div>
         </div>
@@ -375,7 +435,9 @@ const CompetitionDashboardPage: React.FC = () => {
         {/* Exam Status Cards */}
         <div className="mb-8">
           <div className="bg-white/80 backdrop-blur-md rounded-2xl p-8 border border-[#c7cc3f]/30 shadow-lg">
-            <h2 className="text-3xl font-bold text-[#07705d] mb-6">Exam Status</h2>
+            <h2 className="text-3xl font-bold text-[#07705d] mb-6">
+              Exam Status
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {dashboard.examStatus.map((exam) => (
                 <ExamStatusCard key={exam.id} exam={exam} />
@@ -386,35 +448,45 @@ const CompetitionDashboardPage: React.FC = () => {
 
         {/* Performance Overview */}
         <div className="bg-white/80 backdrop-blur-md rounded-2xl p-8 border border-[#c7cc3f]/30 shadow-lg">
-          <h2 className="text-3xl font-bold text-[#07705d] mb-6">Your Performance</h2>
+          <h2 className="text-3xl font-bold text-[#07705d] mb-6">
+            Your Performance
+          </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 border border-[#c7cc3f]/20 text-center">
               <Trophy className="w-8 h-8 text-[#c7cc3f] mx-auto mb-3" />
               <div className="text-3xl font-bold text-[#07705d] mb-2">
                 #{dashboard.leaderboard.rank}
               </div>
-              <div className="text-sm text-gray-600 font-medium">Current Rank</div>
+              <div className="text-sm text-gray-600 font-medium">
+                Current Rank
+              </div>
             </div>
             <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 border border-[#c7cc3f]/20 text-center">
               <CheckCircle className="w-8 h-8 text-[#c7cc3f] mx-auto mb-3" />
               <div className="text-3xl font-bold text-[#07705d] mb-2">
                 {dashboard.leaderboard.totalScore}
               </div>
-              <div className="text-sm text-gray-600 font-medium">Total Score</div>
+              <div className="text-sm text-gray-600 font-medium">
+                Total Score
+              </div>
             </div>
             <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 border border-[#c7cc3f]/20 text-center">
               <Clock className="w-8 h-8 text-[#c7cc3f] mx-auto mb-3" />
               <div className="text-3xl font-bold text-[#07705d] mb-2">
                 {Math.floor(dashboard.leaderboard.totalTimeSpent / 60)}m
               </div>
-              <div className="text-sm text-gray-600 font-medium">Time Spent</div>
+              <div className="text-sm text-gray-600 font-medium">
+                Time Spent
+              </div>
             </div>
             <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 border border-[#c7cc3f]/20 text-center">
               <Users className="w-8 h-8 text-[#c7cc3f] mx-auto mb-3" />
               <div className="text-3xl font-bold text-[#07705d] mb-2">
                 {dashboard.leaderboard.examsCompleted}
               </div>
-              <div className="text-sm text-gray-600 font-medium">Exams Done</div>
+              <div className="text-sm text-gray-600 font-medium">
+                Exams Done
+              </div>
             </div>
           </div>
         </div>

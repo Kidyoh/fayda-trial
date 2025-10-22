@@ -3,7 +3,15 @@ import { apiUrl } from "@/apiConfig";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Book, ChevronRight, GraduationCap, BookOpen, Clock, Users, Trophy } from "lucide-react";
+import {
+  Book,
+  ChevronRight,
+  GraduationCap,
+  BookOpen,
+  Clock,
+  Users,
+  Trophy,
+} from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface MockPackage {
@@ -19,17 +27,17 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1
-    }
-  }
+      staggerChildren: 0.1,
+    },
+  },
 };
 
 const itemVariants = {
   hidden: { y: 20, opacity: 0 },
   visible: {
     y: 0,
-    opacity: 1
-  }
+    opacity: 1,
+  },
 };
 
 export default function SubFoldersList() {
@@ -81,8 +89,9 @@ export default function SubFoldersList() {
             Mock Exam Packages
           </h1>
           <p className="text-lg text-gray-600 max-w-3xl">
-            Choose from our comprehensive selection of mock exam packages designed to help you prepare effectively.
-            Each package contains carefully curated questions to test your knowledge.
+            Choose from our comprehensive selection of mock exam packages
+            designed to help you prepare effectively. Each package contains
+            carefully curated questions to test your knowledge.
           </p>
         </div>
 
@@ -113,7 +122,8 @@ export default function SubFoldersList() {
                             {item.folderName}
                           </h3>
                           <p className="text-sm text-gray-500">
-                            {item.description || "Comprehensive mock exam package"}
+                            {item.description ||
+                              "Comprehensive mock exam package"}
                           </p>
                         </div>
                       </div>
@@ -159,8 +169,12 @@ export default function SubFoldersList() {
         {data.length === 0 && !isLoading && (
           <div className="text-center py-12">
             <Book className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No Packages Available</h3>
-            <p className="text-gray-500">Check back later for new mock exam packages.</p>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              No Packages Available
+            </h3>
+            <p className="text-gray-500">
+              Check back later for new mock exam packages.
+            </p>
           </div>
         )}
       </div>

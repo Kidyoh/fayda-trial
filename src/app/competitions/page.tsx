@@ -1,24 +1,53 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { CompetitionAPI, Competition, CompetitionStatus, Grade } from '@/lib/competitionAPI';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Calendar, Clock, Trophy, Users, MapPin, Search, Filter, X } from 'lucide-react';
-import { formatCompetitionDate, formatCompetitionTime, getCompetitionStatus } from '@/lib/competitionAPI';
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import {
+  CompetitionAPI,
+  Competition,
+  CompetitionStatus,
+  Grade,
+} from "@/lib/competitionAPI";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Calendar,
+  Clock,
+  Trophy,
+  Users,
+  MapPin,
+  Search,
+  Filter,
+  X,
+} from "lucide-react";
+import {
+  formatCompetitionDate,
+  formatCompetitionTime,
+  getCompetitionStatus,
+} from "@/lib/competitionAPI";
 
 const CompetitionsPage: React.FC = () => {
   const router = useRouter();
   const [competitions, setCompetitions] = useState<Competition[]>([]);
-  const [filteredCompetitions, setFilteredCompetitions] = useState<Competition[]>([]);
+  const [filteredCompetitions, setFilteredCompetitions] = useState<
+    Competition[]
+  >([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'upcoming' | 'past' | 'all'>('upcoming');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [activeTab, setActiveTab] = useState<"upcoming" | "past" | "all">(
+    "upcoming",
+  );
+  const [searchQuery, setSearchQuery] = useState("");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [filters, setFilters] = useState({
     all: true,
@@ -42,31 +71,43 @@ const CompetitionsPage: React.FC = () => {
 
     // Apply search filter
     if (searchQuery.trim()) {
-      filtered = filtered.filter(competition =>
-        competition.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        competition.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        competition.competitionType.toLowerCase().includes(searchQuery.toLowerCase())
+      filtered = filtered.filter(
+        (competition) =>
+          competition.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          competition.description
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          competition.competitionType
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()),
       );
     }
 
     // Apply category filters
     if (!filters.all) {
-      filtered = filtered.filter(competition => {
+      filtered = filtered.filter((competition) => {
         const typeConditions = [
-          filters.quiz && competition.competitionType.toLowerCase().includes('quiz'),
-          filters.exam && competition.competitionType.toLowerCase().includes('exam'),
-          filters.challenge && competition.competitionType.toLowerCase().includes('challenge'),
-          filters.tournament && competition.competitionType.toLowerCase().includes('tournament'),
+          filters.quiz &&
+            competition.competitionType.toLowerCase().includes("quiz"),
+          filters.exam &&
+            competition.competitionType.toLowerCase().includes("exam"),
+          filters.challenge &&
+            competition.competitionType.toLowerCase().includes("challenge"),
+          filters.tournament &&
+            competition.competitionType.toLowerCase().includes("tournament"),
         ];
 
         const gradeConditions = [
-          filters.grade9 && competition.grade.toString().includes('9'),
-          filters.grade10 && competition.grade.toString().includes('10'),
-          filters.grade11 && competition.grade.toString().includes('11'),
-          filters.grade12 && competition.grade.toString().includes('12'),
+          filters.grade9 && competition.grade.toString().includes("9"),
+          filters.grade10 && competition.grade.toString().includes("10"),
+          filters.grade11 && competition.grade.toString().includes("11"),
+          filters.grade12 && competition.grade.toString().includes("12"),
         ];
 
-        return typeConditions.some(condition => condition) || gradeConditions.some(condition => condition);
+        return (
+          typeConditions.some((condition) => condition) ||
+          gradeConditions.some((condition) => condition)
+        );
       });
     }
 
@@ -90,7 +131,7 @@ const CompetitionsPage: React.FC = () => {
       setFilters({
         ...filters,
         [id]: !filters[id as keyof typeof filters],
-        all: false
+        all: false,
       });
     }
   };
@@ -134,7 +175,7 @@ const CompetitionsPage: React.FC = () => {
         { id: "exam", label: "Exam", tag: "exam" },
         { id: "challenge", label: "Challenge", tag: "challenge" },
         { id: "tournament", label: "Tournament", tag: "tournament" },
-      ]
+      ],
     },
     {
       name: "Grades",
@@ -143,8 +184,8 @@ const CompetitionsPage: React.FC = () => {
         { id: "grade10", label: "Grade 10", tag: "10" },
         { id: "grade11", label: "Grade 11", tag: "11" },
         { id: "grade12", label: "Grade 12", tag: "12" },
-      ]
-    }
+      ],
+    },
   ];
 
   // Popular tags that appear at the top
@@ -160,10 +201,17 @@ const CompetitionsPage: React.FC = () => {
       setLoading(true);
       setError(null);
 
-      const status: 'upcoming' | 'active' | 'completed' | 'cancelled' | undefined = 
-        activeTab === 'upcoming' ? 'upcoming' :
-        activeTab === 'past' ? 'completed' :
-        undefined;
+      const status:
+        | "upcoming"
+        | "active"
+        | "completed"
+        | "cancelled"
+        | undefined =
+        activeTab === "upcoming"
+          ? "upcoming"
+          : activeTab === "past"
+            ? "completed"
+            : undefined;
 
       const response = await CompetitionAPI.getCompetitions({
         status,
@@ -172,11 +220,13 @@ const CompetitionsPage: React.FC = () => {
       if (response.success) {
         setCompetitions(response.competitions);
       } else {
-        setError('Failed to fetch competitions');
+        setError("Failed to fetch competitions");
       }
     } catch (err) {
-      console.error('Error fetching competitions:', err);
-      setError(err instanceof Error ? err.message : 'Failed to fetch competitions');
+      console.error("Error fetching competitions:", err);
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch competitions",
+      );
     } finally {
       setLoading(false);
     }
@@ -188,26 +238,37 @@ const CompetitionsPage: React.FC = () => {
 
   const getStatusColor = (competition: Competition) => {
     switch (competition.status) {
-      case 'upcoming': return 'bg-blue-100 text-blue-800';
-      case 'active': return 'bg-green-100 text-green-800';
-      case 'completed': return 'bg-gray-100 text-gray-800';
-      case 'cancelled': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "upcoming":
+        return "bg-blue-100 text-blue-800";
+      case "active":
+        return "bg-green-100 text-green-800";
+      case "completed":
+        return "bg-gray-100 text-gray-800";
+      case "cancelled":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const getStatusText = (competition: Competition) => {
-    return competition.status.charAt(0).toUpperCase() + competition.status.slice(1);
+    return (
+      competition.status.charAt(0).toUpperCase() + competition.status.slice(1)
+    );
   };
 
-  const CompetitionCard: React.FC<{ competition: Competition }> = ({ competition }) => (
+  const CompetitionCard: React.FC<{ competition: Competition }> = ({
+    competition,
+  }) => (
     <Card className="h-full hover:shadow-lg transition-shadow duration-300">
       <CardHeader className="pb-4">
         <div className="flex justify-between items-start mb-2">
           <CardTitle className="text-xl font-bold text-gray-900 line-clamp-2">
             {competition.title}
           </CardTitle>
-          <Badge className={`${getStatusColor(competition)} border-0 font-medium`}>
+          <Badge
+            className={`${getStatusColor(competition)} border-0 font-medium`}
+          >
             {getStatusText(competition)}
           </Badge>
         </div>
@@ -230,7 +291,8 @@ const CompetitionsPage: React.FC = () => {
           <div className="flex items-center gap-2 text-sm text-gray-700">
             <Calendar className="w-4 h-4 text-blue-500" />
             <span>
-              {formatCompetitionDate(competition.startDate)} - {formatCompetitionDate(competition.endDate)}
+              {formatCompetitionDate(competition.startDate)} -{" "}
+              {formatCompetitionDate(competition.endDate)}
             </span>
           </div>
 
@@ -257,15 +319,13 @@ const CompetitionsPage: React.FC = () => {
           {/* Participants */}
           <div className="flex items-center gap-2 text-sm text-gray-700">
             <Users className="w-4 h-4 text-purple-500" />
-            <span>
-              {competition.registrationCount} Participants
-            </span>
+            <span>{competition.registrationCount} Participants</span>
           </div>
         </div>
       </CardContent>
 
       <CardFooter>
-        <Button 
+        <Button
           onClick={() => handleShowDetail(competition.id)}
           className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300"
         >
@@ -282,8 +342,13 @@ const CompetitionsPage: React.FC = () => {
         <section className="relative pt-20 bg-[url(/Background/landing-bg.jpg)] bg-cover bg-center text-white pb-16 md:pt-24">
           <div className="container mx-auto px-6 z-10 relative">
             <div className="max-w-3xl mx-auto text-center">
-              <h1 className="text-4xl sm:text-5xl font-bold mb-6">Find Your Perfect Competition</h1>
-              <p className="text-xl mb-8 text-white/90">Join exciting quiz tournaments and compete with students from across the country</p>
+              <h1 className="text-4xl sm:text-5xl font-bold mb-6">
+                Find Your Perfect Competition
+              </h1>
+              <p className="text-xl mb-8 text-white/90">
+                Join exciting quiz tournaments and compete with students from
+                across the country
+              </p>
 
               <div className="bg-white rounded-2xl shadow-lg p-3 flex items-center">
                 <Search className="ml-3 text-[#07705d]" size={20} />
@@ -293,7 +358,10 @@ const CompetitionsPage: React.FC = () => {
                   disabled
                   className="w-full px-4 py-3 text-gray-800 focus:outline-none bg-transparent text-lg"
                 />
-                <button className="ml-auto bg-[#bf8c13] text-white font-semibold px-6 py-3 rounded-xl hover:bg-[#bf8c13]/90 transition-all duration-200" disabled>
+                <button
+                  className="ml-auto bg-[#bf8c13] text-white font-semibold px-6 py-3 rounded-xl hover:bg-[#bf8c13]/90 transition-all duration-200"
+                  disabled
+                >
                   Search
                 </button>
               </div>
@@ -304,7 +372,9 @@ const CompetitionsPage: React.FC = () => {
 
         <div className="container mx-auto px-6 pb-16 relative z-10">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-[#07705d] mb-4">Quiz Competitions</h2>
+            <h2 className="text-3xl font-bold text-[#07705d] mb-4">
+              Quiz Competitions
+            </h2>
             <p className="text-lg text-gray-600">Loading competitions...</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -340,8 +410,13 @@ const CompetitionsPage: React.FC = () => {
         <section className="relative pt-20 bg-[url(/Background/landing-bg.jpg)] bg-cover bg-center text-white pb-16 md:pt-24">
           <div className="container mx-auto px-6 z-10 relative">
             <div className="max-w-3xl mx-auto text-center">
-              <h1 className="text-4xl sm:text-5xl font-bold mb-6">Find Your Perfect Competition</h1>
-              <p className="text-xl mb-8 text-white/90">Join exciting quiz tournaments and compete with students from across the country</p>
+              <h1 className="text-4xl sm:text-5xl font-bold mb-6">
+                Find Your Perfect Competition
+              </h1>
+              <p className="text-xl mb-8 text-white/90">
+                Join exciting quiz tournaments and compete with students from
+                across the country
+              </p>
 
               <div className="bg-white rounded-2xl shadow-lg p-3 flex items-center">
                 <Search className="ml-3 text-[#07705d]" size={20} />
@@ -351,7 +426,10 @@ const CompetitionsPage: React.FC = () => {
                   disabled
                   className="w-full px-4 py-3 text-gray-800 focus:outline-none bg-transparent text-lg"
                 />
-                <button className="ml-auto bg-[#bf8c13] text-white font-semibold px-6 py-3 rounded-xl hover:bg-[#bf8c13]/90 transition-all duration-200" disabled>
+                <button
+                  className="ml-auto bg-[#bf8c13] text-white font-semibold px-6 py-3 rounded-xl hover:bg-[#bf8c13]/90 transition-all duration-200"
+                  disabled
+                >
                   Search
                 </button>
               </div>
@@ -362,10 +440,12 @@ const CompetitionsPage: React.FC = () => {
 
         <div className="container mx-auto px-6 pb-16 relative z-10">
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-[#07705d] mb-4">Quiz Competitions</h2>
+            <h2 className="text-3xl font-bold text-[#07705d] mb-4">
+              Quiz Competitions
+            </h2>
             <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md mx-auto">
               <p className="text-red-800 mb-4">{error}</p>
-              <Button 
+              <Button
                 onClick={fetchCompetitions}
                 variant="outline"
                 className="border-red-300 text-red-700 hover:bg-red-50"
@@ -385,8 +465,13 @@ const CompetitionsPage: React.FC = () => {
       <section className="relative pt-20 bg-[url(/Background/landing-bg.jpg)] bg-cover bg-center text-white pb-16 md:pt-24">
         <div className="container mx-auto px-6 z-10 relative">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl sm:text-5xl font-bold mb-6">Find Your Perfect Competition</h1>
-            <p className="text-xl mb-8 text-white/90">Join exciting quiz tournaments and compete with students from across the country</p>
+            <h1 className="text-4xl sm:text-5xl font-bold mb-6">
+              Find Your Perfect Competition
+            </h1>
+            <p className="text-xl mb-8 text-white/90">
+              Join exciting quiz tournaments and compete with students from
+              across the country
+            </p>
 
             <div className="bg-white rounded-2xl shadow-lg p-3 flex items-center">
               <Search className="ml-3 text-[#07705d]" size={20} />
@@ -414,8 +499,11 @@ const CompetitionsPage: React.FC = () => {
               key={tag.id}
               onClick={() => handleTagClick(tag.id)}
               className={`px-6 py-3 rounded-xl font-semibold transition-all duration-200 border shadow-sm ${
-                (tag.id === "all" && filters.all) || (tag.id === "upcoming" && activeTab === "upcoming") || 
-                (tag.id !== "all" && tag.id !== "upcoming" && filters[tag.id as keyof typeof filters])
+                (tag.id === "all" && filters.all) ||
+                (tag.id === "upcoming" && activeTab === "upcoming") ||
+                (tag.id !== "all" &&
+                  tag.id !== "upcoming" &&
+                  filters[tag.id as keyof typeof filters])
                   ? "bg-[#07705d] text-white border-[#07705d] shadow-md"
                   : "bg-white text-[#07705d] hover:bg-[#c7cc3f]/10 border-[#c7cc3f]"
               }`}
@@ -431,7 +519,8 @@ const CompetitionsPage: React.FC = () => {
         {searchQuery && (
           <div className="mb-6 text-center">
             <p className="text-lg text-[#07705d] font-medium">
-              {filteredCompetitions.length} competition{filteredCompetitions.length !== 1 ? 's' : ''} found
+              {filteredCompetitions.length} competition
+              {filteredCompetitions.length !== 1 ? "s" : ""} found
               {searchQuery && ` for "${searchQuery}"`}
             </p>
           </div>
@@ -440,7 +529,9 @@ const CompetitionsPage: React.FC = () => {
         {/* Mobile Filter Toggle */}
         <div className="lg:hidden flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-[#07705d]">
-            {loading ? "Loading competitions..." : `${filteredCompetitions.length} competitions found`}
+            {loading
+              ? "Loading competitions..."
+              : `${filteredCompetitions.length} competitions found`}
           </h2>
           <button
             onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
@@ -452,11 +543,17 @@ const CompetitionsPage: React.FC = () => {
         </div>
 
         {/* Mobile Filter Drawer */}
-        <div className={`fixed inset-0 bg-black/50 z-50 transition-opacity lg:hidden ${mobileFiltersOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
-          <div className={`absolute right-0 top-0 h-full bg-white w-80 transition-transform shadow-xl ${mobileFiltersOpen ? "translate-x-0" : "translate-x-full"}`}>
+        <div
+          className={`fixed inset-0 bg-black/50 z-50 transition-opacity lg:hidden ${mobileFiltersOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+        >
+          <div
+            className={`absolute right-0 top-0 h-full bg-white w-80 transition-transform shadow-xl ${mobileFiltersOpen ? "translate-x-0" : "translate-x-full"}`}
+          >
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-lg font-semibold text-[#07705d]">Filters</h3>
+                <h3 className="text-lg font-semibold text-[#07705d]">
+                  Filters
+                </h3>
                 <button
                   onClick={() => setMobileFiltersOpen(false)}
                   className="p-2 text-gray-500 hover:text-[#bf8c13] transition-colors"
@@ -467,8 +564,13 @@ const CompetitionsPage: React.FC = () => {
 
               <div className="space-y-6">
                 {filterCategories.map((category, idx) => (
-                  <div key={idx} className="border-b border-[#c7cc3f]/30 pb-6 last:border-0">
-                    <h4 className="font-medium mb-4 text-[#07705d]">{category.name}</h4>
+                  <div
+                    key={idx}
+                    className="border-b border-[#c7cc3f]/30 pb-6 last:border-0"
+                  >
+                    <h4 className="font-medium mb-4 text-[#07705d]">
+                      {category.name}
+                    </h4>
                     <div className="space-y-3">
                       {category.items.map((item) => (
                         <div key={item.id} className="flex items-center">
@@ -478,7 +580,10 @@ const CompetitionsPage: React.FC = () => {
                             onCheckedChange={() => handleFilterChange(item.id)}
                             className="data-[state=checked]:bg-[#07705d] data-[state=checked]:border-[#07705d]"
                           />
-                          <label htmlFor={`mobile-${item.id}`} className="ml-2 text-sm text-gray-700">
+                          <label
+                            htmlFor={`mobile-${item.id}`}
+                            className="ml-2 text-sm text-gray-700"
+                          >
                             {item.label}
                           </label>
                         </div>
@@ -502,7 +607,9 @@ const CompetitionsPage: React.FC = () => {
           {/* Desktop Sidebar Filters */}
           <div className="hidden lg:block w-64 flex-shrink-0">
             <div className="bg-white rounded-2xl p-6 shadow-lg border border-[#c7cc3f]/30 sticky top-24">
-              <h3 className="text-lg font-semibold mb-4 text-[#07705d]">Filters</h3>
+              <h3 className="text-lg font-semibold mb-4 text-[#07705d]">
+                Filters
+              </h3>
 
               <div className="space-y-6">
                 <div className="pb-4 border-b border-[#c7cc3f]/30">
@@ -513,15 +620,23 @@ const CompetitionsPage: React.FC = () => {
                       onCheckedChange={() => handleFilterChange("all")}
                       className="data-[state=checked]:bg-[#07705d] data-[state=checked]:border-[#07705d]"
                     />
-                    <label htmlFor="filter-all" className="ml-2 text-sm font-medium text-[#07705d]">
+                    <label
+                      htmlFor="filter-all"
+                      className="ml-2 text-sm font-medium text-[#07705d]"
+                    >
                       All Competitions
                     </label>
                   </div>
                 </div>
 
                 {filterCategories.map((category, idx) => (
-                  <div key={idx} className="pb-4 border-b border-[#c7cc3f]/30 last:border-0">
-                    <h4 className="font-medium mb-4 text-[#07705d]">{category.name}</h4>
+                  <div
+                    key={idx}
+                    className="pb-4 border-b border-[#c7cc3f]/30 last:border-0"
+                  >
+                    <h4 className="font-medium mb-4 text-[#07705d]">
+                      {category.name}
+                    </h4>
                     <div className="space-y-3">
                       {category.items.map((item) => (
                         <div key={item.id} className="flex items-center">
@@ -531,7 +646,10 @@ const CompetitionsPage: React.FC = () => {
                             onCheckedChange={() => handleFilterChange(item.id)}
                             className="data-[state=checked]:bg-[#07705d] data-[state=checked]:border-[#07705d]"
                           />
-                          <label htmlFor={`filter-${item.id}`} className="ml-2 text-sm text-gray-700">
+                          <label
+                            htmlFor={`filter-${item.id}`}
+                            className="ml-2 text-sm text-gray-700"
+                          >
                             {item.label}
                           </label>
                         </div>
@@ -547,95 +665,122 @@ const CompetitionsPage: React.FC = () => {
           <div className="flex-1">
             <div className="mb-6 hidden lg:flex justify-between items-center">
               <h2 className="text-xl font-semibold text-[#07705d]">
-                {loading ? "Loading competitions..." : `${filteredCompetitions.length} competitions found`}
+                {loading
+                  ? "Loading competitions..."
+                  : `${filteredCompetitions.length} competitions found`}
               </h2>
             </div>
 
-        {/* Tabs for filtering */}
-        <div className="mb-8">
-          <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)} className="w-full">
-            <TabsList className="grid w-full max-w-md mx-auto grid-cols-3 bg-white border shadow-sm">
-              <TabsTrigger 
-                value="upcoming" 
-                className="data-[state=active]:bg-orange-500 data-[state=active]:text-white font-medium"
+            {/* Tabs for filtering */}
+            <div className="mb-8">
+              <Tabs
+                value={activeTab}
+                onValueChange={(value) => setActiveTab(value as any)}
+                className="w-full"
               >
-                Upcoming
-              </TabsTrigger>
-              <TabsTrigger 
-                value="past"
-                className="data-[state=active]:bg-orange-500 data-[state=active]:text-white font-medium"
-              >
-                Past
-              </TabsTrigger>
-              <TabsTrigger 
-                value="all"
-                className="data-[state=active]:bg-orange-500 data-[state=active]:text-white font-medium"
-              >
-                All
-              </TabsTrigger>
-            </TabsList>
+                <TabsList className="grid w-full max-w-md mx-auto grid-cols-3 bg-white border shadow-sm">
+                  <TabsTrigger
+                    value="upcoming"
+                    className="data-[state=active]:bg-orange-500 data-[state=active]:text-white font-medium"
+                  >
+                    Upcoming
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="past"
+                    className="data-[state=active]:bg-orange-500 data-[state=active]:text-white font-medium"
+                  >
+                    Past
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="all"
+                    className="data-[state=active]:bg-orange-500 data-[state=active]:text-white font-medium"
+                  >
+                    All
+                  </TabsTrigger>
+                </TabsList>
 
-            <TabsContent value="upcoming" className="mt-8">
-              {filteredCompetitions.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredCompetitions.map((competition) => (
-                    <CompetitionCard key={competition.id} competition={competition} />
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-12">
-                  <Trophy className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-gray-700 mb-2">
-                    {searchQuery ? 'No competitions found' : 'No Upcoming Competitions'}
-                  </h3>
-                  <p className="text-gray-500">
-                    {searchQuery ? 'Try adjusting your search criteria' : 'Check back soon for exciting new quiz tournaments!'}
-                  </p>
-                </div>
-              )}
-            </TabsContent>
+                <TabsContent value="upcoming" className="mt-8">
+                  {filteredCompetitions.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {filteredCompetitions.map((competition) => (
+                        <CompetitionCard
+                          key={competition.id}
+                          competition={competition}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-12">
+                      <Trophy className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                      <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                        {searchQuery
+                          ? "No competitions found"
+                          : "No Upcoming Competitions"}
+                      </h3>
+                      <p className="text-gray-500">
+                        {searchQuery
+                          ? "Try adjusting your search criteria"
+                          : "Check back soon for exciting new quiz tournaments!"}
+                      </p>
+                    </div>
+                  )}
+                </TabsContent>
 
-            <TabsContent value="past" className="mt-8">
-              {filteredCompetitions.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredCompetitions.map((competition) => (
-                    <CompetitionCard key={competition.id} competition={competition} />
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-12">
-                  <Trophy className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-gray-700 mb-2">
-                    {searchQuery ? 'No competitions found' : 'No Past Competitions'}
-                  </h3>
-                  <p className="text-gray-500">
-                    {searchQuery ? 'Try adjusting your search criteria' : 'Past competitions will appear here after they conclude.'}
-                  </p>
-                </div>
-              )}
-            </TabsContent>
+                <TabsContent value="past" className="mt-8">
+                  {filteredCompetitions.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {filteredCompetitions.map((competition) => (
+                        <CompetitionCard
+                          key={competition.id}
+                          competition={competition}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-12">
+                      <Trophy className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                      <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                        {searchQuery
+                          ? "No competitions found"
+                          : "No Past Competitions"}
+                      </h3>
+                      <p className="text-gray-500">
+                        {searchQuery
+                          ? "Try adjusting your search criteria"
+                          : "Past competitions will appear here after they conclude."}
+                      </p>
+                    </div>
+                  )}
+                </TabsContent>
 
-            <TabsContent value="all" className="mt-8">
-              {filteredCompetitions.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredCompetitions.map((competition) => (
-                    <CompetitionCard key={competition.id} competition={competition} />
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-12">
-                  <Trophy className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-gray-700 mb-2">
-                    {searchQuery ? 'No competitions found' : 'No Competitions Available'}
-                  </h3>
-                  <p className="text-gray-500">
-                    {searchQuery ? 'Try adjusting your search criteria' : 'Competitions will appear here when they become available.'}
-                  </p>
-                </div>
-              )}
-            </TabsContent>
-          </Tabs>
-        </div>
+                <TabsContent value="all" className="mt-8">
+                  {filteredCompetitions.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {filteredCompetitions.map((competition) => (
+                        <CompetitionCard
+                          key={competition.id}
+                          competition={competition}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-12">
+                      <Trophy className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                      <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                        {searchQuery
+                          ? "No competitions found"
+                          : "No Competitions Available"}
+                      </h3>
+                      <p className="text-gray-500">
+                        {searchQuery
+                          ? "Try adjusting your search criteria"
+                          : "Competitions will appear here when they become available."}
+                      </p>
+                    </div>
+                  )}
+                </TabsContent>
+              </Tabs>
+            </div>
           </div>
         </div>
       </div>

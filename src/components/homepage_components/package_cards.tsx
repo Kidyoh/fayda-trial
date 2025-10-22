@@ -35,10 +35,25 @@ const Card: React.FC<CardProps> = ({ package: pkg, bg, border, text }) => (
   >
     {/* Ethiopian Pattern Overlay */}
     <div className="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity duration-300">
-      <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <svg
+        className="w-full h-full"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+      >
         <defs>
-          <pattern id={`pattern-${pkg.id}`} x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-            <polygon points="10,0 20,10 10,20 0,10" fill="currentColor" opacity="0.3" />
+          <pattern
+            id={`pattern-${pkg.id}`}
+            x="0"
+            y="0"
+            width="20"
+            height="20"
+            patternUnits="userSpaceOnUse"
+          >
+            <polygon
+              points="10,0 20,10 10,20 0,10"
+              fill="currentColor"
+              opacity="0.3"
+            />
             <circle cx="10" cy="10" r="3" fill="currentColor" opacity="0.2" />
           </pattern>
         </defs>
@@ -55,7 +70,7 @@ const Card: React.FC<CardProps> = ({ package: pkg, bg, border, text }) => (
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           onError={(e) => {
             // Fallback to a gradient background if image fails to load
-            e.currentTarget.style.display = 'none';
+            e.currentTarget.style.display = "none";
           }}
         />
       ) : (
@@ -65,7 +80,9 @@ const Card: React.FC<CardProps> = ({ package: pkg, bg, border, text }) => (
       )}
       <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
       <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg">
-        <span className="text-xs font-semibold text-[#07705d]">{pkg.tag || 'Course'}</span>
+        <span className="text-xs font-semibold text-[#07705d]">
+          {pkg.tag || "Course"}
+        </span>
       </div>
     </div>
 
@@ -97,7 +114,9 @@ const Card: React.FC<CardProps> = ({ package: pkg, bg, border, text }) => (
         </div>
         <div className="flex items-start">
           <div className="w-2 h-2 bg-white/80 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-          <span className="leading-relaxed">{pkg.courses?.length || 0} comprehensive courses</span>
+          <span className="leading-relaxed">
+            {pkg.courses?.length || 0} comprehensive courses
+          </span>
         </div>
         <div className="flex items-start">
           <div className="w-2 h-2 bg-white/80 rounded-full mt-2 mr-3 flex-shrink-0"></div>
@@ -110,7 +129,8 @@ const Card: React.FC<CardProps> = ({ package: pkg, bg, border, text }) => (
       </div>
     </div>
   </div>
-); export default function PackageCards() {
+);
+export default function PackageCards() {
   const [packages, setPackages] = useState<Package[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -180,7 +200,6 @@ const Card: React.FC<CardProps> = ({ package: pkg, bg, border, text }) => (
 
   return (
     <div className="pb-10 px-4">
-
       <div className="max-w-4xl mx-auto relative flex flex-col items-center mb-4">
         <Image
           src="/svg/Asset 21.svg"
@@ -194,14 +213,15 @@ const Card: React.FC<CardProps> = ({ package: pkg, bg, border, text }) => (
         </h2>
       </div>
 
-
       <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
         {packages.map((pkg, i) => (
           <Card
             key={pkg.id}
             package={pkg}
             bg={cardStyles[i % cardStyles.length]?.bg || cardStyles[0].bg}
-            border={cardStyles[i % cardStyles.length]?.border || cardStyles[0].border}
+            border={
+              cardStyles[i % cardStyles.length]?.border || cardStyles[0].border
+            }
             text={cardStyles[i % cardStyles.length]?.text || cardStyles[0].text}
           />
         ))}
@@ -213,18 +233,22 @@ const Card: React.FC<CardProps> = ({ package: pkg, bg, border, text }) => (
           <div className="mx-auto w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center mb-4">
             <span className="text-3xl">📚</span>
           </div>
-          <h3 className="text-xl font-Sendako font-semi bold text-black mb-2">No Featured Packages Available</h3>
-          <p className="text-black/80 mb-6">Check back soon for new learning opportunities!</p>
+          <h3 className="text-xl font-Sendako font-semi bold text-black mb-2">
+            No Featured Packages Available
+          </h3>
+          <p className="text-black/80 mb-6">
+            Check back soon for new learning opportunities!
+          </p>
         </div>
-      ) :
+      ) : (
         <div className="text-center mt-12">
           <Link href="/search">
-          <button className="bg-primaryColor backdrop-blur-sm text-white font-bold py-4 px-8 rounded-2xl border-2 transition-all duration-300 hover:scale-105">
+            <button className="bg-primaryColor backdrop-blur-sm text-white font-bold py-4 px-8 rounded-2xl border-2 transition-all duration-300 hover:scale-105">
               View All Packages
             </button>
           </Link>
         </div>
-      }
-    </div >
+      )}
+    </div>
   );
 }

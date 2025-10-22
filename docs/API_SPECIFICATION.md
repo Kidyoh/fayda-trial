@@ -1,6 +1,7 @@
 # 🔌 Complete API Specification for Cart & Payment System
 
 ## 📋 Table of Contents
+
 1. [Overview](#overview)
 2. [Authentication](#authentication)
 3. [Cart Management APIs](#cart-management-apis)
@@ -16,17 +17,20 @@
 This document provides complete API specifications for implementing the cart and payment system. All endpoints use RESTful conventions and return JSON responses.
 
 ### Base URL
+
 ```
 Production: https://api.fayida.com
 Development: https://dev-api.fayida.com
 ```
 
 ### Content Type
+
 All requests and responses use `application/json`
 
 ## 🔐 Authentication
 
 ### JWT Token Authentication
+
 All protected endpoints require a valid JWT token in the Authorization header.
 
 ```http
@@ -34,6 +38,7 @@ Authorization: Bearer <jwt_token>
 ```
 
 ### Token Refresh
+
 ```http
 POST /auth/refresh
 Content-Type: application/json
@@ -44,6 +49,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -56,12 +62,14 @@ Content-Type: application/json
 ## 🛒 Cart Management APIs
 
 ### 1. Get Cart Items
+
 ```http
 GET /cart/items
 Authorization: Bearer <token>
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -85,6 +93,7 @@ Authorization: Bearer <token>
 ```
 
 ### 2. Add Item to Cart
+
 ```http
 POST /cart/items
 Authorization: Bearer <token>
@@ -99,6 +108,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -107,7 +117,7 @@ Content-Type: application/json
     "id": "string",
     "type": "package",
     "name": "Premium Package",
-    "price": 100.00,
+    "price": 100.0,
     "quantity": 1,
     "selectedDuration": 3
   }
@@ -115,6 +125,7 @@ Content-Type: application/json
 ```
 
 ### 3. Update Cart Item
+
 ```http
 PUT /cart/items/{itemId}
 Authorization: Bearer <token>
@@ -127,6 +138,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -135,18 +147,20 @@ Content-Type: application/json
     "id": "string",
     "quantity": 2,
     "selectedDuration": 6,
-    "totalPrice": 200.00
+    "totalPrice": 200.0
   }
 }
 ```
 
 ### 4. Remove Item from Cart
+
 ```http
 DELETE /cart/items/{itemId}
 Authorization: Bearer <token>
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -155,12 +169,14 @@ Authorization: Bearer <token>
 ```
 
 ### 5. Clear Cart
+
 ```http
 DELETE /cart/items
 Authorization: Bearer <token>
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -171,6 +187,7 @@ Authorization: Bearer <token>
 ## 💳 Payment Processing APIs
 
 ### 1. Create Bulk Purchase
+
 ```http
 POST /cart/bulk-purchase
 Authorization: Bearer <token>
@@ -199,6 +216,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -211,7 +229,7 @@ Content-Type: application/json
       "studentId": "student-789",
       "duration": 3,
       "quantity": 1,
-      "price": 100.00,
+      "price": 100.0,
       "status": "pending",
       "createdAt": "2024-01-01T00:00:00Z"
     }
@@ -222,7 +240,7 @@ Content-Type: application/json
       "courseId": "course-456",
       "studentId": "student-789",
       "quantity": 1,
-      "price": 50.00,
+      "price": 50.0,
       "status": "pending",
       "createdAt": "2024-01-01T00:00:00Z"
     }
@@ -231,6 +249,7 @@ Content-Type: application/json
 ```
 
 ### 2. Initiate Bulk Payment
+
 ```http
 POST /paymenthandler/bulk-checkout/
 Authorization: Bearer <token>
@@ -261,6 +280,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -272,6 +292,7 @@ Content-Type: application/json
 ```
 
 ### 3. Individual Package Purchase
+
 ```http
 POST /paymenthandler/checkout/
 Authorization: Bearer <token>
@@ -286,6 +307,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -296,6 +318,7 @@ Content-Type: application/json
 ```
 
 ### 4. Individual Course Purchase
+
 ```http
 POST /paymenthandler/course-checkout/
 Authorization: Bearer <token>
@@ -309,6 +332,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -321,6 +345,7 @@ Content-Type: application/json
 ## 📦 Purchase Management APIs
 
 ### 1. Get Purchase History
+
 ```http
 GET /purchases/history
 Authorization: Bearer <token>
@@ -332,6 +357,7 @@ Query Parameters:
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -340,7 +366,7 @@ Query Parameters:
       "id": "purchase-123",
       "type": "package",
       "itemName": "Premium Package",
-      "amount": 100.00,
+      "amount": 100.0,
       "status": "completed",
       "purchasedAt": "2024-01-01T00:00:00Z",
       "expiresAt": "2024-04-01T00:00:00Z"
@@ -356,12 +382,14 @@ Query Parameters:
 ```
 
 ### 2. Get Purchase Details
+
 ```http
 GET /purchases/{purchaseId}
 Authorization: Bearer <token>
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -370,7 +398,7 @@ Authorization: Bearer <token>
     "type": "package",
     "itemId": "pkg-456",
     "itemName": "Premium Package",
-    "amount": 100.00,
+    "amount": 100.0,
     "status": "completed",
     "paymentMethod": "santipay",
     "paymentReference": "santipay-ref-123",
@@ -383,12 +411,14 @@ Authorization: Bearer <token>
 ```
 
 ### 3. Check Purchase Status
+
 ```http
 GET /purchases/{purchaseId}/status
 Authorization: Bearer <token>
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -401,6 +431,7 @@ Authorization: Bearer <token>
 ## 🔄 Webhooks & Callbacks
 
 ### 1. Payment Success Callback
+
 ```http
 POST /api/payment/bulk-callback
 Content-Type: application/json
@@ -417,6 +448,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -425,6 +457,7 @@ Content-Type: application/json
 ```
 
 ### 2. Payment Failure Callback
+
 ```http
 POST /api/payment/bulk-callback
 Content-Type: application/json
@@ -440,6 +473,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -450,6 +484,7 @@ Content-Type: application/json
 ## ❌ Error Handling
 
 ### Error Response Format
+
 ```json
 {
   "success": false,
@@ -468,23 +503,27 @@ Content-Type: application/json
 ### Common Error Codes
 
 #### Authentication Errors
+
 - `UNAUTHORIZED` (401): Invalid or missing token
 - `TOKEN_EXPIRED` (401): Token has expired
 - `INVALID_TOKEN` (401): Malformed token
 
 #### Validation Errors
+
 - `VALIDATION_ERROR` (400): Request validation failed
 - `INVALID_PHONE_NUMBER` (400): Phone number format invalid
 - `INVALID_AMOUNT` (400): Amount must be positive
 - `INVALID_DURATION` (400): Duration must be 1, 3, or 6
 
 #### Business Logic Errors
+
 - `ITEM_NOT_FOUND` (404): Package or course not found
 - `INSUFFICIENT_STOCK` (400): Item out of stock
 - `ALREADY_PURCHASED` (400): Item already purchased
 - `PAYMENT_FAILED` (400): Payment processing failed
 
 #### System Errors
+
 - `INTERNAL_ERROR` (500): Internal server error
 - `SERVICE_UNAVAILABLE` (503): Payment service unavailable
 - `RATE_LIMITED` (429): Too many requests
@@ -492,6 +531,7 @@ Content-Type: application/json
 ### Error Handling Examples
 
 #### 400 Bad Request
+
 ```json
 {
   "success": false,
@@ -509,6 +549,7 @@ Content-Type: application/json
 ```
 
 #### 401 Unauthorized
+
 ```json
 {
   "success": false,
@@ -525,6 +566,7 @@ Content-Type: application/json
 ```
 
 #### 500 Internal Server Error
+
 ```json
 {
   "success": false,
@@ -543,6 +585,7 @@ Content-Type: application/json
 ## 🚦 Rate Limiting
 
 ### Rate Limit Headers
+
 ```http
 X-RateLimit-Limit: 100
 X-RateLimit-Remaining: 95
@@ -550,11 +593,13 @@ X-RateLimit-Reset: 1640995200
 ```
 
 ### Rate Limit Rules
+
 - **General API**: 100 requests per minute per IP
 - **Payment APIs**: 10 requests per minute per user
 - **Cart APIs**: 200 requests per minute per user
 
 ### Rate Limit Exceeded Response
+
 ```json
 {
   "success": false,
@@ -575,11 +620,13 @@ X-RateLimit-Reset: 1640995200
 ## 🧪 Testing Endpoints
 
 ### 1. Health Check
+
 ```http
 GET /health
 ```
 
 **Response:**
+
 ```json
 {
   "status": "healthy",
@@ -594,6 +641,7 @@ GET /health
 ```
 
 ### 2. Test Payment (Development Only)
+
 ```http
 POST /test/payment
 Authorization: Bearer <token>
@@ -607,6 +655,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -616,6 +665,7 @@ Content-Type: application/json
 ```
 
 ### 3. Mock Payment Callback
+
 ```http
 POST /test/payment/callback
 Content-Type: application/json
@@ -630,12 +680,14 @@ Content-Type: application/json
 ## 📊 Monitoring & Analytics
 
 ### 1. API Metrics
+
 ```http
 GET /admin/metrics
 Authorization: Bearer <admin_token>
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -656,6 +708,7 @@ Authorization: Bearer <admin_token>
 ```
 
 ### 2. Payment Analytics
+
 ```http
 GET /admin/payments/analytics
 Authorization: Bearer <admin_token>
@@ -666,20 +719,21 @@ Query Parameters:
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
   "analytics": {
-    "totalVolume": 50000.00,
+    "totalVolume": 50000.0,
     "totalTransactions": 500,
     "successRate": 0.92,
-    "averageTransactionValue": 100.00,
+    "averageTransactionValue": 100.0,
     "dailyData": [
       {
         "date": "2024-01-01",
-        "volume": 1000.00,
+        "volume": 1000.0,
         "transactions": 10,
-        "successRate": 0.90
+        "successRate": 0.9
       }
     ]
   }
@@ -689,6 +743,7 @@ Query Parameters:
 ## 🔧 Configuration
 
 ### Environment Variables
+
 ```bash
 # Database
 DATABASE_URL=postgresql://user:pass@localhost:5432/fayida
@@ -721,16 +776,19 @@ LOG_LEVEL=info
 ## 📝 API Versioning
 
 ### Version Header
+
 ```http
 API-Version: 1.0
 ```
 
 ### Versioning Strategy
+
 - **Major versions** (v1, v2): Breaking changes
 - **Minor versions** (v1.1, v1.2): New features, backward compatible
 - **Patch versions** (v1.1.1, v1.1.2): Bug fixes
 
 ### Deprecation Notice
+
 ```http
 Deprecation: true
 Sunset: 2024-12-31T23:59:59Z
@@ -742,6 +800,7 @@ Link: <https://api.fayida.com/docs/v2>; rel="successor-version"
 ### Complete Cart Checkout Flow
 
 #### 1. Add Items to Cart
+
 ```http
 POST /cart/items
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
@@ -756,6 +815,7 @@ Content-Type: application/json
 ```
 
 #### 2. Create Bulk Purchase
+
 ```http
 POST /cart/bulk-purchase
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
@@ -778,6 +838,7 @@ Content-Type: application/json
 ```
 
 #### 3. Initiate Payment
+
 ```http
 POST /paymenthandler/bulk-checkout/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
@@ -801,6 +862,7 @@ Content-Type: application/json
 ```
 
 #### 4. Payment Success Callback
+
 ```http
 POST /api/payment/bulk-callback
 Content-Type: application/json
@@ -817,7 +879,3 @@ Content-Type: application/json
 ```
 
 This comprehensive API specification provides everything needed to implement the complete cart and payment system backend. All endpoints are documented with request/response examples, error handling, and proper HTTP status codes.
-
-
-
-

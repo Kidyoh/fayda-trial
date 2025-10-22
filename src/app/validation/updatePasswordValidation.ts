@@ -14,5 +14,5 @@ export const updatePasswordSchema: any = z
     {
       message: "The passwords did not match",
       path: ["confirmPassword"],
-    }
+    },
   );

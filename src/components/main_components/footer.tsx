@@ -41,7 +41,7 @@ const footerLinks = {
     { name: "Free Courses", href: "/courses/free" },
     { name: "Premium Courses", href: "/courses/premium" },
     { name: "Become an Instructor", href: "/teach" },
-  ]
+  ],
 };
 
 const containerVariants = {
@@ -62,7 +62,6 @@ const itemVariants = {
     transition: { duration: 0.5 },
   },
 };
-
 
 export default function Footer() {
   return (
@@ -89,10 +88,10 @@ export default function Footer() {
         alt="footer image"
         className="hidden lg:flex absolute z-30 w-full bottom-0 h-[25%] object-cover object-center"
       />
-      
+
       {/* Mobile gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#c7cc3f]/10 to-[#bf8c13]/10 z-5 lg:hidden"></div>
-      
+
       {/* Desktop dark overlay for better text readability */}
       <div className="absolute inset-0 bg-black/40 z-35 hidden lg:block"></div>
 
@@ -116,7 +115,8 @@ export default function Footer() {
           >
             <motion.div variants={itemVariants} className="mb-6">
               <p className="text-white text-sm leading-relaxed max-w-xs mx-auto lg:mx-0 lg:text-white/90">
-                Empowering learners worldwide with quality education. Join our community of passionate learners and expert instructors.
+                Empowering learners worldwide with quality education. Join our
+                community of passionate learners and expert instructors.
               </p>
             </motion.div>
 
@@ -135,7 +135,9 @@ export default function Footer() {
                 <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
                   <Mail className="w-4 h-4" />
                 </div>
-                <span className="flex-1 break-all">contact@fayidaacademy.com</span>
+                <span className="flex-1 break-all">
+                  contact@fayidaacademy.com
+                </span>
               </div>
               <div className="flex items-start gap-3 text-white text-sm lg:text-white/90">
                 <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -149,8 +151,15 @@ export default function Footer() {
           {/* Links Sections */}
           <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-8 lg:gap-12">
             {/* Company */}
-            <motion.div variants={containerVariants} initial="hidden" animate="visible">
-              <motion.h3 variants={itemVariants} className="text-white font-bold text-lg mb-4 lg:mb-6 relative text-center sm:text-left">
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <motion.h3
+                variants={itemVariants}
+                className="text-white font-bold text-lg mb-4 lg:mb-6 relative text-center sm:text-left"
+              >
                 Company
                 <div className="absolute bottom-0 left-1/2 sm:left-0 transform -translate-x-1/2 sm:transform-none w-12 h-0.5 bg-gradient-to-r from-[#c7cc3f] to-[#bf8c13] rounded-full"></div>
               </motion.h3>
@@ -162,7 +171,9 @@ export default function Footer() {
                       className="text-white hover:text-[#c7cc3f] transition-all duration-200 flex items-center justify-center sm:justify-start gap-2 py-1 group"
                     >
                       <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all duration-200" />
-                      <span className="group-hover:translate-x-1 transition-transform duration-200">{link.name}</span>
+                      <span className="group-hover:translate-x-1 transition-transform duration-200">
+                        {link.name}
+                      </span>
                     </Link>
                   </motion.li>
                 ))}
@@ -170,8 +181,15 @@ export default function Footer() {
             </motion.div>
 
             {/* Resources */}
-            <motion.div variants={containerVariants} initial="hidden" animate="visible">
-              <motion.h3 variants={itemVariants} className="text-white font-bold text-lg mb-4 lg:mb-6 relative text-center sm:text-left">
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <motion.h3
+                variants={itemVariants}
+                className="text-white font-bold text-lg mb-4 lg:mb-6 relative text-center sm:text-left"
+              >
                 Resources
                 <div className="absolute bottom-0 left-1/2 sm:left-0 transform -translate-x-1/2 sm:transform-none w-12 h-0.5 bg-gradient-to-r from-[#c7cc3f] to-[#bf8c13] rounded-full"></div>
               </motion.h3>
@@ -183,7 +201,9 @@ export default function Footer() {
                       className="text-white hover:text-[#c7cc3f] transition-all duration-200 flex items-center justify-center sm:justify-start gap-2 py-1 group"
                     >
                       <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all duration-200" />
-                      <span className="group-hover:translate-x-1 transition-transform duration-200">{link.name}</span>
+                      <span className="group-hover:translate-x-1 transition-transform duration-200">
+                        {link.name}
+                      </span>
                     </Link>
                   </motion.li>
                 ))}
@@ -191,8 +211,15 @@ export default function Footer() {
             </motion.div>
 
             {/* Courses */}
-            <motion.div variants={containerVariants} initial="hidden" animate="visible">
-              <motion.h3 variants={itemVariants} className="text-white font-bold text-lg mb-4 lg:mb-6 relative text-center sm:text-left">
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <motion.h3
+                variants={itemVariants}
+                className="text-white font-bold text-lg mb-4 lg:mb-6 relative text-center sm:text-left"
+              >
                 Courses
                 <div className="absolute bottom-0 left-1/2 sm:left-0 transform -translate-x-1/2 sm:transform-none w-12 h-0.5 bg-gradient-to-r from-[#c7cc3f] to-[#bf8c13] rounded-full"></div>
               </motion.h3>
@@ -204,7 +231,9 @@ export default function Footer() {
                       className="text-white hover:text-[#c7cc3f] transition-all duration-200 flex items-center justify-center sm:justify-start gap-2 py-1 group"
                     >
                       <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all duration-200" />
-                      <span className="group-hover:translate-x-1 transition-transform duration-200">{link.name}</span>
+                      <span className="group-hover:translate-x-1 transition-transform duration-200">
+                        {link.name}
+                      </span>
                     </Link>
                   </motion.li>
                 ))}
@@ -224,11 +253,31 @@ export default function Footer() {
               className="flex items-center justify-center gap-3 flex-wrap"
             >
               {[
-                { icon: Facebook, href: "https://www.facebook.com/profile.php?id=61557674511552", color: "hover:bg-blue-600" },
-                { icon: Instagram, href: "https://www.instagram.com/fayidaacademy", color: "hover:bg-pink-600" },
-                { icon: Linkedin, href: "https://www.linkedin.com/company/ethlook/", color: "hover:bg-blue-700" },
-                { icon: Youtube, href: "https://www.youtube.com/@FayidaAcademyOfficial", color: "hover:bg-red-600" },
-                { icon: Send, href: "https://t.me/fayidaacademy", color: "hover:bg-blue-500" },
+                {
+                  icon: Facebook,
+                  href: "https://www.facebook.com/profile.php?id=61557674511552",
+                  color: "hover:bg-blue-600",
+                },
+                {
+                  icon: Instagram,
+                  href: "https://www.instagram.com/fayidaacademy",
+                  color: "hover:bg-pink-600",
+                },
+                {
+                  icon: Linkedin,
+                  href: "https://www.linkedin.com/company/ethlook/",
+                  color: "hover:bg-blue-700",
+                },
+                {
+                  icon: Youtube,
+                  href: "https://www.youtube.com/@FayidaAcademyOfficial",
+                  color: "hover:bg-red-600",
+                },
+                {
+                  icon: Send,
+                  href: "https://t.me/fayidaacademy",
+                  color: "hover:bg-blue-500",
+                },
               ].map((social, index) => (
                 <Link
                   key={index}
@@ -259,7 +308,9 @@ export default function Footer() {
             >
               <div className="flex items-center justify-center gap-2 text-white text-sm">
                 <Copyright className="w-4 h-4" />
-                <span>{new Date().getFullYear()} Fayida Academy. All Rights Reserved</span>
+                <span>
+                  {new Date().getFullYear()} Fayida Academy. All Rights Reserved
+                </span>
               </div>
             </motion.div>
           </div>

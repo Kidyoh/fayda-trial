@@ -17,7 +17,7 @@ export default function AssessmentDetails({ params }: any) {
         `${apiUrl}/purchaselist/specificStudentSingleAssessment/${AssessmentId}`,
         {
           credentials: "include",
-        }
+        },
       )
         .then((response) => response.json())
         .then((jsonData) => {

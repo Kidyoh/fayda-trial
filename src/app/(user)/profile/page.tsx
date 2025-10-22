@@ -17,11 +17,13 @@ import { updatePasswordSchema } from "../../validation/updatePasswordValidation"
 import { zodResolver } from "@hookform/resolvers/zod";
 import useProfileStore from "../../store/profileStore";
 import Link from "next/link";
-import { setAccessToken, getAccessToken, clearAccessToken } from "../../../lib/tokenManager";
-
+import {
+  setAccessToken,
+  getAccessToken,
+  clearAccessToken,
+} from "../../../lib/tokenManager";
 
 const accessToken = getAccessToken();
-
 
 type zodInputs = {
   currentPassword: string;
@@ -66,14 +68,12 @@ export default function ProfileDetails() {
   });
 
   useEffect(() => {
-    fetch(`${apiUrl}/newlogin/profile`, 
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
-        },
-      
+    fetch(`${apiUrl}/newlogin/profile`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
+      },
     })
       .then((res) => res.json())
       .then((data) => {
@@ -152,7 +152,7 @@ export default function ProfileDetails() {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`
+        Authorization: `Bearer ${accessToken}`,
       },
       credentials: "include",
       body: JSON.stringify(formData),
@@ -185,8 +185,6 @@ export default function ProfileDetails() {
       });
   };
 
-
-
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4">
@@ -205,7 +203,9 @@ export default function ProfileDetails() {
                     <div className="w-2 h-2 rounded-full bg-white" />
                   </div>
                 </div>
-                <h2 className="text-xl font-bold text-gray-900">{firstName} {lastName}</h2>
+                <h2 className="text-xl font-bold text-gray-900">
+                  {firstName} {lastName}
+                </h2>
                 <p className="text-gray-500">{accountType}</p>
                 <span className="mt-2 px-3 py-1 text-sm font-medium text-green-700 bg-green-100 rounded-full">
                   Active Account
@@ -231,15 +231,21 @@ export default function ProfileDetails() {
           <div className="lg:col-span-3">
             <div className="bg-white rounded-2xl shadow-lg p-6">
               <div className="border-b border-gray-200 pb-4 mb-6">
-                <h1 className="text-2xl font-bold text-gray-900">Profile Details</h1>
-                <p className="text-gray-500">Manage your personal information and preferences</p>
+                <h1 className="text-2xl font-bold text-gray-900">
+                  Profile Details
+                </h1>
+                <p className="text-gray-500">
+                  Manage your personal information and preferences
+                </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Personal Information */}
                 <div className="space-y-6">
-                  <h2 className="text-lg font-semibold text-gray-900">Personal Information</h2>
-                  
+                  <h2 className="text-lg font-semibold text-gray-900">
+                    Personal Information
+                  </h2>
+
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
                       <div>
@@ -305,8 +311,10 @@ export default function ProfileDetails() {
 
                 {/* Account Settings */}
                 <div className="space-y-6">
-                  <h2 className="text-lg font-semibold text-gray-900">Account Settings</h2>
-                  
+                  <h2 className="text-lg font-semibold text-gray-900">
+                    Account Settings
+                  </h2>
+
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
                       <div>
@@ -341,7 +349,9 @@ export default function ProfileDetails() {
                     <div className="flex justify-between items-center">
                       <div>
                         <p className="text-sm text-gray-500">Phone Number</p>
-                        <p className="text-gray-900">{phoneNumber || "Not Set"}</p>
+                        <p className="text-gray-900">
+                          {phoneNumber || "Not Set"}
+                        </p>
                       </div>
                       <EditCellDialog
                         type="students"
@@ -355,8 +365,12 @@ export default function ProfileDetails() {
 
                     <div className="flex justify-between items-center">
                       <div>
-                        <p className="text-sm text-gray-500">Preferred Language</p>
-                        <p className="text-gray-900">{prefferdLanguage || "Default"}</p>
+                        <p className="text-sm text-gray-500">
+                          Preferred Language
+                        </p>
+                        <p className="text-gray-900">
+                          {prefferdLanguage || "Default"}
+                        </p>
                       </div>
                       <EditCellDialog
                         type="students"
@@ -380,11 +394,16 @@ export default function ProfileDetails() {
                         <DialogHeader>
                           <DialogTitle>Change Password</DialogTitle>
                         </DialogHeader>
-                        <form onSubmit={handleSubmit(onSubmitUpdatePassword)} className="space-y-4">
+                        <form
+                          onSubmit={handleSubmit(onSubmitUpdatePassword)}
+                          className="space-y-4"
+                        >
                           {loginInfo && (
-                            <div className="text-red-500 text-sm">{loginInfo}</div>
+                            <div className="text-red-500 text-sm">
+                              {loginInfo}
+                            </div>
                           )}
-                          
+
                           <div className="space-y-2">
                             <label className="text-sm font-medium text-gray-700">
                               Current Password
@@ -395,7 +414,9 @@ export default function ProfileDetails() {
                               {...register("currentPassword")}
                             />
                             {errors.currentPassword?.message && (
-                              <p className="text-red-500 text-sm">{errors.currentPassword.message}</p>
+                              <p className="text-red-500 text-sm">
+                                {errors.currentPassword.message}
+                              </p>
                             )}
                           </div>
 
@@ -409,7 +430,9 @@ export default function ProfileDetails() {
                               {...register("newPassword")}
                             />
                             {errors.newPassword?.message && (
-                              <p className="text-red-500 text-sm">{errors.newPassword.message}</p>
+                              <p className="text-red-500 text-sm">
+                                {errors.newPassword.message}
+                              </p>
                             )}
                           </div>
 
@@ -423,7 +446,9 @@ export default function ProfileDetails() {
                               {...register("confirmPassword")}
                             />
                             {errors.confirmPassword?.message && (
-                              <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>
+                              <p className="text-red-500 text-sm">
+                                {errors.confirmPassword.message}
+                              </p>
                             )}
                           </div>
 
@@ -440,7 +465,6 @@ export default function ProfileDetails() {
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
         </div>

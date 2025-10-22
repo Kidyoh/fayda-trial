@@ -75,12 +75,12 @@ export default function PackagesList() {
                         {Math.ceil(
                           (new Date(item.expiryDate).getTime() -
                             new Date().getTime()) /
-                            (1000 * 60 * 60 * 24)
+                            (1000 * 60 * 60 * 24),
                         ) > 0
                           ? Math.ceil(
                               (new Date(item.expiryDate).getTime() -
                                 new Date().getTime()) /
-                                (1000 * 60 * 60 * 24)
+                                (1000 * 60 * 60 * 24),
                             )
                           : "Expired"}
                       </span>

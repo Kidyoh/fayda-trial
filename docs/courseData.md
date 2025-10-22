@@ -2,10 +2,10 @@
 
 This document provides all the course-related API endpoints and their responses for frontend integration.
 
-
-
 ## 🔐 **Authentication**
+
 All endpoints require authentication via JWT token in the Authorization header:
+
 ```
 Authorization: Bearer <your-jwt-token>
 ```
@@ -15,17 +15,20 @@ Authorization: Bearer <your-jwt-token>
 ## 📚 **Course Endpoints**
 
 ### **1. Get All Courses**
+
 **Endpoint:** `GET /courses`
 
 **Description:** Retrieves all courses with their details and pricing information.
 
 **Headers:**
+
 ```
 Authorization: Bearer <jwt-token>
 Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 [
   {
@@ -72,6 +75,7 @@ Content-Type: application/json
 ```
 
 **Field Descriptions:**
+
 - `id`: Unique course identifier
 - `courseName`: Course title
 - `courseDescription`: Detailed course description
@@ -89,17 +93,20 @@ Content-Type: application/json
 ---
 
 ### **2. Get Single Course**
+
 **Endpoint:** `GET /courses/{id}`
 
 **Description:** Retrieves a specific course with video URL and additional details.
 
 **Headers:**
+
 ```
 Authorization: Bearer <jwt-token>
 Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "id": "28a2a1a4-2316-4434-b1ac-5649ffe31e16",
@@ -133,23 +140,27 @@ Content-Type: application/json
 ```
 
 **Additional Fields:**
+
 - `CourseUnitsList`: Array of course units with structure
 - `videoUrl`: Signed URL for course introduction video
 
 ---
 
 ### **3. Create Course**
+
 **Endpoint:** `POST /courses`
 
 **Description:** Creates a new course (Admin only).
 
 **Headers:**
+
 ```
 Authorization: Bearer <jwt-token>
 Content-Type: application/json
 ```
 
 **Request Body:**
+
 ```json
 {
   "courseName": "Physics-10",
@@ -168,6 +179,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "id": "new-course-id-here",
@@ -192,17 +204,20 @@ Content-Type: application/json
 ---
 
 ### **4. Update Course**
+
 **Endpoint:** `PATCH /courses/{id}`
 
 **Description:** Updates an existing course (Admin only).
 
 **Headers:**
+
 ```
 Authorization: Bearer <jwt-token>
 Content-Type: application/json
 ```
 
 **Request Body:**
+
 ```json
 {
   "price": "250",
@@ -215,6 +230,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "id": "28a2a1a4-2316-4434-b1ac-5649ffe31e16",
@@ -239,17 +255,20 @@ Content-Type: application/json
 ---
 
 ### **5. Delete Course**
+
 **Endpoint:** `DELETE /courses/{id}`
 
 **Description:** Deletes a course (Admin only).
 
 **Headers:**
+
 ```
 Authorization: Bearer <jwt-token>
 Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "id": "28a2a1a4-2316-4434-b1ac-5649ffe31e16",
@@ -276,12 +295,14 @@ Content-Type: application/json
 ## 💰 **Pricing Information**
 
 ### **Price Fields:**
+
 - `price`: Regular price (string, in birr)
 - `temporaryPrice`: Discounted price (string, in birr, nullable)
 - `discountStatus`: Boolean indicating if discount is active
 - `discountExpiryDate`: ISO date string when discount expires
 
 ### **Price Display Logic:**
+
 ```javascript
 // Frontend logic for displaying price
 function getDisplayPrice(course) {
@@ -290,14 +311,14 @@ function getDisplayPrice(course) {
       currentPrice: course.temporaryPrice,
       originalPrice: course.price,
       isDiscounted: true,
-      discountExpiry: course.discountExpiryDate
+      discountExpiry: course.discountExpiryDate,
     };
   }
   return {
     currentPrice: course.price,
     originalPrice: null,
     isDiscounted: false,
-    discountExpiry: null
+    discountExpiry: null,
   };
 }
 ```
@@ -307,9 +328,11 @@ function getDisplayPrice(course) {
 ## 🛒 **Course Purchase Integration**
 
 ### **Bulk Purchase API:**
+
 **Endpoint:** `POST /cart/bulk-purchase`
 
 **Request Body:**
+
 ```json
 {
   "courses": [
@@ -327,9 +350,11 @@ function getDisplayPrice(course) {
 ```
 
 ### **Individual Course Purchase:**
+
 **Endpoint:** `POST /paymenthandler/course-checkout`
 
 **Request Body:**
+
 ```json
 {
   "courseId": "28a2a1a4-2316-4434-b1ac-5649ffe31e16",
@@ -343,27 +368,28 @@ function getDisplayPrice(course) {
 ## 📱 **Frontend Implementation Examples**
 
 ### **React/JavaScript Example:**
+
 ```javascript
 // Fetch all courses
 const fetchCourses = async () => {
   try {
-    const response = await fetch('/courses', {
+    const response = await fetch("/courses", {
       headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
     });
     const courses = await response.json();
     return courses;
   } catch (error) {
-    console.error('Error fetching courses:', error);
+    console.error("Error fetching courses:", error);
   }
 };
 
 // Display course with pricing
 const CourseCard = ({ course }) => {
   const priceInfo = getDisplayPrice(course);
-  
+
   return (
     <div className="course-card">
       <h3>{course.courseName}</h3>
@@ -378,9 +404,7 @@ const CourseCard = ({ course }) => {
           <span className="price">${priceInfo.currentPrice}</span>
         )}
       </div>
-      <button onClick={() => purchaseCourse(course.id)}>
-        Purchase Course
-      </button>
+      <button onClick={() => purchaseCourse(course.id)}>Purchase Course</button>
     </div>
   );
 };
@@ -391,6 +415,7 @@ const CourseCard = ({ course }) => {
 ## ⚠️ **Error Handling**
 
 ### **Common Error Responses:**
+
 ```json
 // 401 Unauthorized
 {
@@ -413,12 +438,15 @@ const CourseCard = ({ course }) => {
 ## 🔧 **Testing**
 
 ### **Test Course Data:**
+
 After running the price update script, all courses will have:
+
 - `price`: "200"
 - `status`: true (for active courses)
 - `discountStatus`: false (unless manually set)
 
 ### **Test Endpoints:**
+
 ```bash
 # Get all courses
 curl -H "Authorization: Bearer <token>" https://api.fayidaacademy.com/courses
@@ -430,6 +458,5 @@ curl -H "Authorization: Bearer <token>" https://api.fayidaacademy.com/courses/{c
 ---
 
 This documentation provides everything your frontend team needs to integrate with the course API and display course information with proper pricing! 🚀
-
 
 we need to populate the courses with this pelase not a mock data anymore

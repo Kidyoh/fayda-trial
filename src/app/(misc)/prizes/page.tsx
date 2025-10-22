@@ -3,8 +3,20 @@ import { apiUrl } from "@/apiConfig";
 import React, { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ConfirmationDialog from "@/components/custom_components/confirmationDialog";
-import { setAccessToken, getAccessToken, clearAccessToken } from "../../../lib/tokenManager";
-import { Gift, Award, History, Clock, Check, Package, AlertCircle } from "lucide-react";
+import {
+  setAccessToken,
+  getAccessToken,
+  clearAccessToken,
+} from "../../../lib/tokenManager";
+import {
+  Gift,
+  Award,
+  History,
+  Clock,
+  Check,
+  Package,
+  AlertCircle,
+} from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 export default function Prize() {
@@ -22,7 +34,7 @@ export default function Prize() {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
-            },
+          },
         });
 
         const jsonData = await response.json();
@@ -46,7 +58,7 @@ export default function Prize() {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
-            },
+          },
         });
 
         const jsonData = await response.json();
@@ -70,7 +82,7 @@ export default function Prize() {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
-            },
+          },
         });
 
         const jsonData = await response.json();
@@ -91,11 +103,11 @@ export default function Prize() {
   const getStatusBadge = (status: string) => {
     const baseClasses = "px-2 py-1 rounded-full text-xs font-medium";
     switch (status.toLowerCase()) {
-      case 'pending':
+      case "pending":
         return `${baseClasses} bg-yellow-100 text-yellow-800`;
-      case 'approved':
+      case "approved":
         return `${baseClasses} bg-green-100 text-green-800`;
-      case 'rejected':
+      case "rejected":
         return `${baseClasses} bg-red-100 text-red-800`;
       default:
         return `${baseClasses} bg-gray-100 text-gray-800`;
@@ -111,22 +123,33 @@ export default function Prize() {
             <span>Rewards & Prizes</span>
           </h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Redeem your points for exciting prizes and rewards. Check your available prizes, browse all offerings, or view your redemption history.
+            Redeem your points for exciting prizes and rewards. Check your
+            available prizes, browse all offerings, or view your redemption
+            history.
           </p>
         </div>
 
         <Tabs defaultValue="avialable" className="w-full">
           <div className="bg-white rounded-lg p-1 mb-8 border border-gray-200 shadow-sm mx-auto max-w-xl">
             <TabsList className="w-full grid grid-cols-3">
-              <TabsTrigger value="avialable" className="data-[state=active]:bg-primaryColor data-[state=active]:text-white">
+              <TabsTrigger
+                value="avialable"
+                className="data-[state=active]:bg-primaryColor data-[state=active]:text-white"
+              >
                 <Gift className="h-4 w-4 mr-2" />
                 Available Prizes
               </TabsTrigger>
-              <TabsTrigger value="all" className="data-[state=active]:bg-primaryColor data-[state=active]:text-white">
+              <TabsTrigger
+                value="all"
+                className="data-[state=active]:bg-primaryColor data-[state=active]:text-white"
+              >
                 <Package className="h-4 w-4 mr-2" />
                 All Prizes
               </TabsTrigger>
-              <TabsTrigger value="history" className="data-[state=active]:bg-primaryColor data-[state=active]:text-white">
+              <TabsTrigger
+                value="history"
+                className="data-[state=active]:bg-primaryColor data-[state=active]:text-white"
+              >
                 <History className="h-4 w-4 mr-2" />
                 History
               </TabsTrigger>
@@ -155,11 +178,17 @@ export default function Prize() {
                         />
                       </div>
                       <div className="flex-grow p-6 flex flex-col justify-center">
-                        <h2 className="text-xl font-semibold text-gray-900 mb-2">{prize.itemName}</h2>
-                        <p className="text-gray-600 mb-4">{prize.itemDecription}</p>
+                        <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                          {prize.itemName}
+                        </h2>
+                        <p className="text-gray-600 mb-4">
+                          {prize.itemDecription}
+                        </p>
                         <div className="flex items-center text-primaryColor">
                           <Award className="h-5 w-5 mr-1" />
-                          <span className="font-medium">{prize.points} Points Required</span>
+                          <span className="font-medium">
+                            {prize.points} Points Required
+                          </span>
                         </div>
                       </div>
                       <div className="p-6 md:w-48 flex-shrink-0 flex items-center justify-center border-t md:border-t-0 md:border-l border-gray-100">
@@ -175,8 +204,12 @@ export default function Prize() {
               ) : (
                 <div className="text-center py-12 bg-white rounded-xl shadow-sm">
                   <AlertCircle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-xl font-medium text-gray-900 mb-2">No Prizes Available</h3>
-                  <p className="text-gray-500">You don't have any available prizes at the moment.</p>
+                  <h3 className="text-xl font-medium text-gray-900 mb-2">
+                    No Prizes Available
+                  </h3>
+                  <p className="text-gray-500">
+                    You don't have any available prizes at the moment.
+                  </p>
                 </div>
               )}
             </div>
@@ -204,8 +237,12 @@ export default function Prize() {
                         />
                       </div>
                       <div className="flex-grow p-6 flex flex-col justify-center">
-                        <h2 className="text-xl font-semibold text-gray-900 mb-2">{prize.itemName}</h2>
-                        <p className="text-gray-600 mb-4">{prize.itemDecription}</p>
+                        <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                          {prize.itemName}
+                        </h2>
+                        <p className="text-gray-600 mb-4">
+                          {prize.itemDecription}
+                        </p>
                         <div className="inline-flex items-center px-3 py-1 bg-primaryColor/10 text-primaryColor rounded-full text-sm font-medium w-fit">
                           <Award className="h-4 w-4 mr-1" />
                           {prize.points} Points
@@ -217,8 +254,12 @@ export default function Prize() {
               ) : (
                 <div className="text-center py-12 bg-white rounded-xl shadow-sm">
                   <AlertCircle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-xl font-medium text-gray-900 mb-2">No Prizes Available</h3>
-                  <p className="text-gray-500">There are no prizes available at the moment.</p>
+                  <h3 className="text-xl font-medium text-gray-900 mb-2">
+                    No Prizes Available
+                  </h3>
+                  <p className="text-gray-500">
+                    There are no prizes available at the moment.
+                  </p>
                 </div>
               )}
             </div>
@@ -230,16 +271,28 @@ export default function Prize() {
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th
+                        scope="col"
+                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
                         Prize
                       </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th
+                        scope="col"
+                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
                         Description
                       </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th
+                        scope="col"
+                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
                         Date Redeemed
                       </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th
+                        scope="col"
+                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
                         Status
                       </th>
                     </tr>
@@ -269,7 +322,10 @@ export default function Prize() {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan={4} className="px-6 py-12 text-center text-sm text-gray-500">
+                        <td
+                          colSpan={4}
+                          className="px-6 py-12 text-center text-sm text-gray-500"
+                        >
                           <div className="flex flex-col items-center">
                             <History className="h-8 w-8 text-gray-400 mb-2" />
                             <p>No redemption history found</p>

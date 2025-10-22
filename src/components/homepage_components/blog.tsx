@@ -2,7 +2,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import { Calendar, User, ArrowRight, Share2, BookOpen, Star, Clock } from "lucide-react";
+import {
+  Calendar,
+  User,
+  ArrowRight,
+  Share2,
+  BookOpen,
+  Star,
+  Clock,
+} from "lucide-react";
 import { apiUrl } from "@/apiConfig";
 
 interface Blog {
@@ -21,16 +29,16 @@ const BlogCard = ({ post, index }: { post: Blog; index: number }) => {
   // Format date
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric'
+    return date.toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
     });
   };
 
   return (
     <div
-      className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br from-white to-gray-50 h-[420px] border border-gray-100 hover:border-[#07705d]/20 transition-all duration-300 ${index === 0 ? 'md:col-span-2' : ''}`}
+      className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br from-white to-gray-50 h-[420px] border border-gray-100 hover:border-[#07705d]/20 transition-all duration-300 ${index === 0 ? "md:col-span-2" : ""}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -40,7 +48,7 @@ const BlogCard = ({ post, index }: { post: Blog; index: number }) => {
           className="w-full h-full bg-gradient-to-br from-[#07705d]/20 via-transparent to-[#c7cc3f]/20"
           style={{
             maskImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000' fill-opacity='0.8'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-            WebkitMaskImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000' fill-opacity='0.8'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+            WebkitMaskImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000' fill-opacity='0.8'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
           }}
         ></div>
       </div>
@@ -55,7 +63,9 @@ const BlogCard = ({ post, index }: { post: Blog; index: number }) => {
 
       {/* Image Container */}
       <div className="relative overflow-hidden h-48">
-        <div className={`w-full h-full transition-transform duration-500 ${isHovered ? 'scale-105' : 'scale-100'}`}>
+        <div
+          className={`w-full h-full transition-transform duration-500 ${isHovered ? "scale-105" : "scale-100"}`}
+        >
           {post.imgUrl ? (
             <img
               src={post.imgUrl}
@@ -63,13 +73,16 @@ const BlogCard = ({ post, index }: { post: Blog; index: number }) => {
               className="w-full h-full object-cover"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
-                target.style.display = 'none';
+                target.style.display = "none";
                 const fallback = target.nextElementSibling as HTMLElement;
-                if (fallback) fallback.style.display = 'flex';
+                if (fallback) fallback.style.display = "flex";
               }}
             />
           ) : null}
-          <div className="w-full h-full bg-gradient-to-br from-[#07705d]/20 to-[#c7cc3f]/20 flex items-center justify-center" style={{ display: post.imgUrl ? 'none' : 'flex' }}>
+          <div
+            className="w-full h-full bg-gradient-to-br from-[#07705d]/20 to-[#c7cc3f]/20 flex items-center justify-center"
+            style={{ display: post.imgUrl ? "none" : "flex" }}
+          >
             <span className="text-4xl">📝</span>
           </div>
         </div>
@@ -79,7 +92,7 @@ const BlogCard = ({ post, index }: { post: Blog; index: number }) => {
 
         {/* Category Badge */}
         <div className="absolute top-4 right-4 z-30 bg-[#07705d]/90 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-semibold">
-          {post.category || 'Article'}
+          {post.category || "Article"}
         </div>
       </div>
 
@@ -87,13 +100,19 @@ const BlogCard = ({ post, index }: { post: Blog; index: number }) => {
       <div className="relative p-5 flex flex-col justify-between flex-1 z-20">
         <div>
           {/* Title */}
-          <h3 className={`font-bold text-[#07705d] mb-2 line-clamp-2 ${index === 0 ? 'text-xl' : 'text-lg'}`}>
+          <h3
+            className={`font-bold text-[#07705d] mb-2 line-clamp-2 ${index === 0 ? "text-xl" : "text-lg"}`}
+          >
             {post.title}
           </h3>
 
           {/* Description */}
-          <p className={`text-gray-700 mb-4 ${index === 0 ? 'text-sm line-clamp-4' : 'text-sm line-clamp-3'}`}>
-            {post.text.length > 150 ? `${post.text.substring(0, 150)}...` : post.text}
+          <p
+            className={`text-gray-700 mb-4 ${index === 0 ? "text-sm line-clamp-4" : "text-sm line-clamp-3"}`}
+          >
+            {post.text.length > 150
+              ? `${post.text.substring(0, 150)}...`
+              : post.text}
           </p>
         </div>
 
@@ -107,20 +126,23 @@ const BlogCard = ({ post, index }: { post: Blog; index: number }) => {
               </div>
               <div className="flex items-center gap-1">
                 <Clock size={10} />
-                <span>{post.readTime || '5 min read'}</span>
+                <span>{post.readTime || "5 min read"}</span>
               </div>
             </div>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-xs bg-[#07705d]/10 text-[#07705d] px-2 py-1 rounded-full border border-[#07705d]/20">
-              {post.category || 'Article'}
+              {post.category || "Article"}
             </span>
             <Link
               href={`/blogs/${post.id}`}
               className="group/link flex items-center gap-1 text-xs text-[#07705d] hover:text-[#c7cc3f] font-semibold transition-colors"
             >
               Read More
-              <ArrowRight size={12} className="group-hover/link:translate-x-1 transition-transform" />
+              <ArrowRight
+                size={12}
+                className="group-hover/link:translate-x-1 transition-transform"
+              />
             </Link>
           </div>
         </div>
@@ -130,12 +152,20 @@ const BlogCard = ({ post, index }: { post: Blog; index: number }) => {
 };
 
 const Blog = () => {
-  const [filter, setFilter] = useState('All');
+  const [filter, setFilter] = useState("All");
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const categories = ['All', 'Education', 'Technology', 'Community', 'Culture', 'Environment', 'Article'];
+  const categories = [
+    "All",
+    "Education",
+    "Technology",
+    "Community",
+    "Culture",
+    "Environment",
+    "Article",
+  ];
 
   // Fetch blogs from API
   useEffect(() => {
@@ -148,7 +178,7 @@ const Blog = () => {
         });
 
         if (!response.ok) {
-          throw new Error('Failed to fetch blogs');
+          throw new Error("Failed to fetch blogs");
         }
 
         const jsonData = await response.json();
@@ -157,13 +187,20 @@ const Blog = () => {
         const enhancedData = jsonData.map((blog: Blog, index: number) => ({
           ...blog,
           readTime: `${Math.floor(Math.random() * 10) + 2} min read`,
-          category: ["Education", "Technology", "Community", "Culture", "Environment", "Article"][Math.floor(Math.random() * 6)]
+          category: [
+            "Education",
+            "Technology",
+            "Community",
+            "Culture",
+            "Environment",
+            "Article",
+          ][Math.floor(Math.random() * 6)],
         }));
 
         setBlogs(enhancedData);
       } catch (error) {
         console.error("Error fetching blogs:", error);
-        setError('Failed to load blogs. Please try again later.');
+        setError("Failed to load blogs. Please try again later.");
       } finally {
         setIsLoading(false);
       }
@@ -172,15 +209,17 @@ const Blog = () => {
     fetchBlogs();
   }, []);
 
-  const filteredPosts = filter === 'All'
-    ? blogs
-    : blogs.filter(post => post.category === filter);
+  const filteredPosts =
+    filter === "All" ? blogs : blogs.filter((post) => post.category === filter);
 
   // Loading skeleton component
   const LoadingSkeleton = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {[...Array(6)].map((_, index) => (
-        <div key={index} className={`bg-white rounded-2xl overflow-hidden border border-gray-100 h-[450px] ${index === 0 ? 'md:col-span-2' : ''}`}>
+        <div
+          key={index}
+          className={`bg-white rounded-2xl overflow-hidden border border-gray-100 h-[450px] ${index === 0 ? "md:col-span-2" : ""}`}
+        >
           <div className="h-48 bg-gradient-to-br from-[#07705d]/10 to-[#c7cc3f]/10 animate-pulse"></div>
           <div className="p-5 space-y-3">
             <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
@@ -203,7 +242,7 @@ const Blog = () => {
         <div
           className="w-full h-full"
           style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2307705d' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2307705d' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
           }}
         ></div>
       </div>
@@ -230,10 +269,11 @@ const Blog = () => {
               <button
                 key={category}
                 onClick={() => setFilter(category)}
-                className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${filter === category
-                  ? 'bg-[#07705d] text-white'
-                  : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
-                  }`}
+                className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
+                  filter === category
+                    ? "bg-[#07705d] text-white"
+                    : "bg-white text-gray-600 hover:bg-gray-100 border border-gray-200"
+                }`}
               >
                 {category}
               </button>
@@ -258,7 +298,9 @@ const Blog = () => {
         ) : filteredPosts.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-gray-500 mb-4">📝</div>
-            <p className="text-gray-600">No blogs found for the selected category.</p>
+            <p className="text-gray-600">
+              No blogs found for the selected category.
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">

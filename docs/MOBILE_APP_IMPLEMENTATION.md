@@ -7,6 +7,7 @@ This document provides a complete guide for implementing the cart and payment fu
 ## 🏗️ Mobile App Architecture
 
 ### Technology Stack
+
 - **Framework**: React Native with Expo
 - **State Management**: Zustand with AsyncStorage
 - **Navigation**: React Navigation
@@ -14,6 +15,7 @@ This document provides a complete guide for implementing the cart and payment fu
 - **Payment**: Deep linking for SantiPay
 
 ### Project Structure
+
 ```
 src/
 ├── store/
@@ -43,6 +45,7 @@ src/
 ## 📦 Installation & Setup
 
 ### 1. Dependencies
+
 ```bash
 # Core dependencies
 npm install @react-navigation/native @react-navigation/stack
@@ -57,6 +60,7 @@ npm install --save-dev @types/react-native
 ```
 
 ### 2. Package.json Configuration
+
 ```json
 {
   "name": "fayida-student-mobile",
@@ -85,14 +89,15 @@ npm install --save-dev @types/react-native
 ## 🛒 Cart Store Implementation
 
 ### Mobile Cart Store
+
 ```typescript
 // src/store/cartStore.ts
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export interface CartPackageItem {
-  type: 'package';
+  type: "package";
   id: string;
   packageName: string;
   price: number;
@@ -111,7 +116,7 @@ export interface CartPackageItem {
 }
 
 export interface CartCourseItem {
-  type: 'course';
+  type: "course";
   id: string;
   courseName: string;
   price: number;
@@ -128,25 +133,33 @@ export type CartItem = CartPackageItem | CartCourseItem;
 interface CartState {
   items: CartItem[];
   isOpen: boolean;
-  
+
   // Actions
-  addPackageToCart: (packageData: Omit<CartPackageItem, 'type' | 'quantity'>) => void;
-  addCourseToCart: (courseData: Omit<CartCourseItem, 'type' | 'quantity'>) => void;
-  removeFromCart: (id: string, type: 'package' | 'course') => void;
-  updateQuantity: (id: string, type: 'package' | 'course', quantity: number) => void;
+  addPackageToCart: (
+    packageData: Omit<CartPackageItem, "type" | "quantity">,
+  ) => void;
+  addCourseToCart: (
+    courseData: Omit<CartCourseItem, "type" | "quantity">,
+  ) => void;
+  removeFromCart: (id: string, type: "package" | "course") => void;
+  updateQuantity: (
+    id: string,
+    type: "package" | "course",
+    quantity: number,
+  ) => void;
   updatePackageDuration: (id: string, duration: 1 | 3 | 6) => void;
   clearCart: () => void;
-  
+
   // UI Actions
   toggleCart: () => void;
   openCart: () => void;
   closeCart: () => void;
-  
+
   // Calculations
   getTotalItems: () => number;
   getTotalPrice: () => number;
-  getItemCount: (id: string, type: 'package' | 'course') => number;
-  isInCart: (id: string, type: 'package' | 'course') => boolean;
+  getItemCount: (id: string, type: "package" | "course") => number;
+  isInCart: (id: string, type: "package" | "course") => boolean;
 }
 
 export const useCartStore = create<CartState>()(
@@ -158,22 +171,24 @@ export const useCartStore = create<CartState>()(
       addPackageToCart: (packageData) => {
         const { items } = get();
         const existingItemIndex = items.findIndex(
-          item => item.id === packageData.id && item.type === 'package'
+          (item) => item.id === packageData.id && item.type === "package",
         );
 
         if (existingItemIndex >= 0) {
           const updatedItems = [...items];
-          const existingItem = updatedItems[existingItemIndex] as CartPackageItem;
+          const existingItem = updatedItems[
+            existingItemIndex
+          ] as CartPackageItem;
           updatedItems[existingItemIndex] = {
             ...existingItem,
-            quantity: existingItem.quantity + 1
+            quantity: existingItem.quantity + 1,
           };
           set({ items: updatedItems });
         } else {
           const newItem: CartPackageItem = {
             ...packageData,
-            type: 'package',
-            quantity: 1
+            type: "package",
+            quantity: 1,
           };
           set({ items: [...items, newItem] });
         }
@@ -182,22 +197,24 @@ export const useCartStore = create<CartState>()(
       addCourseToCart: (courseData) => {
         const { items } = get();
         const existingItemIndex = items.findIndex(
-          item => item.id === courseData.id && item.type === 'course'
+          (item) => item.id === courseData.id && item.type === "course",
         );
 
         if (existingItemIndex >= 0) {
           const updatedItems = [...items];
-          const existingItem = updatedItems[existingItemIndex] as CartCourseItem;
+          const existingItem = updatedItems[
+            existingItemIndex
+          ] as CartCourseItem;
           updatedItems[existingItemIndex] = {
             ...existingItem,
-            quantity: existingItem.quantity + 1
+            quantity: existingItem.quantity + 1,
           };
           set({ items: updatedItems });
         } else {
           const newItem: CartCourseItem = {
             ...courseData,
-            type: 'course',
-            quantity: 1
+            type: "course",
+            quantity: 1,
           };
           set({ items: [...items, newItem] });
         }
@@ -206,7 +223,7 @@ export const useCartStore = create<CartState>()(
       removeFromCart: (id, type) => {
         const { items } = get();
         const updatedItems = items.filter(
-          item => !(item.id === id && item.type === type)
+          (item) => !(item.id === id && item.type === type),
         );
         set({ items: updatedItems });
       },
@@ -218,7 +235,7 @@ export const useCartStore = create<CartState>()(
         }
 
         const { items } = get();
-        const updatedItems = items.map(item => {
+        const updatedItems = items.map((item) => {
           if (item.id === id && item.type === type) {
             return { ...item, quantity };
           }
@@ -229,8 +246,8 @@ export const useCartStore = create<CartState>()(
 
       updatePackageDuration: (id, duration) => {
         const { items } = get();
-        const updatedItems = items.map(item => {
-          if (item.id === id && item.type === 'package') {
+        const updatedItems = items.map((item) => {
+          if (item.id === id && item.type === "package") {
             return { ...item, selectedDuration: duration } as CartPackageItem;
           }
           return item;
@@ -243,7 +260,7 @@ export const useCartStore = create<CartState>()(
       },
 
       toggleCart: () => {
-        set(state => ({ isOpen: !state.isOpen }));
+        set((state) => ({ isOpen: !state.isOpen }));
       },
 
       openCart: () => {
@@ -263,57 +280,62 @@ export const useCartStore = create<CartState>()(
         const { items } = get();
         return items.reduce((total, item) => {
           let itemPrice = 0;
-          
-          if (item.type === 'package') {
+
+          if (item.type === "package") {
             const packageItem = item as CartPackageItem;
-            let basePrice = packageItem.discountStatus && packageItem.temporaryPrice 
-              ? packageItem.temporaryPrice 
-              : packageItem.price;
-            
+            let basePrice =
+              packageItem.discountStatus && packageItem.temporaryPrice
+                ? packageItem.temporaryPrice
+                : packageItem.price;
+
             if (packageItem.selectedDuration === 3) {
-              basePrice = packageItem.discountStatus && packageItem.temporaryPrice2 
-                ? packageItem.temporaryPrice2 
-                : packageItem.price2 || basePrice;
+              basePrice =
+                packageItem.discountStatus && packageItem.temporaryPrice2
+                  ? packageItem.temporaryPrice2
+                  : packageItem.price2 || basePrice;
             } else if (packageItem.selectedDuration === 6) {
-              basePrice = packageItem.discountStatus && packageItem.temporaryPrice3 
-                ? packageItem.temporaryPrice3 
-                : packageItem.price3 || basePrice;
+              basePrice =
+                packageItem.discountStatus && packageItem.temporaryPrice3
+                  ? packageItem.temporaryPrice3
+                  : packageItem.price3 || basePrice;
             }
-            
+
             itemPrice = basePrice;
-          } else if (item.type === 'course') {
+          } else if (item.type === "course") {
             const courseItem = item as CartCourseItem;
-            itemPrice = courseItem.discountStatus && courseItem.temporaryPrice 
-              ? courseItem.temporaryPrice 
-              : courseItem.price;
+            itemPrice =
+              courseItem.discountStatus && courseItem.temporaryPrice
+                ? courseItem.temporaryPrice
+                : courseItem.price;
           }
-          
-          return total + (itemPrice * item.quantity);
+
+          return total + itemPrice * item.quantity;
         }, 0);
       },
 
       getItemCount: (id, type) => {
         const { items } = get();
-        const item = items.find(item => item.id === id && item.type === type);
+        const item = items.find((item) => item.id === id && item.type === type);
         return item ? item.quantity : 0;
       },
 
       isInCart: (id, type) => {
         const { items } = get();
-        return items.some(item => item.id === id && item.type === type);
-      }
+        return items.some((item) => item.id === id && item.type === type);
+      },
     }),
     {
-      name: 'mobile-cart-storage',
+      name: "mobile-cart-storage",
       storage: createJSONStorage(() => AsyncStorage),
-    }
-  )
+    },
+  ),
 );
 ```
 
 ## 🎨 UI Components
 
 ### Cart Screen
+
 ```typescript
 // src/screens/CartScreen.tsx
 import React from 'react';
@@ -373,7 +395,7 @@ export function CartScreen() {
             style={styles.list}
             showsVerticalScrollIndicator={false}
           />
-          
+
           <CartSummary
             total={getTotalPrice()}
             itemCount={getTotalItems()}
@@ -434,6 +456,7 @@ const styles = StyleSheet.create({
 ```
 
 ### Cart Item Component
+
 ```typescript
 // src/components/cart/CartItem.tsx
 import React from 'react';
@@ -456,24 +479,24 @@ export function CartItem({ item }: CartItemProps) {
 
   const getPrice = () => {
     if (item.type === 'package') {
-      let price = item.discountStatus && item.temporaryPrice 
-        ? item.temporaryPrice 
+      let price = item.discountStatus && item.temporaryPrice
+        ? item.temporaryPrice
         : item.price;
-      
+
       if (item.selectedDuration === 3) {
-        price = item.discountStatus && item.temporaryPrice2 
-          ? item.temporaryPrice2 
+        price = item.discountStatus && item.temporaryPrice2
+          ? item.temporaryPrice2
           : item.price2 || price;
       } else if (item.selectedDuration === 6) {
-        price = item.discountStatus && item.temporaryPrice3 
-          ? item.temporaryPrice3 
+        price = item.discountStatus && item.temporaryPrice3
+          ? item.temporaryPrice3
           : item.price3 || price;
       }
-      
+
       return price;
     } else {
-      return item.discountStatus && item.temporaryPrice 
-        ? item.temporaryPrice 
+      return item.discountStatus && item.temporaryPrice
+        ? item.temporaryPrice
         : item.price;
     }
   };
@@ -512,7 +535,7 @@ export function CartItem({ item }: CartItemProps) {
         <Text style={styles.name}>
           {item.type === 'package' ? item.packageName : item.courseName}
         </Text>
-        
+
         <Text style={styles.type}>
           {item.type === 'package' ? 'Package' : 'Course'}
         </Text>
@@ -714,6 +737,7 @@ const styles = StyleSheet.create({
 ```
 
 ### Cart Summary Component
+
 ```typescript
 // src/components/cart/CartSummary.tsx
 import React from 'react';
@@ -738,9 +762,9 @@ export function CartSummary({ total, itemCount, onCheckout }: CartSummaryProps) 
           <Text style={styles.label}>Subtotal ({itemCount} items)</Text>
           <Text style={styles.value}>{total} Birr</Text>
         </View>
-        
+
         <View style={styles.divider} />
-        
+
         <View style={styles.row}>
           <Text style={styles.totalLabel}>Total</Text>
           <Text style={styles.totalValue}>{total} Birr</Text>
@@ -814,6 +838,7 @@ const styles = StyleSheet.create({
 ## 💳 Checkout & Payment
 
 ### Checkout Screen
+
 ```typescript
 // src/screens/CheckoutScreen.tsx
 import React, { useState } from 'react';
@@ -852,7 +877,7 @@ export function CheckoutScreen() {
 
     try {
       const formattedPhoneNumber = formatEthiopianPhoneNumber(phoneNumber);
-      
+
       const result = await processCartCheckout(items, formattedPhoneNumber, accessToken);
 
       if (result.success) {
@@ -880,10 +905,10 @@ export function CheckoutScreen() {
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.content}>
         <Text style={styles.title}>Checkout</Text>
-        
+
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Payment Information</Text>
-          
+
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Phone Number</Text>
             <TextInput
@@ -1013,23 +1038,24 @@ const styles = StyleSheet.create({
 ## 🔗 Deep Link Handling
 
 ### Deep Link Handler
+
 ```typescript
 // src/services/deepLinkHandler.ts
-import { Linking } from 'react-native';
+import { Linking } from "react-native";
 
 export class DeepLinkHandler {
   static async handlePaymentReturn(url: string) {
-    if (url.includes('payment/success')) {
+    if (url.includes("payment/success")) {
       // Handle successful payment
-      return { type: 'success', message: 'Payment completed successfully!' };
-    } else if (url.includes('payment/failed')) {
+      return { type: "success", message: "Payment completed successfully!" };
+    } else if (url.includes("payment/failed")) {
       // Handle failed payment
-      return { type: 'error', message: 'Payment failed. Please try again.' };
-    } else if (url.includes('payment/cancelled')) {
+      return { type: "error", message: "Payment failed. Please try again." };
+    } else if (url.includes("payment/cancelled")) {
       // Handle cancelled payment
-      return { type: 'cancelled', message: 'Payment was cancelled.' };
+      return { type: "cancelled", message: "Payment was cancelled." };
     }
-    
+
     return null;
   }
 
@@ -1042,7 +1068,7 @@ export class DeepLinkHandler {
     };
 
     // Listen for deep links when app is running
-    const subscription = Linking.addEventListener('url', ({ url }) => {
+    const subscription = Linking.addEventListener("url", ({ url }) => {
       handleUrl(url);
     });
 
@@ -1061,6 +1087,7 @@ export class DeepLinkHandler {
 ## 🚀 Navigation Setup
 
 ### App Navigation
+
 ```typescript
 // src/navigation/AppNavigator.tsx
 import React from 'react';
@@ -1086,18 +1113,18 @@ export function AppNavigator() {
           },
         }}
       >
-        <Stack.Screen 
-          name="Cart" 
+        <Stack.Screen
+          name="Cart"
           component={CartScreen}
           options={{ title: 'Shopping Cart' }}
         />
-        <Stack.Screen 
-          name="Checkout" 
+        <Stack.Screen
+          name="Checkout"
           component={CheckoutScreen}
           options={{ title: 'Checkout' }}
         />
-        <Stack.Screen 
-          name="PaymentStatus" 
+        <Stack.Screen
+          name="PaymentStatus"
           component={PaymentStatusScreen}
           options={{ title: 'Payment Status' }}
         />
@@ -1110,6 +1137,7 @@ export function AppNavigator() {
 ## 📱 App Configuration
 
 ### App.json Configuration
+
 ```json
 {
   "expo": {
@@ -1126,9 +1154,7 @@ export function AppNavigator() {
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.fayida.student",
@@ -1172,47 +1198,48 @@ export function AppNavigator() {
 ## 🧪 Testing
 
 ### Unit Tests
+
 ```typescript
 // __tests__/cartStore.test.ts
-import { useCartStore } from '../src/store/cartStore';
+import { useCartStore } from "../src/store/cartStore";
 
-describe('Cart Store', () => {
+describe("Cart Store", () => {
   beforeEach(() => {
     useCartStore.getState().clearCart();
   });
 
-  test('should add package to cart', () => {
+  test("should add package to cart", () => {
     const store = useCartStore.getState();
-    
+
     store.addPackageToCart({
-      id: 'pkg-1',
-      packageName: 'Test Package',
+      id: "pkg-1",
+      packageName: "Test Package",
       price: 100,
       selectedDuration: 1,
-      discountStatus: false
+      discountStatus: false,
     });
 
     expect(store.items).toHaveLength(1);
-    expect(store.items[0].type).toBe('package');
+    expect(store.items[0].type).toBe("package");
     expect(store.items[0].quantity).toBe(1);
   });
 
-  test('should calculate total price correctly', () => {
+  test("should calculate total price correctly", () => {
     const store = useCartStore.getState();
-    
+
     store.addPackageToCart({
-      id: 'pkg-1',
-      packageName: 'Test Package',
+      id: "pkg-1",
+      packageName: "Test Package",
       price: 100,
       selectedDuration: 1,
-      discountStatus: false
+      discountStatus: false,
     });
 
     store.addCourseToCart({
-      id: 'course-1',
-      courseName: 'Test Course',
+      id: "course-1",
+      courseName: "Test Course",
       price: 50,
-      discountStatus: false
+      discountStatus: false,
     });
 
     expect(store.getTotalPrice()).toBe(150);
@@ -1223,6 +1250,7 @@ describe('Cart Store', () => {
 ## 🚀 Deployment
 
 ### Build Commands
+
 ```bash
 # Development
 npm start
@@ -1239,17 +1267,14 @@ expo build:ios
 ```
 
 ### Environment Configuration
+
 ```typescript
 // src/config/environment.ts
 export const config = {
-  API_URL: process.env.EXPO_PUBLIC_API_URL || 'https://api.fayida.com',
+  API_URL: process.env.EXPO_PUBLIC_API_URL || "https://api.fayida.com",
   SANTIPAY_MERCHANT_ID: process.env.EXPO_PUBLIC_SANTIPAY_MERCHANT_ID,
-  DEEP_LINK_SCHEME: 'fayida',
+  DEEP_LINK_SCHEME: "fayida",
 };
 ```
 
 This mobile implementation provides a complete cart and payment system that mirrors the web application's functionality while being optimized for mobile devices. The system uses the same backend APIs, ensuring consistency across platforms.
-
-
-
-

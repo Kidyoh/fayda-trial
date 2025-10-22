@@ -14,7 +14,7 @@ export default function SubFoldersList({ params }: any) {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        `${apiUrl}/pacakgefolder/coursesub/${ParentFolder}`
+        `${apiUrl}/pacakgefolder/coursesub/${ParentFolder}`,
       );
       const jsonData = await response.json();
       setData(jsonData);

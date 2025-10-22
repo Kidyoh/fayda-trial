@@ -26,10 +26,10 @@ export default function FAQ() {
   const [openItems, setOpenItems] = useState<number[]>([]);
 
   const toggleItem = (index: number) => {
-    setOpenItems(prev =>
+    setOpenItems((prev) =>
       prev.includes(index)
-        ? prev.filter(item => item !== index)
-        : [...prev, index]
+        ? prev.filter((item) => item !== index)
+        : [...prev, index],
     );
   };
 
@@ -39,73 +39,86 @@ export default function FAQ() {
       questions: [
         {
           question: "How do I create an account?",
-          answer: "You can create an account by clicking the 'Sign Up' button on our homepage and filling in your details. You'll need to provide your name, email, and create a password."
+          answer:
+            "You can create an account by clicking the 'Sign Up' button on our homepage and filling in your details. You'll need to provide your name, email, and create a password.",
         },
         {
           question: "How do I enroll in a course?",
-          answer: "Once you're logged in, browse our course catalog, select the course you want, and click 'Enroll Now'. Some courses are free while others require payment."
+          answer:
+            "Once you're logged in, browse our course catalog, select the course you want, and click 'Enroll Now'. Some courses are free while others require payment.",
         },
         {
           question: "Can I access courses on mobile?",
-          answer: "Yes! Our platform is fully responsive and works on all devices. We also have mobile apps available for Android and iOS."
-        }
-      ]
+          answer:
+            "Yes! Our platform is fully responsive and works on all devices. We also have mobile apps available for Android and iOS.",
+        },
+      ],
     },
     {
       category: "Courses & Learning",
       questions: [
         {
           question: "What types of courses do you offer?",
-          answer: "We offer courses in various subjects including Mathematics, Physics, Chemistry, Biology, History, Economics, and more. We have both free and premium courses available."
+          answer:
+            "We offer courses in various subjects including Mathematics, Physics, Chemistry, Biology, History, Economics, and more. We have both free and premium courses available.",
         },
         {
           question: "Can I download course materials?",
-          answer: "Yes, enrolled students can download course materials including PDFs, assignments, and other resources for offline study."
+          answer:
+            "Yes, enrolled students can download course materials including PDFs, assignments, and other resources for offline study.",
         },
         {
           question: "How long do I have access to a course?",
-          answer: "Once you enroll in a course, you have lifetime access to the course materials and can learn at your own pace."
+          answer:
+            "Once you enroll in a course, you have lifetime access to the course materials and can learn at your own pace.",
         },
         {
           question: "Do you provide certificates?",
-          answer: "Yes, we provide certificates of completion for courses once you successfully complete all requirements and assessments."
-        }
-      ]
+          answer:
+            "Yes, we provide certificates of completion for courses once you successfully complete all requirements and assessments.",
+        },
+      ],
     },
     {
       category: "Technical Support",
       questions: [
         {
           question: "What should I do if videos won't play?",
-          answer: "First, check your internet connection. If the issue persists, try refreshing the page or using a different browser. Contact support if problems continue."
+          answer:
+            "First, check your internet connection. If the issue persists, try refreshing the page or using a different browser. Contact support if problems continue.",
         },
         {
           question: "I forgot my password. How can I reset it?",
-          answer: "Click on 'Forgot Password' on the login page, enter your email address, and follow the instructions sent to your email to reset your password."
+          answer:
+            "Click on 'Forgot Password' on the login page, enter your email address, and follow the instructions sent to your email to reset your password.",
         },
         {
           question: "Why can't I access my purchased course?",
-          answer: "Make sure you're logged into the correct account. If you're still having issues, check your email for purchase confirmation or contact our support team."
-        }
-      ]
+          answer:
+            "Make sure you're logged into the correct account. If you're still having issues, check your email for purchase confirmation or contact our support team.",
+        },
+      ],
     },
     {
       category: "Billing & Payments",
       questions: [
         {
           question: "What payment methods do you accept?",
-          answer: "We accept major credit cards, debit cards, and mobile money payments including Telebirr and other local Ethiopian payment methods."
+          answer:
+            "We accept major credit cards, debit cards, and mobile money payments including Telebirr and other local Ethiopian payment methods.",
         },
         {
           question: "Can I get a refund?",
-          answer: "We offer a 30-day money-back guarantee for premium courses. If you're not satisfied, contact us within 30 days of purchase for a full refund."
+          answer:
+            "We offer a 30-day money-back guarantee for premium courses. If you're not satisfied, contact us within 30 days of purchase for a full refund.",
         },
         {
           question: "How do I update my billing information?",
-          answer: "Go to your account settings, select 'Billing Information', and update your payment details. Your changes will be saved automatically."
-        }
-      ]
-    }
+          answer:
+            "Go to your account settings, select 'Billing Information', and update your payment details. Your changes will be saved automatically.",
+        },
+      ],
+    },
   ];
 
   let questionIndex = 0;
@@ -136,8 +149,9 @@ export default function FAQ() {
             variants={itemVariants}
             className="text-lg text-gray-600 max-w-2xl mx-auto"
           >
-            Find quick answers to the most common questions about Fayida Academy. 
-            Can't find what you're looking for? Contact our support team.
+            Find quick answers to the most common questions about Fayida
+            Academy. Can't find what you're looking for? Contact our support
+            team.
           </motion.p>
         </motion.div>
 
@@ -157,7 +171,7 @@ export default function FAQ() {
                 {category.questions.map((faq, index) => {
                   const currentIndex = questionIndex++;
                   const isOpen = openItems.includes(currentIndex);
-                  
+
                   return (
                     <motion.div
                       key={index}
@@ -177,7 +191,7 @@ export default function FAQ() {
                           <ChevronDown className="w-5 h-5 text-[#c7cc3f] flex-shrink-0" />
                         )}
                       </button>
-                      
+
                       <AnimatePresence>
                         {isOpen && (
                           <motion.div
@@ -216,11 +230,9 @@ export default function FAQ() {
           >
             Still Have Questions?
           </motion.h2>
-          <motion.p
-            variants={itemVariants}
-            className="text-lg mb-8 opacity-90"
-          >
-            Our support team is here to help you succeed in your learning journey.
+          <motion.p variants={itemVariants} className="text-lg mb-8 opacity-90">
+            Our support team is here to help you succeed in your learning
+            journey.
           </motion.p>
           <motion.div
             variants={itemVariants}

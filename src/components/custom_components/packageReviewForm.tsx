@@ -12,8 +12,11 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import useFetchStore from "../../app/store/fetchStore";
-import { setAccessToken, getAccessToken, clearAccessToken } from "../../lib/tokenManager";
-
+import {
+  setAccessToken,
+  getAccessToken,
+  clearAccessToken,
+} from "../../lib/tokenManager";
 
 type zodInputs = {
   text: string;
@@ -28,10 +31,10 @@ export default function PackageReviewForm({ packageId, studentId }: any) {
   const [errorInfo, setErrorInfo] = useState("");
 
   const fetchPackagesReview = useFetchStore(
-    (state) => state.fetchPackageReview
+    (state) => state.fetchPackageReview,
   );
   const setFetchPackagesReview = useFetchStore(
-    (state) => state.setFetchPackageReview
+    (state) => state.setFetchPackageReview,
   );
   const {
     register,
@@ -61,7 +64,7 @@ export default function PackageReviewForm({ packageId, studentId }: any) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
-     // credentials: "include",
+      // credentials: "include",
       body: JSON.stringify({
         ...data,
         packageId: PackageId,

@@ -14,18 +14,30 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   };
 
   // Don't render the navigation layout for non-course routes
-  if (!courseId || typeof courseId !== 'string') {
+  if (!courseId || typeof courseId !== "string") {
     return <div className="w-full">{children}</div>;
   }
 
   // Don't render for invalid routes
-  const invalidRoutes = ['careers', 'contact', 'about', 'terms_of_service', 'privacy-policy', 'help', 'f_a_q', 'blogs', 'teach', 'courses', 'competitions'];
+  const invalidRoutes = [
+    "careers",
+    "contact",
+    "about",
+    "terms_of_service",
+    "privacy-policy",
+    "help",
+    "f_a_q",
+    "blogs",
+    "teach",
+    "courses",
+    "competitions",
+  ];
   if (invalidRoutes.includes(courseId.toLowerCase())) {
     return <div className="w-full">{children}</div>;
   }
 
   // Only render for actual numeric course IDs or valid course identifiers
-  if (!/^\d+$/.test(courseId) && !courseId.startsWith('course_')) {
+  if (!/^\d+$/.test(courseId) && !courseId.startsWith("course_")) {
     return <div className="w-full">{children}</div>;
   }
   return (

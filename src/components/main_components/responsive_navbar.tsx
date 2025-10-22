@@ -191,9 +191,7 @@ export default function NavBarForMobile(props: any) {
                   >
                     <div className="flex space-x-2">
                       <Book />
-                      <CheckPhoneNumber
-                        pushto={"/mock/selectmainfolder"}
-                      />
+                      <CheckPhoneNumber pushto={"/mock/selectmainfolder"} />
                     </div>
                   </h1>
                 </div>

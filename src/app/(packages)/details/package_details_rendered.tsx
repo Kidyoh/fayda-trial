@@ -36,7 +36,7 @@ import {
   Trophy,
   HelpCircle,
   BookOpen,
-  CheckCircle
+  CheckCircle,
 } from "lucide-react";
 import { PackageAddToCartButton } from "@/components/cart/AddToCartButton";
 import Link from "next/link";
@@ -44,7 +44,11 @@ import { useEffect, useState } from "react";
 
 // Create a Skeleton component for loading state with Ethiopian colors
 const Skeleton = ({ className = "" }) => {
-  return <div className={`animate-pulse bg-gradient-to-r from-[#c7cc3f]/20 to-[#bf8c13]/20 rounded ${className}`} />;
+  return (
+    <div
+      className={`animate-pulse bg-gradient-to-r from-[#c7cc3f]/20 to-[#bf8c13]/20 rounded ${className}`}
+    />
+  );
 };
 
 export default function PackageDetailsRendered(props: any) {
@@ -60,7 +64,7 @@ export default function PackageDetailsRendered(props: any) {
   const accessToken = getAccessToken();
 
   const fetchPackagesReview = useFetchStore(
-    (state) => state.fetchPackageReview
+    (state) => state.fetchPackageReview,
   );
 
   useEffect(() => {
@@ -76,14 +80,14 @@ export default function PackageDetailsRendered(props: any) {
 
         // Map tag values to URL slugs
         const tagMap = {
-          "Computer": "computer",
-          "Language": "language",
+          Computer: "computer",
+          Language: "language",
           "Art Litrature": "artlitrature",
-          "Other": "other",
+          Other: "other",
           "Grade 9": "grade9",
           "Grade 10": "grade10",
           "Grade 11": "grade11",
-          "Grade 12": "grade12"
+          "Grade 12": "grade12",
         };
 
         setTagChosen(tagMap[jsonData.tag] || "");
@@ -119,7 +123,7 @@ export default function PackageDetailsRendered(props: any) {
   useEffect(() => {
     const checkPurchaseStatus = async () => {
       if (!accessToken || !PackageId) return;
-      
+
       try {
         const response = await fetch(`${apiUrl}/purchaselist/getpuchasedlist`, {
           method: "GET",
@@ -132,20 +136,25 @@ export default function PackageDetailsRendered(props: any) {
         if (response.ok) {
           const purchasedList = await response.json();
           setPurchasedPackages(purchasedList);
-          
+
           // Check if current package is in the purchased list
           // Based on the dashboard code, purchased packages have 'packagesId', 'packageId', or 'id' fields
           const isPurchased = purchasedList.some((pkg: any) => {
-            const purchasedPackageId = pkg.packagesId || pkg.packageId || pkg.id;
+            const purchasedPackageId =
+              pkg.packagesId || pkg.packageId || pkg.id;
             const currentPackageId = PackageId;
-            
+
             // Only consider it purchased if the IDs match AND the payment is active or completed
-            const idsMatch = purchasedPackageId?.toString() === currentPackageId?.toString();
-            const paymentActive = !pkg.paymentStatus || pkg.paymentStatus === "active" || pkg.paymentStatus === "completed";
-            
+            const idsMatch =
+              purchasedPackageId?.toString() === currentPackageId?.toString();
+            const paymentActive =
+              !pkg.paymentStatus ||
+              pkg.paymentStatus === "active" ||
+              pkg.paymentStatus === "completed";
+
             return idsMatch && paymentActive;
           });
-          
+
           setHasPurchased(isPurchased);
         }
       } catch (error) {
@@ -157,8 +166,16 @@ export default function PackageDetailsRendered(props: any) {
   }, [accessToken, PackageId]);
 
   // Calculate total course units and materials
-  const totalUnits = data?.courses?.reduce((acc, course) => acc + parseInt(course.parts || 0), 0) || 0;
-  const totalMaterials = data?.courses?.reduce((acc, course) => acc + (course.materials?.length || 0), 0) || 0;
+  const totalUnits =
+    data?.courses?.reduce(
+      (acc, course) => acc + parseInt(course.parts || 0),
+      0,
+    ) || 0;
+  const totalMaterials =
+    data?.courses?.reduce(
+      (acc, course) => acc + (course.materials?.length || 0),
+      0,
+    ) || 0;
 
   if (isLoading) {
     return (
@@ -184,12 +201,26 @@ export default function PackageDetailsRendered(props: any) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#c7cc3f]/5 via-white to-[#bf8c13]/5 relative">
-
       <div className="absolute inset-0 pointer-events-none opacity-5">
-        <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <svg
+          className="w-full h-full"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+        >
           <defs>
-            <pattern id="ethiopian-bg" x="0" y="0" width="25" height="25" patternUnits="userSpaceOnUse">
-              <polygon points="12.5,0 25,12.5 12.5,25 0,12.5" fill="#bf8c13" opacity="0.3" />
+            <pattern
+              id="ethiopian-bg"
+              x="0"
+              y="0"
+              width="25"
+              height="25"
+              patternUnits="userSpaceOnUse"
+            >
+              <polygon
+                points="12.5,0 25,12.5 12.5,25 0,12.5"
+                fill="#bf8c13"
+                opacity="0.3"
+              />
               <circle cx="12.5" cy="12.5" r="4" fill="#07705d" opacity="0.2" />
             </pattern>
           </defs>
@@ -199,7 +230,6 @@ export default function PackageDetailsRendered(props: any) {
 
       <div className="container mx-auto px-0 md:px-4 pt-20 md:pt-24 pb-12 relative z-10">
         <div className="max-w-7xl mx-auto">
-
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Main Content */}
             <div className="lg:col-span-2 order-2 lg:order-1">
@@ -226,13 +256,10 @@ export default function PackageDetailsRendered(props: any) {
                     {totalMaterials} Materials
                   </div>
                 </div> */}
-
-
               </div>
 
               <div>
                 <div className="mb-8">
-                 
                   <div className="rounded-2xl overflow-hidden border border-[#c7cc3f]/30 bg-gradient-to-r from-[#c7cc3f]/10 to-[#bf8c13]/10">
                     <video
                       controls
@@ -245,7 +272,6 @@ export default function PackageDetailsRendered(props: any) {
                   </div>
                 </div>
               </div>
-
 
               <div className="bg-white rounded-2xl overflow-hidden">
                 <Tabs
@@ -308,13 +334,21 @@ export default function PackageDetailsRendered(props: any) {
                               <Book className="h-7 w-7 text-white" />
                             </div>
                             <div className="text-right">
-                              <span className="text-2xl font-bold text-[#07705d] block">{data?.courses?.length || 0}</span>
-                              <span className="text-xs text-gray-500 uppercase tracking-wide">Total</span>
+                              <span className="text-2xl font-bold text-[#07705d] block">
+                                {data?.courses?.length || 0}
+                              </span>
+                              <span className="text-xs text-gray-500 uppercase tracking-wide">
+                                Total
+                              </span>
                             </div>
                           </div>
                           <div>
-                            <h4 className="text-[#07705d] font-semibold text-lg mb-1">Courses</h4>
-                            <p className="text-gray-600 text-sm">Comprehensive learning paths</p>
+                            <h4 className="text-[#07705d] font-semibold text-lg mb-1">
+                              Courses
+                            </h4>
+                            <p className="text-gray-600 text-sm">
+                              Comprehensive learning paths
+                            </p>
                           </div>
                         </div>
 
@@ -325,13 +359,21 @@ export default function PackageDetailsRendered(props: any) {
                               <TrendingUp className="h-7 w-7 text-white" />
                             </div>
                             <div className="text-right">
-                              <span className="text-2xl font-bold text-[#bf8c13] block">{totalUnits}</span>
-                              <span className="text-xs text-gray-500 uppercase tracking-wide">Units</span>
+                              <span className="text-2xl font-bold text-[#bf8c13] block">
+                                {totalUnits}
+                              </span>
+                              <span className="text-xs text-gray-500 uppercase tracking-wide">
+                                Units
+                              </span>
                             </div>
                           </div>
                           <div>
-                            <h4 className="text-[#bf8c13] font-semibold text-lg mb-1">Learning Units</h4>
-                            <p className="text-gray-600 text-sm">Structured learning modules</p>
+                            <h4 className="text-[#bf8c13] font-semibold text-lg mb-1">
+                              Learning Units
+                            </h4>
+                            <p className="text-gray-600 text-sm">
+                              Structured learning modules
+                            </p>
                           </div>
                         </div>
 
@@ -342,13 +384,21 @@ export default function PackageDetailsRendered(props: any) {
                               <ScrollText className="h-7 w-7 text-white" />
                             </div>
                             <div className="text-right">
-                              <span className="text-2xl font-bold text-[#c7cc3f] block">{totalMaterials}</span>
-                              <span className="text-xs text-gray-500 uppercase tracking-wide">Items</span>
+                              <span className="text-2xl font-bold text-[#c7cc3f] block">
+                                {totalMaterials}
+                              </span>
+                              <span className="text-xs text-gray-500 uppercase tracking-wide">
+                                Items
+                              </span>
                             </div>
                           </div>
                           <div>
-                            <h4 className="text-[#c7cc3f] font-semibold text-lg mb-1">Study Materials</h4>
-                            <p className="text-gray-600 text-sm">Videos, docs & assessments</p>
+                            <h4 className="text-[#c7cc3f] font-semibold text-lg mb-1">
+                              Study Materials
+                            </h4>
+                            <p className="text-gray-600 text-sm">
+                              Videos, docs & assessments
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -363,127 +413,218 @@ export default function PackageDetailsRendered(props: any) {
                         Course Curriculum
                       </h2>
                       <div className="space-y-6">
-                        {data.courses?.map((course: any, courseIndex: number) => (
-                          <Accordion
-                            key={course.id || courseIndex}
-                            type="single"
-                            collapsible
-                            className="border border-[#c7cc3f]/30 rounded-2xl overflow-hidden bg-white"
-                          >
-                            <AccordionItem value={course.id || `course-${courseIndex}`} className="border-0">
-                              <AccordionTrigger className="px-6 py-4 hover:bg-gradient-to-r hover:from-[#c7cc3f]/10 hover:to-[#bf8c13]/10 hover:no-underline">
-                                <div className="flex justify-between w-full items-center">
-                                  <div className="flex items-center">
-                                    <div className="h-12 w-12 flex items-center justify-center rounded-2xl bg-gradient-to-br from-[#07705d] to-[#bf8c13] text-white mr-4 font-bold text-lg">
-                                      {courseIndex + 1}
-                                    </div>
-                                    <div className="text-left">
-                                      <h3 className="font-bold text-[#07705d] text-lg">{course?.courseName}</h3>
-                                      <p className="text-sm text-[#bf8c13] font-medium">{course?.parts} units • {course?.materials?.length || 0} materials</p>
+                        {data.courses?.map(
+                          (course: any, courseIndex: number) => (
+                            <Accordion
+                              key={course.id || courseIndex}
+                              type="single"
+                              collapsible
+                              className="border border-[#c7cc3f]/30 rounded-2xl overflow-hidden bg-white"
+                            >
+                              <AccordionItem
+                                value={course.id || `course-${courseIndex}`}
+                                className="border-0"
+                              >
+                                <AccordionTrigger className="px-6 py-4 hover:bg-gradient-to-r hover:from-[#c7cc3f]/10 hover:to-[#bf8c13]/10 hover:no-underline">
+                                  <div className="flex justify-between w-full items-center">
+                                    <div className="flex items-center">
+                                      <div className="h-12 w-12 flex items-center justify-center rounded-2xl bg-gradient-to-br from-[#07705d] to-[#bf8c13] text-white mr-4 font-bold text-lg">
+                                        {courseIndex + 1}
+                                      </div>
+                                      <div className="text-left">
+                                        <h3 className="font-bold text-[#07705d] text-lg">
+                                          {course?.courseName}
+                                        </h3>
+                                        <p className="text-sm text-[#bf8c13] font-medium">
+                                          {course?.parts} units •{" "}
+                                          {course?.materials?.length || 0}{" "}
+                                          materials
+                                        </p>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              </AccordionTrigger>
+                                </AccordionTrigger>
 
-                              <AccordionContent className="px-2 md:px-6 py-4 bg-gradient-to-r from-[#c7cc3f]/5 to-[#bf8c13]/5">
-                                <div className="mb-6 p-4 bg-white rounded-xl border border-[#c7cc3f]/20">
-                                  <h4 className="font-semibold text-[#07705d] mb-2">Course Description</h4>
-                                  <p className="text-gray-700 leading-relaxed capitalize">{course?.courseDescription}</p>
-                                </div>
+                                <AccordionContent className="px-2 md:px-6 py-4 bg-gradient-to-r from-[#c7cc3f]/5 to-[#bf8c13]/5">
+                                  <div className="mb-6 p-4 bg-white rounded-xl border border-[#c7cc3f]/20">
+                                    <h4 className="font-semibold text-[#07705d] mb-2">
+                                      Course Description
+                                    </h4>
+                                    <p className="text-gray-700 leading-relaxed capitalize">
+                                      {course?.courseDescription}
+                                    </p>
+                                  </div>
 
-                                <div className="space-y-6">
-                                  {Array.from(
-                                    { length: parseInt(course?.parts || "0", 10) || 0 },
-                                    (_, unitIndex) => {
-                                      // Get all materials for this specific unit, ensure part is a string for comparison
-                                      const unitMaterials = course?.materials?.filter(
-                                        (material: any) => material?.part && material?.part.toString() === (unitIndex + 1).toString()
-                                      ) || [];
+                                  <div className="space-y-6">
+                                    {Array.from(
+                                      {
+                                        length:
+                                          parseInt(course?.parts || "0", 10) ||
+                                          0,
+                                      },
+                                      (_, unitIndex) => {
+                                        // Get all materials for this specific unit, ensure part is a string for comparison
+                                        const unitMaterials =
+                                          course?.materials?.filter(
+                                            (material: any) =>
+                                              material?.part &&
+                                              material?.part.toString() ===
+                                                (unitIndex + 1).toString(),
+                                          ) || [];
 
-                                      // Safely get the unit title with fallback
-                                      let unitTitle = "Unit " + (unitIndex + 1);
-                                      try {
-                                        if (course?.CourseUnitsList &&
-                                          Array.isArray(course.CourseUnitsList) &&
-                                          course.CourseUnitsList[unitIndex] &&
-                                          course.CourseUnitsList[unitIndex].Title) {
-                                          unitTitle = course.CourseUnitsList[unitIndex].Title;
+                                        // Safely get the unit title with fallback
+                                        let unitTitle =
+                                          "Unit " + (unitIndex + 1);
+                                        try {
+                                          if (
+                                            course?.CourseUnitsList &&
+                                            Array.isArray(
+                                              course.CourseUnitsList,
+                                            ) &&
+                                            course.CourseUnitsList[unitIndex] &&
+                                            course.CourseUnitsList[unitIndex]
+                                              .Title
+                                          ) {
+                                            unitTitle =
+                                              course.CourseUnitsList[unitIndex]
+                                                .Title;
+                                          }
+                                        } catch (e) {
+                                          console.error(
+                                            "Error accessing unit title:",
+                                            e,
+                                          );
                                         }
-                                      } catch (e) {
-                                        console.error("Error accessing unit title:", e);
-                                      }
 
-                                      return (
-                                        <div key={unitIndex} className="bg-white rounded-xl p-2 md:p-6 border border-[#c7cc3f]/20">
-                                          <h4 className="text-lg font-bold text-[#07705d] mb-4 flex items-center">
-                                            <span className="h-8 w-8 flex items-center justify-center rounded-2xl bg-gradient-to-br from-[#bf8c13] to-[#c7cc3f] text-white mr-3 text-sm font-bold">
-                                              {unitIndex + 1}
-                                            </span>
-                                            Unit {unitIndex + 1}{unitTitle !== `Unit ${unitIndex + 1}` ? `: ${unitTitle}` : ""}
-                                          </h4>
+                                        return (
+                                          <div
+                                            key={unitIndex}
+                                            className="bg-white rounded-xl p-2 md:p-6 border border-[#c7cc3f]/20"
+                                          >
+                                            <h4 className="text-lg font-bold text-[#07705d] mb-4 flex items-center">
+                                              <span className="h-8 w-8 flex items-center justify-center rounded-2xl bg-gradient-to-br from-[#bf8c13] to-[#c7cc3f] text-white mr-3 text-sm font-bold">
+                                                {unitIndex + 1}
+                                              </span>
+                                              Unit {unitIndex + 1}
+                                              {unitTitle !==
+                                              `Unit ${unitIndex + 1}`
+                                                ? `: ${unitTitle}`
+                                                : ""}
+                                            </h4>
 
-                                          {unitMaterials.length > 0 ? (
-                                            <ul className="space-y-3 bg-gradient-to-r from-[#c7cc3f]/5 to-[#bf8c13]/5 rounded-xl p-1 md:p-4 border border-[#c7cc3f]/20">
-                                              {unitMaterials.map((material: any, materialIndex: number) => {
-                                                const materialType = material?.materialType;
-                                                let icon = <FileText size={16} />;
-                                                let label = "Resource";
-                                                let name = "Untitled resource";
+                                            {unitMaterials.length > 0 ? (
+                                              <ul className="space-y-3 bg-gradient-to-r from-[#c7cc3f]/5 to-[#bf8c13]/5 rounded-xl p-1 md:p-4 border border-[#c7cc3f]/20">
+                                                {unitMaterials.map(
+                                                  (
+                                                    material: any,
+                                                    materialIndex: number,
+                                                  ) => {
+                                                    const materialType =
+                                                      material?.materialType;
+                                                    let icon = (
+                                                      <FileText size={16} />
+                                                    );
+                                                    let label = "Resource";
+                                                    let name =
+                                                      "Untitled resource";
 
-                                                if (materialType === "video" && material?.video) {
-                                                  icon = <Play size={16} />;
-                                                  label = "Video";
-                                                  name = material.video.vidTitle || "Untitled video";
-                                                } else if (materialType === "file" && material?.file) {
-                                                  icon = <FileText size={16} />;
-                                                  label = "Document";
-                                                  name = material.file.title || "Untitled document";
-                                                } else if (materialType === "assessment" && material?.assementId) {
-                                                  icon = <StickyNote size={16} />;
-                                                  label = "Assessment";
-                                                  name = material.assementId.assesmentTitle || "Untitled assessment";
-                                                } else if (materialType === "link" && material?.link) {
-                                                  icon = <Youtube size={16} />;
-                                                  label = "Link";
-                                                  name = material.link.title || "Untitled link";
-                                                }
+                                                    if (
+                                                      materialType ===
+                                                        "video" &&
+                                                      material?.video
+                                                    ) {
+                                                      icon = <Play size={16} />;
+                                                      label = "Video";
+                                                      name =
+                                                        material.video
+                                                          .vidTitle ||
+                                                        "Untitled video";
+                                                    } else if (
+                                                      materialType === "file" &&
+                                                      material?.file
+                                                    ) {
+                                                      icon = (
+                                                        <FileText size={16} />
+                                                      );
+                                                      label = "Document";
+                                                      name =
+                                                        material.file.title ||
+                                                        "Untitled document";
+                                                    } else if (
+                                                      materialType ===
+                                                        "assessment" &&
+                                                      material?.assementId
+                                                    ) {
+                                                      icon = (
+                                                        <StickyNote size={16} />
+                                                      );
+                                                      label = "Assessment";
+                                                      name =
+                                                        material.assementId
+                                                          .assesmentTitle ||
+                                                        "Untitled assessment";
+                                                    } else if (
+                                                      materialType === "link" &&
+                                                      material?.link
+                                                    ) {
+                                                      icon = (
+                                                        <Youtube size={16} />
+                                                      );
+                                                      label = "Link";
+                                                      name =
+                                                        material.link.title ||
+                                                        "Untitled link";
+                                                    }
 
-                                                return (
-                                                  <li
-                                                    key={material.id || `material-${materialIndex}`}
-                                                    className="flex flex-wrap items-center py-3 px-2 md:px-4 rounded-xl hover:bg-gradient-to-r hover:from-[#c7cc3f]/10 hover:to-[#bf8c13]/10 transition-all duration-200 border border-transparent hover:border-[#c7cc3f]/30 group"
-                                                  >
-                                                    <div className="w-8 h-8 bg-gradient-to-br from-[#bf8c13] to-[#c7cc3f] rounded-lg flex items-center justify-center mr-3 text-white group-hover:scale-110 transition-transform duration-200">
-                                                      {icon}
-                                                    </div>
-                                                    <div className="flex-1">
-                                                      <span className="text-[#07705d] font-medium">{name}</span>
-                                                    </div>
-                                                    <p className="text-xs truncate max-w-[10rem] font-semibold bg-gradient-to-r from-[#c7cc3f] to-[#bf8c13] text-white px-3 py-1 rounded-full mr-3">
-                                                      {label}
-                                                    </p>
-                                                    <div className="w-6 h-6 bg-[#07705d]/10 rounded-lg flex items-center justify-center">
-                                                      <Lock size={12} className="text-[#07705d]" />
-                                                    </div>
-                                                  </li>
-                                                );
-                                              })}
-                                            </ul>
-                                          ) : (
-                                            <div className="py-4 px-4 text-center bg-gradient-to-r from-[#c7cc3f]/10 to-[#bf8c13]/10 rounded-xl border border-[#c7cc3f]/20">
-                                              <FileText className="h-8 w-8 text-[#bf8c13] mx-auto mb-2" />
-                                              <p className="text-[#07705d] font-medium text-sm">No materials available for this unit</p>
-                                            </div>
-                                          )}
-                                        </div>
-                                      );
-                                    }
-                                  )}
-                                </div>
-                              </AccordionContent>
-                            </AccordionItem>
-                          </Accordion>
-                        ))}
+                                                    return (
+                                                      <li
+                                                        key={
+                                                          material.id ||
+                                                          `material-${materialIndex}`
+                                                        }
+                                                        className="flex flex-wrap items-center py-3 px-2 md:px-4 rounded-xl hover:bg-gradient-to-r hover:from-[#c7cc3f]/10 hover:to-[#bf8c13]/10 transition-all duration-200 border border-transparent hover:border-[#c7cc3f]/30 group"
+                                                      >
+                                                        <div className="w-8 h-8 bg-gradient-to-br from-[#bf8c13] to-[#c7cc3f] rounded-lg flex items-center justify-center mr-3 text-white group-hover:scale-110 transition-transform duration-200">
+                                                          {icon}
+                                                        </div>
+                                                        <div className="flex-1">
+                                                          <span className="text-[#07705d] font-medium">
+                                                            {name}
+                                                          </span>
+                                                        </div>
+                                                        <p className="text-xs truncate max-w-[10rem] font-semibold bg-gradient-to-r from-[#c7cc3f] to-[#bf8c13] text-white px-3 py-1 rounded-full mr-3">
+                                                          {label}
+                                                        </p>
+                                                        <div className="w-6 h-6 bg-[#07705d]/10 rounded-lg flex items-center justify-center">
+                                                          <Lock
+                                                            size={12}
+                                                            className="text-[#07705d]"
+                                                          />
+                                                        </div>
+                                                      </li>
+                                                    );
+                                                  },
+                                                )}
+                                              </ul>
+                                            ) : (
+                                              <div className="py-4 px-4 text-center bg-gradient-to-r from-[#c7cc3f]/10 to-[#bf8c13]/10 rounded-xl border border-[#c7cc3f]/20">
+                                                <FileText className="h-8 w-8 text-[#bf8c13] mx-auto mb-2" />
+                                                <p className="text-[#07705d] font-medium text-sm">
+                                                  No materials available for
+                                                  this unit
+                                                </p>
+                                              </div>
+                                            )}
+                                          </div>
+                                        );
+                                      },
+                                    )}
+                                  </div>
+                                </AccordionContent>
+                              </AccordionItem>
+                            </Accordion>
+                          ),
+                        )}
                       </div>
                     </div>
                   </TabsContent>
@@ -506,14 +647,18 @@ export default function PackageDetailsRendered(props: any) {
                               <div className="flex justify-between">
                                 <div className="flex items-start gap-4">
                                   <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-[#07705d] to-[#bf8c13] flex items-center justify-center text-white font-bold text-lg">
-                                    {review?.Student?.firstName?.charAt(0)}{review?.Student?.lastName?.charAt(0)}
+                                    {review?.Student?.firstName?.charAt(0)}
+                                    {review?.Student?.lastName?.charAt(0)}
                                   </div>
                                   <div className="flex-1">
                                     <div className="font-bold text-[#07705d] mb-2">
-                                      {review?.Student?.firstName} {review?.Student?.lastName}
+                                      {review?.Student?.firstName}{" "}
+                                      {review?.Student?.lastName}
                                     </div>
                                     <div className="bg-gradient-to-r from-[#c7cc3f]/5 to-[#bf8c13]/5 rounded-xl p-4 border border-[#c7cc3f]/20">
-                                      <p className="text-gray-700 leading-relaxed">{review?.text}</p>
+                                      <p className="text-gray-700 leading-relaxed">
+                                        {review?.text}
+                                      </p>
                                     </div>
                                   </div>
                                 </div>
@@ -530,8 +675,13 @@ export default function PackageDetailsRendered(props: any) {
                           <div className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-[#bf8c13] to-[#c7cc3f] flex items-center justify-center mb-4">
                             <Star className="text-white" size={32} />
                           </div>
-                          <h3 className="text-xl font-bold text-[#07705d] mb-2">No reviews yet</h3>
-                          <p className="text-gray-600 mb-6">Be the first to review this package and help other students!</p>
+                          <h3 className="text-xl font-bold text-[#07705d] mb-2">
+                            No reviews yet
+                          </h3>
+                          <p className="text-gray-600 mb-6">
+                            Be the first to review this package and help other
+                            students!
+                          </p>
                         </div>
                       )}
 
@@ -575,20 +725,36 @@ export default function PackageDetailsRendered(props: any) {
                     <div className="mb-6">
                       <div className="flex items-center text-sm text-[#bf8c13] mb-2 bg-[#bf8c13]/10 px-3 py-1 rounded-full w-fit">
                         <Clock size={14} className="mr-1" />
-                        <span className="font-medium">Ends {new Date(data?.discountExpriyDate).toLocaleDateString()}</span>
+                        <span className="font-medium">
+                          Ends{" "}
+                          {new Date(
+                            data?.discountExpriyDate,
+                          ).toLocaleDateString()}
+                        </span>
                       </div>
                       <div className="flex items-center gap-3 mb-2">
-                        <span className="text-3xl font-bold text-[#07705d]">{data?.temporaryPrice} Birr</span>
-                        <span className="text-lg line-through text-gray-400">{data?.price} Birr</span>
+                        <span className="text-3xl font-bold text-[#07705d]">
+                          {data?.temporaryPrice} Birr
+                        </span>
+                        <span className="text-lg line-through text-gray-400">
+                          {data?.price} Birr
+                        </span>
                       </div>
                       <span className="bg-gradient-to-r from-[#bf8c13] to-[#c7cc3f] text-white text-sm font-bold px-3 py-1 rounded-full">
-                        {Math.round((1 - data?.temporaryPrice / data?.price) * 100)}% OFF
+                        {Math.round(
+                          (1 - data?.temporaryPrice / data?.price) * 100,
+                        )}
+                        % OFF
                       </span>
                     </div>
                   ) : (
                     <div className="mb-6">
-                      <span className="text-3xl font-bold text-[#07705d] font-Sendako">{data?.price} Birr</span>
-                      <p className="text-sm text-gray-600 mt-1">One-time payment • Lifetime access</p>
+                      <span className="text-3xl font-bold text-[#07705d] font-Sendako">
+                        {data?.price} Birr
+                      </span>
+                      <p className="text-sm text-gray-600 mt-1">
+                        One-time payment • Lifetime access
+                      </p>
                     </div>
                   )}
 
@@ -604,31 +770,41 @@ export default function PackageDetailsRendered(props: any) {
                       <div className="w-8 h-8 bg-gradient-to-br from-[#bf8c13] to-[#c7cc3f] rounded-xl flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
                         <Book size={14} className="text-white" />
                       </div>
-                      <span className="font-medium">{data?.courses?.length} comprehensive courses</span>
+                      <span className="font-medium">
+                        {data?.courses?.length} comprehensive courses
+                      </span>
                     </div>
                     <div className="flex items-center text-sm text-gray-700 group">
                       <div className="w-8 h-8 bg-gradient-to-br from-[#c7cc3f] to-[#07705d] rounded-xl flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
                         <TrendingUp size={14} className="text-white" />
                       </div>
-                      <span className="font-medium">{totalUnits} structured learning units</span>
+                      <span className="font-medium">
+                        {totalUnits} structured learning units
+                      </span>
                     </div>
                     <div className="flex items-center text-sm text-gray-700 group">
                       <div className="w-8 h-8 bg-gradient-to-br from-[#07705d] to-[#c7cc3f] rounded-xl flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
                         <Monitor size={14} className="text-white" />
                       </div>
-                      <span className="font-medium">Mobile & desktop access</span>
+                      <span className="font-medium">
+                        Mobile & desktop access
+                      </span>
                     </div>
                     <div className="flex items-center text-sm text-gray-700 group">
                       <div className="w-8 h-8 bg-gradient-to-br from-[#bf8c13] to-[#07705d] rounded-xl flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
                         <Trophy size={14} className="text-white" />
                       </div>
-                      <span className="font-medium">Certificate of completion</span>
+                      <span className="font-medium">
+                        Certificate of completion
+                      </span>
                     </div>
                     <div className="flex items-center text-sm text-gray-700 group">
                       <div className="w-8 h-8 bg-gradient-to-br from-[#c7cc3f] to-[#bf8c13] rounded-xl flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
                         <HelpCircle size={14} className="text-white" />
                       </div>
-                      <span className="font-medium">24/7 community support</span>
+                      <span className="font-medium">
+                        24/7 community support
+                      </span>
                     </div>
                   </div>
 
@@ -655,7 +831,7 @@ export default function PackageDetailsRendered(props: any) {
                       ) : (
                         // Show purchase options if user hasn't purchased
                         <div className="space-y-3">
-                          <PackageAddToCartButton 
+                          <PackageAddToCartButton
                             packageData={data}
                             className="w-full"
                           />

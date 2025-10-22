@@ -99,7 +99,7 @@ export default function PackagesRenderd() {
                       </div>
                     </Link>
                   </SwiperSlide>
-                )
+                ),
             )}
           </div>
 

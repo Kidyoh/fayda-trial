@@ -1,7 +1,21 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Blocks, BookOpenCheck, ChevronRight, Pause, Play, Trophy, Vote, PiIcon, FlaskConical, AtomIcon, Globe, Orbit, X } from "lucide-react";
+import {
+  Blocks,
+  BookOpenCheck,
+  ChevronRight,
+  Pause,
+  Play,
+  Trophy,
+  Vote,
+  PiIcon,
+  FlaskConical,
+  AtomIcon,
+  Globe,
+  Orbit,
+  X,
+} from "lucide-react";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
 
@@ -73,7 +87,6 @@ export default function WelcomeSection() {
           className="w-12 first-letter:md:w-24 absolute left-[60%] md:left-[40%] top-1/3 md:top-20  z-0  object-contain"
         />
         <div className="w-full mx-auto grid md:grid-cols-2 gap-12 items-center">
-
           <div className="space-y-6">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black leading-snug font-Sendako">
               Learn at your own pace, <br />
@@ -89,7 +102,6 @@ export default function WelcomeSection() {
               </div>
               <div className="text-5xl md:text-7xl font-bold">
                 1000<span className="text-orange-500">+</span>{" "}
-
                 <span className="block text-sm font-normal text-gray-600">
                   Active Student
                 </span>
@@ -122,7 +134,9 @@ export default function WelcomeSection() {
                     onMouseLeave={() => setIsHovering(false)}
                     onClick={openModal}
                   >
-                    <div className={`absolute inset-0 bg-black/40 backdrop-blur-sm z-10 transition-opacity duration-300 ${isHovering ? 'opacity-0' : 'opacity-100'}`} />
+                    <div
+                      className={`absolute inset-0 bg-black/40 backdrop-blur-sm z-10 transition-opacity duration-300 ${isHovering ? "opacity-0" : "opacity-100"}`}
+                    />
                     <Image
                       src="/common_files/intro_thumbnail.png"
                       alt="Video Thumbnail"
@@ -148,11 +162,17 @@ export default function WelcomeSection() {
                     </motion.div>
 
                     {/* Video Info */}
-                    <div className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 z-10 transition-opacity duration-300 ${isHovering ? 'opacity-100' : 'opacity-0'}`}>
+                    <div
+                      className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 z-10 transition-opacity duration-300 ${isHovering ? "opacity-100" : "opacity-0"}`}
+                    >
                       <div className="flex items-center justify-between text-white">
                         <div>
-                          <h3 className="text-xl font-semibold mb-2">Introduction to Fayida Academy</h3>
-                          <p className="text-gray-200">Learn about our platform and methodology</p>
+                          <h3 className="text-xl font-semibold mb-2">
+                            Introduction to Fayida Academy
+                          </h3>
+                          <p className="text-gray-200">
+                            Learn about our platform and methodology
+                          </p>
                         </div>
                         <motion.button
                           whileHover={{ scale: 1.05 }}
@@ -172,7 +192,6 @@ export default function WelcomeSection() {
                   <div className="absolute -bottom-6 -right-6 bg-emerald-500/10 w-24 h-24 rounded-full blur-xl" />
                 </div>
               </motion.div>
-
             </div>
           </div>
         </div>
@@ -218,5 +237,4 @@ export default function WelcomeSection() {
       </AnimatePresence>
     </div>
   );
-
 }

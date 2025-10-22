@@ -22,10 +22,10 @@ export function MockPurchaseDialogCustom() {
   const { push } = useRouter();
 
   const mockPackageSelected = useSelectedMockPackageStore(
-    (state) => state.mockpackage
+    (state) => state.mockpackage,
   );
   const phoneNumberFetched = useTemporaryPhonenumberStore(
-    (state) => state.phoneNumber
+    (state) => state.phoneNumber,
   );
   if (mockPackageSelected.discountStatus) {
   }
@@ -61,7 +61,7 @@ export function MockPurchaseDialogCustom() {
 
   const handleSelectPaymentOption = (
     paymentOptionRecived: any,
-    accountNumberRecived: any
+    accountNumberRecived: any,
   ) => {
     setSelectedPaymentOption(paymentOptionRecived);
     setAccountNumber(accountNumberRecived);
@@ -158,7 +158,7 @@ export function MockPurchaseDialogCustom() {
                             onClick={() =>
                               handleSelectPaymentOption(
                                 item.name,
-                                item.accountNumber
+                                item.accountNumber,
                               )
                             }
                             key={item.id}

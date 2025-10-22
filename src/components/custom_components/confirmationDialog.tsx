@@ -12,7 +12,11 @@ import {
 } from "../ui/alert-dialog";
 import { apiUrl } from "@/apiConfig";
 import { toast } from "../ui/use-toast";
-import { setAccessToken, getAccessToken, clearAccessToken } from "../../lib/tokenManager";
+import {
+  setAccessToken,
+  getAccessToken,
+  clearAccessToken,
+} from "../../lib/tokenManager";
 
 //import { useToast } from "../ui/use-toast";
 
@@ -51,7 +55,7 @@ export default function ConfirmationDialog({
         // Add any necessary headers or authentication tokens
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`, 
+          Authorization: `Bearer ${accessToken}`,
           //credentials: "include",
           // withCredentials: true
           //Authorization: `Bearer ${"secret"}`,

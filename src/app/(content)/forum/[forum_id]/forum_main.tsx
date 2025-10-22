@@ -54,7 +54,7 @@ export default function ForumDetail({ studentId, forumId }: FetchedProps) {
             revalidate: 0,
           },
           credentials: "include",
-        }
+        },
       );
       const forum = await res.json();
       setData(forum);

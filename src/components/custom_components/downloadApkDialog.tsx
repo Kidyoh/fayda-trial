@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React from "react";
 import {
@@ -14,15 +14,19 @@ import {
 } from "../ui/alert-dialog";
 import { apiUrl } from "@/apiConfig";
 import { toast } from "../ui/use-toast";
-import { setAccessToken, getAccessToken, clearAccessToken } from "../../lib/tokenManager";
+import {
+  setAccessToken,
+  getAccessToken,
+  clearAccessToken,
+} from "../../lib/tokenManager";
 
 export default function DownloadAppConfirmation() {
   // Use React hooks for client-side only code
-  const [token, setToken] = React.useState('');
-  
+  const [token, setToken] = React.useState("");
+
   // Only access tokens on the client side
   React.useEffect(() => {
-    setToken(getAccessToken() || '');
+    setToken(getAccessToken() || "");
   }, []);
 
   return (
@@ -37,12 +41,12 @@ export default function DownloadAppConfirmation() {
           <AlertDialogHeader>
             <AlertDialogTitle>Download Fayida Academy App</AlertDialogTitle>
             <AlertDialogDescription>
-             Do you want to procced to download the mobile application? 
+              Do you want to procced to download the mobile application?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction >
+            <AlertDialogAction>
               <a href={`${apiUrl}/download`}> Download</a>
             </AlertDialogAction>
           </AlertDialogFooter>

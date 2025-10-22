@@ -35,4 +35,4 @@ export default function ProfileCard({ userData }: ProfileCardProps) {
       </div>
     </div>
   );
-} 
+}

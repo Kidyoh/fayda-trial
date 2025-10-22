@@ -5,6 +5,7 @@ This document outlines the API endpoints needed to support the cart functionalit
 ## 📋 Overview
 
 The cart system needs two main API endpoints:
+
 1. **Bulk Purchase Creation** - Creates purchase records for multiple items
 2. **Bulk Payment Initiation** - Initiates payment for the bulk purchase
 
@@ -15,12 +16,14 @@ The cart system needs two main API endpoints:
 **Endpoint:** `POST /cart/bulk-purchase`
 
 **Headers:**
+
 ```
 Content-Type: application/json
 Authorization: Bearer {accessToken}
 ```
 
 **Request Body:**
+
 ```json
 {
   "packages": [
@@ -33,7 +36,7 @@ Authorization: Bearer {accessToken}
   ],
   "courses": [
     {
-      "courseId": "string", 
+      "courseId": "string",
       "quantity": number,
       "price": number
     }
@@ -45,6 +48,7 @@ Authorization: Bearer {accessToken}
 ```
 
 **Response (Success - 200):**
+
 ```json
 {
   "success": true,
@@ -65,7 +69,7 @@ Authorization: Bearer {accessToken}
   "coursePurchases": [
     {
       "id": "string",
-      "courseId": "string", 
+      "courseId": "string",
       "studentId": "string",
       "quantity": number,
       "price": number,
@@ -77,6 +81,7 @@ Authorization: Bearer {accessToken}
 ```
 
 **Response (Error - 400/500):**
+
 ```json
 {
   "success": false,
@@ -89,12 +94,14 @@ Authorization: Bearer {accessToken}
 **Endpoint:** `POST /paymenthandler/bulk-checkout/`
 
 **Headers:**
+
 ```
 Content-Type: application/json
 Authorization: Bearer {accessToken}
 ```
 
 **Request Body:**
+
 ```json
 {
   "purchaseId": "string",
@@ -115,6 +122,7 @@ Authorization: Bearer {accessToken}
 ```
 
 **Response (Success - 200):**
+
 ```json
 {
   "success": true,
@@ -124,6 +132,7 @@ Authorization: Bearer {accessToken}
 ```
 
 **Response (Error - 400/500):**
+
 ```json
 {
   "success": false,
@@ -136,6 +145,7 @@ Authorization: Bearer {accessToken}
 ### Database Schema Suggestions
 
 #### Bulk Purchase Table
+
 ```sql
 CREATE TABLE bulk_purchases (
   id VARCHAR(36) PRIMARY KEY,
@@ -146,12 +156,13 @@ CREATE TABLE bulk_purchases (
   status ENUM('pending', 'completed', 'failed') DEFAULT 'pending',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  
+
   FOREIGN KEY (student_id) REFERENCES students(id)
 );
 ```
 
 #### Bulk Purchase Items Table
+
 ```sql
 CREATE TABLE bulk_purchase_items (
   id VARCHAR(36) PRIMARY KEY,
@@ -163,7 +174,7 @@ CREATE TABLE bulk_purchase_items (
   duration INT NULL, -- Only for packages (1, 3, or 6 months)
   status ENUM('pending', 'completed', 'failed') DEFAULT 'pending',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  
+
   FOREIGN KEY (bulk_purchase_id) REFERENCES bulk_purchases(id),
   INDEX idx_item_type_id (item_type, item_id)
 );
@@ -177,106 +188,120 @@ CREATE TABLE bulk_purchase_items (
 // Pseudocode for bulk purchase creation
 async function createBulkPurchase(req, res) {
   try {
-    const { packages, courses, totalAmount, phoneNumber, paymentMethod } = req.body;
+    const { packages, courses, totalAmount, phoneNumber, paymentMethod } =
+      req.body;
     const studentId = req.user.id; // From JWT token
-    
+
     // Start transaction
     const transaction = await db.beginTransaction();
-    
+
     try {
       // Create main bulk purchase record
-      const bulkPurchase = await db.bulkPurchases.create({
-        id: generateUUID(),
-        student_id: studentId,
-        total_amount: totalAmount,
-        phone_number: phoneNumber,
-        payment_method: paymentMethod,
-        status: 'pending'
-      }, { transaction });
-      
+      const bulkPurchase = await db.bulkPurchases.create(
+        {
+          id: generateUUID(),
+          student_id: studentId,
+          total_amount: totalAmount,
+          phone_number: phoneNumber,
+          payment_method: paymentMethod,
+          status: "pending",
+        },
+        { transaction },
+      );
+
       const packagePurchases = [];
       const coursePurchases = [];
-      
+
       // Process packages
       for (const pkg of packages) {
         for (let i = 0; i < pkg.quantity; i++) {
           // Create individual package purchase records
-          const packagePurchase = await db.packagePurchases.create({
-            id: generateUUID(),
-            package_id: pkg.packageId,
-            student_id: studentId,
-            duration: pkg.duration,
-            price: pkg.price / pkg.quantity, // Individual price
-            phone_number: phoneNumber,
-            payment_method: paymentMethod,
-            status: 'pending'
-          }, { transaction });
-          
+          const packagePurchase = await db.packagePurchases.create(
+            {
+              id: generateUUID(),
+              package_id: pkg.packageId,
+              student_id: studentId,
+              duration: pkg.duration,
+              price: pkg.price / pkg.quantity, // Individual price
+              phone_number: phoneNumber,
+              payment_method: paymentMethod,
+              status: "pending",
+            },
+            { transaction },
+          );
+
           packagePurchases.push(packagePurchase);
-          
+
           // Create bulk purchase item record
-          await db.bulkPurchaseItems.create({
-            id: generateUUID(),
-            bulk_purchase_id: bulkPurchase.id,
-            item_type: 'package',
-            item_id: pkg.packageId,
-            quantity: 1,
-            price: pkg.price / pkg.quantity,
-            duration: pkg.duration,
-            status: 'pending'
-          }, { transaction });
+          await db.bulkPurchaseItems.create(
+            {
+              id: generateUUID(),
+              bulk_purchase_id: bulkPurchase.id,
+              item_type: "package",
+              item_id: pkg.packageId,
+              quantity: 1,
+              price: pkg.price / pkg.quantity,
+              duration: pkg.duration,
+              status: "pending",
+            },
+            { transaction },
+          );
         }
       }
-      
+
       // Process courses
       for (const course of courses) {
         for (let i = 0; i < course.quantity; i++) {
           // Create individual course purchase records
-          const coursePurchase = await db.coursePurchases.create({
-            id: generateUUID(),
-            course_id: course.courseId,
-            student_id: studentId,
-            price: course.price / course.quantity, // Individual price
-            phone_number: phoneNumber,
-            payment_method: paymentMethod,
-            status: 'pending'
-          }, { transaction });
-          
+          const coursePurchase = await db.coursePurchases.create(
+            {
+              id: generateUUID(),
+              course_id: course.courseId,
+              student_id: studentId,
+              price: course.price / course.quantity, // Individual price
+              phone_number: phoneNumber,
+              payment_method: paymentMethod,
+              status: "pending",
+            },
+            { transaction },
+          );
+
           coursePurchases.push(coursePurchase);
-          
+
           // Create bulk purchase item record
-          await db.bulkPurchaseItems.create({
-            id: generateUUID(),
-            bulk_purchase_id: bulkPurchase.id,
-            item_type: 'course',
-            item_id: course.courseId,
-            quantity: 1,
-            price: course.price / course.quantity,
-            status: 'pending'
-          }, { transaction });
+          await db.bulkPurchaseItems.create(
+            {
+              id: generateUUID(),
+              bulk_purchase_id: bulkPurchase.id,
+              item_type: "course",
+              item_id: course.courseId,
+              quantity: 1,
+              price: course.price / course.quantity,
+              status: "pending",
+            },
+            { transaction },
+          );
         }
       }
-      
+
       await transaction.commit();
-      
+
       res.json({
         success: true,
         purchaseId: bulkPurchase.id,
-        message: 'Bulk purchase created successfully',
+        message: "Bulk purchase created successfully",
         packagePurchases,
-        coursePurchases
+        coursePurchases,
       });
-      
     } catch (error) {
       await transaction.rollback();
       throw error;
     }
-    
   } catch (error) {
-    console.error('Error creating bulk purchase:', error);
+    console.error("Error creating bulk purchase:", error);
     res.status(500).json({
       success: false,
-      message: error.message || 'Failed to create bulk purchase'
+      message: error.message || "Failed to create bulk purchase",
     });
   }
 }
@@ -290,30 +315,30 @@ async function initiateBulkPayment(req, res) {
   try {
     const { purchaseId, phoneNumber, totalAmount, items } = req.body;
     const studentId = req.user.id;
-    
+
     // Verify bulk purchase exists and belongs to student
     const bulkPurchase = await db.bulkPurchases.findOne({
-      where: { id: purchaseId, student_id: studentId }
+      where: { id: purchaseId, student_id: studentId },
     });
-    
+
     if (!bulkPurchase) {
       return res.status(404).json({
         success: false,
-        message: 'Bulk purchase not found'
+        message: "Bulk purchase not found",
       });
     }
-    
+
     // Create payment description
-    const itemDescriptions = items.map(item => {
-      if (item.type === 'package') {
-        return `${item.packageName} (${item.selectedDuration} month${item.selectedDuration > 1 ? 's' : ''}) x${item.quantity}`;
+    const itemDescriptions = items.map((item) => {
+      if (item.type === "package") {
+        return `${item.packageName} (${item.selectedDuration} month${item.selectedDuration > 1 ? "s" : ""}) x${item.quantity}`;
       } else {
         return `${item.courseName} x${item.quantity}`;
       }
     });
-    
-    const description = `Bulk Purchase: ${itemDescriptions.join(', ')}`;
-    
+
+    const description = `Bulk Purchase: ${itemDescriptions.join(", ")}`;
+
     // Initiate payment with SantiPay (use your existing payment logic)
     const paymentResult = await initiatePaymentWithSantiPay({
       amount: totalAmount,
@@ -321,35 +346,37 @@ async function initiateBulkPayment(req, res) {
       description: description,
       referenceId: purchaseId,
       callbackUrl: `${process.env.BASE_URL}/api/payment/bulk-callback`,
-      returnUrl: `${process.env.FRONTEND_URL}/payment/success`
+      returnUrl: `${process.env.FRONTEND_URL}/payment/success`,
     });
-    
+
     if (paymentResult.success) {
       // Update bulk purchase with payment info
-      await db.bulkPurchases.update({
-        payment_reference: paymentResult.referenceId,
-        payment_url: paymentResult.paymentUrl
-      }, {
-        where: { id: purchaseId }
-      });
-      
+      await db.bulkPurchases.update(
+        {
+          payment_reference: paymentResult.referenceId,
+          payment_url: paymentResult.paymentUrl,
+        },
+        {
+          where: { id: purchaseId },
+        },
+      );
+
       res.json({
         success: true,
         paymentUrl: paymentResult.paymentUrl,
-        message: 'Payment initiated successfully'
+        message: "Payment initiated successfully",
       });
     } else {
       res.status(400).json({
         success: false,
-        message: paymentResult.message || 'Failed to initiate payment'
+        message: paymentResult.message || "Failed to initiate payment",
       });
     }
-    
   } catch (error) {
-    console.error('Error initiating bulk payment:', error);
+    console.error("Error initiating bulk payment:", error);
     res.status(500).json({
       success: false,
-      message: error.message || 'Failed to initiate payment'
+      message: error.message || "Failed to initiate payment",
     });
   }
 }
@@ -365,77 +392,89 @@ You'll also need to handle payment callbacks for bulk purchases:
 async function handleBulkPaymentCallback(req, res) {
   try {
     const { referenceId, status, transactionId } = req.body;
-    
+
     // Verify payment with SantiPay
     const paymentVerification = await verifySantiPayPayment(transactionId);
-    
-    if (paymentVerification.success && status === 'success') {
+
+    if (paymentVerification.success && status === "success") {
       // Start transaction
       const transaction = await db.beginTransaction();
-      
+
       try {
         // Update bulk purchase status
-        await db.bulkPurchases.update({
-          status: 'completed',
-          transaction_id: transactionId,
-          completed_at: new Date()
-        }, {
-          where: { id: referenceId },
-          transaction
-        });
-        
+        await db.bulkPurchases.update(
+          {
+            status: "completed",
+            transaction_id: transactionId,
+            completed_at: new Date(),
+          },
+          {
+            where: { id: referenceId },
+            transaction,
+          },
+        );
+
         // Update all related purchase records
-        await db.packagePurchases.update({
-          status: 'completed',
-          transaction_id: transactionId
-        }, {
-          where: { 
-            id: { [Op.in]: await getBulkPurchasePackageIds(referenceId) }
+        await db.packagePurchases.update(
+          {
+            status: "completed",
+            transaction_id: transactionId,
           },
-          transaction
-        });
-        
-        await db.coursePurchases.update({
-          status: 'completed', 
-          transaction_id: transactionId
-        }, {
-          where: {
-            id: { [Op.in]: await getBulkPurchaseCourseIds(referenceId) }
+          {
+            where: {
+              id: { [Op.in]: await getBulkPurchasePackageIds(referenceId) },
+            },
+            transaction,
           },
-          transaction
-        });
-        
+        );
+
+        await db.coursePurchases.update(
+          {
+            status: "completed",
+            transaction_id: transactionId,
+          },
+          {
+            where: {
+              id: { [Op.in]: await getBulkPurchaseCourseIds(referenceId) },
+            },
+            transaction,
+          },
+        );
+
         // Update bulk purchase items
-        await db.bulkPurchaseItems.update({
-          status: 'completed'
-        }, {
-          where: { bulk_purchase_id: referenceId },
-          transaction
-        });
-        
+        await db.bulkPurchaseItems.update(
+          {
+            status: "completed",
+          },
+          {
+            where: { bulk_purchase_id: referenceId },
+            transaction,
+          },
+        );
+
         await transaction.commit();
-        
-        res.json({ success: true, message: 'Payment processed successfully' });
-        
+
+        res.json({ success: true, message: "Payment processed successfully" });
       } catch (error) {
         await transaction.rollback();
         throw error;
       }
-      
     } else {
       // Handle failed payment
-      await db.bulkPurchases.update({
-        status: 'failed'
-      }, {
-        where: { id: referenceId }
-      });
-      
-      res.json({ success: false, message: 'Payment failed' });
+      await db.bulkPurchases.update(
+        {
+          status: "failed",
+        },
+        {
+          where: { id: referenceId },
+        },
+      );
+
+      res.json({ success: false, message: "Payment failed" });
     }
-    
   } catch (error) {
-    console.error('Error handling bulk payment callback:', error);
-    res.status(500).json({ success: false, message: 'Internal server error' });
+    console.error("Error handling bulk payment callback:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 }
 ```
@@ -443,6 +482,7 @@ async function handleBulkPaymentCallback(req, res) {
 ## 📝 Example Request/Response Flow
 
 ### Example Cart Data
+
 ```json
 {
   "packages": [
@@ -456,7 +496,7 @@ async function handleBulkPaymentCallback(req, res) {
   "courses": [
     {
       "courseId": "course-456",
-      "quantity": 2, 
+      "quantity": 2,
       "price": 400
     }
   ],
@@ -467,6 +507,7 @@ async function handleBulkPaymentCallback(req, res) {
 ```
 
 ### Expected Response
+
 ```json
 {
   "success": true,
@@ -487,7 +528,7 @@ async function handleBulkPaymentCallback(req, res) {
     {
       "id": "cp-001",
       "courseId": "course-456",
-      "studentId": "student-123", 
+      "studentId": "student-123",
       "quantity": 1,
       "price": 200,
       "status": "pending"
@@ -496,7 +537,7 @@ async function handleBulkPaymentCallback(req, res) {
       "id": "cp-002",
       "courseId": "course-456",
       "studentId": "student-123",
-      "quantity": 1, 
+      "quantity": 1,
       "price": 200,
       "status": "pending"
     }

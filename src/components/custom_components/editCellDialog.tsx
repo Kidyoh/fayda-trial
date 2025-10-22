@@ -188,7 +188,7 @@ export default function EditCellDialog({
           body: JSON.stringify(updatedData),
 
           // Add any necessary headers or authentication tokens
-        }
+        },
       );
 
       if (response.ok) {

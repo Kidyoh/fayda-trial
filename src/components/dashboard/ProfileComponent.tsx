@@ -9,7 +9,10 @@ interface ProfileComponentProps {
   onClose: () => void;
 }
 
-export default function ProfileComponent({ userData, onClose }: ProfileComponentProps) {
+export default function ProfileComponent({
+  userData,
+  onClose,
+}: ProfileComponentProps) {
   const [formData, setFormData] = useState({
     firstName: userData?.firstName || "",
     lastName: userData?.lastName || "",
@@ -27,7 +30,7 @@ export default function ProfileComponent({ userData, onClose }: ProfileComponent
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -76,7 +79,9 @@ export default function ProfileComponent({ userData, onClose }: ProfileComponent
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700">First Name</label>
+            <label className="text-sm font-medium text-gray-700">
+              First Name
+            </label>
             <input
               type="text"
               name="firstName"
@@ -87,7 +92,9 @@ export default function ProfileComponent({ userData, onClose }: ProfileComponent
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700">Last Name</label>
+            <label className="text-sm font-medium text-gray-700">
+              Last Name
+            </label>
             <input
               type="text"
               name="lastName"
@@ -98,7 +105,9 @@ export default function ProfileComponent({ userData, onClose }: ProfileComponent
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700">Grand Name</label>
+            <label className="text-sm font-medium text-gray-700">
+              Grand Name
+            </label>
             <input
               type="text"
               name="grandName"
@@ -120,7 +129,9 @@ export default function ProfileComponent({ userData, onClose }: ProfileComponent
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700">Phone Number</label>
+            <label className="text-sm font-medium text-gray-700">
+              Phone Number
+            </label>
             <input
               type="tel"
               name="phoneNumber"
@@ -153,7 +164,9 @@ export default function ProfileComponent({ userData, onClose }: ProfileComponent
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700">School Name</label>
+            <label className="text-sm font-medium text-gray-700">
+              School Name
+            </label>
             <input
               type="text"
               name="schoolName"
@@ -206,4 +219,4 @@ export default function ProfileComponent({ userData, onClose }: ProfileComponent
       </form>
     </motion.div>
   );
-} 
+}

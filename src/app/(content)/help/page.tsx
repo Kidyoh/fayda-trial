@@ -1,7 +1,15 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { HelpCircle, Mail, Phone, MessageCircle, Book, Video, Users } from "lucide-react";
+import {
+  HelpCircle,
+  Mail,
+  Phone,
+  MessageCircle,
+  Book,
+  Video,
+  Users,
+} from "lucide-react";
 import Link from "next/link";
 
 const containerVariants = {
@@ -28,20 +36,36 @@ export default function Help() {
     {
       icon: Book,
       title: "Getting Started",
-      description: "Learn how to navigate our platform and start your learning journey",
-      topics: ["Creating an account", "Enrolling in courses", "Accessing materials", "Tracking progress"],
+      description:
+        "Learn how to navigate our platform and start your learning journey",
+      topics: [
+        "Creating an account",
+        "Enrolling in courses",
+        "Accessing materials",
+        "Tracking progress",
+      ],
     },
     {
       icon: Video,
       title: "Technical Support",
       description: "Get help with technical issues and platform functionality",
-      topics: ["Video playback issues", "Login problems", "Payment issues", "Mobile app support"],
+      topics: [
+        "Video playback issues",
+        "Login problems",
+        "Payment issues",
+        "Mobile app support",
+      ],
     },
     {
       icon: Users,
       title: "Account & Billing",
       description: "Manage your account settings and billing information",
-      topics: ["Update profile", "Change password", "Billing questions", "Subscription management"],
+      topics: [
+        "Update profile",
+        "Change password",
+        "Billing questions",
+        "Subscription management",
+      ],
     },
   ];
 
@@ -95,8 +119,8 @@ export default function Help() {
             variants={itemVariants}
             className="text-lg text-gray-600 max-w-2xl mx-auto"
           >
-            Find answers to your questions and get the support you need to succeed 
-            in your learning journey with Fayida Academy.
+            Find answers to your questions and get the support you need to
+            succeed in your learning journey with Fayida Academy.
           </motion.p>
         </motion.div>
 
@@ -169,9 +193,7 @@ export default function Help() {
                 <h3 className="text-xl font-semibold text-gray-900 mb-4">
                   {method.title}
                 </h3>
-                <p className="text-gray-600 mb-6">
-                  {method.description}
-                </p>
+                <p className="text-gray-600 mb-6">{method.description}</p>
                 <Link
                   href={method.link}
                   className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-[#c7cc3f] to-[#bf8c13] text-white font-semibold rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-200"
@@ -196,11 +218,9 @@ export default function Help() {
           >
             Still Have Questions?
           </motion.h2>
-          <motion.p
-            variants={itemVariants}
-            className="text-lg mb-8 opacity-90"
-          >
-            Check out our frequently asked questions for quick answers to common queries.
+          <motion.p variants={itemVariants} className="text-lg mb-8 opacity-90">
+            Check out our frequently asked questions for quick answers to common
+            queries.
           </motion.p>
           <motion.div variants={itemVariants}>
             <Link

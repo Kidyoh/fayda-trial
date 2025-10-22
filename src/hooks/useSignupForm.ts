@@ -139,7 +139,7 @@ export const useSignupForm = (): UseSignupFormReturn => {
         setIsSubmitting(false);
       }
     },
-    [toast, router]
+    [toast, router],
   );
 
   return {

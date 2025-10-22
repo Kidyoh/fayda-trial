@@ -3,7 +3,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { CoursePurchaseDialog } from "../custom_components/coursePurchaseDialog";
 import { CourseAddToCartButton } from "../cart/AddToCartButton";
-import { getPublicHomepageCourses, Course, getDisplayPrice } from "@/lib/courseAPI";
+import {
+  getPublicHomepageCourses,
+  Course,
+  getDisplayPrice,
+} from "@/lib/courseAPI";
 import { useLanguage } from "@/lib/language-context";
 
 // Helper function to get course thumbnail
@@ -11,26 +15,26 @@ const getCourseThumbnail = (course: Course): string => {
   if (course.thumbnail) {
     return course.thumbnail;
   }
-  
+
   // Map course names to appropriate images
   const courseImages: { [key: string]: string } = {
-    'Math': '/course/Math.png',
-    'Physics': '/course/Physics.png',
-    'Chemistry': '/course/Chemistry.png',
-    'Biology': '/course/Biology.png',
-    'History': '/course/History.png',
-    'Economics': '/course/Economics.png'
+    Math: "/course/Math.png",
+    Physics: "/course/Physics.png",
+    Chemistry: "/course/Chemistry.png",
+    Biology: "/course/Biology.png",
+    History: "/course/History.png",
+    Economics: "/course/Economics.png",
   };
-  
+
   // Try to match course name with available images
   for (const [key, image] of Object.entries(courseImages)) {
     if (course.courseName.toLowerCase().includes(key.toLowerCase())) {
       return image;
     }
   }
-  
+
   // Default fallback
-  return '/course/Math.png';
+  return "/course/Math.png";
 };
 
 interface AnimatedCourseCardProps {
@@ -51,11 +55,10 @@ function AnimatedCourseCard({ course }: AnimatedCourseCardProps) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-
       <motion.div
         className="w-full overflow-hidden relative z-20"
         animate={{
-          height: hovered ? 120 : 300
+          height: hovered ? 120 : 300,
         }}
         transition={{ duration: 0.35, type: "tween" }}
         style={{ height: 260 }}
@@ -66,12 +69,14 @@ function AnimatedCourseCard({ course }: AnimatedCourseCardProps) {
           className="w-full h-[120%] object-cover"
           animate={{ scale: hovered ? 1.03 : 1 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
-          style={{ willChange: 'transform' }}
+          style={{ willChange: "transform" }}
         />
       </motion.div>
 
       <div className="px-6 py-6">
-        <div className="font-semibold text-2xl mb-3 font-Sendako">{course.courseName}</div>
+        <div className="font-semibold text-2xl mb-3 font-Sendako">
+          {course.courseName}
+        </div>
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <div className="w-9 h-9 rounded-full bg-primaryColor/10 flex items-center justify-center">
@@ -80,7 +85,7 @@ function AnimatedCourseCard({ course }: AnimatedCourseCardProps) {
               </span>
             </div>
             <span className="uppercase text-sm tracking-wider font-semibold text-gray-900">
-              {course.partName || 'Course'}
+              {course.partName || "Course"}
             </span>
           </div>
           <div className="flex flex-col items-end">
@@ -120,28 +125,34 @@ function AnimatedCourseCard({ course }: AnimatedCourseCardProps) {
                 {course.courseDescription}
               </div>
               <div className="w-full justify-between flex items-center gap-4">
-                  <div className="flex flex-col gap-2 flex-1">
-                    <CourseAddToCartButton 
-                      courseData={{
+                <div className="flex flex-col gap-2 flex-1">
+                  <CourseAddToCartButton
+                    courseData={{
                       id: course.id,
                       courseName: course.courseName,
                       price: parseFloat(priceInfo.currentPrice),
-                      temporaryPrice: priceInfo.isDiscounted ? parseFloat(priceInfo.originalPrice!) : undefined,
+                      temporaryPrice: priceInfo.isDiscounted
+                        ? parseFloat(priceInfo.originalPrice!)
+                        : undefined,
                       discountStatus: priceInfo.isDiscounted,
                       discountExpiryDate: priceInfo.discountExpiry,
-                      courseDescription: course.courseDescription
-                      }}
-                      size="sm"
-                    />
-                    <CoursePurchaseDialog
+                      courseDescription: course.courseDescription,
+                    }}
+                    size="sm"
+                  />
+                  <CoursePurchaseDialog
                     courseId={course.id}
                     courseName={course.courseName}
                     price={priceInfo.currentPrice}
-                    temporaryPrice={priceInfo.isDiscounted ? priceInfo.originalPrice || undefined : undefined}
+                    temporaryPrice={
+                      priceInfo.isDiscounted
+                        ? priceInfo.originalPrice || undefined
+                        : undefined
+                    }
                     discountStatus={priceInfo.isDiscounted}
                     discountExpiryDate={priceInfo.discountExpiry || undefined}
-                    />
-                  </div>
+                  />
+                </div>
                 <a
                   href={`/course/${course.id}`}
                   className="flex items-center font-Sendako font-medium text-gray-900 hover:underline ml-2"
@@ -154,7 +165,11 @@ function AnimatedCourseCard({ course }: AnimatedCourseCardProps) {
                     strokeWidth="2"
                     viewBox="0 0 24 24"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
                   </svg>
                 </a>
               </div>
@@ -179,36 +194,37 @@ export default function AnimatedCourseGrid() {
       try {
         setLoading(true);
         setError(null);
-        
+
         // Use public courses API - no authentication required
         const coursesData = await getPublicHomepageCourses();
-        
+
         // Ensure coursesData is an array
         if (!Array.isArray(coursesData)) {
-          console.error('❌ API returned non-array data:', coursesData);
-          throw new Error('Invalid course data format received from server');
+          console.error("❌ API returned non-array data:", coursesData);
+          throw new Error("Invalid course data format received from server");
         }
-        
-        console.log('✅ Loaded', coursesData.length, 'courses');
-        
+
+        console.log("✅ Loaded", coursesData.length, "courses");
+
         setCourses(coursesData);
       } catch (err) {
-        console.error('❌ Error fetching courses:', err);
-        let errorMessage = 'Failed to load courses';
-        
+        console.error("❌ Error fetching courses:", err);
+        let errorMessage = "Failed to load courses";
+
         if (err instanceof Error) {
-          if (err.message.includes('fetch')) {
-            errorMessage = 'Unable to connect to server. Please check your internet connection.';
+          if (err.message.includes("fetch")) {
+            errorMessage =
+              "Unable to connect to server. Please check your internet connection.";
           } else {
             errorMessage = err.message;
           }
         }
-        
-        console.error('💥 Setting error message:', errorMessage);
+
+        console.error("💥 Setting error message:", errorMessage);
         setError(errorMessage);
         setCourses([]);
       } finally {
-        console.log('🏁 Finished fetching courses, setting loading to false');
+        console.log("🏁 Finished fetching courses, setting loading to false");
         setLoading(false);
       }
     };
@@ -229,7 +245,10 @@ export default function AnimatedCourseGrid() {
 
   // Loading skeleton component
   const LoadingSkeleton = () => (
-    <div className="bg-white shadow-2xl shadow-primaryColor/10 overflow-hidden w-full rounded-2xl animate-pulse" style={{ minHeight: 420, maxWidth: 420 }}>
+    <div
+      className="bg-white shadow-2xl shadow-primaryColor/10 overflow-hidden w-full rounded-2xl animate-pulse"
+      style={{ minHeight: 420, maxWidth: 420 }}
+    >
       <div className="w-full h-64 bg-gray-300"></div>
       <div className="px-6 py-6">
         <div className="h-6 bg-gray-300 rounded mb-3"></div>
@@ -251,11 +270,9 @@ export default function AnimatedCourseGrid() {
         <div className="text-red-500 text-lg font-semibold mb-4">
           Failed to load courses
         </div>
-        <div className="text-gray-600 text-center mb-4 max-w-md">
-          {error}
-        </div>
-        <button 
-          onClick={() => window.location.reload()} 
+        <div className="text-gray-600 text-center mb-4 max-w-md">{error}</div>
+        <button
+          onClick={() => window.location.reload()}
           className="bg-primaryColor text-white px-6 py-2 rounded-full font-semibold hover:bg-primaryColor/90 transition-colors"
         >
           Try Again
@@ -270,10 +287,10 @@ export default function AnimatedCourseGrid() {
 
     const pageNumbers: number[] = [];
     const maxVisiblePages = 5;
-    
+
     let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
     let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-    
+
     if (endPage - startPage + 1 < maxVisiblePages) {
       startPage = Math.max(1, endPage - maxVisiblePages + 1);
     }
@@ -285,13 +302,13 @@ export default function AnimatedCourseGrid() {
     return (
       <div className="flex justify-center items-center space-x-2 mt-8">
         <button
-          onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+          onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
           disabled={currentPage === 1}
           className="px-3 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Previous
         </button>
-        
+
         {startPage > 1 && (
           <>
             <button
@@ -303,24 +320,26 @@ export default function AnimatedCourseGrid() {
             {startPage > 2 && <span className="text-gray-400">...</span>}
           </>
         )}
-        
-        {pageNumbers.map(page => (
+
+        {pageNumbers.map((page) => (
           <button
             key={page}
             onClick={() => setCurrentPage(page)}
             className={`px-3 py-2 rounded-lg border ${
               currentPage === page
-                ? 'bg-primaryColor text-white border-primaryColor'
-                : 'border-gray-300 text-gray-600 hover:bg-gray-50'
+                ? "bg-primaryColor text-white border-primaryColor"
+                : "border-gray-300 text-gray-600 hover:bg-gray-50"
             }`}
           >
             {page}
           </button>
         ))}
-        
+
         {endPage < totalPages && (
           <>
-            {endPage < totalPages - 1 && <span className="text-gray-400">...</span>}
+            {endPage < totalPages - 1 && (
+              <span className="text-gray-400">...</span>
+            )}
             <button
               onClick={() => setCurrentPage(totalPages)}
               className="px-3 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50"
@@ -329,9 +348,11 @@ export default function AnimatedCourseGrid() {
             </button>
           </>
         )}
-        
+
         <button
-          onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+          onClick={() =>
+            setCurrentPage((prev) => Math.min(totalPages, prev + 1))
+          }
           disabled={currentPage === totalPages}
           className="px-3 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
         >
@@ -372,7 +393,8 @@ export default function AnimatedCourseGrid() {
         </h2>
         {!loading && !error && courses.length > 0 && (
           <div className="text-white/80 text-sm mt-2">
-            Showing {startIndex + 1}-{Math.min(endIndex, courses.length)} of {courses.length} courses
+            Showing {startIndex + 1}-{Math.min(endIndex, courses.length)} of{" "}
+            {courses.length} courses
           </div>
         )}
       </div>
@@ -401,7 +423,7 @@ export default function AnimatedCourseGrid() {
           </>
         )}
       </div>
-      
+
       {/* Pagination */}
       <Pagination />
     </section>

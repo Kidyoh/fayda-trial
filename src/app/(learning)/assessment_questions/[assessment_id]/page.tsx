@@ -9,7 +9,16 @@ import {
   getAccessToken,
   clearAccessToken,
 } from "../../../../lib/tokenManager";
-import { Brain, Clock, AlertCircle, CheckCircle2, Timer, Flag, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Brain,
+  Clock,
+  AlertCircle,
+  CheckCircle2,
+  Timer,
+  Flag,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -29,17 +38,22 @@ export default function AssessmentQuestions({ params }: any) {
   const [incorrectQuestions, setIncorrectQuestions] = useState([]);
   const [questions, setQuestions] = useState<any>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [flaggedQuestions, setFlaggedQuestions] = useState<Set<number>>(new Set());
+  const [flaggedQuestions, setFlaggedQuestions] = useState<Set<number>>(
+    new Set(),
+  );
   const AssessmentId = params.assessment_id;
 
   const countNullValues = (arr: any[]): number => {
-    return arr.filter(value => value === undefined).length;
+    return arr.filter((value) => value === undefined).length;
   };
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
-    
-    if (parseInt(totalQuestionCounts) === selectedAnswers.length && countNullValues(selectedAnswers) === 0) {
+
+    if (
+      parseInt(totalQuestionCounts) === selectedAnswers.length &&
+      countNullValues(selectedAnswers) === 0
+    ) {
       try {
         const response = await axios.post(
           `${apiUrl}/assesments/submit-answers/${AssessmentId}`,
@@ -49,9 +63,9 @@ export default function AssessmentQuestions({ params }: any) {
               "Content-Type": "application/json",
               Authorization: `Bearer ${accessToken}`,
             },
-          }
+          },
         );
-        
+
         const responseData = response.data;
         if (response.status === 200) {
           setResultText(responseData.message);
@@ -84,9 +98,9 @@ export default function AssessmentQuestions({ params }: any) {
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
-        }
+        },
       );
-      
+
       if (response.status === 200) {
         setResultText(response.data.message);
         setOnExam(false);
@@ -107,7 +121,7 @@ export default function AssessmentQuestions({ params }: any) {
               "Content-Type": "application/json",
               Authorization: `Bearer ${accessToken}`,
             },
-          }
+          },
         );
         const jsonData = await response.json();
         setData(jsonData);
@@ -128,7 +142,7 @@ export default function AssessmentQuestions({ params }: any) {
     if (seconds <= 0) return;
 
     const timerId = setInterval(() => {
-      setSeconds(prev => {
+      setSeconds((prev) => {
         if (prev <= 1) {
           clearInterval(timerId);
           automaticSubmit();
@@ -147,7 +161,7 @@ export default function AssessmentQuestions({ params }: any) {
   };
 
   const handleAnswerSelection = (questionIndex: number, answerId: string) => {
-    setSelectedAnswers(prev => {
+    setSelectedAnswers((prev) => {
       const newAnswers = [...prev];
       newAnswers[questionIndex] = answerId;
       return newAnswers;
@@ -155,7 +169,7 @@ export default function AssessmentQuestions({ params }: any) {
   };
 
   const toggleFlag = (questionIndex: number) => {
-    setFlaggedQuestions(prev => {
+    setFlaggedQuestions((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(questionIndex)) {
         newSet.delete(questionIndex);
@@ -191,10 +205,14 @@ export default function AssessmentQuestions({ params }: any) {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "current": return "bg-[#07705d] text-white border-[#07705d] shadow-md";
-      case "answered": return "bg-green-100 text-green-700 border-green-300 shadow-sm";
-      case "flagged": return "bg-yellow-100 text-yellow-700 border-yellow-300 shadow-sm";
-      default: return "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200";
+      case "current":
+        return "bg-[#07705d] text-white border-[#07705d] shadow-md";
+      case "answered":
+        return "bg-green-100 text-green-700 border-green-300 shadow-sm";
+      case "flagged":
+        return "bg-yellow-100 text-yellow-700 border-yellow-300 shadow-sm";
+      default:
+        return "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200";
     }
   };
 
@@ -210,11 +228,21 @@ export default function AssessmentQuestions({ params }: any) {
   }
 
   if (!onExam) {
-    return <ShowResult reslultText={resultText} incorrectquestions={incorrectQuestions} questions={questions} courseId={data[0]?.Courses?.id} />;
+    return (
+      <ShowResult
+        reslultText={resultText}
+        incorrectquestions={incorrectQuestions}
+        questions={questions}
+        courseId={data[0]?.Courses?.id}
+      />
+    );
   }
 
-  const answeredQuestions = selectedAnswers.filter(answer => answer !== undefined).length;
-  const progressPercentage = (answeredQuestions / parseInt(totalQuestionCounts)) * 100;
+  const answeredQuestions = selectedAnswers.filter(
+    (answer) => answer !== undefined,
+  ).length;
+  const progressPercentage =
+    (answeredQuestions / parseInt(totalQuestionCounts)) * 100;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -227,17 +255,25 @@ export default function AssessmentQuestions({ params }: any) {
                 <Brain className="h-6 w-6 text-[#bf8c13]" />
                 Assessment in Progress
               </h1>
-              <Badge variant="outline" className="text-sm border-[#bf8c13]/30 text-[#07705d]">
+              <Badge
+                variant="outline"
+                className="text-sm border-[#bf8c13]/30 text-[#07705d]"
+              >
                 Question {currentQuestionIndex + 1} of {totalQuestionCounts}
               </Badge>
             </div>
-            
+
             <div className="flex items-center gap-4">
               {/* Progress */}
               <div className="flex items-center gap-3">
-                <span className="text-sm font-medium text-gray-600">Progress</span>
+                <span className="text-sm font-medium text-gray-600">
+                  Progress
+                </span>
                 <div className="w-24 md:w-32">
-                  <Progress value={progressPercentage} className="h-2 bg-gray-200" />
+                  <Progress
+                    value={progressPercentage}
+                    className="h-2 bg-gray-200"
+                  />
                 </div>
                 <span className="text-sm font-medium text-[#07705d]">
                   {answeredQuestions}/{totalQuestionCounts}
@@ -249,8 +285,12 @@ export default function AssessmentQuestions({ params }: any) {
                 <div className="flex items-center gap-2">
                   <Timer className="h-5 w-5 text-red-600" />
                   <div>
-                    <p className="text-xs font-medium text-red-600">Time Remaining</p>
-                    <p className="text-xl font-bold text-red-700">{formatTime(seconds)}</p>
+                    <p className="text-xs font-medium text-red-600">
+                      Time Remaining
+                    </p>
+                    <p className="text-xl font-bold text-red-700">
+                      {formatTime(seconds)}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -263,9 +303,11 @@ export default function AssessmentQuestions({ params }: any) {
         {/* Sidebar - Question Navigation */}
         <div className="w-full lg:w-80 bg-white rounded-xl border border-[#bf8c13]/20 shadow-lg flex flex-col">
           <div className="p-4 border-b border-[#bf8c13]/20">
-            <h3 className="font-semibold text-[#07705d]">Question Navigation</h3>
+            <h3 className="font-semibold text-[#07705d]">
+              Question Navigation
+            </h3>
           </div>
-          
+
           <div className="flex-1 p-4">
             <div className="grid grid-cols-5 gap-2">
               {data[0]?.question.map((_, index) => {
@@ -281,7 +323,7 @@ export default function AssessmentQuestions({ params }: any) {
                 );
               })}
             </div>
-            
+
             <div className="mt-6 space-y-3">
               <div className="text-sm font-medium text-[#07705d]">Legend:</div>
               <div className="space-y-2 text-xs">
@@ -316,7 +358,9 @@ export default function AssessmentQuestions({ params }: any) {
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-start gap-4">
                     <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#07705d] flex items-center justify-center shadow-md">
-                      <span className="text-white font-bold text-lg">{currentQuestionIndex + 1}</span>
+                      <span className="text-white font-bold text-lg">
+                        {currentQuestionIndex + 1}
+                      </span>
                     </div>
                     <div className="flex-1">
                       <h3 className="text-xl font-semibold text-[#07705d] leading-relaxed">
@@ -324,19 +368,21 @@ export default function AssessmentQuestions({ params }: any) {
                       </h3>
                     </div>
                   </div>
-                  
+
                   <Button
                     type="button"
                     size="sm"
                     onClick={() => toggleFlag(currentQuestionIndex)}
                     className={`flex items-center gap-2 ${
-                      flaggedQuestions.has(currentQuestionIndex) 
-                        ? 'bg-yellow-500 text-white hover:bg-yellow-600' 
-                        : 'bg-[#07705d] text-white hover:bg-[#07705d]/90'
+                      flaggedQuestions.has(currentQuestionIndex)
+                        ? "bg-yellow-500 text-white hover:bg-yellow-600"
+                        : "bg-[#07705d] text-white hover:bg-[#07705d]/90"
                     } shadow-lg hover:shadow-xl transition-all`}
                   >
                     <Flag className="h-4 w-4" />
-                    {flaggedQuestions.has(currentQuestionIndex) ? 'Flagged' : 'Flag'}
+                    {flaggedQuestions.has(currentQuestionIndex)
+                      ? "Flagged"
+                      : "Flag"}
                   </Button>
                 </div>
 
@@ -344,7 +390,10 @@ export default function AssessmentQuestions({ params }: any) {
                 {data[0]?.question[currentQuestionIndex]?.questionImage && (
                   <div className="mt-6">
                     <img
-                      src={data[0]?.question[currentQuestionIndex]?.questionImageUrl}
+                      src={
+                        data[0]?.question[currentQuestionIndex]
+                          ?.questionImageUrl
+                      }
                       alt="Question"
                       className="max-w-full h-auto rounded-lg border-2 border-[#bf8c13]/20 shadow-md"
                     />
@@ -354,16 +403,33 @@ export default function AssessmentQuestions({ params }: any) {
                 {/* Answer Choices */}
                 <RadioGroup
                   value={selectedAnswers[currentQuestionIndex] || ""}
-                  onValueChange={(value) => handleAnswerSelection(currentQuestionIndex, value)}
+                  onValueChange={(value) =>
+                    handleAnswerSelection(currentQuestionIndex, value)
+                  }
                   className="space-y-4"
                 >
                   {[
-                    { id: "a", text: data[0]?.question[currentQuestionIndex]?.choiseA },
-                    { id: "b", text: data[0]?.question[currentQuestionIndex]?.choiseB },
-                    { id: "c", text: data[0]?.question[currentQuestionIndex]?.choiseC },
-                    { id: "d", text: data[0]?.question[currentQuestionIndex]?.choiseD },
+                    {
+                      id: "a",
+                      text: data[0]?.question[currentQuestionIndex]?.choiseA,
+                    },
+                    {
+                      id: "b",
+                      text: data[0]?.question[currentQuestionIndex]?.choiseB,
+                    },
+                    {
+                      id: "c",
+                      text: data[0]?.question[currentQuestionIndex]?.choiseC,
+                    },
+                    {
+                      id: "d",
+                      text: data[0]?.question[currentQuestionIndex]?.choiseD,
+                    },
                   ].map((choice) => (
-                    <div key={choice.id} className="flex items-center space-x-4 p-4 rounded-xl border-2 border-[#bf8c13]/20 hover:bg-gray-50 transition-all duration-200 hover:shadow-md">
+                    <div
+                      key={choice.id}
+                      className="flex items-center space-x-4 p-4 rounded-xl border-2 border-[#bf8c13]/20 hover:bg-gray-50 transition-all duration-200 hover:shadow-md"
+                    >
                       <RadioGroupItem
                         value={choice.id}
                         id={`${data[0]?.question[currentQuestionIndex]?.id}-${choice.id}`}
@@ -373,7 +439,9 @@ export default function AssessmentQuestions({ params }: any) {
                         htmlFor={`${data[0]?.question[currentQuestionIndex]?.id}-${choice.id}`}
                         className="text-[#07705d] cursor-pointer flex-1 text-lg font-medium"
                       >
-                        <span className="font-bold mr-3 text-[#bf8c13]">{choice.id.toUpperCase()}.</span>
+                        <span className="font-bold mr-3 text-[#bf8c13]">
+                          {choice.id.toUpperCase()}.
+                        </span>
                         {choice.text}
                       </Label>
                     </div>
@@ -395,7 +463,7 @@ export default function AssessmentQuestions({ params }: any) {
                     <ChevronLeft className="h-4 w-4" />
                     Previous
                   </Button>
-                  
+
                   <Button
                     type="button"
                     onClick={nextQuestion}

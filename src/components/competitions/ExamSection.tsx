@@ -1,24 +1,42 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { CompetitionAPI, ExamSection as ExamSectionType, CompetitionEnrollment, calculateTimeRemaining } from '@/lib/competitionAPI';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { 
-  Lock, 
-  Play, 
-  CheckCircle, 
-  Clock, 
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import {
+  CompetitionAPI,
+  ExamSection as ExamSectionType,
+  CompetitionEnrollment,
+  calculateTimeRemaining,
+} from "@/lib/competitionAPI";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Lock,
+  Play,
+  CheckCircle,
+  Clock,
   AlertCircle,
   BookOpen,
-  Timer
-} from 'lucide-react';
+  Timer,
+} from "lucide-react";
 
 interface ExamSectionProps {
   competitionId: string;
@@ -26,57 +44,58 @@ interface ExamSectionProps {
   enrollment: CompetitionEnrollment;
 }
 
-const ExamSection: React.FC<ExamSectionProps> = ({ 
-  competitionId, 
-  examSections, 
-  enrollment 
+const ExamSection: React.FC<ExamSectionProps> = ({
+  competitionId,
+  examSections,
+  enrollment,
 }) => {
   const router = useRouter();
   const [examAccess, setExamAccess] = useState<Record<string, any>>({});
   const [loading, setLoading] = useState<Record<string, boolean>>({});
   const [showExamIdDialog, setShowExamIdDialog] = useState(false);
-  const [selectedExamSection, setSelectedExamSection] = useState<ExamSectionType | null>(null);
-  const [examId, setExamId] = useState('');
+  const [selectedExamSection, setSelectedExamSection] =
+    useState<ExamSectionType | null>(null);
+  const [examId, setExamId] = useState("");
   const [examIdError, setExamIdError] = useState<string | null>(null);
 
   useEffect(() => {
     // Check access for all exam sections
-    examSections.forEach(section => {
+    examSections.forEach((section) => {
       checkExamAccess(section.id);
     });
   }, [examSections]);
 
   const checkExamAccess = async (examSectionId: string) => {
     try {
-      setLoading(prev => ({ ...prev, [examSectionId]: true }));
-      
-      const token = localStorage.getItem('accessToken');
+      setLoading((prev) => ({ ...prev, [examSectionId]: true }));
+
+      const token = localStorage.getItem("accessToken");
       if (!token) return;
 
       const response = await CompetitionAPI.checkExamAccess(
         examSectionId,
-        token
+        token,
       );
 
-      setExamAccess(prev => ({
+      setExamAccess((prev) => ({
         ...prev,
-        [examSectionId]: response
+        [examSectionId]: response,
       }));
     } catch (error) {
-      console.error('Error checking exam access:', error);
+      console.error("Error checking exam access:", error);
     } finally {
-      setLoading(prev => ({ ...prev, [examSectionId]: false }));
+      setLoading((prev) => ({ ...prev, [examSectionId]: false }));
     }
   };
 
   const handleExamAccess = (section: ExamSectionType) => {
     const access = examAccess[section.id];
-    
+
     if (!access?.canAccess) {
       return;
     }
 
-    if (section.status === 'available') {
+    if (section.status === "available") {
       setSelectedExamSection(section);
       setShowExamIdDialog(true);
     }
@@ -84,29 +103,33 @@ const ExamSection: React.FC<ExamSectionProps> = ({
 
   const handleEnterExam = () => {
     if (!selectedExamSection || !examId.trim()) {
-      setExamIdError('Please enter your Exam ID');
+      setExamIdError("Please enter your Exam ID");
       return;
     }
 
     // Validate exam ID format or make API call to validate
     if (examId !== enrollment.examId) {
-      setExamIdError('Invalid Exam ID. Please check your email or SMS for the correct ID.');
+      setExamIdError(
+        "Invalid Exam ID. Please check your email or SMS for the correct ID.",
+      );
       return;
     }
 
     // Navigate to exam page
-    router.push(`/competitions/exam/${selectedExamSection.id}?examId=${examId}`);
+    router.push(
+      `/competitions/exam/${selectedExamSection.id}?examId=${examId}`,
+    );
   };
 
   const getExamStatusIcon = (section: ExamSectionType) => {
     switch (section.status) {
-      case 'locked':
+      case "locked":
         return <Lock className="w-5 h-5 text-gray-400" />;
-      case 'available':
+      case "available":
         return <Play className="w-5 h-5 text-green-500" />;
-      case 'completed':
+      case "completed":
         return <CheckCircle className="w-5 h-5 text-blue-500" />;
-      case 'closed':
+      case "closed":
         return <AlertCircle className="w-5 h-5 text-red-500" />;
       default:
         return <Clock className="w-5 h-5 text-gray-400" />;
@@ -115,44 +138,50 @@ const ExamSection: React.FC<ExamSectionProps> = ({
 
   const getExamStatusColor = (section: ExamSectionType) => {
     switch (section.status) {
-      case 'locked':
-        return 'bg-gray-100 text-gray-600';
-      case 'available':
-        return 'bg-green-100 text-green-700';
-      case 'completed':
-        return 'bg-blue-100 text-blue-700';
-      case 'closed':
-        return 'bg-red-100 text-red-700';
+      case "locked":
+        return "bg-gray-100 text-gray-600";
+      case "available":
+        return "bg-green-100 text-green-700";
+      case "completed":
+        return "bg-blue-100 text-blue-700";
+      case "closed":
+        return "bg-red-100 text-red-700";
       default:
-        return 'bg-gray-100 text-gray-600';
+        return "bg-gray-100 text-gray-600";
     }
   };
 
   const getButtonText = (section: ExamSectionType) => {
     switch (section.status) {
-      case 'locked':
-        return 'Locked';
-      case 'available':
-        return 'Enter Exam';
-      case 'completed':
-        return 'View Results';
-      case 'closed':
-        return 'Closed';
+      case "locked":
+        return "Locked";
+      case "available":
+        return "Enter Exam";
+      case "completed":
+        return "View Results";
+      case "closed":
+        return "Closed";
       default:
-        return 'Unavailable';
+        return "Unavailable";
     }
   };
 
-  const ExamCountdown: React.FC<{ section: ExamSectionType }> = ({ section }) => {
+  const ExamCountdown: React.FC<{ section: ExamSectionType }> = ({
+    section,
+  }) => {
     const [timeRemaining, setTimeRemaining] = useState(
-      calculateTimeRemaining(`${section.scheduledDate}T${section.scheduledTime}`)
+      calculateTimeRemaining(
+        `${section.scheduledDate}T${section.scheduledTime}`,
+      ),
     );
 
     useEffect(() => {
-      if (section.status !== 'locked') return;
+      if (section.status !== "locked") return;
 
       const interval = setInterval(() => {
-        const remaining = calculateTimeRemaining(`${section.scheduledDate}T${section.scheduledTime}`);
+        const remaining = calculateTimeRemaining(
+          `${section.scheduledDate}T${section.scheduledTime}`,
+        );
         setTimeRemaining(remaining);
 
         if (remaining.total <= 0) {
@@ -165,7 +194,7 @@ const ExamSection: React.FC<ExamSectionProps> = ({
       return () => clearInterval(interval);
     }, [section]);
 
-    if (section.status !== 'locked' || timeRemaining.total <= 0) {
+    if (section.status !== "locked" || timeRemaining.total <= 0) {
       return null;
     }
 
@@ -177,9 +206,9 @@ const ExamSection: React.FC<ExamSectionProps> = ({
         </div>
         <div className="font-mono font-medium">
           {timeRemaining.days > 0 && `${timeRemaining.days}d `}
-          {timeRemaining.hours.toString().padStart(2, '0')}:
-          {timeRemaining.minutes.toString().padStart(2, '0')}:
-          {timeRemaining.seconds.toString().padStart(2, '0')}
+          {timeRemaining.hours.toString().padStart(2, "0")}:
+          {timeRemaining.minutes.toString().padStart(2, "0")}:
+          {timeRemaining.seconds.toString().padStart(2, "0")}
         </div>
       </div>
     );
@@ -188,7 +217,9 @@ const ExamSection: React.FC<ExamSectionProps> = ({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl font-bold text-gray-900">Exam Sections</CardTitle>
+        <CardTitle className="text-2xl font-bold text-gray-900">
+          Exam Sections
+        </CardTitle>
         <CardDescription>
           Complete each exam section during its scheduled time window.
         </CardDescription>
@@ -200,16 +231,16 @@ const ExamSection: React.FC<ExamSectionProps> = ({
             const isLoading = loading[section.id];
 
             return (
-              <div 
-                key={section.id} 
+              <div
+                key={section.id}
                 className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
               >
                 <div className="flex items-start gap-4">
                   {/* Thumbnail */}
                   <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
                     {section.thumbnailImage ? (
-                      <img 
-                        src={section.thumbnailImage} 
+                      <img
+                        src={section.thumbnailImage}
                         alt={section.title}
                         className="w-12 h-12 object-cover rounded"
                       />
@@ -228,8 +259,10 @@ const ExamSection: React.FC<ExamSectionProps> = ({
                           {section.description}
                         </p>
                       </div>
-                      
-                      <Badge className={`${getExamStatusColor(section)} border-0 font-medium`}>
+
+                      <Badge
+                        className={`${getExamStatusColor(section)} border-0 font-medium`}
+                      >
                         <div className="flex items-center gap-1">
                           {getExamStatusIcon(section)}
                           <span className="capitalize">{section.status}</span>
@@ -241,7 +274,9 @@ const ExamSection: React.FC<ExamSectionProps> = ({
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-3 text-sm text-gray-600">
                       <div>
                         <span className="font-medium">Date:</span>
-                        <div>{new Date(section.scheduledDate).toLocaleDateString()}</div>
+                        <div>
+                          {new Date(section.scheduledDate).toLocaleDateString()}
+                        </div>
                       </div>
                       <div>
                         <span className="font-medium">Time:</span>
@@ -260,9 +295,11 @@ const ExamSection: React.FC<ExamSectionProps> = ({
                     {/* Topics */}
                     {section.topics && section.topics.length > 0 && (
                       <div className="mb-3">
-                        <span className="text-sm font-medium text-gray-700">Topics: </span>
+                        <span className="text-sm font-medium text-gray-700">
+                          Topics:{" "}
+                        </span>
                         <span className="text-sm text-gray-600">
-                          {section.topics.join(', ')}
+                          {section.topics.join(", ")}
                         </span>
                       </div>
                     )}
@@ -284,15 +321,21 @@ const ExamSection: React.FC<ExamSectionProps> = ({
                     <div className="mt-3">
                       <Button
                         onClick={() => handleExamAccess(section)}
-                        disabled={isLoading || !access?.canAccess || section.status === 'locked'}
-                        variant={section.status === 'available' ? 'default' : 'outline'}
+                        disabled={
+                          isLoading ||
+                          !access?.canAccess ||
+                          section.status === "locked"
+                        }
+                        variant={
+                          section.status === "available" ? "default" : "outline"
+                        }
                         className={
-                          section.status === 'available' 
-                            ? 'bg-green-500 hover:bg-green-600 text-white'
-                            : ''
+                          section.status === "available"
+                            ? "bg-green-500 hover:bg-green-600 text-white"
+                            : ""
                         }
                       >
-                        {isLoading ? 'Checking...' : getButtonText(section)}
+                        {isLoading ? "Checking..." : getButtonText(section)}
                       </Button>
                     </div>
                   </div>
@@ -309,10 +352,11 @@ const ExamSection: React.FC<ExamSectionProps> = ({
           <DialogHeader>
             <DialogTitle>Enter Exam ID</DialogTitle>
             <DialogDescription>
-              Please enter your Exam ID to access the exam. You should have received this via email and SMS.
+              Please enter your Exam ID to access the exam. You should have
+              received this via email and SMS.
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="space-y-4">
             <div>
               <Label htmlFor="examId">Exam ID</Label>
@@ -331,28 +375,29 @@ const ExamSection: React.FC<ExamSectionProps> = ({
                 <p className="text-red-600 text-sm mt-1">{examIdError}</p>
               )}
             </div>
-            
+
             <Alert className="border-blue-200 bg-blue-50">
               <AlertCircle className="h-4 w-4 text-blue-600" />
               <AlertDescription className="text-blue-800">
-                <strong>Important:</strong> The exam timer starts at the scheduled time, regardless of when you log in. 
-                If you're late, your remaining time will be reduced.
+                <strong>Important:</strong> The exam timer starts at the
+                scheduled time, regardless of when you log in. If you're late,
+                your remaining time will be reduced.
               </AlertDescription>
             </Alert>
           </div>
 
           <DialogFooter className="flex gap-2">
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               onClick={() => {
                 setShowExamIdDialog(false);
-                setExamId('');
+                setExamId("");
                 setExamIdError(null);
               }}
             >
               Cancel
             </Button>
-            <Button 
+            <Button
               onClick={handleEnterExam}
               className="bg-green-500 hover:bg-green-600 text-white"
             >
@@ -366,11 +411,3 @@ const ExamSection: React.FC<ExamSectionProps> = ({
 };
 
 export default ExamSection;
-
-
-
-
-
-
-
-

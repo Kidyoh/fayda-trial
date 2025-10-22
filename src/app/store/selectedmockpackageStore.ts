@@ -1,4 +1,4 @@
-import {create} from "zustand";
+import { create } from "zustand";
 
 interface StoreState {
   mockpackage: Record<string, any>; // Update the type to match your JSON object structure

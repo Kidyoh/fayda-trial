@@ -54,7 +54,7 @@ export const useSignupData = (): UseSignupDataReturn => {
       fallbackData: Choice[],
       setData: (data: Choice[]) => void,
       setLoadingState: (loading: boolean) => void,
-      setError: (error: string | null) => void
+      setError: (error: string | null) => void,
     ) => {
       setLoadingState(true);
       setError(null);
@@ -94,14 +94,14 @@ export const useSignupData = (): UseSignupDataReturn => {
       } catch (error) {
         console.error(`Error fetching ${endpoint}:`, error);
         setError(
-          error instanceof Error ? error.message : "Failed to fetch data"
+          error instanceof Error ? error.message : "Failed to fetch data",
         );
         setData(fallbackData);
       } finally {
         setLoadingState(false);
       }
     },
-    []
+    [],
   );
 
   // Fetch grades
@@ -112,7 +112,7 @@ export const useSignupData = (): UseSignupDataReturn => {
       FALLBACK_GRADES,
       setGrades,
       (loading) => setLoading((prev) => ({ ...prev, grades: loading })),
-      (error) => setErrors((prev) => ({ ...prev, grades: error }))
+      (error) => setErrors((prev) => ({ ...prev, grades: error })),
     );
   }, [fetchData]);
 
@@ -124,7 +124,7 @@ export const useSignupData = (): UseSignupDataReturn => {
       FALLBACK_REGIONS,
       setRegions,
       (loading) => setLoading((prev) => ({ ...prev, regions: loading })),
-      (error) => setErrors((prev) => ({ ...prev, regions: error }))
+      (error) => setErrors((prev) => ({ ...prev, regions: error })),
     );
   }, [fetchData]);
 
@@ -136,7 +136,7 @@ export const useSignupData = (): UseSignupDataReturn => {
       FALLBACK_CITIES,
       setCities,
       (loading) => setLoading((prev) => ({ ...prev, cities: loading })),
-      (error) => setErrors((prev) => ({ ...prev, cities: error }))
+      (error) => setErrors((prev) => ({ ...prev, cities: error })),
     );
   }, [fetchData]);
 

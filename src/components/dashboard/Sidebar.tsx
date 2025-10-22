@@ -7,7 +7,11 @@ interface SidebarProps {
   onLogout: () => void;
 }
 
-export default function Sidebar({ activeMenu, onMenuSelect, onLogout }: SidebarProps) {
+export default function Sidebar({
+  activeMenu,
+  onMenuSelect,
+  onLogout,
+}: SidebarProps) {
   const menuItems = [
     { id: "dashboard", label: "Dashboard", icon: Home },
     { id: "mycourse", label: "My Courses", icon: LayoutGrid },
@@ -65,4 +69,4 @@ export default function Sidebar({ activeMenu, onMenuSelect, onLogout }: SidebarP
       </div>
     </div>
   );
-} 
+}
