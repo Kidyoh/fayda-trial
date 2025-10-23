@@ -1,7 +1,7 @@
 "use client";
 import AdSlider from "@/components/homepage_components/ad-slider";
 import Blog from "@/components/homepage_components/blog";
-import CourseGrid from "@/components/homepage_components/courses";
+import { CourseGrid } from "@/components/molecules/CourseGrid";
 import CoverHome from "@/components/homepage_components/cover_home";
 import Info from "@/components/homepage_components/info";
 import Marquee from "@/components/homepage_components/marquee";
@@ -35,7 +35,7 @@ export default function Home() {
           />
         </div>
         <PackageCards />
-        <CourseGrid />
+        <CourseGrid showHomepageOnly={true} limit={6} />
       </div>
       <div className="relative overflow-hidden">
         <div className="w-[150vw] h-[250vh] absolute top-0 left-[44.5%] opacity-20 -z-10 -translate-x-1/2">

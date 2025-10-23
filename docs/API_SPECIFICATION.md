@@ -1,3 +1,46 @@
+## Frontend → Backend contract (updated)
+
+Base URL
+
+- `API_BASE` from `src/config/env.ts` (e.g., NEXT_PUBLIC_API_BASE)
+
+Headers
+
+- `Authorization: Bearer <accessToken>` when authenticated
+- `Content-Type: application/json`
+
+Validation
+
+- All responses should conform to documented JSON shapes; frontend validates with Zod.
+
+Endpoints
+
+- Courses
+  - GET `/courses/public` → Course[]
+  - GET `/courses/public/:id` → Course
+  - GET `/courses` (auth) → Course[]
+  - GET `/courses/:id` (auth) → Course
+  - GET `/courses/:id/verify-access` (auth) → { hasAccess: boolean, purchaseDetails?: CoursePurchase }
+
+- Cart / Payment
+  - POST `/cart/bulk-purchase` (auth) → { success, purchaseId, paymentUrl? }
+  - POST `/cart/bulk-purchase/` (auth) → { paymentUrl }
+  - POST `/paymenthandler/checkout/` (auth) → { paymentUrl }
+  - POST `/paymenthandler/course-checkout/` (auth) → { paymentUrl }
+  - POST `/transaction/generate` → { id, transactionId, amount, phoneNumber, status }
+  - PUT `/transaction/:transactionId/status` → { status }
+
+Data models (frontend expectations)
+
+- Course
+  - { id: string, courseName: string, price: string, temporaryPrice?: string, discountStatus: boolean, discountExpiryDate?: string, status: boolean, displayOnHome: boolean, thumbnail?: string }
+- CoursePurchase
+  - { id: string, courseId: string, studentId: string, price: string, paymentMethod: string, phoneNumber: string, transactionId?: string, status: 'pending'|'completed'|'failed', createdAt: string, updatedAt: string }
+
+Error format
+
+- { message: string, code?: string }
+
 # 🔌 Complete API Specification for Cart & Payment System
 
 ## 📋 Table of Contents

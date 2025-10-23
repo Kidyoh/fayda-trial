@@ -1,15 +1,15 @@
 "use client";
-import { apiUrl } from "@/apiConfig";
-import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useState } from "react";
-import { signInInfoSchema } from "../../validation/signinValidation";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { toast } from "@/components/ui/use-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { Eye, EyeOff, Mail, Phone, ArrowRight, Loader2 } from "lucide-react";
-import { setAccessToken } from "../../../lib/tokenManager";
 import { motion } from "framer-motion";
+import { signInInfoSchema } from "../../validation/signinValidation";
+import { setAccessToken } from "../../../lib/tokenManager";
+import { apiUrl } from "@/apiConfig";
 
 type SignInMethod = "email" | "phone";
 
@@ -58,20 +58,17 @@ export default function LoginPage() {
       const responseData = await response.json();
       console.log(responseData);
 
-      // Handle the new response structure
+      // Handle the response structure
       if (responseData.success && responseData.data) {
         setAccessToken(responseData.data.accessToken);
       } else {
         throw new Error("Invalid response structure");
       }
 
-      toast({
-        title: "Success!",
-        description: "Login successful. Redirecting...",
-      });
-
-      window.location.href = "/";
+      // Redirect to dashboard
+      window.location.href = "/dashboard";
     } catch (error) {
+      console.error("Login error:", error);
       setError("root", {
         type: "manual",
         message: "Invalid credentials. Please try again.",
@@ -88,10 +85,13 @@ export default function LoginPage() {
         animate={{ opacity: 1, y: 0 }}
         className="sm:mx-auto sm:w-full sm:max-w-md"
       >
-        <img
+        <Image
           className="mx-auto h-16 w-auto"
           src="/common_files/main/fayida_logo.png"
           alt="Fayida Academy"
+          width={64}
+          height={64}
+          priority
         />
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
           Welcome back
@@ -116,9 +116,10 @@ export default function LoginPage() {
               }}
               className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
                 signInMethod === "email"
-                  ? "bg-primaryColor text-white"
+                  ? "bg-[#c7cc3f] text-white"
                   : "bg-gray-100 text-gray-600 hover:bg-gray-200"
               }`}
+              aria-pressed={signInMethod === "email"}
             >
               <Mail className="w-5 h-5 mr-2" />
               Email
@@ -131,9 +132,10 @@ export default function LoginPage() {
               }}
               className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
                 signInMethod === "phone"
-                  ? "bg-primaryColor text-white"
+                  ? "bg-[#c7cc3f] text-white"
                   : "bg-gray-100 text-gray-600 hover:bg-gray-200"
               }`}
+              aria-pressed={signInMethod === "phone"}
             >
               <Phone className="w-5 h-5 mr-2" />
               Phone
@@ -142,7 +144,7 @@ export default function LoginPage() {
 
           <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             {errors.root && (
-              <div className="rounded-md bg-red-50 p-4">
+              <div className="rounded-md bg-red-50 p-4" role="alert">
                 <p className="text-sm text-red-600">{errors.root.message}</p>
               </div>
             )}
@@ -159,11 +161,15 @@ export default function LoginPage() {
                   <input
                     {...register("email")}
                     type="email"
-                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primaryColor focus:border-primaryColor"
+                    id="email"
+                    autoComplete="email"
+                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#c7cc3f] focus:border-[#c7cc3f]"
                     placeholder="Enter your email"
+                    aria-invalid={!!errors.email}
+                    aria-describedby={errors.email ? "email-error" : undefined}
                   />
                   {errors.email && (
-                    <p className="mt-1 text-sm text-red-600">
+                    <p id="email-error" className="mt-1 text-sm text-red-600">
                       {errors.email.message}
                     </p>
                   )}
@@ -181,11 +187,17 @@ export default function LoginPage() {
                   <input
                     {...register("phoneNumber")}
                     type="tel"
-                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primaryColor focus:border-primaryColor"
+                    id="phoneNumber"
+                    autoComplete="tel"
+                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#c7cc3f] focus:border-[#c7cc3f]"
                     placeholder="Enter your phone number"
+                    aria-invalid={!!errors.phoneNumber}
+                    aria-describedby={
+                      errors.phoneNumber ? "phone-error" : undefined
+                    }
                   />
                   {errors.phoneNumber && (
-                    <p className="mt-1 text-sm text-red-600">
+                    <p id="phone-error" className="mt-1 text-sm text-red-600">
                       {errors.phoneNumber.message}
                     </p>
                   )}
@@ -204,13 +216,20 @@ export default function LoginPage() {
                 <input
                   {...register("password")}
                   type={showPassword ? "text" : "password"}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primaryColor focus:border-primaryColor"
+                  id="password"
+                  autoComplete="current-password"
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#c7cc3f] focus:border-[#c7cc3f]"
                   placeholder="Enter your password"
+                  aria-invalid={!!errors.password}
+                  aria-describedby={
+                    errors.password ? "password-error" : undefined
+                  }
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? (
                     <EyeOff className="h-5 w-5 text-gray-400" />
@@ -220,7 +239,7 @@ export default function LoginPage() {
                 </button>
               </div>
               {errors.password && (
-                <p className="mt-1 text-sm text-red-600">
+                <p id="password-error" className="mt-1 text-sm text-red-600">
                   {errors.password.message}
                 </p>
               )}
@@ -230,7 +249,7 @@ export default function LoginPage() {
               <div className="text-sm">
                 <Link
                   href="/forgot-password"
-                  className="font-medium text-primaryColor hover:text-primaryColor/80"
+                  className="font-medium text-[#c7cc3f] hover:text-[#bf8c13]"
                 >
                   Forgot your password?
                 </Link>
@@ -241,12 +260,13 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full flex justify-center items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primaryColor hover:bg-primaryColor/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primaryColor"
+                className="w-full flex justify-center items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#c7cc3f] hover:bg-[#bf8c13] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#c7cc3f] disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-describedby={isLoading ? "loading-text" : undefined}
               >
                 {isLoading ? (
                   <>
                     <Loader2 className="animate-spin -ml-1 mr-2 h-5 w-5" />
-                    Signing in...
+                    <span id="loading-text">Signing in...</span>
                   </>
                 ) : (
                   <>
@@ -272,7 +292,7 @@ export default function LoginPage() {
 
             <div className="mt-6">
               <Link href="/signup">
-                <button className="w-full flex justify-center items-center px-4 py-2 border-2 border-primaryColor rounded-lg text-sm font-medium text-primaryColor hover:bg-primaryColor/5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primaryColor">
+                <button className="w-full flex justify-center items-center px-4 py-2 border-2 border-[#c7cc3f] rounded-lg text-sm font-medium text-[#c7cc3f] hover:bg-[#c7cc3f]/5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#c7cc3f]">
                   Create an account
                 </button>
               </Link>

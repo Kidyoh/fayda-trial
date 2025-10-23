@@ -1,0 +1,163 @@
+---
+alwaysApply: true
+---
+# Fayida Academy — Business Logic & Scope Rules
+
+## 🧠 Project Context
+Fayida Academy is an Ethiopian educational technology platform that merges structured academic learning with gamified competition systems. The app targets high school students (grades 9–12), providing courses, assessments, and tournament-style events integrated with localized payments and agent-based commissions.
+
+---
+
+## ⚙️ RULES FOR MODEL BEHAVIOR
+1. **Stay in Scope** — All reasoning, suggestions, and code must stay within the Fayida Academy platform context.  
+2. **Focus Areas** — Only discuss or modify features tied to these domains:
+   - User system (students, admins, agents)
+   - Courses and content
+   - Subscriptions and packages
+   - Payment and commissions
+   - Competitions and tournaments
+   - Assessments and progress tracking
+3. **Respect Architecture Intent** — The app integrates learning + gamification + localized payments. Do not introduce unrelated industries or product pivots.  
+4. **Technical Bias** — Prioritize scalable backend logic, maintainable architecture, and performance-aware solutions.
+5. **Security First** — Always consider authentication, validation, and safe access rules.
+6. **Keep Business Logic Canonical** — Any additions or updates must align with the following definitions and flows.
+
+---
+
+## 🎯 Core Business Purpose
+Fayida Academy provides comprehensive online learning services, combining traditional education with competitive gaming elements. It serves students from grades 9–12, offering structured courses, assessments, and tournaments.
+
+---
+
+## 📊 Key Business Domains
+
+### 1. User Management & Authentication
+- **Multi-role System:** Students, Admins, SubAdmins, Agents, Assistants  
+- **Dual Email Support:** Regular student email + agent email for commission tracking  
+- **Session Management:** Passport.js with JWT + express sessions  
+- **Account Types:** Student (default), Admin, Agent (commission-based)  
+- **Student Profiles:** Demographics, school info, grade, region/city  
+
+### 2. Course & Content Management
+- **Course Structure:** Multi-part courses with materials (videos, files, links)  
+- **Pricing Model:** Base price + temporary discounts  
+- **Content Organization:** Materials ordered by sequence  
+- **Intro Videos:** Course previews for marketing  
+- **Public Access:** Browsable without login  
+
+### 3. Subscription & Package System
+- **Package Types:** Bundles containing multiple courses  
+- **Durations:** 1, 3, or 6 months  
+- **Pricing Tiers:** Per-duration variation  
+- **Bulk Purchases:** Multi-item transactions  
+- **Agent Commissions:** Referral-based payout  
+
+### 4. Payment Processing
+- **Gateways:** SantimPay (primary), Chapa  
+- **Transaction Tracking:** Unique IDs per purchase  
+- **Payment States:** `Pending → Active → Done`  
+- **Webhooks:** Real-time gateway callbacks  
+- **Refunds:** Basic managed reversals  
+
+### 5. Competition Platform
+- **Tournament Types:** One-time or multi-day  
+- **Grade-Specific:** Grade 9–10 segregation  
+- **Package Requirement:** Must have valid subscription  
+- **Anti-Cheating:** Unique exam IDs, single attempt, time limits  
+- **Prize System:** Rank-based rewards with verification  
+- **Leaderboards:** Real-time scoring and ranking  
+
+### 6. Assessment & Testing
+- **Question Types:** Multiple choice (A–D)  
+- **Scoring:** Points-based  
+- **Mock Exams:** Separate paid products  
+- **Analytics:** Performance and history tracking  
+
+### 7. Learning Progress Tracking
+- **Material Completion:** Mark as done  
+- **Progress Calculation:** Percentage-based  
+- **Sequential Unlock:** Enforced learning order  
+- **Expiry Management:** Auto-disable on expiry  
+
+---
+
+## 🔄 Core Business Flows
+
+### Student Onboarding
+1. Registration → Email check → Password hash → Account creation  
+2. Email verification → Confirmation code  
+3. Profile completion → Demographics & school info  
+4. Initial assessment → Learning path setup  
+
+### Learning Journey
+1. Discover → Browse courses/packages  
+2. Purchase → Payment gateway → Transaction  
+3. Learn → Access content sequentially  
+4. Assess → Take tests → Scoring & feedback  
+5. Complete → Certificates and achievements  
+
+### Competition Participation
+1. Validate registration & subscription  
+2. Generate unique exam ID  
+3. Time-gated exam access  
+4. Single attempt → Real-time scoring  
+5. Ranking → Prize distribution  
+
+### Payment & Subscription
+1. Initiate → Select item & calculate price  
+2. Process → Gateway → Webhook  
+3. Activate → Create subscription → Set expiry  
+4. Renew → Monitor expiry → Remind → Auto-renew  
+
+---
+
+## 💰 Revenue Model
+- Package sales (main income)
+- Individual courses  
+- Agent commissions  
+- Premium competition entries  
+- Mock exams  
+
+---
+
+## 🎮 Gamification Features
+- Points system  
+- Leaderboards  
+- Prizes and badges  
+- Progress achievements  
+- Peer interaction  
+
+---
+
+## 📈 Business Rules
+- Grade-based content access  
+- Package requirement for most features  
+- Time limits on exams and access  
+- Single attempt per competition  
+- School ID required for prize claims  
+- Agent commissions only on successful referrals  
+
+---
+
+## 🔐 Security & Access Control
+- Role-based permissions  
+- JWT authentication is required for most endpoints  
+- Input validation mandatory  
+- Secure session cookies with expiry  
+
+---
+
+## 🧩 Architectural Notes
+- Built for scale and modularity  
+- Requires improved validation and maintainability layers  
+- Integrates localized payment systems for Ethiopia  
+- Hybrid of academic e-learning and competitive gaming  
+
+---
+
+## ✅ Enforcement
+This `.mdc` defines the *complete scope* of Fayida Academy.  
+- Any feature, API, or business logic not aligned with these rules is **out of scope**.  
+- Cursor AI should **reference this document as the single source of truth** for all reasoning, code generation, and project discussions.
+
+

@@ -1,31 +1,102 @@
 ---
-description: Best Practices for Next.js
+description: Fayida Academy — project-specific rules for performance, architecture, state, accessibility, and best practices.
 globs: src/**/*.{ts,tsx}
 alwaysApply: false
 ---
-Syntax and Formatting:
-- Use the "function" keyword for pure functions.
-- Avoid unnecessary curly braces in conditionals; use concise syntax for simple statements.
-- Use declarative JSX.
 
-Accessibility
-- Ensure interfaces are keyboard navigable.
-- Implement proper ARIA labels and roles for components.
-- Ensure color contrast ratios meet WCAG standards for readability.
+# Core intent
+- Enforce a feature-based, atomic structure; avoid large monolithic components.
+- Prevent performance anti-patterns in the UI (un-memoized handlers, full-list rendering, client-only fetching).
+- Encourage React Query for server state and domain-consolidated Zustand for client state.
+- Maintain strict typing, naming consistency, and predictable architecture.
 
-Next.js Specifics:
-- Prioritize using server components (RSC) for performance, SEO, and data fetching
-- Use client components sparingly, only when interactivity is required
-- Take advantage of Next.js file-based routing system for simplicity
-- Centralize shared layouts in `layout.tsx` for consistency across pages
-- Implement custom error pages with `error.tsx` to handle errors gracefully
-- Use API route handlers to manage backend logic within the app structure
-- Store shared logic in `lib/` or `util/`.
-- Place static assets in `public/`.
-- Use [layout.tsx](mdc:src/app/layout.tsx) for global layout.
-- Wrap client components in Suspense with fallback
-- Use dynamic loading for non-critical components
-- Optimize images: use WebP format, include size data, implement lazy loading
-- Optimize Web Vitals (LCP, CLS, FID)
-- Refer to Next.js documentation for Data Fetching, Rendering, and Routing best practices
-- Use pnpm for install package
+# File / folder conventions
+- Structure features as `src/features/<feature>/{components,hooks,api,types}`.
+- Place atomic UI under `src/components/{atoms,molecules,organisms}`.
+- Shared utilities in `src/lib`.
+- Global layout in `src/app/layout.tsx`, global error in `src/app/error.tsx`.
+- Flag JSX files > 400 LOC.
+
+# TypeScript & code style
+- Use interfaces for exported shapes; avoid enums and type aliases for objects.
+- All files must comply with `strict: true`.
+- Disallow `@ts-ignore` and `// @ts-nocheck`.
+- Use the `function` keyword for pure functions.
+- Use named exports only.
+
+# React / Next.js rules
+- Prefer server components unless interactivity requires `"use client"`.
+- Flag client components without state or effects.
+- Replace `useEffect` fetches with React Query hooks for data fetching.
+- Use `next/link` for navigation; flag manual `window.location` usage.
+
+# State management
+- Consolidate Zustand stores into `userStore`, `cartStore`, `uiStore`, and `competitionStore`.
+- Server state must use React Query; only local UI state in `useState` or `uiStore`.
+- Flag any direct `localStorage.getItem('accessToken')` in components.
+- Require `useAuth` hook for token access and refresh logic.
+
+# Networking / API
+- Require a single API client in `src/lib/api/client.ts` using Axios or fetch with Zod validation.
+- Forbid raw URL strings; use `API_BASE` constant from `src/config/env.ts`.
+- Enforce typed API responses and React Query for all requests and mutations.
+
+# Performance & rendering
+- Flag `useEffect` without dependencies or with unnecessary re-fetching.
+- Flag components rendering lists > 50 items without virtualization.
+- Require `useMemo` for derived data and `useCallback` for handlers.
+- Use `React.memo` for presentational components.
+- Require `next/image` for all images; flag plain `<img>`.
+
+# UX / Accessibility
+- All interactive elements must have `aria-*` attributes and keyboard handling.
+- Forms must include labels and accessible error messages.
+- Modals must trap focus and include `aria-modal`.
+- Flag `onClick` on non-interactive elements without `role` or `tabindex`.
+
+# Animations & Motion
+- Respect `prefers-reduced-motion` media query.
+- Limit Framer Motion usage to small components; avoid layout-wide animations.
+- Prefer skeleton loaders for animated content on mount.
+
+# Error handling & observability
+- Require global error boundary at `src/app/error.tsx`.
+- API calls must display user feedback via toast notifications.
+- All `catch` blocks must log errors and trigger UI feedback.
+
+# Security & tokens
+- Disallow storing tokens in localStorage/sessionStorage.
+- Use HttpOnly cookies with refresh token rotation.
+- Flag any large file uploads sent as base64; prefer pre-signed uploads or chunking.
+
+# Testing & CI
+- Encourage Jest + React Testing Library for logic and Playwright for end-to-end.
+- Place tests in `src/__tests__`.
+- Flag untested logic-heavy components (>60 LOC, >1 hook).
+
+# Linting & build
+- Enforce ESLint and Prettier integration.
+- Disallow `console.log` in production builds.
+- Require bundle analyzer in `next.config.js`.
+
+# Migration / upgrade checks
+- Disallow legacy Next.js APIs (getServerSideProps/getStaticProps) in `app/`.
+- Ensure Next.js 14+ features: server components, loading.tsx, image optimization.
+
+# Custom project rules
+- Flag `Navbar` > 250 LOC; split into `NavAuth`, `CartButton`, and `LanguageSwitcher`.
+- Require pagination or virtualization for `CourseGrid`.
+- Separate UI modal logic from data logic in `CartStore`.
+
+# Auto-fix / suggestions
+- Suggest converting fetch `useEffect` → React Query `useQuery`.
+- Suggest extracting large files into `organisms/`.
+- Suggest replacing token reads with `useAuth()` hook.
+
+# Detector heuristics
+- Detect `useEffect` + `fetch('/api')` usage in page components.
+- Detect `localStorage.getItem('accessToken')`.
+- Detect direct rendering of arrays >100 elements.
+- Detect `framer-motion` imports in large layout components.
+
+

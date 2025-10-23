@@ -1,3 +1,12 @@
+## Refactor Checklist (Fayida Academy)
+
+- Use server components by default; client components only for interactivity.
+- Replace `useEffect` fetches with React Query hooks.
+- Use centralized API client in `src/lib/api/client.ts` and `API_BASE`.
+- Remove direct localStorage token usage; use HttpOnly cookies (backend) and `useAuth`.
+- Use `next/image` over `<img>` and paginate/virtualize long lists.
+- Split components > 250–400 LOC into feature folders.
+
 # {Feature Name} Refactor Documentation
 
 ## Overview

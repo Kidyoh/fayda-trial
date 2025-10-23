@@ -1,10 +1,12 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Toaster } from "@/components/ui/toaster";
-import NavBar from "@/components/main_components/nav_bar";
+import { Navbar } from "@/components/organisms/Navbar";
 import BackToTop from "@/components/main_components/back_to_top";
 import Footer from "@/components/main_components/footer";
 import { LanguageProvider } from "@/lib/language-context";
+import { AppProviders } from "./providers";
+import { ConditionalFooter } from "@/components/atoms/ConditionalFooter";
 
 export const metadata: Metadata = {
   title: "Fayida Academy",
@@ -19,25 +21,25 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="flex flex-col min-h-screen">
-        <LanguageProvider>
-          <Toaster />
+        <AppProviders>
+          <LanguageProvider>
+            <Toaster />
 
-          {/* Header */}
-          <NavBar />
+            {/* Header */}
+            <Navbar />
 
-          {/* Main content */}
-          <main className="flex-grow w-full">{children}</main>
+            {/* Main content */}
+            <main className="flex-grow w-full">{children}</main>
 
-          {/* Back to top button */}
-          {/* <div className="fixed bottom-14 right-8 z-50">
-            <BackToTop />
-          </div> */}
+            {/* Back to top button */}
+            {/* <div className="fixed bottom-14 right-8 z-50">
+              <BackToTop />
+            </div> */}
 
-          {/* Footer */}
-          <footer className="w-full pt-11">
-            <Footer />
-          </footer>
-        </LanguageProvider>
+            {/* Footer - only on landing page */}
+            <ConditionalFooter />
+          </LanguageProvider>
+        </AppProviders>
       </body>
     </html>
   );

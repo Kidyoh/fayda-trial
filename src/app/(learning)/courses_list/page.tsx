@@ -1,108 +1,108 @@
 "use client";
-import { apiUrl } from "@/apiConfig";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { CourseGrid } from "@/components/molecules/CourseGrid";
+import { useAuth } from "@/hooks/useAuth";
+import { useUIStore } from "@/store/uiStore";
+import { Button } from "@/components/ui/button";
+import { Plus, Filter, Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 export default function CoursesList() {
-  const [data, setData] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { isAuthenticated } = useAuth();
+  const { addNotification } = useUIStore();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `${apiUrl}/purchaselist/specificStudentCourses`,
-          {
-            credentials: "include",
-          },
-        );
-
-        const jsonData = await response.json();
-        setData(jsonData);
-        console.log("first");
-        console.log("Data: ", jsonData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (isLoading) {
-    return <p>Loading...</p>;
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">
+            Access Denied
+          </h1>
+          <p className="text-gray-600 mb-6">
+            Please log in to view your courses.
+          </p>
+          <Button asChild>
+            <a href="/login">Sign In</a>
+          </Button>
+        </div>
+      </div>
+    );
   }
+
   return (
-    <div className="my-3">
-      {/* Flex container for horizontal layout and header */}
-      <div className="w-full flex justify-center items-center py-4">
-        <h1 className="text-2xl font-semibold text-primaryColor">
-          Explore Exciting Courses
-        </h1>
-      </div>
-
-      {/* Grid container for courses with card layout */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto px-4">
-        {data?.map((course) => (
-          <Link
-            key={course?.Courses?.id} // Add key prop for each item
-            href={`/packages_access_2/${course?.Courses?.id}`}
-            //href="/"
-            className="course-card flex flex-col bg-primaryColor border-2 border-white rounded-2xl shadow-xl shadow-primaryColor text-white my-4 p-4 hover:shadow-2xl"
-          >
-            <div className="course-info flex-1">
-              <h2 className="text-lg font-semibold mb-2">
-                {course?.Courses?.courseName}
-              </h2>
-              <p className="text-sm">{course?.Courses?.courseDescription}</p>
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header Section */}
+        <div className="mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">My Courses</h1>
+              <p className="mt-2 text-gray-600">
+                Continue your learning journey with these courses
+              </p>
             </div>
-            <div className="course-footer flex justify-between items-center text-sm">
-              <p className="font-semibold">{course?.Packages?.packageName}</p>
-              <svg
-                className="w-6 h-6 ml-2 text-primaryColor fill-current"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M10.293 3.293a1 1 0 01 1.414 0l6 6a1 1 0 01 0 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293z" />
-              </svg>
+
+            <div className="mt-4 sm:mt-0 flex space-x-3">
+              <Button variant="outline" size="sm">
+                <Filter className="w-4 h-4 mr-2" />
+                Filter
+              </Button>
+              <Button variant="outline" size="sm">
+                <Search className="w-4 h-4 mr-2" />
+                Search
+              </Button>
             </div>
-          </Link>
-        ))}
-      </div>
-    </div>
-  );
-}
+          </div>
+        </div>
 
-{
-  /*
- <div className="my-3">
-      <div className="w-full flex">
-        <h1 className="mx-auto text-xl font-semibold text-primaryColor">
-          Courses
-        </h1>
-      </div>
+        {/* Search and Filter Bar */}
+        <div className="mb-8 bg-white rounded-lg shadow-sm p-4">
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex-1">
+              <Input
+                type="text"
+                placeholder="Search courses..."
+                className="w-full"
+              />
+            </div>
+            <div className="flex gap-2">
+              <select className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#c7cc3f]">
+                <option value="">All Grades</option>
+                <option value="9">Grade 9</option>
+                <option value="10">Grade 10</option>
+                <option value="11">Grade 11</option>
+                <option value="12">Grade 12</option>
+              </select>
+              <select className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#c7cc3f]">
+                <option value="">All Subjects</option>
+                <option value="math">Mathematics</option>
+                <option value="physics">Physics</option>
+                <option value="chemistry">Chemistry</option>
+                <option value="biology">Biology</option>
+              </select>
+            </div>
+          </div>
+        </div>
 
-      <div className="w-full">
-        <div className=" mx-8   ">
-          {data.map((course) => (
-            <Link href={`/packages_access/${course.Courses.id}`}>
-              <div className="bg-primaryColor border-2 border-white rounded-2xl shadow-xl shadow-primaryColor text-white my-8 py-4 px-5">
-                <div className=" flex justify-between">
-                  <div className="text-lg">
-                    <h1>{course.Courses.courseName}</h1>
-                    <h1 className="text-sm">
-                      {course.Courses.courseDescription}
-                    </h1>
-                  </div>
-                  <h1>{course.Packages.packageName}</h1>
-                </div>
-              </div>
-            </Link>
-          ))}
+        {/* Courses Grid */}
+        <div className="mb-8">
+          <CourseGrid showHomepageOnly={false} />
+        </div>
+
+        {/* Call to Action */}
+        <div className="bg-gradient-to-r from-[#c7cc3f] to-[#bf8c13] rounded-lg p-8 text-white text-center">
+          <h2 className="text-2xl font-bold mb-4">
+            Want to explore more courses?
+          </h2>
+          <p className="mb-6 opacity-90">
+            Discover new subjects and expand your knowledge
+          </p>
+          <Button variant="secondary" size="lg">
+            <Plus className="w-5 h-5 mr-2" />
+            Browse All Courses
+          </Button>
         </div>
       </div>
     </div>
-*/
+  );
 }

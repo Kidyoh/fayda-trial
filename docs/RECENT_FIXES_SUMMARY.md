@@ -1,3 +1,22 @@
+## 2025-10-22 — Platform-wide foundations update
+
+- Added `src/config/env.ts` with `API_BASE` and environment typing.
+- Introduced centralized typed API client `src/lib/api/client.ts` using Zod validation and unified HTTP helpers.
+- Wired React Query across the app via `src/app/providers.tsx` and wrapped in `src/app/layout.tsx`.
+- Added global error boundary `src/app/error.tsx` with accessible UI.
+- Created dummy data layer:
+  - `src/data/courses.ts`
+  - `src/data/packages.ts`
+  - `src/data/competitions.ts`
+- Improved build and performance config in `next.config.js`:
+  - Enabled optional bundle analyzer (`ANALYZE=true`)
+  - Strict mode, console removal in production, optimizePackageImports
+
+Notes:
+
+- Prefer server components by default; use React Query in client components for server state.
+- Replace direct fetch/urls with `api client` helpers and `API_BASE`.
+
 # Recent Fixes Summary
 
 ## Overview

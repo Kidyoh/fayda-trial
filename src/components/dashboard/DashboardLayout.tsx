@@ -4,7 +4,18 @@ import ProfileTab from "./ProfileTab";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getAccessToken, setAccessToken } from "../../lib/tokenManager";
-import { Home, LayoutGrid, BookOpen, User, LogOut, Trophy } from "lucide-react";
+import {
+  Home,
+  LayoutGrid,
+  BookOpen,
+  User,
+  LogOut,
+  Trophy,
+  Bell,
+  Monitor,
+  Trophy as TrophyIcon,
+} from "lucide-react";
+import Image from "next/image";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -25,6 +36,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     if (pathname.includes("/dashboard/courses")) setActiveTab("mycourse");
     else if (pathname.includes("/dashboard/packages"))
       setActiveTab("mypackage");
+    else if (pathname.includes("/dashboard")) setActiveTab("dashboard");
+    else if (pathname.includes("/notifications")) setActiveTab("notifications");
+    else if (pathname.includes("/competitions")) setActiveTab("competitions");
+    else if (pathname.includes("/devices")) setActiveTab("devices");
     else setActiveTab("dashboard");
   }, [pathname]);
 
@@ -55,24 +70,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     fetchProfile();
   }, []);
 
-  const handleTabSelect = (tab: string) => {
+  const handleTabSelect = (tab: string, href?: string) => {
     setActiveTab(tab);
-    if (tab === "profile") {
-      // Don't navigate for profile, just set the active tab
-      return;
-    }
-
-    switch (tab) {
-      case "dashboard":
-        router.push("/dashboard");
-        break;
-      case "mycourse":
-        router.push("/dashboard/courses");
-        break;
-      case "mypackage":
-        router.push("/dashboard/packages");
-        break;
-    }
+    if (tab === "profile") return;
+    if (href) router.push(href);
   };
 
   const handleLogout = () => {
@@ -81,11 +82,39 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   };
 
   const tabs = [
-    { id: "dashboard", label: "Dashboard", icon: Home },
-    { id: "mycourse", label: "My Courses", icon: LayoutGrid },
-    { id: "mypackage", label: "My Packages", icon: BookOpen },
+    { id: "dashboard", label: "Dashboard", icon: Home, href: "/dashboard" },
+    {
+      id: "mycourse",
+      label: "My Courses",
+      icon: LayoutGrid,
+      href: "/dashboard/courses",
+    },
+    {
+      id: "mypackage",
+      label: "My Packages",
+      icon: BookOpen,
+      href: "/dashboard/packages",
+    },
+    {
+      id: "competitions",
+      label: "Competitions",
+      icon: TrophyIcon,
+      href: "/competitions",
+    },
+    {
+      id: "notifications",
+      label: "Notifications",
+      icon: Bell,
+      href: "/notifications",
+    },
+    {
+      id: "devices",
+      label: "Devices",
+      icon: Monitor,
+      href: "/dashboard/devices",
+    },
     { id: "profile", label: "Profile", icon: User },
-  ];
+  ] as const;
 
   if (isLoading) {
     return (
@@ -102,7 +131,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   }
 
   return (
-    <div className="w-full min-h-screen pt-24 bg-gradient-to-br from-green-50/30 via-yellow-50/20 to-orange-50/30 relative">
+    <div className="w-full min-h-screen bg-gradient-to-br from-green-50/30 via-yellow-50/20 to-orange-50/30 relative">
       <div className="absolute inset-0 opacity-5 pointer-events-none">
         <svg width="100%" height="100%">
           <defs>
@@ -131,79 +160,91 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       </div>
 
       <div className="relative z-10">
-        <div className="backdrop-blur-sm border-b-2 border-[#07705d]/20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between py-6">
-              <div className="flex items-center space-x-6">
-                <div className="flex items-center space-x-3">
-                  {userData?.profileImage ? (
-                    <img
-                      src={userData.profileImage}
-                      alt="Profile"
-                      className="w-12 h-12 rounded-full border-2 border-[#07705d]"
-                    />
-                  ) : (
-                    <div className="w-12 h-12 bg-gradient-to-br from-[#07705d] to-[#bf8c13] rounded-full flex items-center justify-center">
-                      <User className="w-6 h-6 text-white" />
-                    </div>
-                  )}
-                  <div>
-                    <h1 className="text-lg font-sendako font-bold text-[#07705d]">
-                      {userData?.firstName} {userData?.lastName}
-                    </h1>
-                    {userData?.points && (
-                      <div className="flex items-center space-x-1 text-sm text-[#bf8c13]">
-                        <Trophy className="w-4 h-4" />
-                        <span>{userData.points} Points</span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            {/* Sidebar */}
+            <aside className="lg:col-span-3">
+              <div className="bg-white rounded-xl shadow-md overflow-hidden sticky top-0">
+                <div className="p-6 border-b">
+                  <div className="flex items-center space-x-3">
+                    {userData?.profileImage ? (
+                      <div className="relative w-12 h-12">
+                        <Image
+                          src={userData.profileImage}
+                          alt="Profile"
+                          fill
+                          sizes="48px"
+                          className="rounded-full border-2 border-[#07705d] object-cover"
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-12 h-12 bg-gradient-to-br from-[#07705d] to-[#bf8c13] rounded-full flex items-center justify-center">
+                        <User className="w-6 h-6 text-white" />
                       </div>
                     )}
+                    <div>
+                      <h2 className="text-base font-bold text-[#07705d]">
+                        {userData?.firstName} {userData?.lastName}
+                      </h2>
+                      {userData?.points && (
+                        <div className="flex items-center space-x-1 text-xs text-[#bf8c13]">
+                          <Trophy className="w-3 h-3" />
+                          <span>{userData.points} Points</span>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <button
-                onClick={handleLogout}
-                className="flex items-center space-x-2 px-4 py-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
-              >
-                <LogOut className="w-4 h-4" />
-                <span className="font-medium">Logout</span>
-              </button>
-            </div>
+                <nav className="p-2">
+                  {tabs.map((tab) => {
+                    const Icon = tab.icon;
+                    const isActive = activeTab === tab.id;
+                    return (
+                      <button
+                        key={tab.id}
+                        onClick={() =>
+                          handleTabSelect(tab.id, (tab as any).href)
+                        }
+                        className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-sm transition-colors ${
+                          isActive
+                            ? "bg-[#07705d]/10 text-[#07705d]"
+                            : "text-gray-600 hover:bg-gray-50"
+                        }`}
+                        aria-current={isActive ? "page" : undefined}
+                      >
+                        <Icon className="w-4 h-4" />
+                        <span>{tab.label}</span>
+                      </button>
+                    );
+                  })}
 
-            <div className="border-t border-gray-200/50">
-              <nav className="flex space-x-8 overflow-x-auto">
-                {tabs.map((tab) => {
-                  const Icon = tab.icon;
-                  return (
+                  <div className="px-2 pt-2">
                     <button
-                      key={tab.id}
-                      onClick={() => handleTabSelect(tab.id)}
-                      className={`flex items-center space-x-2 py-4 px-2 border-b-2 font-medium text-sm whitespace-nowrap transition-colors ${
-                        activeTab === tab.id
-                          ? "border-[#07705d] text-[#07705d]"
-                          : "border-transparent text-gray-500 hover:text-[#bf8c13] hover:border-[#bf8c13]"
-                      }`}
+                      onClick={handleLogout}
+                      className="w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-sm text-red-600 hover:bg-red-50"
                     >
-                      <Icon className="w-4 h-4" />
-                      <span>{tab.label}</span>
+                      <LogOut className="w-4 h-4" />
+                      <span>Logout</span>
                     </button>
-                  );
-                })}
-              </nav>
-            </div>
-          </div>
-        </div>
+                  </div>
+                </nav>
+              </div>
+            </aside>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="relative">
-            {activeTab === "profile" ? (
-              <ProfileTab
-                userData={userData}
-                onUserDataUpdate={handleUserDataUpdate}
-              />
-            ) : (
-              children
-            )}
+            {/* Main content */}
+            <section className="lg:col-span-9">
+              <div className="relative">
+                {activeTab === "profile" ? (
+                  <ProfileTab
+                    userData={userData}
+                    onUserDataUpdate={handleUserDataUpdate}
+                  />
+                ) : (
+                  children
+                )}
+              </div>
+            </section>
           </div>
         </div>
       </div>
