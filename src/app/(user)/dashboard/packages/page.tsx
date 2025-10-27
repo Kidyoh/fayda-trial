@@ -143,7 +143,7 @@ export default function PackagesPage() {
               collections
             </p>
             <Link
-              href="/explore"
+              href="/packages"
               className="inline-flex items-center space-x-2 px-6 py-3 bg-[#07705d] text-white rounded-lg hover:bg-[#07705d]/90 transition-colors"
             >
               <ShoppingCart className="w-4 h-4" />

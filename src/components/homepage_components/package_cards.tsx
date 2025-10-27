@@ -271,7 +271,7 @@ export default function PackageCards() {
         </div>
       ) : (
         <div className="text-center mt-12">
-          <Link href="/search">
+          <Link href="/packages">
             <button className="bg-primaryColor backdrop-blur-sm text-white font-bold py-4 px-8 rounded-2xl border-2 transition-all duration-300 hover:scale-105">
               View All Packages
             </button>

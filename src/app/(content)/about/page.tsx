@@ -151,7 +151,7 @@ export default function AboutUs() {
                 Join us in building a brighter future through knowledge.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/explore_packages">
+                <Link href="/packages">
                   <button
                     className="inline-flex items-center px-8 py-4 text-[#07705d] bg-white rounded-2xl font-semibold hover:bg-gray-100 transition-all duration-300 hover:scale-105"
                     aria-label="Start learning with our courses"
@@ -554,7 +554,7 @@ export default function AboutUs() {
               transforming their lives through education at Fayida Academy.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <Link href="/explore_packages">
+              <Link href="/packages">
                 <button
                   className="inline-flex items-center px-8 py-4 text-[#07705d] bg-white rounded-2xl font-semibold hover:bg-gray-100 transition-all duration-300 hover:scale-105"
                   aria-label="Explore our course catalog"
