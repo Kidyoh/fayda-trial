@@ -31,7 +31,13 @@ export default function CourseList2() {
         );
 
         const jsonData = await response.json();
-        setCoursesList(jsonData);
+        // Ensure coursesList is always an array
+        const coursesArray = Array.isArray(jsonData)
+          ? jsonData
+          : jsonData?.data
+            ? jsonData.data
+            : [];
+        setCoursesList(coursesArray);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -53,12 +59,12 @@ export default function CourseList2() {
     return (completedMaterials * 100) / course?.Courses?.materials?.length;
   };
 
-  const activeCourses = coursesList?.filter(
-    (course) => getProgress(course) < 100,
-  );
-  const completedCourses = coursesList?.filter(
-    (course) => getProgress(course) === 100,
-  );
+  const activeCourses = Array.isArray(coursesList)
+    ? coursesList.filter((course) => getProgress(course) < 100)
+    : [];
+  const completedCourses = Array.isArray(coursesList)
+    ? coursesList.filter((course) => getProgress(course) === 100)
+    : [];
 
   const filters = [
     { id: "active", label: "In Progress", count: activeCourses?.length || 0 },

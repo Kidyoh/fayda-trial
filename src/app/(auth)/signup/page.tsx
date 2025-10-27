@@ -127,7 +127,7 @@ export default function SignUp() {
                 <div className="space-y-4">
                   <div className="flex items-center">
                     <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center mr-3">
-                      <Check size={16} className="text-white" />
+                      <Check size={16} clgassName="text-white" />
                     </div>
                     <span>Access to premium courses</span>
                   </div>

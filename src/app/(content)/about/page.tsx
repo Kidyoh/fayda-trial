@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import React from "react";
+import Image from "next/image";
 import {
   BookOpen,
   Users,
@@ -151,13 +152,19 @@ export default function AboutUs() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/explore_packages">
-                  <button className="inline-flex items-center px-8 py-4 text-[#07705d] bg-white rounded-2xl font-semibold hover:bg-gray-100 transition-all duration-300 hover:scale-105">
+                  <button
+                    className="inline-flex items-center px-8 py-4 text-[#07705d] bg-white rounded-2xl font-semibold hover:bg-gray-100 transition-all duration-300 hover:scale-105"
+                    aria-label="Start learning with our courses"
+                  >
                     Start Learning
                     <ArrowRight className="ml-2 w-5 h-5" />
                   </button>
                 </Link>
                 <Link href="/contact">
-                  <button className="inline-flex items-center px-8 py-4 text-white border-2 border-white rounded-2xl font-semibold hover:bg-white hover:text-[#07705d] transition-all duration-300">
+                  <button
+                    className="inline-flex items-center px-8 py-4 text-white border-2 border-white rounded-2xl font-semibold hover:bg-white hover:text-[#07705d] transition-all duration-300"
+                    aria-label="Contact us for more information"
+                  >
                     Contact Us
                   </button>
                 </Link>
@@ -548,13 +555,19 @@ export default function AboutUs() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <Link href="/explore_packages">
-                <button className="inline-flex items-center px-8 py-4 text-[#07705d] bg-white rounded-2xl font-semibold hover:bg-gray-100 transition-all duration-300 hover:scale-105">
+                <button
+                  className="inline-flex items-center px-8 py-4 text-[#07705d] bg-white rounded-2xl font-semibold hover:bg-gray-100 transition-all duration-300 hover:scale-105"
+                  aria-label="Explore our course catalog"
+                >
                   Explore Our Courses
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </button>
               </Link>
               <Link href="/signup">
-                <button className="inline-flex items-center px-8 py-4 text-white border-2 border-white rounded-2xl font-semibold hover:bg-white hover:text-[#07705d] transition-all duration-300">
+                <button
+                  className="inline-flex items-center px-8 py-4 text-white border-2 border-white rounded-2xl font-semibold hover:bg-white hover:text-[#07705d] transition-all duration-300"
+                  aria-label="Start your free trial"
+                >
                   Start Free Trial
                   <Star className="ml-2 w-5 h-5" />
                 </button>

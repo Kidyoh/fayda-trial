@@ -10,24 +10,41 @@ import {
 
 interface StatsGridProps {
   userData: {
-    age: string;
-    email: string;
-    schoolName: string;
-    city: string;
-    region: string;
-    gread: string;
-    phoneNumber: string;
-    points: number;
-  };
+    age?: string;
+    email?: string;
+    schoolName?: string;
+    city?: string;
+    region?: string;
+    gread?: string;
+    phoneNumber?: string;
+    points?: number;
+  } | null;
 }
 
 export default function StatsGrid({ userData }: StatsGridProps) {
+  // Debug: Log the userData to see what we're receiving
+  console.log("StatsGrid received userData:", userData);
+
+  // Return early if userData is null
+  if (!userData) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="col-span-full text-center py-8">
+          <div className="animate-pulse">
+            <div className="h-4 bg-gray-200 rounded w-1/4 mx-auto mb-4"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const stats = [
     {
       label: "Personal Info",
       items: [
-        { label: "Age", value: userData.age },
-        { label: "Email", value: userData.email },
+        { label: "Age", value: userData?.age ?? "Not provided" },
+        { label: "Email", value: userData?.email ?? "Not provided" },
       ],
       icon: <User className="w-5 h-5" />,
       bgColor: "from-[#07705d]/10 to-[#07705d]/5",
@@ -36,9 +53,9 @@ export default function StatsGrid({ userData }: StatsGridProps) {
     {
       label: "Location",
       items: [
-        { label: "School", value: userData.schoolName },
-        { label: "City", value: userData.city },
-        { label: "Region", value: userData.region },
+        { label: "School", value: userData?.schoolName ?? "Not provided" },
+        { label: "City", value: userData?.city ?? "Not provided" },
+        { label: "Region", value: userData?.region ?? "Not provided" },
       ],
       icon: <MapPin className="w-5 h-5" />,
       bgColor: "from-[#bf8c13]/10 to-[#bf8c13]/5",
@@ -46,21 +63,23 @@ export default function StatsGrid({ userData }: StatsGridProps) {
     },
     {
       label: "Academic",
-      items: [{ label: "Grade", value: userData.gread }],
+      items: [{ label: "Grade", value: userData?.gread ?? "Not provided" }],
       icon: <GraduationCap className="w-5 h-5" />,
       bgColor: "from-[#c7cc3f]/10 to-[#c7cc3f]/5",
       borderColor: "border-[#c7cc3f]/20",
     },
     {
       label: "Contact",
-      items: [{ label: "Phone", value: userData.phoneNumber }],
+      items: [
+        { label: "Phone", value: userData?.phoneNumber ?? "Not provided" },
+      ],
       icon: <Phone className="w-5 h-5" />,
       bgColor: "from-[#07705d]/10 to-[#bf8c13]/10",
       borderColor: "border-[#07705d]/20",
     },
     {
       label: "Achievement",
-      items: [{ label: "Points", value: userData.points }],
+      items: [{ label: "Points", value: userData?.points ?? 0 }],
       icon: <Sparkles className="w-5 h-5" />,
       bgColor: "from-[#bf8c13]/10 to-[#c7cc3f]/10",
       borderColor: "border-[#bf8c13]/20",

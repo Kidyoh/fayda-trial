@@ -1,7 +1,7 @@
 import React from "react";
 import { UseFormRegister, FieldErrors, UseFormTrigger } from "react-hook-form";
 import { motion } from "framer-motion";
-import { User, Calendar, School } from "lucide-react";
+import { User, Calendar, School, Phone } from "lucide-react";
 import { SignUpFormData } from "@/app/validation/signupValidation";
 import { Choice } from "@/lib/constants/signupConstants";
 
@@ -93,32 +93,72 @@ export const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({
         </div>
       </div>
 
-      <div className="space-y-2">
-        <label
-          className="text-sm font-medium text-gray-700"
-          htmlFor="grandName"
-        >
-          Grand Name <span className="text-red-500 ml-1">*</span>
-        </label>
-        <input
-          id="grandName"
-          className={`w-full px-4 py-2 border ${
-            errors.grandName ? "border-red-500" : "border-gray-300"
-          } rounded-lg focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-colors ${
-            isSubmitting ? "bg-gray-100 cursor-not-allowed" : ""
-          }`}
-          type="text"
-          placeholder="Enter your grand name"
-          disabled={isSubmitting}
-          {...register("grandName")}
-          aria-invalid={!!errors.grandName}
-          aria-describedby={errors.grandName ? "grandName-error" : undefined}
-        />
-        {errors.grandName && (
-          <p id="grandName-error" className="text-red-500 text-xs mt-1">
-            {errors.grandName.message}
-          </p>
-        )}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-2">
+          <label
+            className="text-sm font-medium text-gray-700"
+            htmlFor="grandName"
+          >
+            Grand Name <span className="text-red-500 ml-1">*</span>
+          </label>
+          <input
+            id="grandName"
+            className={`w-full px-4 py-2 border ${
+              errors.grandName ? "border-red-500" : "border-gray-300"
+            } rounded-lg focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-colors ${
+              isSubmitting ? "bg-gray-100 cursor-not-allowed" : ""
+            }`}
+            type="text"
+            placeholder="Enter your grand name"
+            disabled={isSubmitting}
+            {...register("grandName")}
+            aria-invalid={!!errors.grandName}
+            aria-describedby={errors.grandName ? "grandName-error" : undefined}
+          />
+          {errors.grandName && (
+            <p id="grandName-error" className="text-red-500 text-xs mt-1">
+              {errors.grandName.message}
+            </p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <label
+            className="text-sm font-medium text-gray-700 flex items-center"
+            htmlFor="phoneNumber"
+          >
+            <Phone size={16} className="mr-2 text-primaryColor" />
+            Phone Number <span className="text-red-500 ml-1">*</span>
+          </label>
+          <div className="flex">
+            <span className="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
+              +251
+            </span>
+            <input
+              id="phoneNumber"
+              className={`flex-1 px-4 py-2 border ${
+                errors.phoneNumber ? "border-red-500" : "border-gray-300"
+              } rounded-r-lg focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-colors ${
+                isSubmitting ? "bg-gray-100 cursor-not-allowed" : ""
+              }`}
+              type="tel"
+              placeholder="9xxxxxxxx or 7xxxxxxxx"
+              maxLength={9}
+              pattern="[97][0-9]{8}"
+              disabled={isSubmitting}
+              {...register("phoneNumber")}
+              aria-invalid={!!errors.phoneNumber}
+              aria-describedby={
+                errors.phoneNumber ? "phoneNumber-error" : undefined
+              }
+            />
+          </div>
+          {errors.phoneNumber && (
+            <p id="phoneNumber-error" className="text-red-500 text-xs mt-1">
+              {errors.phoneNumber.message}
+            </p>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -196,6 +236,7 @@ export const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({
               "firstName",
               "lastName",
               "grandName",
+              "phoneNumber",
               "age",
               "grade",
             ]);

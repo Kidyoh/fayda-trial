@@ -70,7 +70,7 @@ export default function LoginPage() {
         description: "Login successful. Redirecting...",
       });
 
-      window.location.href = "/";
+      window.location.href = "/dashboard";
     } catch (error) {
       setError("root", {
         type: "manual",

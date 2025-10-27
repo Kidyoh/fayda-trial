@@ -1,27 +1,19 @@
-"use client";
 import AdSlider from "@/components/homepage_components/ad-slider";
 import Blog from "@/components/homepage_components/blog";
 import CourseGrid from "@/components/homepage_components/courses";
 import CoverHome from "@/components/homepage_components/cover_home";
-import Info from "@/components/homepage_components/info";
 import Marquee from "@/components/homepage_components/marquee";
 import PackageCards from "@/components/homepage_components/package_cards";
 import PackageDiscountSlider from "@/components/homepage_components/package_discount_slider";
 import Testimonials from "@/components/homepage_components/testimony";
 import WelcomeSection from "@/components/homepage_components/welcomesection";
 import WhatWeOffer from "@/components/homepage_components/what_we_offer";
-import { useLanguage } from "@/lib/language-context";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 
 export default function Home() {
-  const { t } = useLanguage();
-  const date = new Date().toLocaleDateString();
-
   return (
     <>
       <CoverHome />
-      <Info />
       <WelcomeSection />
       <AdSlider />
       <div className="relative overflow-hidden">

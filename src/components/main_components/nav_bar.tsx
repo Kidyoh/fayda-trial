@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 //import Cookies from "js-cookie";
 import { apiUrl } from "@/apiConfig";
 import {
-  Bell,
   UserCircle,
   User,
   LogOut,
@@ -12,7 +11,6 @@ import {
   AlignLeft,
   X,
   Settings,
-  Search,
 } from "lucide-react";
 import {
   Popover,
@@ -38,7 +36,6 @@ import {
   NavigationMenuTrigger,
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
-import ExploreNavigation from "./drawer_components/explore_navigation";
 import useFetchStore from "../../app/store/fetchStore";
 import NavBarMobile from "./nav_bar_mobile";
 
@@ -55,45 +52,31 @@ export default function NavBar(response3: any) {
   const routerPathname = usePathname();
 
   const [data, setData] = useState(null);
-  const [notificationData, setNotificationData] = useState(null);
-  const [notificationNumber, setNotificationNumber] = useState(0);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const [userName, setUserName] = useState("");
-  const [activeMenu, setActiveMenu] = useState("Home");
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-
-  //const accessToken = localStorage.getItem("accessToken");
   const accessToken = getAccessToken();
-  const setSearchQuery = useFetchStore((state) => state.setSearchQuery);
 
-  const handleSearch = async () => {
-    setSearchQuery(searchTerm);
-  };
-
-  // useEffect(() => {
-  //   fetch(`${apiUrl}/login_register/profile`, {
-  //     credentials: "include",
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setData(data.message);
-  //       setLoading(false);
-  //       setUserName(data.firstName + " " + data.lastName);
-  //       console.log("message: " + data);
-  //     });
-  // }, []);
-
+  // Check authentication status based on token presence
   useEffect(() => {
-    //const accessToken = localStorage.getItem("accessToken");
-    //const accessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxNmQzMDUwLTI5MTYtNDQ3YS04OGEyLWM0MzE2Y2U0YTJhMSIsImlhdCI6MTczMTMyMDkxM30.QSm1qpDlJMI8XrvW4snH5nm-bzSsppZk4RZ_fxlzmII'
-    console.log("AccessToken: " + accessToken);
+    const token = getAccessToken();
+
+    // If no token, user is not authenticated
+    // Just set the state, no API call needed for unauthenticated users
+    if (!token || token === "0") {
+      setIsAuthenticated(false);
+      setLoading(false);
+      return;
+    }
+
+    // User has a token, verify it's valid by fetching profile
+    // This determines if we show "Login/Signup" or "Dashboard" button
     fetch(`${apiUrl}/newlogin/profile`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
+        Authorization: `Bearer ${token}`,
       },
     })
       .then((res) => {
@@ -104,110 +87,17 @@ export default function NavBar(response3: any) {
       })
       .then((data) => {
         setData(data.id);
+        setIsAuthenticated(true);
         setLoading(false);
         setUserName(data.firstName + " " + data.lastName);
-        console.log("message:", data);
+        console.log("Profile fetched:", data);
       })
       .catch((error) => {
         console.error("Error fetching profile:", error);
+        setIsAuthenticated(false);
+        setLoading(false);
       });
-  }, []);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get(`${apiUrl}/login_register/profile`, {
-  //         withCredentials: true, // Equivalent to "credentials: 'include'"
-  //       });
-  //       const data = response.data;
-
-  //       setData(data.message);
-  //       setLoading(false);
-  //       setUserName(data.firstName + " " + data.lastName);
-  //       console.log("message:", data);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //       // Handle errors appropriately, e.g., display an error message to the user
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
-  // useEffect(() => {
-  //   fetch(`${apiUrl}/notifications/count/`, {
-  //     credentials: "include",
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setNotificationData(data.message);
-  //       //  setLoading(false);
-  //       var countx = 0;
-  //       if (data.error != "not authenticated") {
-  //         countx = Object.keys(data).length;
-  //       }
-
-  //       setNotificationNumber(countx);
-  //       console.log("message2: " + data.error);
-  //     });
-  // }, []);
-  useEffect(() => {
-    // const accessToken = getAccessToken();
-
-    fetch(`${apiUrl}/notifications/count/`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`, // Include the accessToken in the Authorization header
-      },
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to fetch notifications");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setNotificationData(data.message);
-
-        let countx = 0;
-        if (data.error !== "not authenticated") {
-          countx = Object.keys(data).length;
-        }
-
-        setNotificationNumber(countx);
-        console.log("message2:", data.error);
-      })
-      .catch((error) => {
-        console.error("Error fetching notifications:", error);
-      });
-  }, []);
-  // useEffect(() => {
-  //   const fetchNotificationCount = async () => {
-  //     try {
-  //       const response = await axios.get(`${apiUrl}/notifications/count/`, {
-  //         withCredentials: true, // Equivalent to "credentials: 'include'"
-  //       });
-  //       const data = response.data;
-
-  //       if (data.error === "not authenticated") {
-  //         // Handle authentication error (e.g., redirect to login page)
-  //         console.error("Authentication error:", data.error);
-  //         return; // Exit early in case of authentication error
-  //       }
-
-  //       const notificationCount = Object.keys(data).length; // Calculate count dynamically
-  //       setNotificationData(data.message); // Assuming this refers to data other than count
-  //       setNotificationNumber(notificationCount);
-  //       console.log("message2:", data.error); // Log error message or remove if not needed
-  //     } catch (error) {
-  //       console.error("Error fetching notification count:", error);
-  //       // Handle other errors appropriately (e.g., display an error message to the user)
-  //     }
-  //   };
-
-  //   fetchNotificationCount();
-  // }, []);
+  }, []); // Empty dependency array - only run once on mount
 
   return (
     <>
@@ -236,49 +126,63 @@ export default function NavBar(response3: any) {
                   </h1>
                 </Link>
 
-                <div className="relative">
-                  <NavigationMenu>
-                    <NavigationMenuList>
-                      <NavigationMenuItem>
-                        <NavigationMenuTrigger className="bg-transparent hover:bg-transparent focus:bg-transparent">
-                          <h1 className="text-sm font-medium text-gray-600 hover:text-primaryColor transition-colors duration-200">
-                            Explore
-                          </h1>
-                        </NavigationMenuTrigger>
-                        <NavigationMenuContent>
-                          <ExploreNavigation />
-                        </NavigationMenuContent>
-                      </NavigationMenuItem>
-                    </NavigationMenuList>
-                  </NavigationMenu>
-                </div>
+                <Link href="/packages">
+                  <h1
+                    className={`text-sm font-medium transition-colors duration-200 ${
+                      routerPathname === "/packages"
+                        ? "text-primaryColor"
+                        : "text-gray-600 hover:text-primaryColor"
+                    }`}
+                  >
+                    Packages
+                  </h1>
+                </Link>
+
+                <Link href="/#courses">
+                  <h1 className="text-sm font-medium transition-colors duration-200 text-gray-600 hover:text-primaryColor">
+                    Courses
+                  </h1>
+                </Link>
+
+                <Link href={"/blogs"}>
+                  <h1
+                    className={`text-sm font-medium transition-colors duration-200 ${
+                      routerPathname === "/blogs"
+                        ? "text-primaryColor"
+                        : "text-gray-600 hover:text-primaryColor"
+                    }`}
+                  >
+                    Blogs
+                  </h1>
+                </Link>
+
+                <Link href={"/about"}>
+                  <h1
+                    className={`text-sm font-medium transition-colors duration-200 ${
+                      routerPathname === "/about"
+                        ? "text-primaryColor"
+                        : "text-gray-600 hover:text-primaryColor"
+                    }`}
+                  >
+                    About
+                  </h1>
+                </Link>
+
+                <Link href={"/bot"}>
+                  <h1
+                    className={`text-sm font-medium transition-colors duration-200 ${
+                      routerPathname === "/bot"
+                        ? "text-primaryColor"
+                        : "text-gray-600 hover:text-primaryColor"
+                    }`}
+                  >
+                    Telegram Bot
+                  </h1>
+                </Link>
               </div>
             </div>
 
             <div className="flex items-center space-x-2 md:space-x-4">
-              <div className="relative">
-                <div className="flex items-center">
-                  <input
-                    type="text"
-                    id="search"
-                    className="w-32 sm:w-40 md:w-48 lg:w-56 pl-3 pr-8 py-1.5 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor text-sm transition-all duration-200"
-                    placeholder="Search..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    onKeyPress={(e) => {
-                      if (e.key === "Enter") {
-                        handleSearch();
-                      }
-                    }}
-                  />
-                  <Link href={"/search"} onClick={() => handleSearch()}>
-                    <div className="absolute right-1.5 top-1/2 -translate-y-1/2 bg-primaryColor text-white p-1 rounded-full hover:bg-primaryColor/90 transition-colors duration-200">
-                      <Search size={14} />
-                    </div>
-                  </Link>
-                </div>
-              </div>
-
               <div className="flex items-center space-x-1 md:space-x-3">
                 <div className="hidden sm:block">
                   <TranslateButton />
@@ -287,18 +191,7 @@ export default function NavBar(response3: any) {
                 {/* Cart Icon */}
                 <CartIcon />
 
-                <Link href={"/notifications"} className="relative">
-                  <div className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200">
-                    <Bell className="w-5 h-5 text-gray-600" />
-                    {notificationNumber !== 0 && (
-                      <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                        {notificationNumber}
-                      </div>
-                    )}
-                  </div>
-                </Link>
-
-                {data == null ? (
+                {!isAuthenticated ? (
                   <div className="flex items-center space-x-2 md:space-x-3">
                     <Link href={"/login"}>
                       <button className="px-3 md:px-4 py-2 text-xs md:text-sm font-medium text-primaryColor border border-primaryColor rounded-full hover:bg-primaryColor/5 transition-colors duration-200">
@@ -327,7 +220,10 @@ export default function NavBar(response3: any) {
       </div>
 
       <div className="block xxmd:hidden fixed w-full z-50">
-        <NavBarMobile data={data} notificationNumber={notificationNumber} />
+        <NavBarMobile
+          data={isAuthenticated ? data : null}
+          notificationNumber={0}
+        />
       </div>
 
       {/* Cart Drawer */}

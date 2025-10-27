@@ -15,6 +15,16 @@ const ageSchema = z
     return age >= 13 && age <= 100;
   }, "Age must be between 13 and 100");
 
+// Phone number validation
+const phoneNumberSchema = z
+  .string()
+  .min(1, "Phone number is required")
+  .refine((val) => {
+    // User enters only 9 digits starting with 9 or 7, we'll prepend +251
+    const phoneRegex = /^[97][0-9]{8}$/;
+    return phoneRegex.test(val);
+  }, "Please enter a valid 9-digit phone number starting with 9 or 7");
+
 export const signUpInfoSchema = z
   .object({
     firstName: z
@@ -29,6 +39,7 @@ export const signUpInfoSchema = z
       .string()
       .min(1, "Grand Name is required")
       .max(50, "Grand name is too long"),
+    phoneNumber: phoneNumberSchema,
     email: z.string().email("Please enter a valid email address"),
     password: passwordSchema,
     confirmPassword: z.string(),

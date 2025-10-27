@@ -16,8 +16,8 @@ import { ShoppingCart, CreditCard, Phone } from "lucide-react";
 import {
   createCoursePurchase,
   initiateCoursePayment,
-  formatEthiopianPhoneNumber,
-} from "../../lib/courseAPI";
+} from "../../lib/api/purchase.api";
+import { formatEthiopianPhoneNumber } from "../../lib/api/utils";
 
 interface CoursePurchaseDialogProps {
   courseId: string;
@@ -46,8 +46,16 @@ export function CoursePurchaseDialog({
   const accessToken = getAccessToken();
   const { push } = useRouter();
 
-  // Calculate the final price
-  const finalPrice = discountStatus && temporaryPrice ? temporaryPrice : price;
+  // Calculate the final price - extract numeric value from formatted string
+  const extractNumericPrice = (priceStr: string) => {
+    const numericStr = priceStr.replace(/[^\d.]/g, "");
+    return parseFloat(numericStr) || 0;
+  };
+
+  const finalPrice =
+    discountStatus && temporaryPrice
+      ? extractNumericPrice(temporaryPrice)
+      : extractNumericPrice(price);
 
   const handlePurchase = async () => {
     if (!phoneNumber) {
@@ -117,9 +125,14 @@ export function CoursePurchaseDialog({
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <button className="w-full bg-gradient-to-r from-[#07705d] to-[#bf8c13] hover:from-[#07705d]/90 hover:to-[#bf8c13]/90 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 shadow-lg">
-          <ShoppingCart className="h-5 w-5" />
-          Enroll Now - {finalPrice} Birr
+        <button className="w-full h-12 bg-gradient-to-r from-[#07705d] to-[#bf8c13] hover:from-[#07705d]/90 hover:to-[#bf8c13]/90 text-white font-semibold rounded-lg transition-all duration-200 flex items-center justify-center gap-2 shadow-lg hover:scale-105 text-sm">
+          <ShoppingCart className="h-4 w-4" />
+          Enroll Now -{" "}
+          {finalPrice.toLocaleString("en-ET", {
+            style: "currency",
+            currency: "ETB",
+            minimumFractionDigits: 0,
+          })}
         </button>
       </AlertDialogTrigger>
 

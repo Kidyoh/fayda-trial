@@ -13,7 +13,8 @@ import {
   Star,
   CheckCircle,
 } from "lucide-react";
-import { getPublicCourse, Course, getDisplayPrice } from "@/lib/courseAPI";
+import { fetchPublicCourse, getFormattedPrice } from "@/lib/api/course.api";
+import { Course } from "@/lib/api/types";
 import { CoursePurchaseDialog } from "@/components/custom_components/coursePurchaseDialog";
 import { CourseAddToCartButton } from "@/components/cart/AddToCartButton";
 
@@ -31,7 +32,7 @@ export default function CourseDetailPage() {
         setLoading(true);
         setError(null);
 
-        const courseData = await getPublicCourse(courseId);
+        const courseData = await fetchPublicCourse(courseId);
         setCourse(courseData);
       } catch (err) {
         console.error("Error fetching course:", err);
@@ -108,7 +109,7 @@ export default function CourseDetailPage() {
     );
   }
 
-  const priceInfo = getDisplayPrice(course);
+  const priceInfo = getFormattedPrice(course);
   const thumbnail = course.thumbnail || getCourseThumbnail(course);
 
   return (

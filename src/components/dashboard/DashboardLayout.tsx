@@ -33,15 +33,24 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
     const fetchProfile = async () => {
       try {
+        // Add timeout to prevent infinite loading
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
         const response = await fetch(`${apiUrl}/newlogin/profile`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
+          signal: controller.signal,
         });
 
-        if (!response.ok) throw new Error("Failed to fetch profile");
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch profile");
+        }
 
         const data = await response.json();
         setUserData(data);
@@ -49,6 +58,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       } catch (error) {
         console.error("Error fetching profile:", error);
         setIsLoading(false);
+        // If there's an error, still allow the component to render
+        setUserData(null);
       }
     };
 

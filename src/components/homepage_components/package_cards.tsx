@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
@@ -9,10 +11,14 @@ interface Package {
   id: string;
   packageName: string;
   packageDescription: string;
-  price: number;
-  imgUrl: string;
+  price: string | number;
+  imgUrl: string[];
+  thumbnail: string;
   tag: string;
   courses?: any[];
+  temporaryPrice?: string | null;
+  discountStatus?: boolean;
+  discountExpiryDate?: string | null;
 }
 
 type CardProps = {
@@ -63,9 +69,9 @@ const Card: React.FC<CardProps> = ({ package: pkg, bg, border, text }) => (
 
     {/* Package Image */}
     <div className="relative z-10 w-full h-32 mb-4 rounded-xl overflow-hidden">
-      {pkg.imgUrl ? (
+      {pkg.imgUrl && pkg.imgUrl.length > 0 ? (
         <img
-          src={pkg.imgUrl}
+          src={pkg.imgUrl[0]}
           alt={pkg.packageName}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           onError={(e) => {
@@ -91,7 +97,16 @@ const Card: React.FC<CardProps> = ({ package: pkg, bg, border, text }) => (
         {pkg.packageName}
       </div>
       <div className="text-xl font-extrabold mb-6 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-2xl">
-        {pkg.price} Birr
+        {pkg.discountStatus && pkg.temporaryPrice ? (
+          <div className="flex flex-col items-center gap-1">
+            <span className="line-through text-white/60 text-sm">
+              {pkg.price} Birr
+            </span>
+            <span>{pkg.temporaryPrice} Birr</span>
+          </div>
+        ) : (
+          <span>{pkg.price} Birr</span>
+        )}
       </div>
 
       <div className="w-full mb-6 space-y-2">
@@ -133,6 +148,7 @@ const Card: React.FC<CardProps> = ({ package: pkg, bg, border, text }) => (
 export default function PackageCards() {
   const [packages, setPackages] = useState<Package[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const hasFetched = React.useRef(false);
 
   // Define styling for each card
   const cardStyles = [
@@ -149,10 +165,16 @@ export default function PackageCards() {
   ];
 
   useEffect(() => {
+    // Prevent duplicate fetches in React Strict Mode
+    if (hasFetched.current) {
+      return;
+    }
+
     const fetchFeaturedPackages = async () => {
       try {
+        hasFetched.current = true;
         setIsLoading(true);
-        const response = await fetch(`${apiUrl}/packages/fetchPackagesall/`, {
+        const response = await fetch(`${apiUrl}/packages/public/featured`, {
           credentials: "include",
         });
 
@@ -160,13 +182,20 @@ export default function PackageCards() {
           throw new Error("Failed to fetch packages");
         }
 
-        const data = await response.json();
-        // Get first 2 packages as featured
-        const featuredPackages = data.slice(0, 2);
-        setPackages(featuredPackages);
-        console.log("Featured packages fetched:", featuredPackages);
+        const result = await response.json();
+        // Handle new response structure with success, data, and count
+        // Limit to only 2 featured packages
+        if (result.success && result.data) {
+          const featuredPackages = result.data.slice(0, 2);
+          setPackages(featuredPackages);
+          console.log("Featured packages fetched:", featuredPackages);
+        } else {
+          setPackages([]);
+          console.warn("No featured packages found");
+        }
       } catch (error) {
         console.error("Error fetching packages:", error);
+        setPackages([]);
       } finally {
         setIsLoading(false);
       }
@@ -199,7 +228,7 @@ export default function PackageCards() {
   }
 
   return (
-    <div className="pb-10 px-4">
+    <section id="packages" className="pb-10 px-4">
       <div className="max-w-4xl mx-auto relative flex flex-col items-center mb-4">
         <Image
           src="/svg/Asset 21.svg"
@@ -249,6 +278,6 @@ export default function PackageCards() {
           </Link>
         </div>
       )}
-    </div>
+    </section>
   );
 }

@@ -425,7 +425,7 @@ export function getDisplayPrice(course: Course): {
 // Example usage for integrating with existing components:
 /*
 // In a React component:
-import { createCoursePurchase, initiateCoursePayment } from './courseAPI';
+import { createCoursePurchase, initiateCoursePayment } from './api/purchase.api';
 
 const handleCoursePurchase = async (courseId: string, price: string, phoneNumber: string) => {
   try {

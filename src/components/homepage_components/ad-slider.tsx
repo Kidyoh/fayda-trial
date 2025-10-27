@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState, useRef } from "react";
 import {
   motion,
@@ -44,9 +46,17 @@ const ParallaxSlider = () => {
           credentials: "include",
         });
         const data = await response.json();
-        setAdvertisements(data || []);
-        console.log("Advertisements fetched:", data);
-        console.log("First ad image URL:", data[0]?.imgUrl);
+
+        // Ensure data is always an array
+        const adsArray = Array.isArray(data)
+          ? data
+          : data?.data && Array.isArray(data.data)
+            ? data.data
+            : [];
+
+        setAdvertisements(adsArray);
+        console.log("Advertisements fetched:", adsArray);
+        console.log("First ad image URL:", adsArray[0]?.imgUrl);
       } catch (error) {
         console.error("Error fetching advertisements:", error);
         setAdvertisements([]);
@@ -59,11 +69,13 @@ const ParallaxSlider = () => {
   }, []);
 
   useEffect(() => {
-    if (advertisements.length === 0) return;
+    // Ensure advertisements is an array
+    const safeAds = Array.isArray(advertisements) ? advertisements : [];
+    if (safeAds.length === 0) return;
 
     const startAutoPlay = () => {
       autoPlayRef.current = setInterval(() => {
-        setCurrentSlide((prev) => (prev + 1) % advertisements.length);
+        setCurrentSlide((prev) => (prev + 1) % safeAds.length);
       }, 5000);
     };
 
@@ -82,8 +94,9 @@ const ParallaxSlider = () => {
       clearInterval(autoPlayRef.current);
     }
     setTimeout(() => {
+      const safeAds = Array.isArray(advertisements) ? advertisements : [];
       autoPlayRef.current = setInterval(() => {
-        setCurrentSlide((prev) => (prev + 1) % advertisements.length);
+        setCurrentSlide((prev) => (prev + 1) % safeAds.length);
       }, 5000);
     }, 1000);
   };
@@ -101,8 +114,13 @@ const ParallaxSlider = () => {
   console.log("Rendering advertisements:", advertisements);
   console.log("First ad data:", advertisements[0]);
 
+  // Ensure advertisements is always an array
+  const safeAdvertisements = Array.isArray(advertisements)
+    ? advertisements
+    : [];
+
   // Temporary test - if no ads, show a test banner
-  if (advertisements.length === 0) {
+  if (safeAdvertisements.length === 0) {
     return (
       <div className="relative w-full h-[60vh] mb-12 overflow-hidden">
         <img

@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Toaster } from "@/components/ui/toaster";
-import NavBar from "@/components/main_components/nav_bar";
+import ConditionalNavBar from "@/components/main_components/ConditionalNavBar";
 import BackToTop from "@/components/main_components/back_to_top";
 import Footer from "@/components/main_components/footer";
 import { LanguageProvider } from "@/lib/language-context";
@@ -22,8 +22,8 @@ export default function RootLayout({
         <LanguageProvider>
           <Toaster />
 
-          {/* Header */}
-          <NavBar />
+          {/* Header - Conditional NavBar */}
+          <ConditionalNavBar />
 
           {/* Main content */}
           <main className="flex-grow w-full">{children}</main>

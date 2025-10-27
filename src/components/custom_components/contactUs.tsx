@@ -195,6 +195,7 @@ export default function ContactUs() {
                     rel="noopener noreferrer"
                     className={`w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center text-gray-600 hover:text-white ${social.color} transition-all duration-300 hover:scale-110 hover:shadow-lg`}
                     title={social.name}
+                    aria-label={`Follow us on ${social.name}`}
                   >
                     <social.icon className="w-5 h-5" />
                   </Link>
@@ -287,12 +288,14 @@ export default function ContactUs() {
             <Link
               href="/courses"
               className="inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-[#c7cc3f] to-[#bf8c13] text-white font-semibold rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-200"
+              aria-label="Browse our course catalog"
             >
               Browse Courses
             </Link>
             <Link
               href="/about"
               className="inline-flex items-center justify-center px-8 py-3 bg-white text-gray-700 font-semibold rounded-xl border-2 border-gray-200 hover:border-[#c7cc3f] hover:text-[#c7cc3f] transition-all duration-200"
+              aria-label="Learn more about Fayida Academy"
             >
               Learn More
             </Link>

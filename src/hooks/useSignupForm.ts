@@ -34,6 +34,7 @@ export const useSignupForm = (): UseSignupFormReturn => {
       firstName: "",
       lastName: "",
       grandName: "",
+      phoneNumber: "",
       email: "",
       age: "",
       password: "",
@@ -71,10 +72,17 @@ export const useSignupForm = (): UseSignupFormReturn => {
 
       try {
         // Remove fields not needed by backend and convert grade -> gread
-        const { confirmPassword, referralSource, grade, ...formData } = data;
+        const {
+          confirmPassword,
+          referralSource,
+          grade,
+          phoneNumber,
+          ...formData
+        } = data;
         const backendData = {
           ...formData,
           gread: grade, // Backend expects 'gread' field
+          phoneNumber: `+251${phoneNumber}`, // Prepend +251 to phone number
         };
 
         const response = await fetch(`${apiUrl}/auth/register`, {
@@ -100,7 +108,7 @@ export const useSignupForm = (): UseSignupFormReturn => {
             variant: "default",
           });
 
-          router.push("/");
+          router.push("/dashboard");
         } else {
           const errorMessage =
             responseData.message ||
