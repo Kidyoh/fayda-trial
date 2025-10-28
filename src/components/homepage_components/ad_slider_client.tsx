@@ -1,20 +1,31 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useMotionValue,
-  useSpring,
-} from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Image from "next/image";
-import { apiUrl } from "@/apiConfig";
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
-const ParallaxSlider = () => {
+interface Advertisement {
+  id: string;
+  title: string;
+  subtitle?: string;
+  text?: string;
+  info?: string;
+  imgUrl: string;
+}
+
+interface AdSliderClientProps {
+  advertisements: Advertisement[];
+}
+
+/**
+ * Client Component for Ad Slider
+ * Handles animations, interactions, and parallax effects
+ */
+export default function AdSliderClient({
+  advertisements,
+}: AdSliderClientProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [advertisements, setAdvertisements] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
   const autoPlayRef = useRef<NodeJS.Timeout>();
@@ -26,50 +37,12 @@ const ParallaxSlider = () => {
   });
 
   // Parallax transforms
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]);
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.2, 1, 0.8]);
-
-  // Smooth spring animations
-  const smoothBackgroundY = useSpring(backgroundY, {
-    stiffness: 400,
-    damping: 40,
-  });
   const smoothTextY = useSpring(textY, { stiffness: 400, damping: 40 });
-  const smoothScale = useSpring(scale, { stiffness: 400, damping: 40 });
 
-  // Fetch advertisements from API
+  // Setup autoplay
   useEffect(() => {
-    const fetchAdvertisements = async () => {
-      try {
-        const response = await fetch(`${apiUrl}/advertisment/displayhome`, {
-          credentials: "include",
-        });
-        const data = await response.json();
-
-        // Ensure data is always an array
-        const adsArray = Array.isArray(data)
-          ? data
-          : data?.data && Array.isArray(data.data)
-            ? data.data
-            : [];
-
-        setAdvertisements(adsArray);
-        console.log("Advertisements fetched:", adsArray);
-        console.log("First ad image URL:", adsArray[0]?.imgUrl);
-      } catch (error) {
-        console.error("Error fetching advertisements:", error);
-        setAdvertisements([]);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchAdvertisements();
-  }, []);
-
-  useEffect(() => {
-    // Ensure advertisements is an array
+    setIsLoading(false);
     const safeAds = Array.isArray(advertisements) ? advertisements : [];
     if (safeAds.length === 0) return;
 
@@ -110,27 +83,28 @@ const ParallaxSlider = () => {
     );
   }
 
-  // Debug: Log the first advertisement data
-  console.log("Rendering advertisements:", advertisements);
-  console.log("First ad data:", advertisements[0]);
-
   // Ensure advertisements is always an array
   const safeAdvertisements = Array.isArray(advertisements)
     ? advertisements
     : [];
 
-  // Temporary test - if no ads, show a test banner
+  // Fallback if no ads
   if (safeAdvertisements.length === 0) {
     return (
       <div className="relative w-full h-[60vh] mb-12 overflow-hidden">
-        <img
+        <Image
           src="/common_files/main/webbannernew.png"
-          alt="Test Banner"
+          alt="Default Banner"
+          width={1920}
+          height={1080}
           className="w-full h-full object-cover"
+          priority
         />
         <div className="absolute inset-0 bg-gradient-to-br from-green-950/80 to-black/50" />
         <div className="absolute inset-0 flex items-center justify-center">
-          <h1 className="text-white text-4xl font-bold">Test Advertisement</h1>
+          <h1 className="text-white text-4xl font-bold">
+            Welcome to Fayida Academy
+          </h1>
         </div>
       </div>
     );
@@ -154,20 +128,14 @@ const ParallaxSlider = () => {
           transition={{ duration: 1, ease: "easeInOut" }}
         >
           <motion.div className="absolute inset-0 w-full h-full">
-            <img
+            <Image
               src={ad.imgUrl || "/common_files/main/webbannernew.png"}
               alt={ad.title || "Advertisement"}
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
               onError={(e) => {
                 console.log("Image failed to load:", ad.imgUrl);
-                // Try multiple fallback images
-                if (e.currentTarget.src.includes("webbannernew.png")) {
-                  e.currentTarget.src = "/common_files/main/webbanner1.jpg";
-                } else if (e.currentTarget.src.includes("webbanner1.jpg")) {
-                  e.currentTarget.src = "/common_files/main/web banner.jpg";
-                } else {
-                  e.currentTarget.src = "/common_files/main/cover.jpg";
-                }
+                e.currentTarget.src = "/common_files/main/webbannernew.png";
               }}
             />
           </motion.div>
@@ -297,10 +265,4 @@ const ParallaxSlider = () => {
       </div>
     </div>
   );
-};
-
-const AdSlider = () => {
-  return <ParallaxSlider />;
-};
-
-export default AdSlider;
+}

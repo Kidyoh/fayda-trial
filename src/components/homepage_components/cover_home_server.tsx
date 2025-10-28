@@ -1,10 +1,13 @@
-"use client";
-
 import Image from "next/image";
+import CoverHomeClient from "./cover_home_client";
 import ScrollDown from "./scroll_down";
-import ShinyText from "../custom_components/shiny_text";
 
-export default function CoverHome() {
+/**
+ * Server Component for Cover Home Section
+ * Handles static content and images
+ * Renders the hero section of the landing page
+ */
+export default function CoverHomeServer() {
   return (
     <div className="relative min-h-screen w-full bg-[url(/Background/landing-bg.jpg)] bg-cover bg-center bg-no-repeat">
       {/* Main content wrapper */}
@@ -19,22 +22,17 @@ export default function CoverHome() {
           <div className="flex flex-col items-center text-center space-y-3 xxsm:space-y-4 sm:space-y-5 md:space-y-6 lg:space-y-8 xl:space-y-10">
             {/* Hero title with comprehensive responsive text sizing */}
             <div className="relative w-full max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto">
-              <h1 className="relative text-xl xxsm:text-2xl xsm:text-3xl sm:text-4xl ssmd:text-4xl md:text-5xl lg:text-5xl xl:text-6xl xxl:text-7xl leading-[1.05] xxsm:leading-[1.1] sm:leading-[1.15] md:leading-[1.2] text-white font-Sendako uppercase">
-                <ShinyText
-                  text="let&lsquo;s embark on this knowledge journey!"
-                  disabled={false}
-                  speed={5}
-                />
+              {/* Client-side interactive text animation */}
+              <CoverHomeClient />
 
-                {/* Responsive decoration icon */}
-                <Image
-                  src="/svg/Asset 9.svg"
-                  alt="text decoration"
-                  width={20}
-                  height={20}
-                  className="w-4 h-4 xxsm:w-5 xxsm:h-5 xsm:w-6 xsm:h-6 sm:w-8 sm:h-8 ssmd:w-10 ssmd:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 xl:w-16 xl:h-16 absolute -top-2 xxsm:-top-2.5 xsm:-top-3 sm:-top-4 ssmd:-top-5 md:-top-6 lg:-top-8 xl:-top-10 left-0 xxsm:-left-0.5 sm:-left-1 md:-left-2 lg:-left-3 xl:-left-4 pointer-events-none"
-                />
-              </h1>
+              {/* Responsive decoration icon */}
+              <Image
+                src="/svg/Asset 9.svg"
+                alt="text decoration"
+                width={20}
+                height={20}
+                className="w-4 h-4 xxsm:w-5 xxsm:h-5 xsm:w-6 xsm:h-6 sm:w-8 sm:h-8 ssmd:w-10 ssmd:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 xl:w-16 xl:h-16 absolute -top-2 xxsm:-top-2.5 xsm:-top-3 sm:-top-4 ssmd:-top-5 md:-top-6 lg:-top-8 xl:-top-10 left-0 xxsm:-left-0.5 sm:-left-1 md:-left-2 lg:-left-3 xl:-left-4 pointer-events-none"
+              />
             </div>
 
             {/* Main banner image with improved responsive sizing */}
@@ -73,7 +71,7 @@ export default function CoverHome() {
                 <div className="h-px bg-gradient-to-r from-transparent via-white/30 to-transparent flex-1"></div>
               </div>
 
-              {/* App store buttons - using the style from GetStarted component, visible on all screen sizes */}
+              {/* App store buttons */}
               <div className="flex flex-col lg:flex-row items-center justify-center gap-2 xxsm:gap-3 sm:gap-4 md:gap-5 lg:gap-6">
                 <a
                   href="https://apps.apple.com"
@@ -119,7 +117,7 @@ export default function CoverHome() {
               className="w-20 xl:w-24 object-contain"
             />
           </div>
-          <a href="#course">
+          <a href="#courses">
             <button className="bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-500 hover:to-amber-600 text-white hover:scale-105 active:scale-95 transition-all font-bold px-6 py-3 h-12 xl:h-14 text-base xl:text-lg font-Sendako rounded-full shadow-lg hover:shadow-xl">
               Learn More
             </button>
@@ -153,7 +151,7 @@ export default function CoverHome() {
         className="w-12 h-12 xxsm:w-14 xxsm:h-14 xsm:w-16 xsm:h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 xl:w-32 xl:h-32 absolute bottom-4 xxsm:bottom-6 sm:bottom-8 md:bottom-12 lg:bottom-16 xl:bottom-20 xxmd:bottom-24 z-10 right-[5%] xxsm:right-[6%] xsm:right-[7%] sm:right-[8%] md:right-[10%] lg:right-[12%] xl:right-[15%] xxmd:right-[18%]"
       />
 
-      {/* Mobile/Tablet floating buttons - positioned to avoid navbar conflicts */}
+      {/* Mobile/Tablet floating buttons */}
       <div className="xl:hidden fixed bottom-8 left-6 right-6 z-40 flex justify-between items-end pointer-events-none">
         {/* Learn More floating button */}
         <div className="pointer-events-auto">

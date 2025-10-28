@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Toaster } from "@/components/ui/toaster";
 import ConditionalNavBar from "@/components/main_components/ConditionalNavBar";
 import BackToTop from "@/components/main_components/back_to_top";
-import Footer from "@/components/main_components/footer";
+import FooterServer from "@/components/main_components/footer_server";
 import { LanguageProvider } from "@/lib/language-context";
 
 export const metadata: Metadata = {
@@ -35,7 +35,7 @@ export default function RootLayout({
 
           {/* Footer */}
           <footer className="w-full pt-11">
-            <Footer />
+            <FooterServer />
           </footer>
         </LanguageProvider>
       </body>
