@@ -6,8 +6,8 @@ export interface Competition {
   title: string;
   description: string;
   grade: "9" | "10";
-  competitionType: 'one-time' | 'tournament';
-  status: 'upcoming' | 'active' | 'completed' | 'cancelled';
+  competitionType: "one-time" | "tournament";
+  status: "upcoming" | "active" | "completed" | "cancelled";
   startDate: string;
   endDate: string;
   totalPrizes: string;
@@ -22,9 +22,13 @@ export interface CompetitionDetail extends Competition {
   exams: Exam[];
   isRegistered: boolean;
   userRegistration: UserRegistration | null;
-  buttonState: 'not_logged_in' | 'needs_package' | 'can_apply' | 'already_applied';
+  buttonState:
+    | "not_logged_in"
+    | "needs_package"
+    | "can_apply"
+    | "already_applied";
   buttonText: string;
-  buttonAction: 'login' | 'package' | 'apply' | 'dashboard';
+  buttonAction: "login" | "package" | "apply" | "dashboard";
   requiresPackage: boolean;
   packageValid: boolean;
   packageGrade: string | null;
@@ -37,7 +41,7 @@ export interface Exam {
   scheduledDateTime: string;
   duration: number; // in minutes
   totalQuestions: number;
-  status?: 'locked' | 'active' | 'completed' | 'closed';
+  status?: "locked" | "active" | "completed" | "closed";
   timeRemaining?: number; // in seconds
   countdownDisplay?: string;
   examStart?: string;
@@ -201,7 +205,7 @@ export interface ExamSection {
   duration: number;
   totalQuestions: number;
   questionCount: number;
-  status: 'locked' | 'active' | 'completed' | 'closed' | 'available';
+  status: "locked" | "active" | "completed" | "closed" | "available";
   timeRemaining: number;
   countdownDisplay: string;
   examStart: string;
@@ -223,9 +227,8 @@ export interface CompetitionEnrollment {
   studentId: string;
   enrolledAt: string;
   examId: string;
-  status: 'active' | 'completed' | 'withdrawn';
+  status: "active" | "completed" | "withdrawn";
 }
-
 
 export interface LeaderboardEntry {
   rank: number;
@@ -254,10 +257,14 @@ export interface LeaderboardResponse {
 }
 
 // Utility Types
-export type CompetitionStatus = 'upcoming' | 'active' | 'completed' | 'cancelled';
-export type CompetitionType = 'one-time' | 'tournament';
-export type Grade = '9' | '10';
-export type ExamStatus = 'locked' | 'active' | 'completed' | 'closed';
+export type CompetitionStatus =
+  | "upcoming"
+  | "active"
+  | "completed"
+  | "cancelled";
+export type CompetitionType = "one-time" | "tournament";
+export type Grade = "9" | "10";
+export type ExamStatus = "locked" | "active" | "completed" | "closed";
 
 // API Functions
 export class CompetitionAPI {
@@ -266,14 +273,14 @@ export class CompetitionAPI {
    */
   static async getCompetitions(
     params: {
-      status?: 'upcoming' | 'active' | 'completed' | 'cancelled';
-      grade?: '9' | '10';
-      type?: 'one-time' | 'tournament';
-    } = {}
+      status?: "upcoming" | "active" | "completed" | "cancelled";
+      grade?: "9" | "10";
+      type?: "one-time" | "tournament";
+    } = {},
   ): Promise<{ success: boolean; competitions: Competition[] }> {
     try {
       const queryParams = new URLSearchParams();
-      
+
       Object.entries(params).forEach(([key, value]) => {
         if (value !== undefined) {
           queryParams.append(key, value.toString());
@@ -287,7 +294,7 @@ export class CompetitionAPI {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       if (!response.ok) {
@@ -307,7 +314,7 @@ export class CompetitionAPI {
    */
   static async getCompetitionDetail(
     competitionId: string,
-    accessToken?: string
+    accessToken?: string,
   ): Promise<{ success: boolean; competition: CompetitionDetail }> {
     try {
       const headers: HeadersInit = {
@@ -318,28 +325,33 @@ export class CompetitionAPI {
         headers.Authorization = `Bearer ${accessToken}`;
       }
 
-      console.log('API: Fetching competition details for:', competitionId);
-      console.log('API: Authorization header:', accessToken ? `Bearer ${accessToken.substring(0, 20)}...` : 'No token');
-
-      const response = await fetch(
-        `${apiUrl}/competitions/${competitionId}`,
-        {
-          method: "GET",
-          headers,
-        }
+      console.log("API: Fetching competition details for:", competitionId);
+      console.log(
+        "API: Authorization header:",
+        accessToken ? `Bearer ${accessToken.substring(0, 20)}...` : "No token",
       );
 
-      console.log('API: Response status:', response.status);
-      console.log('API: Response headers:', Object.fromEntries(response.headers.entries()));
+      const response = await fetch(`${apiUrl}/competitions/${competitionId}`, {
+        method: "GET",
+        headers,
+      });
+
+      console.log("API: Response status:", response.status);
+      console.log(
+        "API: Response headers:",
+        Object.fromEntries(response.headers.entries()),
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.log('API: Error response data:', errorData);
-        throw new Error(errorData.message || "Failed to fetch competition details");
+        console.log("API: Error response data:", errorData);
+        throw new Error(
+          errorData.message || "Failed to fetch competition details",
+        );
       }
 
       const result = await response.json();
-      console.log('API: Success response data:', result);
+      console.log("API: Success response data:", result);
       return result;
     } catch (error) {
       console.error("Error fetching competition details:", error);
@@ -352,7 +364,7 @@ export class CompetitionAPI {
    */
   static async applyForCompetition(
     competitionId: string,
-    accessToken: string
+    accessToken: string,
   ): Promise<{
     success: boolean;
     message: string;
@@ -370,29 +382,40 @@ export class CompetitionAPI {
     };
   }> {
     try {
-      console.log(`Making API call to: ${apiUrl}/competitions/${competitionId}/apply`);
-      console.log(`Authorization header: Bearer ${accessToken.substring(0, 20)}...`);
-      
-      const response = await fetch(`${apiUrl}/competitions/${competitionId}/apply`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
+      console.log(
+        `Making API call to: ${apiUrl}/competitions/${competitionId}/apply`,
+      );
+      console.log(
+        `Authorization header: Bearer ${accessToken.substring(0, 20)}...`,
+      );
+
+      const response = await fetch(
+        `${apiUrl}/competitions/${competitionId}/apply`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
         },
-      });
+      );
 
       console.log(`Response status: ${response.status} ${response.statusText}`);
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ message: `HTTP ${response.status}: ${response.statusText}` }));
+        const errorData = await response.json().catch(() => ({
+          message: `HTTP ${response.status}: ${response.statusText}`,
+        }));
         console.error("API Error Response:", errorData);
-        
+
         // Return the error response instead of throwing
         return {
           success: false,
-          message: errorData.message || `Failed to apply for competition: ${response.status} ${response.statusText}`,
+          message:
+            errorData.message ||
+            `Failed to apply for competition: ${response.status} ${response.statusText}`,
           requiresPackage: errorData.requiresPackage || false,
-          grade: errorData.grade || null
+          grade: errorData.grade || null,
         };
       }
 
@@ -410,31 +433,43 @@ export class CompetitionAPI {
    */
   static async getCompetitionDashboard(
     competitionId: string,
-    accessToken: string
+    accessToken: string,
   ): Promise<{ success: boolean; data: CompetitionDashboard }> {
     try {
-      console.log(`Making API call to: ${apiUrl}/competitions/${competitionId}/dashboard`);
-      console.log(`Authorization header: Bearer ${accessToken.substring(0, 20)}...`);
-      
-      const response = await fetch(`${apiUrl}/competitions/${competitionId}/dashboard`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
+      console.log(
+        `Making API call to: ${apiUrl}/competitions/${competitionId}/dashboard`,
+      );
+      console.log(
+        `Authorization header: Bearer ${accessToken.substring(0, 20)}...`,
+      );
+
+      const response = await fetch(
+        `${apiUrl}/competitions/${competitionId}/dashboard`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
         },
-      });
+      );
 
       console.log(`Response status: ${response.status} ${response.statusText}`);
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ message: `HTTP ${response.status}: ${response.statusText}` }));
+        const errorData = await response.json().catch(() => ({
+          message: `HTTP ${response.status}: ${response.statusText}`,
+        }));
         console.error("API Error Response:", errorData);
-        throw new Error(errorData.message || `Failed to fetch competition dashboard: ${response.status} ${response.statusText}`);
+        throw new Error(
+          errorData.message ||
+            `Failed to fetch competition dashboard: ${response.status} ${response.statusText}`,
+        );
       }
 
       const data = await response.json();
       console.log("API Success Response:", data);
-      
+
       // Check if the response has the expected format
       if (data.success && data.data) {
         return data;
@@ -455,7 +490,7 @@ export class CompetitionAPI {
    */
   static async getExamDetails(
     examId: string,
-    accessToken: string
+    accessToken: string,
   ): Promise<{
     success: boolean;
     exam: ExamDetails;
@@ -493,33 +528,45 @@ export class CompetitionAPI {
   static async submitExamAnswers(
     examId: string,
     data: ExamSubmissionRequest,
-    accessToken: string
+    accessToken: string,
   ): Promise<ExamSubmissionResponse> {
     try {
-      console.log('API: Submitting exam answers to:', `${apiUrl}/competition-exams/${examId}/submit`);
-      console.log('API: Request data:', data);
-      console.log('API: Authorization header:', `Bearer ${accessToken.substring(0, 20)}...`);
+      console.log(
+        "API: Submitting exam answers to:",
+        `${apiUrl}/competition-exams/${examId}/submit`,
+      );
+      console.log("API: Request data:", data);
+      console.log(
+        "API: Authorization header:",
+        `Bearer ${accessToken.substring(0, 20)}...`,
+      );
 
-      const response = await fetch(`${apiUrl}/competition-exams/${examId}/submit`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
+      const response = await fetch(
+        `${apiUrl}/competition-exams/${examId}/submit`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(data),
         },
-        body: JSON.stringify(data),
-      });
+      );
 
-      console.log('API: Response status:', response.status);
-      console.log('API: Response headers:', Object.fromEntries(response.headers.entries()));
+      console.log("API: Response status:", response.status);
+      console.log(
+        "API: Response headers:",
+        Object.fromEntries(response.headers.entries()),
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.log('API: Error response data:', errorData);
+        console.log("API: Error response data:", errorData);
         throw new Error(errorData.message || "Failed to submit exam answers");
       }
 
       const result = await response.json();
-      console.log('API: Success response:', result);
+      console.log("API: Success response:", result);
       return result;
     } catch (error) {
       console.error("Error submitting exam answers:", error);
@@ -532,16 +579,19 @@ export class CompetitionAPI {
    */
   static async getExamResults(
     examId: string,
-    accessToken: string
+    accessToken: string,
   ): Promise<{ success: boolean; data: ExamResults }> {
     try {
-      const response = await fetch(`${apiUrl}/competition-exams/${examId}/results`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
+      const response = await fetch(
+        `${apiUrl}/competition-exams/${examId}/results`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
         },
-      });
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -561,11 +611,11 @@ export class CompetitionAPI {
   static async getLeaderboard(
     competitionId: string,
     limit: number = 20,
-    accessToken?: string
+    accessToken?: string,
   ): Promise<LeaderboardResponse> {
     try {
       const queryParams = new URLSearchParams();
-      queryParams.append('limit', limit.toString());
+      queryParams.append("limit", limit.toString());
 
       const headers: HeadersInit = {
         "Content-Type": "application/json",
@@ -580,7 +630,7 @@ export class CompetitionAPI {
         {
           method: "GET",
           headers,
-        }
+        },
       );
 
       if (!response.ok) {
@@ -600,23 +650,26 @@ export class CompetitionAPI {
    */
   static async checkExamAccess(
     examId: string,
-    accessToken: string
+    accessToken: string,
   ): Promise<{ success: boolean; hasAccess: boolean; message?: string }> {
     try {
-      const response = await fetch(`${apiUrl}/competition-exams/${examId}/access`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
+      const response = await fetch(
+        `${apiUrl}/competition-exams/${examId}/access`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
         },
-      });
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
         return {
           success: false,
           hasAccess: false,
-          message: errorData.message || "Failed to check exam access"
+          message: errorData.message || "Failed to check exam access",
         };
       }
 
@@ -624,47 +677,49 @@ export class CompetitionAPI {
       return {
         success: true,
         hasAccess: data.hasAccess || false,
-        message: data.message
+        message: data.message,
       };
     } catch (error) {
       console.error("Error checking exam access:", error);
       return {
         success: false,
         hasAccess: false,
-        message: "Network error checking exam access"
+        message: "Network error checking exam access",
       };
     }
   }
-
 }
 
 // Utility functions
 export function formatCompetitionDate(dateString: string): string {
   const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric'
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
   });
 }
 
 export function formatCompetitionTime(dateString: string): string {
   const date = new Date(dateString);
-  return date.toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true
+  return date.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
   });
 }
 
-export function getCompetitionStatus(startDate: string, endDate: string): CompetitionStatus {
+export function getCompetitionStatus(
+  startDate: string,
+  endDate: string,
+): CompetitionStatus {
   const now = new Date();
   const start = new Date(startDate);
   const end = new Date(endDate);
 
-  if (now < start) return 'upcoming';
-  if (now > end) return 'completed';
-  return 'active';
+  if (now < start) return "upcoming";
+  if (now > end) return "completed";
+  return "active";
 }
 
 export function calculateTimeRemaining(targetDate: string): {
@@ -683,7 +738,9 @@ export function calculateTimeRemaining(targetDate: string): {
   }
 
   const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const hours = Math.floor(
+    (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+  );
   const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
@@ -708,28 +765,20 @@ export function formatDuration(seconds: number): string {
 export function handleApiError(error: any): string {
   if (error.response) {
     const { status, data } = error.response;
-    
+
     switch (status) {
       case 401:
-        return 'Please log in to continue';
+        return "Please log in to continue";
       case 403:
-        return 'Access denied. Please check your permissions';
+        return "Access denied. Please check your permissions";
       case 404:
-        return 'Competition not found';
+        return "Competition not found";
       case 400:
-        return data.message || 'Invalid request';
+        return data.message || "Invalid request";
       default:
-        return 'Something went wrong. Please try again';
+        return "Something went wrong. Please try again";
     }
   } else {
-    return 'Network error. Please check your connection';
+    return "Network error. Please check your connection";
   }
 }
-
-
-
-
-
-
-
-

@@ -11,7 +11,7 @@ export default function MockPackage() {
   const [isLoading, setIsLoading] = useState(true);
 
   const setSelectedMockPackage = useSelectedMockPackageStore(
-    (state) => state.setMockPackage
+    (state) => state.setMockPackage,
   );
 
   useEffect(() => {
@@ -64,7 +64,10 @@ export default function MockPackage() {
             </div>
           ) : (
             data.map((packagex: any, index: number) => (
-              <div key={index} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+              <div
+                key={index}
+                className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden"
+              >
                 <div className="flex flex-col md:flex-row">
                   {/* Image Section */}
                   <div className="w-full md:w-1/4 p-4">
@@ -95,15 +98,22 @@ export default function MockPackage() {
                       <div className="flex items-center gap-2">
                         <Tag className="h-4 w-4 text-primaryColor" />
                         <span className="text-sm font-medium">
-                          Price: {packagex?.price == "0" ? (
+                          Price:{" "}
+                          {packagex?.price == "0" ? (
                             <span className="text-green-600">Free</span>
                           ) : packagex?.discountStatus ? (
                             <span>
-                              <span className="line-through text-gray-400">{packagex?.price}</span>{" "}
-                              <span className="text-orange-600">{packagex?.temporaryPrice}</span>
+                              <span className="line-through text-gray-400">
+                                {packagex?.price}
+                              </span>{" "}
+                              <span className="text-orange-600">
+                                {packagex?.temporaryPrice}
+                              </span>
                             </span>
                           ) : (
-                            <span className="text-primaryColor">{packagex?.price}</span>
+                            <span className="text-primaryColor">
+                              {packagex?.price}
+                            </span>
                           )}
                           <span>{" Birr"}</span>
                         </span>
@@ -112,17 +122,29 @@ export default function MockPackage() {
 
                     {/* Exam List */}
                     <div className="mb-6">
-                      <h3 className="font-medium text-gray-900 mb-2">Included Exams:</h3>
+                      <h3 className="font-medium text-gray-900 mb-2">
+                        Included Exams:
+                      </h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                         {packagex?.Exams.map((exam: any, idx: number) => (
-                          <div key={idx} className="flex items-start gap-2 text-sm">
+                          <div
+                            key={idx}
+                            className="flex items-start gap-2 text-sm"
+                          >
                             <div className="flex-shrink-0 w-5 h-5 rounded-full bg-primaryColor/10 flex items-center justify-center mt-0.5">
-                              <span className="text-primaryColor text-xs font-medium">{idx + 1}</span>
+                              <span className="text-primaryColor text-xs font-medium">
+                                {idx + 1}
+                              </span>
                             </div>
                             <div>
-                              <span className="font-medium">{exam.assesmentTitle}</span>
+                              <span className="font-medium">
+                                {exam.assesmentTitle}
+                              </span>
                               {exam.assesmentDescription && (
-                                <span className="text-gray-500"> - {exam.assesmentDescription}</span>
+                                <span className="text-gray-500">
+                                  {" "}
+                                  - {exam.assesmentDescription}
+                                </span>
                               )}
                             </div>
                           </div>
@@ -146,9 +168,7 @@ export default function MockPackage() {
                           className="inline-flex items-center justify-center bg-primaryColor text-white rounded-lg px-4 py-2 font-medium hover:bg-primaryColor/90 transition-colors"
                         >
                           Start Free Practice
-                          <CheckPhoneNumber
-                            mockPackageId={packagex.id}
-                          />
+                          <CheckPhoneNumber mockPackageId={packagex.id} />
                         </button>
                       )}
                     </div>
@@ -163,8 +183,12 @@ export default function MockPackage() {
               <div className="mx-auto w-16 h-16 flex items-center justify-center rounded-full bg-gray-100 mb-4">
                 <BookOpen className="h-8 w-8 text-gray-400" />
               </div>
-              <h3 className="text-xl font-medium text-gray-900 mb-2">No Mock Packages Available</h3>
-              <p className="text-gray-500">Check back later for new mock exam packages.</p>
+              <h3 className="text-xl font-medium text-gray-900 mb-2">
+                No Mock Packages Available
+              </h3>
+              <p className="text-gray-500">
+                Check back later for new mock exam packages.
+              </p>
             </div>
           )}
         </div>

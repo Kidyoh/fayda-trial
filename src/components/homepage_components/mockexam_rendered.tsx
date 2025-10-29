@@ -100,7 +100,7 @@ export default function MockExamRendered() {
                       )}
                     </div>
                   </SwiperSlide>
-                )
+                ),
             )}
           </div>
 

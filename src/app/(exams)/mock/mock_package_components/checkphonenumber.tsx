@@ -30,10 +30,10 @@ export default function CheckPhoneNumber({ mockPackageId, pushto }: any) {
   const PushTo = pushto;
   //let Stage = stage;
   const phoneNumber = useTemporaryPhonenumberStore(
-    (state) => state.phoneNumber
+    (state) => state.phoneNumber,
   );
   const setPhoneNumber = useTemporaryPhonenumberStore(
-    (state) => state.setPhoneNumber
+    (state) => state.setPhoneNumber,
   );
 
   const handleInputChange = (event: any) => {
@@ -52,7 +52,7 @@ export default function CheckPhoneNumber({ mockPackageId, pushto }: any) {
   const handleUpdate = async () => {
     try {
       fetch(
-        `${apiUrl}/mockexampackagepurchase/checkphonenumberfree/${typedPhoneNumber}`
+        `${apiUrl}/mockexampackagepurchase/checkphonenumberfree/${typedPhoneNumber}`,
       ) // Replace 'url' with your actual URL
         .then((response) => response.json()) // Wait for the response and parse JSON
         .then((data) => {

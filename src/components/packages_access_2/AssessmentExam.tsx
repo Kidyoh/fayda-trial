@@ -8,19 +8,19 @@ import {
   getAccessToken,
   clearAccessToken,
 } from "../../lib/tokenManager";
-import { 
-  Brain, 
-  Clock, 
-  AlertCircle, 
-  CheckCircle2, 
-  Timer, 
-  Flag, 
+import {
+  Brain,
+  Clock,
+  AlertCircle,
+  CheckCircle2,
+  Timer,
+  Flag,
   Save,
   Eye,
   EyeOff,
   ChevronLeft,
   ChevronRight,
-  RotateCcw
+  RotateCcw,
 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
@@ -47,7 +47,11 @@ interface Question {
   questionImageUrl?: string;
 }
 
-export default function AssessmentExam({ assessmentId, onComplete, onExit }: AssessmentExamProps) {
+export default function AssessmentExam({
+  assessmentId,
+  onComplete,
+  onExit,
+}: AssessmentExamProps) {
   const accessToken = getAccessToken();
   const [data, setData] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -56,20 +60,25 @@ export default function AssessmentExam({ assessmentId, onComplete, onExit }: Ass
   const [selectedAnswers, setSelectedAnswers] = useState<any[]>([]);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [flaggedQuestions, setFlaggedQuestions] = useState<Set<number>>(new Set());
+  const [flaggedQuestions, setFlaggedQuestions] = useState<Set<number>>(
+    new Set(),
+  );
   const [showSidebar, setShowSidebar] = useState(true);
   const [autoSaveEnabled, setAutoSaveEnabled] = useState(true);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const autoSaveIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const countNullValues = (arr: any[]): number => {
-    return arr.filter(value => value === undefined).length;
+    return arr.filter((value) => value === undefined).length;
   };
 
   const handleSubmit = async (event?: any) => {
     if (event) event.preventDefault();
-    
-    if (parseInt(totalQuestionCounts) === selectedAnswers.length && countNullValues(selectedAnswers) === 0) {
+
+    if (
+      parseInt(totalQuestionCounts) === selectedAnswers.length &&
+      countNullValues(selectedAnswers) === 0
+    ) {
       try {
         const response = await axios.post(
           `${apiUrl}/assesments/submit-answers/${assessmentId}`,
@@ -79,9 +88,9 @@ export default function AssessmentExam({ assessmentId, onComplete, onExit }: Ass
               "Content-Type": "application/json",
               Authorization: `Bearer ${accessToken}`,
             },
-          }
+          },
         );
-        
+
         const responseData = response.data;
         if (response.status === 200) {
           onComplete(responseData);
@@ -112,9 +121,9 @@ export default function AssessmentExam({ assessmentId, onComplete, onExit }: Ass
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
-        }
+        },
       );
-      
+
       if (response.status === 200) {
         onComplete(response.data);
       }
@@ -125,7 +134,7 @@ export default function AssessmentExam({ assessmentId, onComplete, onExit }: Ass
 
   const autoSave = async () => {
     if (!autoSaveEnabled) return;
-    
+
     try {
       // Auto-save logic here - you might want to implement a separate endpoint for auto-saving
       setLastSaved(new Date());
@@ -145,7 +154,7 @@ export default function AssessmentExam({ assessmentId, onComplete, onExit }: Ass
               "Content-Type": "application/json",
               Authorization: `Bearer ${accessToken}`,
             },
-          }
+          },
         );
         const jsonData = await response.json();
         console.log("Assessment data:", jsonData); // Debug log
@@ -156,7 +165,9 @@ export default function AssessmentExam({ assessmentId, onComplete, onExit }: Ass
         if (jsonData[0] && jsonData[0].question) {
           setTotalQuestionsCounts(jsonData[0].question.length.toString());
           setQuestions(jsonData[0].question);
-          setSelectedAnswers(new Array(jsonData[0].question.length).fill(undefined));
+          setSelectedAnswers(
+            new Array(jsonData[0].question.length).fill(undefined),
+          );
         }
         setIsLoading(false);
       } catch (error) {
@@ -172,7 +183,7 @@ export default function AssessmentExam({ assessmentId, onComplete, onExit }: Ass
     if (seconds <= 0) return;
 
     const timerId = setInterval(() => {
-      setSeconds(prev => {
+      setSeconds((prev) => {
         if (prev <= 1) {
           clearInterval(timerId);
           automaticSubmit();
@@ -204,7 +215,7 @@ export default function AssessmentExam({ assessmentId, onComplete, onExit }: Ass
   };
 
   const handleAnswerSelection = (questionIndex: number, answerId: string) => {
-    setSelectedAnswers(prev => {
+    setSelectedAnswers((prev) => {
       const newAnswers = [...prev];
       newAnswers[questionIndex] = answerId;
       return newAnswers;
@@ -212,7 +223,7 @@ export default function AssessmentExam({ assessmentId, onComplete, onExit }: Ass
   };
 
   const toggleFlag = (questionIndex: number) => {
-    setFlaggedQuestions(prev => {
+    setFlaggedQuestions((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(questionIndex)) {
         newSet.delete(questionIndex);
@@ -248,10 +259,14 @@ export default function AssessmentExam({ assessmentId, onComplete, onExit }: Ass
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "current": return "bg-gradient-to-r from-[#07705d] to-[#bf8c13] text-white border-[#bf8c13] shadow-md";
-      case "answered": return "bg-green-100 text-green-700 border-green-300 shadow-sm";
-      case "flagged": return "bg-yellow-100 text-yellow-700 border-yellow-300 shadow-sm";
-      default: return "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200";
+      case "current":
+        return "bg-gradient-to-r from-[#07705d] to-[#bf8c13] text-white border-[#bf8c13] shadow-md";
+      case "answered":
+        return "bg-green-100 text-green-700 border-green-300 shadow-sm";
+      case "flagged":
+        return "bg-yellow-100 text-yellow-700 border-yellow-300 shadow-sm";
+      default:
+        return "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200";
     }
   };
 
@@ -266,8 +281,11 @@ export default function AssessmentExam({ assessmentId, onComplete, onExit }: Ass
     );
   }
 
-  const answeredQuestions = selectedAnswers.filter(answer => answer !== undefined).length;
-  const progressPercentage = (answeredQuestions / parseInt(totalQuestionCounts)) * 100;
+  const answeredQuestions = selectedAnswers.filter(
+    (answer) => answer !== undefined,
+  ).length;
+  const progressPercentage =
+    (answeredQuestions / parseInt(totalQuestionCounts)) * 100;
   const currentQuestion = questions[currentQuestionIndex];
 
   return (
@@ -281,17 +299,25 @@ export default function AssessmentExam({ assessmentId, onComplete, onExit }: Ass
                 <Brain className="h-6 w-6 text-[#bf8c13]" />
                 Assessment in Progress
               </h1>
-              <Badge variant="outline" className="text-sm border-[#bf8c13]/30 text-[#07705d]">
+              <Badge
+                variant="outline"
+                className="text-sm border-[#bf8c13]/30 text-[#07705d]"
+              >
                 Question {currentQuestionIndex + 1} of {totalQuestionCounts}
               </Badge>
             </div>
-            
+
             <div className="flex items-center gap-4">
               {/* Progress */}
               <div className="flex items-center gap-3">
-                <span className="text-sm font-medium text-gray-600">Progress</span>
+                <span className="text-sm font-medium text-gray-600">
+                  Progress
+                </span>
                 <div className="w-24 md:w-32">
-                  <Progress value={progressPercentage} className="h-2 bg-gray-200" />
+                  <Progress
+                    value={progressPercentage}
+                    className="h-2 bg-gray-200"
+                  />
                 </div>
                 <span className="text-sm font-medium text-[#07705d]">
                   {answeredQuestions}/{totalQuestionCounts}
@@ -303,8 +329,12 @@ export default function AssessmentExam({ assessmentId, onComplete, onExit }: Ass
                 <div className="flex items-center gap-2">
                   <Timer className="h-5 w-5 text-red-600" />
                   <div>
-                    <p className="text-xs font-medium text-red-600">Time Remaining</p>
-                    <p className="text-xl font-bold text-red-700">{formatTime(seconds)}</p>
+                    <p className="text-xs font-medium text-red-600">
+                      Time Remaining
+                    </p>
+                    <p className="text-xl font-bold text-red-700">
+                      {formatTime(seconds)}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -323,21 +353,29 @@ export default function AssessmentExam({ assessmentId, onComplete, onExit }: Ass
 
       <div className="flex flex-col lg:flex-row gap-6 p-4 md:p-6">
         {/* Sidebar - Question Navigation */}
-        <div className={`${showSidebar ? 'w-full lg:w-80' : 'w-0'} transition-all duration-300 bg-white rounded-xl border border-[#bf8c13]/20 shadow-lg flex flex-col`}>
+        <div
+          className={`${showSidebar ? "w-full lg:w-80" : "w-0"} transition-all duration-300 bg-white rounded-xl border border-[#bf8c13]/20 shadow-lg flex flex-col`}
+        >
           <div className="p-4 border-b border-[#bf8c13]/20">
             <div className="flex items-center justify-between">
-              <h3 className="font-semibold text-[#07705d]">Question Navigation</h3>
+              <h3 className="font-semibold text-[#07705d]">
+                Question Navigation
+              </h3>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setShowSidebar(!showSidebar)}
                 className="p-1 text-[#bf8c13] hover:bg-[#bf8c13]/10"
               >
-                {showSidebar ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                {showSidebar ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
               </Button>
             </div>
           </div>
-          
+
           <ScrollArea className="flex-1 p-4">
             <div className="grid grid-cols-5 gap-2">
               {questions.map((_, index) => {
@@ -353,7 +391,7 @@ export default function AssessmentExam({ assessmentId, onComplete, onExit }: Ass
                 );
               })}
             </div>
-            
+
             <div className="mt-6 space-y-3">
               <div className="text-sm font-medium text-[#07705d]">Legend:</div>
               <div className="space-y-2 text-xs">
@@ -388,7 +426,9 @@ export default function AssessmentExam({ assessmentId, onComplete, onExit }: Ass
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-start gap-4">
                     <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-r from-[#07705d] to-[#bf8c13] flex items-center justify-center shadow-md">
-                      <span className="text-white font-bold text-lg">{currentQuestionIndex + 1}</span>
+                      <span className="text-white font-bold text-lg">
+                        {currentQuestionIndex + 1}
+                      </span>
                     </div>
                     <div className="flex-1">
                       <h3 className="text-xl font-semibold text-[#07705d] leading-relaxed">
@@ -396,19 +436,21 @@ export default function AssessmentExam({ assessmentId, onComplete, onExit }: Ass
                       </h3>
                     </div>
                   </div>
-                  
+
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => toggleFlag(currentQuestionIndex)}
                     className={`flex items-center gap-2 border-2 ${
-                      flaggedQuestions.has(currentQuestionIndex) 
-                        ? 'bg-yellow-50 border-yellow-300 text-yellow-700' 
-                        : 'border-[#bf8c13]/30 text-[#07705d] hover:bg-yellow-50'
+                      flaggedQuestions.has(currentQuestionIndex)
+                        ? "bg-yellow-50 border-yellow-300 text-yellow-700"
+                        : "border-[#bf8c13]/30 text-[#07705d] hover:bg-yellow-50"
                     }`}
                   >
                     <Flag className="h-4 w-4" />
-                    {flaggedQuestions.has(currentQuestionIndex) ? 'Flagged' : 'Flag'}
+                    {flaggedQuestions.has(currentQuestionIndex)
+                      ? "Flagged"
+                      : "Flag"}
                   </Button>
                 </div>
 
@@ -426,7 +468,9 @@ export default function AssessmentExam({ assessmentId, onComplete, onExit }: Ass
                 {/* Answer Choices */}
                 <RadioGroup
                   value={selectedAnswers[currentQuestionIndex]}
-                  onValueChange={(value) => handleAnswerSelection(currentQuestionIndex, value)}
+                  onValueChange={(value) =>
+                    handleAnswerSelection(currentQuestionIndex, value)
+                  }
                   className="space-y-4"
                 >
                   {[
@@ -435,7 +479,10 @@ export default function AssessmentExam({ assessmentId, onComplete, onExit }: Ass
                     { id: "c", text: currentQuestion?.choiseC },
                     { id: "d", text: currentQuestion?.choiseD },
                   ].map((choice) => (
-                    <div key={choice.id} className="flex items-center space-x-4 p-4 rounded-xl border-2 border-[#bf8c13]/20 hover:bg-gradient-to-r hover:from-[#c7cc3f]/5 hover:to-[#bf8c13]/5 transition-all duration-200 hover:shadow-md">
+                    <div
+                      key={choice.id}
+                      className="flex items-center space-x-4 p-4 rounded-xl border-2 border-[#bf8c13]/20 hover:bg-gradient-to-r hover:from-[#c7cc3f]/5 hover:to-[#bf8c13]/5 transition-all duration-200 hover:shadow-md"
+                    >
                       <RadioGroupItem
                         value={choice.id}
                         id={`${currentQuestion?.id}-${choice.id}`}
@@ -445,7 +492,9 @@ export default function AssessmentExam({ assessmentId, onComplete, onExit }: Ass
                         htmlFor={`${currentQuestion?.id}-${choice.id}`}
                         className="text-[#07705d] cursor-pointer flex-1 text-lg font-medium"
                       >
-                        <span className="font-bold mr-3 text-[#bf8c13]">{choice.id.toUpperCase()}.</span>
+                        <span className="font-bold mr-3 text-[#bf8c13]">
+                          {choice.id.toUpperCase()}.
+                        </span>
                         {choice.text}
                       </Label>
                     </div>
@@ -468,7 +517,7 @@ export default function AssessmentExam({ assessmentId, onComplete, onExit }: Ass
                   <ChevronLeft className="h-4 w-4" />
                   Previous
                 </Button>
-                
+
                 <Button
                   variant="outline"
                   onClick={nextQuestion}
@@ -488,7 +537,7 @@ export default function AssessmentExam({ assessmentId, onComplete, onExit }: Ass
                 >
                   Exit Assessment
                 </Button>
-                
+
                 <Button
                   onClick={() => handleSubmit()}
                   className="px-6 bg-gradient-to-r from-[#07705d] to-[#bf8c13] text-white hover:from-[#07705d]/90 hover:to-[#bf8c13]/90 flex items-center gap-2 shadow-lg hover:shadow-xl transition-all"

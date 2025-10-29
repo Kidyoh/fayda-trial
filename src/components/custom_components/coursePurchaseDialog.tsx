@@ -13,7 +13,11 @@ import { getAccessToken } from "../../lib/tokenManager";
 import { apiUrl } from "@/apiConfig";
 import { useRouter } from "next/navigation";
 import { ShoppingCart, CreditCard, Phone } from "lucide-react";
-import { createCoursePurchase, initiateCoursePayment, formatEthiopianPhoneNumber } from "../../lib/courseAPI";
+import {
+  createCoursePurchase,
+  initiateCoursePayment,
+} from "../../lib/api/purchase.api";
+import { formatEthiopianPhoneNumber } from "../../lib/api/utils";
 
 interface CoursePurchaseDialogProps {
   courseId: string;
@@ -32,18 +36,26 @@ export function CoursePurchaseDialog({
   temporaryPrice,
   discountStatus = false,
   discountExpiryDate,
-  onPurchaseSuccess
+  onPurchaseSuccess,
 }: CoursePurchaseDialogProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [open, setOpen] = useState(false);
-  
+
   const accessToken = getAccessToken();
   const { push } = useRouter();
 
-  // Calculate the final price
-  const finalPrice = discountStatus && temporaryPrice ? temporaryPrice : price;
+  // Calculate the final price - extract numeric value from formatted string
+  const extractNumericPrice = (priceStr: string) => {
+    const numericStr = priceStr.replace(/[^\d.]/g, "");
+    return parseFloat(numericStr) || 0;
+  };
+
+  const finalPrice =
+    discountStatus && temporaryPrice
+      ? extractNumericPrice(temporaryPrice)
+      : extractNumericPrice(price);
 
   const handlePurchase = async () => {
     if (!phoneNumber) {
@@ -64,20 +76,26 @@ export function CoursePurchaseDialog({
       const formattedPhoneNumber = formatEthiopianPhoneNumber(phoneNumber);
 
       // Create course purchase record using the new API
-      const purchase = await createCoursePurchase({
-        courseId,
-        price: finalPrice,
-        phoneNumber: formattedPhoneNumber,
-        paymentMethod: "santipay"
-      }, accessToken);
+      const purchase = await createCoursePurchase(
+        {
+          courseId,
+          price: finalPrice,
+          phoneNumber: formattedPhoneNumber,
+          paymentMethod: "santipay",
+        },
+        accessToken,
+      );
 
       // Initiate payment with SantiPay using the new API
-      const paymentResult = await initiateCoursePayment({
-        courseId,
-        price: finalPrice,
-        phoneNumber: formattedPhoneNumber,
-        purchaseId: purchase.id
-      }, accessToken);
+      const paymentResult = await initiateCoursePayment(
+        {
+          courseId,
+          price: finalPrice,
+          phoneNumber: formattedPhoneNumber,
+          purchaseId: purchase.id,
+        },
+        accessToken,
+      );
 
       console.log("Payment Response:", paymentResult);
 
@@ -85,17 +103,20 @@ export function CoursePurchaseDialog({
         setMessage("Payment initiated successfully. Redirecting...");
         window.location.href = paymentResult.paymentUrl;
       } else {
-        setMessage("Payment initiated successfully. Please check your phone for payment instructions.");
+        setMessage(
+          "Payment initiated successfully. Please check your phone for payment instructions.",
+        );
       }
 
       // Call success callback if provided
       if (onPurchaseSuccess) {
         onPurchaseSuccess();
       }
-
     } catch (error) {
       console.error("Error during course purchase:", error);
-      setMessage("An error occurred while processing your purchase. Please try again.");
+      setMessage(
+        "An error occurred while processing your purchase. Please try again.",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -104,12 +125,17 @@ export function CoursePurchaseDialog({
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <button className="w-full bg-gradient-to-r from-[#07705d] to-[#bf8c13] hover:from-[#07705d]/90 hover:to-[#bf8c13]/90 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 shadow-lg">
-          <ShoppingCart className="h-5 w-5" />
-          Enroll Now - {finalPrice} Birr
+        <button className="w-full h-12 bg-gradient-to-r from-[#07705d] to-[#bf8c13] hover:from-[#07705d]/90 hover:to-[#bf8c13]/90 text-white font-semibold rounded-lg transition-all duration-200 flex items-center justify-center gap-2 shadow-lg hover:scale-105 text-sm">
+          <ShoppingCart className="h-4 w-4" />
+          Enroll Now -{" "}
+          {finalPrice.toLocaleString("en-ET", {
+            style: "currency",
+            currency: "ETB",
+            minimumFractionDigits: 0,
+          })}
         </button>
       </AlertDialogTrigger>
-      
+
       <AlertDialogContent className="max-w-md">
         <AlertDialogHeader>
           <AlertDialogTitle className="text-xl font-bold text-[#07705d] flex items-center gap-2">
@@ -117,7 +143,7 @@ export function CoursePurchaseDialog({
             Purchase Course
           </AlertDialogTitle>
         </AlertDialogHeader>
-        
+
         <div className="space-y-4">
           {/* Course Info */}
           <div className="bg-gradient-to-r from-[#c7cc3f]/10 to-[#bf8c13]/10 rounded-lg p-4 border border-[#c7cc3f]/30">
@@ -125,11 +151,17 @@ export function CoursePurchaseDialog({
             <div className="flex items-center justify-between">
               {discountStatus ? (
                 <div className="flex items-center gap-2">
-                  <span className="text-gray-500 line-through text-sm">{price} Birr</span>
-                  <span className="text-xl font-bold text-[#07705d]">{temporaryPrice} Birr</span>
+                  <span className="text-gray-500 line-through text-sm">
+                    {price} Birr
+                  </span>
+                  <span className="text-xl font-bold text-[#07705d]">
+                    {temporaryPrice} Birr
+                  </span>
                 </div>
               ) : (
-                <span className="text-xl font-bold text-[#07705d]">{price} Birr</span>
+                <span className="text-xl font-bold text-[#07705d]">
+                  {price} Birr
+                </span>
               )}
               {discountStatus && discountExpiryDate && (
                 <span className="text-xs text-red-500 font-medium">
@@ -159,11 +191,13 @@ export function CoursePurchaseDialog({
 
           {/* Error Message */}
           {message && (
-            <div className={`p-3 rounded-lg text-sm ${
-              message.includes("successfully") 
-                ? "bg-green-100 text-green-700 border border-green-200"
-                : "bg-red-100 text-red-700 border border-red-200"
-            }`}>
+            <div
+              className={`p-3 rounded-lg text-sm ${
+                message.includes("successfully")
+                  ? "bg-green-100 text-green-700 border border-green-200"
+                  : "bg-red-100 text-red-700 border border-red-200"
+              }`}
+            >
               {message}
             </div>
           )}

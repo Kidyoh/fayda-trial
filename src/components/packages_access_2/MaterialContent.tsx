@@ -11,16 +11,43 @@ interface MaterialContentProps {
   studentId: string;
 }
 
-const MaterialContent: React.FC<MaterialContentProps> = ({ activeMaterialtype, activeMaterialId, studentId }) => {
-
+const MaterialContent: React.FC<MaterialContentProps> = ({
+  activeMaterialtype,
+  activeMaterialId,
+  studentId,
+}) => {
   if (activeMaterialtype === "video")
-    return <VideoDetails key={`video-${activeMaterialId}`} video_id={activeMaterialId} student_id={studentId} />;
+    return (
+      <VideoDetails
+        key={`video-${activeMaterialId}`}
+        video_id={activeMaterialId}
+        student_id={studentId}
+      />
+    );
   if (activeMaterialtype === "assessment")
-    return <AssessmentDetails key={`assessment-${activeMaterialId}`} assessment_id={activeMaterialId} student_id={studentId} />;
+    return (
+      <AssessmentDetails
+        key={`assessment-${activeMaterialId}`}
+        assessment_id={activeMaterialId}
+        student_id={studentId}
+      />
+    );
   if (activeMaterialtype === "file")
-    return <FileDetails key={`file-${activeMaterialId}`} file_id={activeMaterialId} student_id={studentId} />;
+    return (
+      <FileDetails
+        key={`file-${activeMaterialId}`}
+        file_id={activeMaterialId}
+        student_id={studentId}
+      />
+    );
   if (activeMaterialtype === "link")
-    return <LinkDetails key={`link-${activeMaterialId}`} link_id={activeMaterialId} student_id={studentId} />;
+    return (
+      <LinkDetails
+        key={`link-${activeMaterialId}`}
+        link_id={activeMaterialId}
+        student_id={studentId}
+      />
+    );
 
   return (
     <div className="flex items-center justify-center h-[500px]">
@@ -28,10 +55,18 @@ const MaterialContent: React.FC<MaterialContentProps> = ({ activeMaterialtype, a
         <div className="w-20 h-20 rounded-full bg-gradient-to-r from-[#07705d] to-[#bf8c13] flex items-center justify-center shadow-lg">
           <span className="text-white text-3xl">📖</span>
         </div>
-        <div className="text-[#07705d] font-semibold text-lg">Welcome to Your Course</div>
+        <div className="text-[#07705d] font-semibold text-lg">
+          Welcome to Your Course
+        </div>
         <div className="text-gray-600 max-w-md">
-          <p className="mb-2">Choose a lesson from the navigation menu to begin your learning journey.</p>
-          <p className="text-sm text-gray-500">Videos, assessments, and resources are organized by units and parts for easy access.</p>
+          <p className="mb-2">
+            Choose a lesson from the navigation menu to begin your learning
+            journey.
+          </p>
+          <p className="text-sm text-gray-500">
+            Videos, assessments, and resources are organized by units and parts
+            for easy access.
+          </p>
         </div>
       </div>
     </div>

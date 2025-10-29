@@ -11,7 +11,7 @@ export default function MockPackage({ params }: any) {
   const [isLoading, setIsLoading] = useState(true);
 
   const setSelectedMockPackage = useSelectedMockPackageStore(
-    (state) => state.setMockPackage
+    (state) => state.setMockPackage,
   );
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export default function MockPackage({ params }: any) {
           `${apiUrl}/mockexampackage/tostudentselectmain/${FolderName}`,
           {
             credentials: "include",
-          }
+          },
         );
 
         const jsonData = await response.json();

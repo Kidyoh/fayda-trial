@@ -9,7 +9,13 @@ import {
 } from "@/components/ui/accordion";
 import { getAccessToken } from "../../../lib/tokenManager";
 import { motion } from "framer-motion";
-import { Bell, ArrowLeft, Clock, CheckCircle2, AlertCircle } from "lucide-react";
+import {
+  Bell,
+  ArrowLeft,
+  Clock,
+  CheckCircle2,
+  AlertCircle,
+} from "lucide-react";
 import Link from "next/link";
 
 export default function Notifications() {
@@ -62,8 +68,8 @@ export default function Notifications() {
           notificationData.map((notification) =>
             notification.notiId === notificationId
               ? { ...notification, status: "1" }
-              : notification
-          )
+              : notification,
+          ),
         );
       })
       .catch((error) => {
@@ -75,12 +81,12 @@ export default function Notifications() {
   const formatDate = (timestamp: string) => {
     try {
       const date = new Date(timestamp);
-      return date.toLocaleDateString('en-US', { 
-        year: 'numeric', 
-        month: 'short', 
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
+      return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
       });
     } catch (e) {
       return "Unknown date";
@@ -107,7 +113,10 @@ export default function Notifications() {
           // Loading skeleton
           <div className="space-y-4">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-white rounded-xl border border-gray-200 p-4 animate-pulse">
+              <div
+                key={i}
+                className="bg-white rounded-xl border border-gray-200 p-4 animate-pulse"
+              >
                 <div className="flex items-center justify-between mb-2">
                   <div className="h-5 bg-gray-200 rounded w-1/3"></div>
                   <div className="h-4 bg-gray-200 rounded w-16"></div>
@@ -118,7 +127,7 @@ export default function Notifications() {
             ))}
           </div>
         ) : notificationData.length > 0 ? (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
@@ -131,30 +140,46 @@ export default function Notifications() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: index * 0.05 }}
               >
-                <div className={`bg-white rounded-xl overflow-hidden shadow-sm 
+                <div
+                  className={`bg-white rounded-xl overflow-hidden shadow-sm 
                   ${notification?.status === "0" ? "border-l-4 border-l-primaryColor" : "border border-gray-200"}`}
                 >
                   <Accordion type="single" collapsible className="w-full">
                     <AccordionItem value="item-1" className="border-none">
-                      <AccordionTrigger 
-                        onClick={() => notification?.status === "0" && handleNotificationClick(notification?.notiId)}
+                      <AccordionTrigger
+                        onClick={() =>
+                          notification?.status === "0" &&
+                          handleNotificationClick(notification?.notiId)
+                        }
                         className="px-4 py-3 hover:no-underline"
                       >
                         <div className="w-full flex items-start">
-                          <div className={`p-2 rounded-full mr-3 flex-shrink-0 
-                            ${notification?.status === "0" 
-                              ? "bg-primaryColor/10 text-primaryColor" 
-                              : "bg-gray-100 text-gray-400"}`}
+                          <div
+                            className={`p-2 rounded-full mr-3 flex-shrink-0 
+                            ${
+                              notification?.status === "0"
+                                ? "bg-primaryColor/10 text-primaryColor"
+                                : "bg-gray-100 text-gray-400"
+                            }`}
                           >
-                            {notification?.status === "0" ? <AlertCircle size={18} /> : <CheckCircle2 size={18} />}
+                            {notification?.status === "0" ? (
+                              <AlertCircle size={18} />
+                            ) : (
+                              <CheckCircle2 size={18} />
+                            )}
                           </div>
                           <div className="flex-1 text-left">
-                            <h2 className={`font-medium ${notification?.status === "0" ? "text-gray-900" : "text-gray-700"}`}>
+                            <h2
+                              className={`font-medium ${notification?.status === "0" ? "text-gray-900" : "text-gray-700"}`}
+                            >
                               {notification?.notiHead || "Notification"}
                             </h2>
                             <div className="flex items-center text-xs text-gray-500 mt-1">
                               <Clock size={12} className="mr-1" />
-                              <span>{formatDate(notification?.timestamp) || "Recent"}</span>
+                              <span>
+                                {formatDate(notification?.timestamp) ||
+                                  "Recent"}
+                              </span>
                             </div>
                           </div>
                           <div className="ml-2 flex-shrink-0">
@@ -168,7 +193,8 @@ export default function Notifications() {
                       </AccordionTrigger>
                       <AccordionContent className="px-4 pb-4 pt-0 text-gray-600">
                         <div className="pl-10 border-l border-gray-100 ml-3">
-                          {notification?.notiFull || "No additional details available."}
+                          {notification?.notiFull ||
+                            "No additional details available."}
                         </div>
                       </AccordionContent>
                     </AccordionItem>
@@ -182,9 +208,16 @@ export default function Notifications() {
             <div className="bg-gray-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
               <Bell size={24} className="text-gray-400" />
             </div>
-            <h3 className="text-xl font-medium text-gray-800 mb-2">No notifications</h3>
-            <p className="text-gray-600 mb-6">You don't have any notifications at the moment</p>
-            <Link href="/" className="inline-block px-4 py-2 bg-primaryColor text-white rounded-lg text-sm font-medium">
+            <h3 className="text-xl font-medium text-gray-800 mb-2">
+              No notifications
+            </h3>
+            <p className="text-gray-600 mb-6">
+              You don't have any notifications at the moment
+            </p>
+            <Link
+              href="/"
+              className="inline-block px-4 py-2 bg-primaryColor text-white rounded-lg text-sm font-medium"
+            >
               Go to Home
             </Link>
           </div>
@@ -193,5 +226,3 @@ export default function Notifications() {
     </div>
   );
 }
-
-

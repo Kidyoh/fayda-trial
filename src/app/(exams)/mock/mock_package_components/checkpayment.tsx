@@ -28,10 +28,10 @@ export default function CheckPayment({ mock_package_id }: any) {
   const MockPakcageId = mock_package_id;
 
   const phoneNumber = useTemporaryPhonenumberStore(
-    (state) => state.phoneNumber
+    (state) => state.phoneNumber,
   );
   const setPhoneNumber = useTemporaryPhonenumberStore(
-    (state) => state.setPhoneNumber
+    (state) => state.setPhoneNumber,
   );
   //setTypedPhoneNumber(setPhoneNumber.toString());
 
@@ -50,7 +50,7 @@ export default function CheckPayment({ mock_package_id }: any) {
   const handleUpdate = async () => {
     try {
       fetch(
-        `${apiUrl}/mockexampackagepurchase/checkpurchase/${typedPhoneNumber}/${MockPakcageId}`
+        `${apiUrl}/mockexampackagepurchase/checkpurchase/${typedPhoneNumber}/${MockPakcageId}`,
       ) // Replace 'url' with your actual URL
         .then((response) => response.json()) // Wait for the response and parse JSON
         .then((data) => {

@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { emailValidationSchema } from "../../validation/email_aloneValidation";
 import { Mail, KeyRound, ArrowRight, Check, Info } from "lucide-react";
 import { motion } from "framer-motion";
-import Link from "next/link"; 
+import Link from "next/link";
 import ChangeForgotPassword from "./reset_password";
 
 // Updated type definition to match the form data
@@ -70,7 +70,7 @@ export default function ForgotPassword() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ code, email: usedEmail }),
-        }
+        },
       );
 
       if (response.status === 201) {
@@ -96,7 +96,7 @@ export default function ForgotPassword() {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="max-w-5xl w-full mx-auto">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -107,9 +107,12 @@ export default function ForgotPassword() {
             <div className="md:col-span-2 p-8 lg:p-12">
               <div className="max-w-md mx-auto">
                 <div className="mb-8">
-                  <h2 className="text-2xl font-bold text-gray-900">Reset Your Password</h2>
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    Reset Your Password
+                  </h2>
                   <p className="text-gray-600 mt-2">
-                    Enter your email and we'll send you instructions to reset your password
+                    Enter your email and we&apos;ll send you instructions to
+                    reset your password
                   </p>
                 </div>
 
@@ -137,13 +140,15 @@ export default function ForgotPassword() {
                       <input
                         type="email"
                         className={`w-full px-4 py-2 border ${
-                          errors.email ? 'border-red-500' : 'border-gray-300'
+                          errors.email ? "border-red-500" : "border-gray-300"
                         } rounded-lg focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-colors`}
                         placeholder="Enter your email address"
                         {...register("email")}
                       />
                       {errors.email && (
-                        <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+                        <p className="text-red-500 text-xs mt-1">
+                          {errors.email.message}
+                        </p>
                       )}
                     </div>
 
@@ -214,7 +219,9 @@ export default function ForgotPassword() {
                   />
                 </div>
 
-                <h3 className="text-2xl font-bold mb-4">Remember Your Password?</h3>
+                <h3 className="text-2xl font-bold mb-4">
+                  Remember Your Password?
+                </h3>
                 <p className="mb-8 text-white/90">
                   Sign in to access your account and continue learning
                 </p>

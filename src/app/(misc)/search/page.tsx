@@ -2,15 +2,27 @@
 import { apiUrl } from "@/apiConfig";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import { Search, Filter, BookOpen as Book, ChevronRight, X, Heart, Star, Users } from "lucide-react";
+import {
+  Search,
+  Filter,
+  BookOpen as Book,
+  ChevronRight,
+  X,
+  Heart,
+  Star,
+  Users,
+} from "lucide-react";
 import useFetchStore from "../../store/fetchStore";
 import { Checkbox } from "@/components/ui/checkbox";
 
 // Create Badge component since it's missing
 const Badge = ({ children, className = "", variant = "default" }) => {
   return (
-    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${variant === "outline" ? "border " : ""
-      } ${className}`}>
+    <span
+      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+        variant === "outline" ? "border " : ""
+      } ${className}`}
+    >
       {children}
     </span>
   );
@@ -20,12 +32,11 @@ const Skeleton = ({ className = "" }) => {
   return <div className={`animate-pulse rounded ${className}`} />;
 };
 
-export default function search() {
+export default function Search() {
   const [packageData, setPackagesData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("all");
-
 
   // Filter states
   const [filters, setFilters] = useState({
@@ -37,7 +48,7 @@ export default function search() {
     computer: false,
     language: false,
     artLiterature: false,
-    other: false
+    other: false,
   });
 
   const setSearchQuery = useFetchStore((state) => state.setSearchQuery);
@@ -52,17 +63,21 @@ export default function search() {
         { id: "grade10", label: "Grade 10", tag: "Grade 10" },
         { id: "grade11", label: "Grade 11", tag: "Grade 11" },
         { id: "grade12", label: "Grade 12", tag: "Grade 12" },
-      ]
+      ],
     },
     {
       name: "Course Types",
       items: [
         { id: "computer", label: "Computer Studies", tag: "Computer" },
         { id: "language", label: "Language", tag: "Language" },
-        { id: "artLiterature", label: "Art & Literature", tag: "Art Litrature" },
+        {
+          id: "artLiterature",
+          label: "Art & Literature",
+          tag: "Art Litrature",
+        },
         { id: "other", label: "Other", tag: "Other" },
-      ]
-    }
+      ],
+    },
   ];
 
   // Popular tags that appear at the top
@@ -82,13 +97,13 @@ export default function search() {
       .then((res) => res.json())
       .then((data) => {
         // Ensure data is an array and filter out any invalid items
-        const validPackages = Array.isArray(data) 
-          ? data.filter(item => item && typeof item === 'object')
+        const validPackages = Array.isArray(data)
+          ? data.filter((item) => item && typeof item === "object")
           : [];
         setPackagesData(validPackages);
         setLoading(false);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error fetching packages:", error);
         setPackagesData([]);
         setLoading(false);
@@ -111,7 +126,7 @@ export default function search() {
         computer: false,
         language: false,
         artLiterature: false,
-        other: false
+        other: false,
       });
       setActiveTab("all");
     } else {
@@ -119,7 +134,7 @@ export default function search() {
       setFilters({
         ...filters,
         [id]: !filters[id as keyof typeof filters],
-        all: false
+        all: false,
       });
       setActiveTab(id);
     }
@@ -137,7 +152,7 @@ export default function search() {
         computer: false,
         language: false,
         artLiterature: false,
-        other: false
+        other: false,
       });
     } else {
       setFilters({
@@ -149,7 +164,7 @@ export default function search() {
         computer: id === "computer",
         language: id === "language",
         artLiterature: id === "artLiterature",
-        other: id === "other"
+        other: id === "other",
       });
     }
     setActiveTab(id);
@@ -160,7 +175,7 @@ export default function search() {
     // Check if package name includes search query (with null safety)
     const packageName = item.packageName || "";
     const searchQueryLower = searchQuery.toLowerCase();
-    
+
     if (!packageName.toLowerCase().includes(searchQueryLower)) {
       return false;
     }
@@ -173,45 +188,59 @@ export default function search() {
     // Check if any of the selected filters match the package tag (with null safety)
     const packageTag = item.tag || "";
     const tagConditions = [
-      filters.grade9 && packageTag.toLowerCase().includes("Grade 9".toLowerCase()),
-      filters.grade10 && packageTag.toLowerCase().includes("Grade 10".toLowerCase()),
-      filters.grade11 && packageTag.toLowerCase().includes("Grade 11".toLowerCase()),
-      filters.grade12 && packageTag.toLowerCase().includes("Grade 12".toLowerCase()),
-      filters.computer && packageTag.toLowerCase().includes("Computer".toLowerCase()),
-      filters.language && packageTag.toLowerCase().includes("Language".toLowerCase()),
-      filters.artLiterature && packageTag.toLowerCase().includes("Art Litrature".toLowerCase()),
+      filters.grade9 &&
+        packageTag.toLowerCase().includes("Grade 9".toLowerCase()),
+      filters.grade10 &&
+        packageTag.toLowerCase().includes("Grade 10".toLowerCase()),
+      filters.grade11 &&
+        packageTag.toLowerCase().includes("Grade 11".toLowerCase()),
+      filters.grade12 &&
+        packageTag.toLowerCase().includes("Grade 12".toLowerCase()),
+      filters.computer &&
+        packageTag.toLowerCase().includes("Computer".toLowerCase()),
+      filters.language &&
+        packageTag.toLowerCase().includes("Language".toLowerCase()),
+      filters.artLiterature &&
+        packageTag.toLowerCase().includes("Art Litrature".toLowerCase()),
       filters.other && packageTag.toLowerCase().includes("Other".toLowerCase()),
     ];
 
-    return tagConditions.some(condition => condition);
+    return tagConditions.some((condition) => condition);
   });
 
-
   const renderSkeletons = () => {
-    return Array(6).fill(0).map((_, index) => (
-      <div key={`skeleton-${index}`} className="bg-white rounded-2xl overflow-hidden shadow-lg border border-[#c7cc3f]/30">
-        <Skeleton className="h-48 w-full bg-gradient-to-r from-[#bf8c13]/20 to-[#c7cc3f]/20" />
-        <div className="p-4">
-          <Skeleton className="h-6 w-3/4 mb-2 bg-[#07705d]/20" />
-          <Skeleton className="h-4 w-1/2 mb-4 bg-[#bf8c13]/20" />
-          <div className="flex justify-between items-center">
-            <Skeleton className="h-5 w-1/3 bg-[#c7cc3f]/20" />
-            <Skeleton className="h-8 w-24 rounded-full bg-[#07705d]/20" />
+    return Array(6)
+      .fill(0)
+      .map((_, index) => (
+        <div
+          key={`skeleton-${index}`}
+          className="bg-white rounded-2xl overflow-hidden shadow-lg border border-[#c7cc3f]/30"
+        >
+          <Skeleton className="h-48 w-full bg-gradient-to-r from-[#bf8c13]/20 to-[#c7cc3f]/20" />
+          <div className="p-4">
+            <Skeleton className="h-6 w-3/4 mb-2 bg-[#07705d]/20" />
+            <Skeleton className="h-4 w-1/2 mb-4 bg-[#bf8c13]/20" />
+            <div className="flex justify-between items-center">
+              <Skeleton className="h-5 w-1/3 bg-[#c7cc3f]/20" />
+              <Skeleton className="h-8 w-24 rounded-full bg-[#07705d]/20" />
+            </div>
           </div>
         </div>
-      </div>
-    ));
+      ));
   };
 
   return (
     <div className="min-h-screen bg-white relative">
-
       {/* Hero Section */}
       <section className="relative pt-20 bg-[url(/Background/landing-bg.jpg)] bg-cover bg-center text-white pb-16 md:pt-24">
         <div className="container mx-auto px-6 z-10 relative">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl sm:text-5xl font-bold mb-6">Find Your Perfect Learning Package</h1>
-            <p className="text-xl mb-8 text-white/90">Discover courses tailored to your academic needs and interests</p>
+            <h1 className="text-4xl sm:text-5xl font-bold mb-6">
+              Find Your Perfect Learning Package
+            </h1>
+            <p className="text-xl mb-8 text-white/90">
+              Discover courses tailored to your academic needs and interests
+            </p>
 
             <div className="bg-white rounded-2xl shadow-lg p-3 flex items-center">
               <Search className="ml-3 text-[#07705d]" size={20} />
@@ -238,10 +267,11 @@ export default function search() {
             <button
               key={tag.id}
               onClick={() => handleTagClick(tag.id)}
-              className={`px-6 py-3 rounded-xl font-semibold transition-all duration-200 border shadow-sm ${activeTab === tag.id
+              className={`px-6 py-3 rounded-xl font-semibold transition-all duration-200 border shadow-sm ${
+                activeTab === tag.id
                   ? "bg-[#07705d] text-white border-[#07705d] shadow-md"
                   : "bg-white text-[#07705d] hover:bg-[#c7cc3f]/10 border-[#c7cc3f]"
-                }`}
+              }`}
             >
               {tag.label}
             </button>
@@ -254,7 +284,9 @@ export default function search() {
           {/* Mobile Filter Toggle */}
           <div className="lg:hidden flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold text-[#07705d]">
-              {loading ? "Loading packages..." : `${filteredPackages.length} packages found`}
+              {loading
+                ? "Loading packages..."
+                : `${filteredPackages.length} packages found`}
             </h2>
             <button
               onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
@@ -266,13 +298,23 @@ export default function search() {
           </div>
 
           {/* Mobile Filter Drawer */}
-          <div className={`fixed inset-0 bg-black/50 z-50 transition-opacity lg:hidden ${mobileFiltersOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-            }`}>
-            <div className={`absolute right-0 top-0 h-full bg-white w-80 transition-transform shadow-xl ${mobileFiltersOpen ? "translate-x-0" : "translate-x-full"
-              }`}>
+          <div
+            className={`fixed inset-0 bg-black/50 z-50 transition-opacity lg:hidden ${
+              mobileFiltersOpen
+                ? "opacity-100"
+                : "opacity-0 pointer-events-none"
+            }`}
+          >
+            <div
+              className={`absolute right-0 top-0 h-full bg-white w-80 transition-transform shadow-xl ${
+                mobileFiltersOpen ? "translate-x-0" : "translate-x-full"
+              }`}
+            >
               <div className="p-6">
                 <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-lg font-semibold text-[#07705d]">Filters</h3>
+                  <h3 className="text-lg font-semibold text-[#07705d]">
+                    Filters
+                  </h3>
                   <button
                     onClick={() => setMobileFiltersOpen(false)}
                     className="p-2 text-gray-500 hover:text-[#bf8c13] transition-colors"
@@ -283,18 +325,28 @@ export default function search() {
 
                 <div className="space-y-6">
                   {filterCategories.map((category, idx) => (
-                    <div key={idx} className="border-b border-[#c7cc3f]/30 pb-6 last:border-0">
-                      <h4 className="font-medium mb-4 text-[#07705d]">{category.name}</h4>
+                    <div
+                      key={idx}
+                      className="border-b border-[#c7cc3f]/30 pb-6 last:border-0"
+                    >
+                      <h4 className="font-medium mb-4 text-[#07705d]">
+                        {category.name}
+                      </h4>
                       <div className="space-y-3">
                         {category.items.map((item) => (
                           <div key={item.id} className="flex items-center">
                             <Checkbox
                               id={`mobile-${item.id}`}
                               checked={filters[item.id as keyof typeof filters]}
-                              onCheckedChange={() => handleFilterChange(item.id)}
+                              onCheckedChange={() =>
+                                handleFilterChange(item.id)
+                              }
                               className="data-[state=checked]:bg-[#07705d] data-[state=checked]:border-[#07705d]"
                             />
-                            <label htmlFor={`mobile-${item.id}`} className="ml-2 text-sm text-gray-700">
+                            <label
+                              htmlFor={`mobile-${item.id}`}
+                              className="ml-2 text-sm text-gray-700"
+                            >
                               {item.label}
                             </label>
                           </div>
@@ -317,7 +369,9 @@ export default function search() {
           {/* Desktop Sidebar Filters */}
           <div className="hidden lg:block w-64 flex-shrink-0">
             <div className="bg-white rounded-2xl p-6 shadow-lg border border-[#c7cc3f]/30 sticky top-24">
-              <h3 className="text-lg font-semibold mb-4 text-[#07705d]">Filters</h3>
+              <h3 className="text-lg font-semibold mb-4 text-[#07705d]">
+                Filters
+              </h3>
 
               <div className="space-y-6">
                 <div className="pb-4 border-b border-[#c7cc3f]/30">
@@ -328,15 +382,23 @@ export default function search() {
                       onCheckedChange={() => handleFilterChange("all")}
                       className="data-[state=checked]:bg-[#07705d] data-[state=checked]:border-[#07705d]"
                     />
-                    <label htmlFor="filter-all" className="ml-2 text-sm font-medium text-[#07705d]">
+                    <label
+                      htmlFor="filter-all"
+                      className="ml-2 text-sm font-medium text-[#07705d]"
+                    >
                       All Packages
                     </label>
                   </div>
                 </div>
 
                 {filterCategories.map((category, idx) => (
-                  <div key={idx} className="pb-4 border-b border-[#c7cc3f]/30 last:border-0">
-                    <h4 className="font-medium mb-4 text-[#07705d]">{category.name}</h4>
+                  <div
+                    key={idx}
+                    className="pb-4 border-b border-[#c7cc3f]/30 last:border-0"
+                  >
+                    <h4 className="font-medium mb-4 text-[#07705d]">
+                      {category.name}
+                    </h4>
                     <div className="space-y-3">
                       {category.items.map((item) => (
                         <div key={item.id} className="flex items-center">
@@ -346,7 +408,10 @@ export default function search() {
                             onCheckedChange={() => handleFilterChange(item.id)}
                             className="data-[state=checked]:bg-[#07705d] data-[state=checked]:border-[#07705d]"
                           />
-                          <label htmlFor={`filter-${item.id}`} className="ml-2 text-sm text-gray-700">
+                          <label
+                            htmlFor={`filter-${item.id}`}
+                            className="ml-2 text-sm text-gray-700"
+                          >
                             {item.label}
                           </label>
                         </div>
@@ -362,7 +427,9 @@ export default function search() {
           <div className="flex-1">
             <div className="mb-6 hidden lg:flex justify-between items-center">
               <h2 className="text-xl font-semibold text-[#07705d]">
-                {loading ? "Loading packages..." : `${filteredPackages.length} packages found`}
+                {loading
+                  ? "Loading packages..."
+                  : `${filteredPackages.length} packages found`}
               </h2>
             </div>
 
@@ -375,8 +442,12 @@ export default function search() {
                 <div className="mx-auto w-16 h-16 rounded-full bg-[#c7cc3f]/20 flex items-center justify-center mb-4">
                   <Search className="text-[#bf8c13]" size={24} />
                 </div>
-                <h3 className="text-xl font-medium text-[#07705d] mb-2">No packages found</h3>
-                <p className="text-gray-600 mb-6">Try adjusting your search or filter criteria</p>
+                <h3 className="text-xl font-medium text-[#07705d] mb-2">
+                  No packages found
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Try adjusting your search or filter criteria
+                </p>
                 <button
                   onClick={() => {
                     setSearchQuery("");
@@ -389,7 +460,7 @@ export default function search() {
                       computer: false,
                       language: false,
                       artLiterature: false,
-                      other: false
+                      other: false,
                     });
                     setActiveTab("all");
                   }}
@@ -407,11 +478,16 @@ export default function search() {
                         <div className="relative overflow-hidden h-48">
                           <img
                             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                            src={singlePackage.imgUrl || "/common_files/cover.png"}
+                            src={
+                              singlePackage.imgUrl || "/common_files/cover.png"
+                            }
                             alt={singlePackage.packageName || "Package"}
                           />
                           <div className="absolute top-3 left-3">
-                            <Badge variant="outline" className="text-xs font-semibold bg-[#bf8c13]/90 text-white border-none backdrop-blur-sm">
+                            <Badge
+                              variant="outline"
+                              className="text-xs font-semibold bg-[#bf8c13]/90 text-white border-none backdrop-blur-sm"
+                            >
                               {singlePackage.tag || "Package"}
                             </Badge>
                           </div>
@@ -429,18 +505,24 @@ export default function search() {
                           </h3>
 
                           <p className="text-sm text-gray-600 mb-4 line-clamp-2 flex-grow">
-                            {singlePackage.packageDescription || "No description available"}
+                            {singlePackage.packageDescription ||
+                              "No description available"}
                           </p>
 
                           <div className="flex items-center justify-between mt-auto pt-4 border-t border-[#c7cc3f]/30">
                             <div className="flex items-center text-sm text-gray-600">
                               <Book size={14} className="mr-1 text-[#bf8c13]" />
-                              <span>{singlePackage.courses?.length || 0} Courses</span>
+                              <span>
+                                {singlePackage.courses?.length || 0} Courses
+                              </span>
                             </div>
 
                             <div className="flex items-center justify-center text-sm font-semibold text-[#bf8c13] hover:text-[#bf8c13]/80 transition-colors group">
                               <span>View Details</span>
-                              <ChevronRight size={16} className="ml-1 transform group-hover:translate-x-1 transition-transform" />
+                              <ChevronRight
+                                size={16}
+                                className="ml-1 transform group-hover:translate-x-1 transition-transform"
+                              />
                             </div>
                           </div>
                         </div>

@@ -1,5 +1,9 @@
 import { apiUrl } from "@/apiConfig";
-import { CartItem, CartPackageItem, CartCourseItem } from "@/app/store/cartStore";
+import {
+  CartItem,
+  CartPackageItem,
+  CartCourseItem,
+} from "@/app/store/cartStore";
 
 // Bulk purchase interfaces
 export interface BulkPurchaseRequest {
@@ -40,7 +44,7 @@ export interface CartCheckoutRequest {
  */
 export async function createBulkPurchase(
   data: BulkPurchaseRequest,
-  accessToken: string
+  accessToken: string,
 ): Promise<BulkPurchaseResponse> {
   try {
     console.log("Sending bulk purchase data:", data);
@@ -78,7 +82,7 @@ export async function initiateBulkPayment(
     items: CartItem[];
     provider?: string;
   },
-  accessToken: string
+  accessToken: string,
 ) {
   try {
     const response = await fetch(`${apiUrl}/cart/bulk-purchase/`, {
@@ -110,58 +114,62 @@ export async function processCartCheckout(
   cartItems: CartItem[],
   phoneNumber: string,
   accessToken: string,
-  provider: 'santimpay' | 'chapa' = 'santimpay'
+  provider: "santimpay" | "chapa" = "santimpay",
 ): Promise<BulkPurchaseResponse> {
   try {
     // First, try the bulk purchase approach
     try {
       // Separate packages and courses
       const packages = cartItems
-        .filter(item => item.type === 'package')
-        .map(item => {
+        .filter((item) => item.type === "package")
+        .map((item) => {
           const packageItem = item as CartPackageItem;
-          let price = packageItem.discountStatus && packageItem.temporaryPrice 
-            ? packageItem.temporaryPrice 
-            : packageItem.price;
-          
+          let price =
+            packageItem.discountStatus && packageItem.temporaryPrice
+              ? packageItem.temporaryPrice
+              : packageItem.price;
+
           // Adjust price based on selected duration
           if (packageItem.selectedDuration === 3) {
-            price = packageItem.discountStatus && packageItem.temporaryPrice2 
-              ? packageItem.temporaryPrice2 
-              : packageItem.price2 || price;
+            price =
+              packageItem.discountStatus && packageItem.temporaryPrice2
+                ? packageItem.temporaryPrice2
+                : packageItem.price2 || price;
           } else if (packageItem.selectedDuration === 6) {
-            price = packageItem.discountStatus && packageItem.temporaryPrice3 
-              ? packageItem.temporaryPrice3 
-              : packageItem.price3 || price;
+            price =
+              packageItem.discountStatus && packageItem.temporaryPrice3
+                ? packageItem.temporaryPrice3
+                : packageItem.price3 || price;
           }
 
           return {
             packageId: packageItem.id,
             duration: packageItem.selectedDuration,
             quantity: packageItem.quantity,
-            price: price * packageItem.quantity
+            price: price * packageItem.quantity,
           };
         });
 
       const courses = cartItems
-        .filter(item => item.type === 'course')
-        .map(item => {
+        .filter((item) => item.type === "course")
+        .map((item) => {
           const courseItem = item as CartCourseItem;
-          const price = courseItem.discountStatus && courseItem.temporaryPrice 
-            ? courseItem.temporaryPrice 
-            : courseItem.price;
+          const price =
+            courseItem.discountStatus && courseItem.temporaryPrice
+              ? courseItem.temporaryPrice
+              : courseItem.price;
 
           return {
             courseId: courseItem.id,
             quantity: courseItem.quantity,
-            price: price * courseItem.quantity
+            price: price * courseItem.quantity,
           };
         });
 
       // Calculate total amount
       const totalAmount = [...packages, ...courses].reduce(
-        (sum, item) => sum + item.price, 
-        0
+        (sum, item) => sum + item.price,
+        0,
       );
 
       const bulkPurchaseData: BulkPurchaseRequest = {
@@ -169,59 +177,86 @@ export async function processCartCheckout(
         courses,
         totalAmount,
         phoneNumber,
-        provider: provider
+        provider: provider,
       };
 
       // Try bulk purchase
-      const purchaseResult = await createBulkPurchase(bulkPurchaseData, accessToken);
+      const purchaseResult = await createBulkPurchase(
+        bulkPurchaseData,
+        accessToken,
+      );
 
       if (purchaseResult.success) {
         // If bulk purchase already returned a payment URL, use it directly
         if (purchaseResult.paymentUrl) {
-          console.log("Using payment URL from bulk purchase:", purchaseResult.paymentUrl);
+          console.log(
+            "Using payment URL from bulk purchase:",
+            purchaseResult.paymentUrl,
+          );
           return purchaseResult;
         }
 
         // Otherwise, initiate payment separately (legacy path)
         if (purchaseResult.purchaseId) {
-          console.log("Bulk purchase successful, initiating payment for purchaseId:", purchaseResult.purchaseId);
+          console.log(
+            "Bulk purchase successful, initiating payment for purchaseId:",
+            purchaseResult.purchaseId,
+          );
           // Initiate payment
-          const paymentResult = await initiateBulkPayment({
-            purchaseId: purchaseResult.purchaseId,
-            phoneNumber,
-            totalAmount,
-            items: cartItems
-          }, accessToken);
+          const paymentResult = await initiateBulkPayment(
+            {
+              purchaseId: purchaseResult.purchaseId,
+              phoneNumber,
+              totalAmount,
+              items: cartItems,
+            },
+            accessToken,
+          );
           console.log("Bulk payment initiation result:", paymentResult);
 
           return {
             ...purchaseResult,
-            paymentUrl: paymentResult.paymentUrl
+            paymentUrl: paymentResult.paymentUrl,
           };
         }
       }
 
       return purchaseResult;
     } catch (bulkError) {
-      console.log("Bulk purchase not available, falling back to individual purchases");
-      
+      console.log(
+        "Bulk purchase not available, falling back to individual purchases",
+      );
+
       // Fallback to individual purchases
-      const individualResult = await processIndividualPurchases(cartItems, phoneNumber, accessToken, provider);
-      
+      const individualResult = await processIndividualPurchases(
+        cartItems,
+        phoneNumber,
+        accessToken,
+        provider,
+      );
+
       if (individualResult.success && individualResult.results.length > 0) {
         // Get the first payment URL from successful purchases
-        const paymentUrl = individualResult.results.find(result => result.result?.paymentUrl)?.result?.paymentUrl;
-        
+        const paymentUrl = individualResult.results.find(
+          (result) => result.result?.paymentUrl,
+        )?.result?.paymentUrl;
+
         return {
           success: true,
           purchaseId: `individual-${Date.now()}`,
           paymentUrl,
           message: `Successfully processed ${individualResult.results.length} purchases`,
-          packagePurchases: individualResult.results.filter(r => r.type === 'package'),
-          coursePurchases: individualResult.results.filter(r => r.type === 'course')
+          packagePurchases: individualResult.results.filter(
+            (r) => r.type === "package",
+          ),
+          coursePurchases: individualResult.results.filter(
+            (r) => r.type === "course",
+          ),
         };
       } else {
-        throw new Error(`Failed to process purchases: ${individualResult.errors.map(e => e.error?.message || 'Unknown error').join(', ')}`);
+        throw new Error(
+          `Failed to process purchases: ${individualResult.errors.map((e) => e.error?.message || "Unknown error").join(", ")}`,
+        );
       }
     }
   } catch (error) {
@@ -237,7 +272,7 @@ export async function processIndividualPurchases(
   cartItems: CartItem[],
   phoneNumber: string,
   accessToken: string,
-  provider: 'santimpay' | 'chapa' = 'santimpay'
+  provider: "santimpay" | "chapa" = "santimpay",
 ): Promise<{ success: boolean; results: any[]; errors: any[] }> {
   const results: any[] = [];
   const errors: any[] = [];
@@ -246,27 +281,32 @@ export async function processIndividualPurchases(
 
   for (const item of cartItems) {
     try {
-      if (item.type === 'package') {
+      if (item.type === "package") {
         const packageItem = item as CartPackageItem;
-        
+
         // Process each quantity as separate purchases
         for (let i = 0; i < packageItem.quantity; i++) {
-          let price = packageItem.discountStatus && packageItem.temporaryPrice 
-            ? packageItem.temporaryPrice 
-            : packageItem.price;
-          
+          let price =
+            packageItem.discountStatus && packageItem.temporaryPrice
+              ? packageItem.temporaryPrice
+              : packageItem.price;
+
           // Adjust price based on selected duration
           if (packageItem.selectedDuration === 3) {
-            price = packageItem.discountStatus && packageItem.temporaryPrice2 
-              ? packageItem.temporaryPrice2 
-              : packageItem.price2 || price;
+            price =
+              packageItem.discountStatus && packageItem.temporaryPrice2
+                ? packageItem.temporaryPrice2
+                : packageItem.price2 || price;
           } else if (packageItem.selectedDuration === 6) {
-            price = packageItem.discountStatus && packageItem.temporaryPrice3 
-              ? packageItem.temporaryPrice3 
-              : packageItem.price3 || price;
+            price =
+              packageItem.discountStatus && packageItem.temporaryPrice3
+                ? packageItem.temporaryPrice3
+                : packageItem.price3 || price;
           }
 
-          console.log(`Processing package purchase: ${packageItem.packageName} - ${price} Birr`);
+          console.log(
+            `Processing package purchase: ${packageItem.packageName} - ${price} Birr`,
+          );
 
           const response = await fetch(`${apiUrl}/paymenthandler/checkout/`, {
             method: "POST",
@@ -284,83 +324,100 @@ export async function processIndividualPurchases(
           if (response.ok) {
             const data = await response.json();
             console.log("Package purchase successful:", data);
-            results.push({ type: 'package', item: packageItem, result: data });
-            
+            results.push({ type: "package", item: packageItem, result: data });
+
             // For individual purchases, we'll use the first successful payment URL
             if (data.paymentUrl && results.length === 1) {
               break; // Use first payment URL for redirect
             }
           } else {
             const errorText = await response.text();
-            console.error("Package purchase failed:", response.status, errorText);
+            console.error(
+              "Package purchase failed:",
+              response.status,
+              errorText,
+            );
             let error;
             try {
               error = JSON.parse(errorText);
             } catch {
-              error = { message: errorText || 'Unknown error' };
+              error = { message: errorText || "Unknown error" };
             }
-            errors.push({ type: 'package', item: packageItem, error });
+            errors.push({ type: "package", item: packageItem, error });
           }
         }
-      } else if (item.type === 'course') {
+      } else if (item.type === "course") {
         const courseItem = item as CartCourseItem;
-        
+
         // Process each quantity as separate purchases
         for (let i = 0; i < courseItem.quantity; i++) {
-          const price = courseItem.discountStatus && courseItem.temporaryPrice 
-            ? courseItem.temporaryPrice 
-            : courseItem.price;
+          const price =
+            courseItem.discountStatus && courseItem.temporaryPrice
+              ? courseItem.temporaryPrice
+              : courseItem.price;
 
-          console.log(`Processing course purchase: ${courseItem.courseName} - ${price} Birr`);
+          console.log(
+            `Processing course purchase: ${courseItem.courseName} - ${price} Birr`,
+          );
 
-          const response = await fetch(`${apiUrl}/paymenthandler/course-checkout/`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
+          const response = await fetch(
+            `${apiUrl}/paymenthandler/course-checkout/`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`,
+              },
+              body: JSON.stringify({
+                courseId: courseItem.id,
+                price,
+                phoneNumber,
+              }),
             },
-            body: JSON.stringify({
-              courseId: courseItem.id,
-              price,
-              phoneNumber,
-            }),
-          });
+          );
 
           if (response.ok) {
             const data = await response.json();
             console.log("Course purchase successful:", data);
-            results.push({ type: 'course', item: courseItem, result: data });
-            
+            results.push({ type: "course", item: courseItem, result: data });
+
             // For individual purchases, we'll use the first successful payment URL
             if (data.paymentUrl && results.length === 1) {
               break; // Use first payment URL for redirect
             }
           } else {
             const errorText = await response.text();
-            console.error("Course purchase failed:", response.status, errorText);
+            console.error(
+              "Course purchase failed:",
+              response.status,
+              errorText,
+            );
             let error;
             try {
               error = JSON.parse(errorText);
             } catch {
-              error = { message: errorText || 'Unknown error' };
+              error = { message: errorText || "Unknown error" };
             }
-            errors.push({ type: 'course', item: courseItem, error });
+            errors.push({ type: "course", item: courseItem, error });
           }
         }
       }
     } catch (error: unknown) {
       console.error("Error processing item:", item, error);
-      const errorMessage = error instanceof Error ? error.message : 'Network error';
+      const errorMessage =
+        error instanceof Error ? error.message : "Network error";
       errors.push({ type: item.type, item, error: { message: errorMessage } });
     }
   }
 
-  console.log(`Individual purchases completed: ${results.length} successful, ${errors.length} failed`);
+  console.log(
+    `Individual purchases completed: ${results.length} successful, ${errors.length} failed`,
+  );
 
   return {
     success: results.length > 0, // Success if at least one purchase succeeded
     results,
-    errors
+    errors,
   };
 }
 
@@ -369,56 +426,62 @@ export async function processIndividualPurchases(
  */
 export function formatEthiopianPhoneNumber(phoneNumber: string): string {
   // Remove all non-digit characters
-  const cleaned = phoneNumber.replace(/\D/g, '');
-  
+  const cleaned = phoneNumber.replace(/\D/g, "");
+
   // If it starts with 251, it's already formatted
-  if (cleaned.startsWith('251')) {
+  if (cleaned.startsWith("251")) {
     return cleaned;
   }
-  
+
   // If it starts with 0, replace with 251
-  if (cleaned.startsWith('0')) {
-    return '251' + cleaned.slice(1);
+  if (cleaned.startsWith("0")) {
+    return "251" + cleaned.slice(1);
   }
-  
+
   // If it starts with 9 (common Ethiopian mobile format), add 251
-  if (cleaned.startsWith('9') && cleaned.length === 9) {
-    return '251' + cleaned;
+  if (cleaned.startsWith("9") && cleaned.length === 9) {
+    return "251" + cleaned;
   }
-  
+
   // Default: assume it needs 251 prefix
-  return '251' + cleaned;
+  return "251" + cleaned;
 }
 
 /**
  * Validate cart items before checkout
  */
-export function validateCartItems(items: CartItem[]): { valid: boolean; errors: string[] } {
+export function validateCartItems(items: CartItem[]): {
+  valid: boolean;
+  errors: string[];
+} {
   const errors: string[] = [];
-  
+
   if (items.length === 0) {
     errors.push("Cart is empty");
   }
-  
+
   items.forEach((item, index) => {
     if (!item.id) {
       errors.push(`Item ${index + 1}: Missing ID`);
     }
-    
+
     if (item.quantity <= 0) {
       errors.push(`Item ${index + 1}: Invalid quantity`);
     }
-    
-    if (item.type === 'package') {
+
+    if (item.type === "package") {
       const packageItem = item as CartPackageItem;
-      if (!packageItem.selectedDuration || ![1, 3, 6].includes(packageItem.selectedDuration)) {
+      if (
+        !packageItem.selectedDuration ||
+        ![1, 3, 6].includes(packageItem.selectedDuration)
+      ) {
         errors.push(`Package ${packageItem.packageName}: Invalid duration`);
       }
     }
   });
-  
+
   return {
     valid: errors.length === 0,
-    errors
+    errors,
   };
 }

@@ -1,19 +1,58 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Minus, Trash2, ShoppingBag, CreditCard, ArrowLeft, Phone } from "lucide-react";
-import useCartStore, { CartItem, CartPackageItem, CartCourseItem } from "@/app/store/cartStore";
+import {
+  Plus,
+  Minus,
+  Trash2,
+  ShoppingBag,
+  CreditCard,
+  ArrowLeft,
+  Phone,
+} from "lucide-react";
+import useCartStore, {
+  CartItem,
+  CartPackageItem,
+  CartCourseItem,
+} from "@/app/store/cartStore";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import Link from "next/link";
-import { processCartCheckout, validateCartItems, formatEthiopianPhoneNumber } from "@/lib/cartAPI";
+import {
+  processCartCheckout,
+  validateCartItems,
+  formatEthiopianPhoneNumber,
+} from "@/lib/cartAPI";
 import { getAccessToken } from "@/lib/tokenManager";
 import { toast } from "@/components/ui/use-toast";
 
@@ -25,7 +64,7 @@ export default function CartPage() {
     updatePackageDuration,
     getTotalPrice,
     getTotalItems,
-    clearCart
+    clearCart,
   } = useCartStore();
 
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -49,30 +88,33 @@ export default function CartPage() {
   };
 
   const getPackagePrice = (packageItem: CartPackageItem) => {
-    let price = packageItem.discountStatus && packageItem.temporaryPrice 
-      ? packageItem.temporaryPrice 
-      : packageItem.price;
-    
+    let price =
+      packageItem.discountStatus && packageItem.temporaryPrice
+        ? packageItem.temporaryPrice
+        : packageItem.price;
+
     if (packageItem.selectedDuration === 3) {
-      price = packageItem.discountStatus && packageItem.temporaryPrice2 
-        ? packageItem.temporaryPrice2 
-        : packageItem.price2 || price;
+      price =
+        packageItem.discountStatus && packageItem.temporaryPrice2
+          ? packageItem.temporaryPrice2
+          : packageItem.price2 || price;
     } else if (packageItem.selectedDuration === 6) {
-      price = packageItem.discountStatus && packageItem.temporaryPrice3 
-        ? packageItem.temporaryPrice3 
-        : packageItem.price3 || price;
+      price =
+        packageItem.discountStatus && packageItem.temporaryPrice3
+          ? packageItem.temporaryPrice3
+          : packageItem.price3 || price;
     }
-    
+
     return price;
   };
 
   const getCoursePrice = (courseItem: CartCourseItem) => {
-    return courseItem.discountStatus && courseItem.temporaryPrice 
-      ? courseItem.temporaryPrice 
+    return courseItem.discountStatus && courseItem.temporaryPrice
+      ? courseItem.temporaryPrice
       : courseItem.price;
   };
 
-  const handleCheckout = async (provider: 'santimpay' | 'chapa') => {
+  const handleCheckout = async (provider: "santimpay" | "chapa") => {
     if (!accessToken) {
       toast({
         title: "Authentication Required",
@@ -106,13 +148,18 @@ export default function CartPage() {
 
     try {
       const formattedPhoneNumber = formatEthiopianPhoneNumber(phoneNumber);
-      
+
       toast({
         title: "Processing Purchase",
         description: "Please wait while we process your order...",
       });
 
-      const result = await processCartCheckout(items, formattedPhoneNumber, accessToken, provider);
+      const result = await processCartCheckout(
+        items,
+        formattedPhoneNumber,
+        accessToken,
+        provider,
+      );
 
       if (result.success) {
         toast({
@@ -143,19 +190,20 @@ export default function CartPage() {
       }
     } catch (error: unknown) {
       console.error("Checkout error:", error);
-      
+
       // More detailed error message
       let errorMessage = "An error occurred while processing your purchase.";
       if (error instanceof Error && error.message) {
         if (error.message.includes("Not Found")) {
-          errorMessage = "Payment service is temporarily unavailable. Please try again later or contact support.";
+          errorMessage =
+            "Payment service is temporarily unavailable. Please try again later or contact support.";
         } else if (error.message.includes("Failed to process purchases")) {
           errorMessage = error.message;
         } else {
           errorMessage = error.message;
         }
       }
-      
+
       toast({
         title: "Checkout Error",
         description: errorMessage,
@@ -172,9 +220,12 @@ export default function CartPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center py-12">
             <ShoppingBag className="h-24 w-24 text-gray-300 mx-auto mb-6" />
-            <h1 className="text-3xl font-bold text-[#07705d] mb-4">Your cart is empty</h1>
+            <h1 className="text-3xl font-bold text-[#07705d] mb-4">
+              Your cart is empty
+            </h1>
             <p className="text-gray-600 mb-8">
-              Discover our amazing packages and courses to start your learning journey!
+              Discover our amazing packages and courses to start your learning
+              journey!
             </p>
             <Link href="/">
               <Button className="bg-gradient-to-r from-[#07705d] to-[#bf8c13] hover:from-[#07705d]/90 hover:to-[#bf8c13]/90">
@@ -195,11 +246,16 @@ export default function CartPage() {
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-3xl font-bold text-[#07705d] mb-2">Shopping Cart</h1>
+              <h1 className="text-3xl font-bold text-[#07705d] mb-2">
+                Shopping Cart
+              </h1>
               <p className="text-gray-600">{totalItems} items in your cart</p>
             </div>
             <Link href="/">
-              <Button variant="outline" className="border-[#07705d] text-[#07705d] hover:bg-[#07705d]/10">
+              <Button
+                variant="outline"
+                className="border-[#07705d] text-[#07705d] hover:bg-[#07705d]/10"
+              >
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Continue Shopping
               </Button>
@@ -210,12 +266,15 @@ export default function CartPage() {
             {/* Cart Items */}
             <div className="lg:col-span-2 space-y-4">
               {items.map((item) => (
-                <Card key={`${item.type}-${item.id}`} className="border border-[#c7cc3f]/30">
+                <Card
+                  key={`${item.type}-${item.id}`}
+                  className="border border-[#c7cc3f]/30"
+                >
                   <CardContent className="p-6">
                     <div className="flex items-start space-x-4">
                       {/* Item Image */}
                       <div className="flex-shrink-0">
-                        {item.type === 'package' ? (
+                        {item.type === "package" ? (
                           <div className="w-20 h-20 bg-gradient-to-br from-[#07705d] to-[#bf8c13] rounded-xl flex items-center justify-center">
                             <ShoppingBag className="h-10 w-10 text-white" />
                           </div>
@@ -231,20 +290,28 @@ export default function CartPage() {
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
                             <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                              {item.type === 'package' ? (item as CartPackageItem).packageName : (item as CartCourseItem).courseName}
+                              {item.type === "package"
+                                ? (item as CartPackageItem).packageName
+                                : (item as CartCourseItem).courseName}
                             </h3>
-                            
+
                             <Badge variant="secondary" className="mb-3">
-                              {item.type === 'package' ? 'Package' : 'Course'}
+                              {item.type === "package" ? "Package" : "Course"}
                             </Badge>
 
                             {/* Package Duration Selection */}
-                            {item.type === 'package' && (
+                            {item.type === "package" && (
                               <div className="mb-4">
-                                <Label className="text-sm font-medium mb-2 block">Duration</Label>
+                                <Label className="text-sm font-medium mb-2 block">
+                                  Duration
+                                </Label>
                                 <Select
-                                  value={(item as CartPackageItem).selectedDuration.toString()}
-                                  onValueChange={(value) => handleDurationChange(item.id, value)}
+                                  value={(
+                                    item as CartPackageItem
+                                  ).selectedDuration.toString()}
+                                  onValueChange={(value) =>
+                                    handleDurationChange(item.id, value)
+                                  }
                                 >
                                   <SelectTrigger className="w-40">
                                     <SelectValue />
@@ -260,7 +327,9 @@ export default function CartPage() {
 
                             {/* Quantity Controls */}
                             <div className="flex items-center space-x-3">
-                              <Label className="text-sm font-medium">Quantity:</Label>
+                              <Label className="text-sm font-medium">
+                                Quantity:
+                              </Label>
                               <div className="flex items-center space-x-2">
                                 <Button
                                   variant="outline"
@@ -270,7 +339,9 @@ export default function CartPage() {
                                 >
                                   <Minus className="h-4 w-4" />
                                 </Button>
-                                <span className="text-sm font-medium w-12 text-center">{item.quantity}</span>
+                                <span className="text-sm font-medium w-12 text-center">
+                                  {item.quantity}
+                                </span>
                                 <Button
                                   variant="outline"
                                   size="sm"
@@ -286,16 +357,14 @@ export default function CartPage() {
                           {/* Price and Actions */}
                           <div className="text-right">
                             <div className="text-2xl font-bold text-[#07705d] mb-2">
-                              {item.type === 'package' 
+                              {item.type === "package"
                                 ? `${getPackagePrice(item as CartPackageItem) * item.quantity} Birr`
-                                : `${getCoursePrice(item as CartCourseItem) * item.quantity} Birr`
-                              }
+                                : `${getCoursePrice(item as CartCourseItem) * item.quantity} Birr`}
                             </div>
                             <div className="text-sm text-gray-500 mb-4">
-                              {item.type === 'package' 
+                              {item.type === "package"
                                 ? `${getPackagePrice(item as CartPackageItem)} Birr each`
-                                : `${getCoursePrice(item as CartCourseItem)} Birr each`
-                              }
+                                : `${getCoursePrice(item as CartCourseItem)} Birr each`}
                             </div>
                             <Button
                               variant="ghost"
@@ -318,7 +387,10 @@ export default function CartPage() {
               <div className="pt-4">
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <Button variant="outline" className="text-red-500 border-red-500 hover:bg-red-50">
+                    <Button
+                      variant="outline"
+                      className="text-red-500 border-red-500 hover:bg-red-50"
+                    >
                       <Trash2 className="h-4 w-4 mr-2" />
                       Clear Cart
                     </Button>
@@ -327,12 +399,16 @@ export default function CartPage() {
                     <AlertDialogHeader>
                       <AlertDialogTitle>Clear Cart</AlertDialogTitle>
                       <AlertDialogDescription>
-                        Are you sure you want to remove all items from your cart? This action cannot be undone.
+                        Are you sure you want to remove all items from your
+                        cart? This action cannot be undone.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={clearCart} className="bg-red-500 hover:bg-red-600">
+                      <AlertDialogAction
+                        onClick={clearCart}
+                        className="bg-red-500 hover:bg-red-600"
+                      >
                         Clear Cart
                       </AlertDialogAction>
                     </AlertDialogFooter>
@@ -345,16 +421,18 @@ export default function CartPage() {
             <div className="lg:col-span-1">
               <Card className="border border-[#c7cc3f]/30 sticky top-24">
                 <CardHeader>
-                  <CardTitle className="text-xl text-[#07705d]">Order Summary</CardTitle>
+                  <CardTitle className="text-xl text-[#07705d]">
+                    Order Summary
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex justify-between">
                     <span>Subtotal ({totalItems} items)</span>
                     <span className="font-semibold">{totalPrice} Birr</span>
                   </div>
-                  
+
                   <Separator />
-                  
+
                   <div className="flex justify-between text-lg font-bold">
                     <span>Total</span>
                     <span className="text-[#07705d]">{totalPrice} Birr</span>
@@ -387,7 +465,7 @@ export default function CartPage() {
                       </Button>
                     </Link>
                   ) : (
-                    <Button 
+                    <Button
                       className="w-full bg-gradient-to-r from-[#07705d] to-[#bf8c13] hover:from-[#07705d]/90 hover:to-[#bf8c13]/90"
                       onClick={() => setShowProviderModal(true)}
                       disabled={isLoading || !phoneNumber}
@@ -398,7 +476,8 @@ export default function CartPage() {
                   )}
 
                   <p className="text-xs text-gray-500 text-center mt-4">
-                    By proceeding, you agree to our terms of service and privacy policy.
+                    By proceeding, you agree to our terms of service and privacy
+                    policy.
                   </p>
                 </CardContent>
               </Card>
@@ -411,7 +490,9 @@ export default function CartPage() {
       <Dialog open={showProviderModal} onOpenChange={setShowProviderModal}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-center text-[#07705d]">Choose Payment Method</DialogTitle>
+            <DialogTitle className="text-center text-[#07705d]">
+              Choose Payment Method
+            </DialogTitle>
             <DialogDescription className="text-center">
               Select your preferred payment provider to complete your purchase.
             </DialogDescription>
@@ -420,7 +501,7 @@ export default function CartPage() {
             <Button
               onClick={() => {
                 setShowProviderModal(false);
-                handleCheckout('santimpay');
+                handleCheckout("santimpay");
               }}
               className="w-full bg-gradient-to-r from-[#07705d] to-[#bf8c13] hover:from-[#07705d]/90 hover:to-[#bf8c13]/90 h-16 text-lg"
               disabled={isLoading}
@@ -435,7 +516,7 @@ export default function CartPage() {
             <Button
               onClick={() => {
                 setShowProviderModal(false);
-                handleCheckout('chapa');
+                handleCheckout("chapa");
               }}
               variant="outline"
               className="w-full border-[#07705d] text-[#07705d] hover:bg-[#07705d]/10 h-16 text-lg"

@@ -6,7 +6,15 @@ import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterExamTakerSchema } from "../../validation/registerExamTakerValidation";
-import { Phone, User, School, MapPin, Building, GraduationCap, BookOpen } from "lucide-react";
+import {
+  Phone,
+  User,
+  School,
+  MapPin,
+  Building,
+  GraduationCap,
+  BookOpen,
+} from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import useTemporaryPhonenumberStore from "../../store/temporaryphonenumberStore";
@@ -37,7 +45,7 @@ export default function RegisterExamTaker() {
   const scienceType = ["Natural", "Social", "Other"];
 
   const phoneNumberFromStore = useTemporaryPhonenumberStore(
-    (state) => state.phoneNumber
+    (state) => state.phoneNumber,
   );
 
   const { toast } = useToast();
@@ -66,13 +74,13 @@ export default function RegisterExamTaker() {
         const [cityRes, regionRes, sectionRes] = await Promise.all([
           fetch(`${apiUrl}/city`),
           fetch(`${apiUrl}/region`),
-          fetch(`${apiUrl}/sections`)
+          fetch(`${apiUrl}/sections`),
         ]);
-        
+
         const [cityData, regionData, sectionData] = await Promise.all([
           cityRes.json(),
           regionRes.json(),
-          sectionRes.json()
+          sectionRes.json(),
         ]);
 
         setCityChoices(cityData);
@@ -124,7 +132,9 @@ export default function RegisterExamTaker() {
         >
           <div className="p-8">
             <div className="mb-8">
-              <h2 className="text-2xl font-bold text-gray-900">Exam Registration</h2>
+              <h2 className="text-2xl font-bold text-gray-900">
+                Exam Registration
+              </h2>
               <p className="text-gray-600 mt-2">
                 Please complete this form to register for your exams
               </p>
@@ -141,13 +151,15 @@ export default function RegisterExamTaker() {
                   <input
                     type="tel"
                     className={`w-full px-4 py-2 border ${
-                      errors.phoneNumber ? 'border-red-500' : 'border-gray-300'
+                      errors.phoneNumber ? "border-red-500" : "border-gray-300"
                     } rounded-lg focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-colors`}
                     placeholder="Enter your phone number"
                     {...register("phoneNumber")}
                   />
                   {errors.phoneNumber && (
-                    <p className="text-red-500 text-xs mt-1">{errors.phoneNumber.message}</p>
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.phoneNumber.message}
+                    </p>
                   )}
                 </div>
 
@@ -159,17 +171,21 @@ export default function RegisterExamTaker() {
                   </label>
                   <select
                     className={`w-full px-4 py-2 border ${
-                      errors.gender ? 'border-red-500' : 'border-gray-300'
+                      errors.gender ? "border-red-500" : "border-gray-300"
                     } rounded-lg focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-colors bg-white`}
                     {...register("gender")}
                   >
                     <option value="">Select gender</option>
                     {genderSelection.map((gender) => (
-                      <option key={gender} value={gender}>{gender}</option>
+                      <option key={gender} value={gender}>
+                        {gender}
+                      </option>
                     ))}
                   </select>
                   {errors.gender && (
-                    <p className="text-red-500 text-xs mt-1">{errors.gender.message}</p>
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.gender.message}
+                    </p>
                   )}
                 </div>
               </div>
@@ -183,17 +199,21 @@ export default function RegisterExamTaker() {
                   </label>
                   <select
                     className={`w-full px-4 py-2 border ${
-                      errors.scienceType ? 'border-red-500' : 'border-gray-300'
+                      errors.scienceType ? "border-red-500" : "border-gray-300"
                     } rounded-lg focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-colors bg-white`}
                     {...register("scienceType")}
                   >
                     <option value="">Select field</option>
                     {scienceType.map((type) => (
-                      <option key={type} value={type}>{type}</option>
+                      <option key={type} value={type}>
+                        {type}
+                      </option>
                     ))}
                   </select>
                   {errors.scienceType && (
-                    <p className="text-red-500 text-xs mt-1">{errors.scienceType.message}</p>
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.scienceType.message}
+                    </p>
                   )}
                 </div>
 
@@ -205,13 +225,15 @@ export default function RegisterExamTaker() {
                   <input
                     type="text"
                     className={`w-full px-4 py-2 border ${
-                      errors.school ? 'border-red-500' : 'border-gray-300'
+                      errors.school ? "border-red-500" : "border-gray-300"
                     } rounded-lg focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-colors`}
                     placeholder="Enter your school name"
                     {...register("school")}
                   />
                   {errors.school && (
-                    <p className="text-red-500 text-xs mt-1">{errors.school.message}</p>
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.school.message}
+                    </p>
                   )}
                 </div>
               </div>
@@ -224,7 +246,7 @@ export default function RegisterExamTaker() {
                 </label>
                 <select
                   className={`w-full px-4 py-2 border ${
-                    errors.grade ? 'border-red-500' : 'border-gray-300'
+                    errors.grade ? "border-red-500" : "border-gray-300"
                   } rounded-lg focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-colors bg-white`}
                   {...register("grade")}
                 >
@@ -236,7 +258,9 @@ export default function RegisterExamTaker() {
                   ))}
                 </select>
                 {errors.grade && (
-                  <p className="text-red-500 text-xs mt-1">{errors.grade.message}</p>
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.grade.message}
+                  </p>
                 )}
               </div>
 
@@ -249,7 +273,7 @@ export default function RegisterExamTaker() {
                   </label>
                   <select
                     className={`w-full px-4 py-2 border ${
-                      errors.region ? 'border-red-500' : 'border-gray-300'
+                      errors.region ? "border-red-500" : "border-gray-300"
                     } rounded-lg focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-colors bg-white`}
                     {...register("region")}
                   >
@@ -261,7 +285,9 @@ export default function RegisterExamTaker() {
                     ))}
                   </select>
                   {errors.region && (
-                    <p className="text-red-500 text-xs mt-1">{errors.region.message}</p>
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.region.message}
+                    </p>
                   )}
                 </div>
 
@@ -272,7 +298,7 @@ export default function RegisterExamTaker() {
                   </label>
                   <select
                     className={`w-full px-4 py-2 border ${
-                      errors.city ? 'border-red-500' : 'border-gray-300'
+                      errors.city ? "border-red-500" : "border-gray-300"
                     } rounded-lg focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-colors bg-white`}
                     {...register("city")}
                   >
@@ -284,7 +310,9 @@ export default function RegisterExamTaker() {
                     ))}
                   </select>
                   {errors.city && (
-                    <p className="text-red-500 text-xs mt-1">{errors.city.message}</p>
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.city.message}
+                    </p>
                   )}
                 </div>
               </div>

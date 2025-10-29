@@ -4,10 +4,22 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 8080",
-    "build": "next build --no-lint",
-    "start": "next start -p 8080",
-    "lint": "next lint",
-    "translate": "node scripts/translate.js"
+    "build": "next build",
+    "start": "node server.js",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint \"src/**/*.+(ts|js|tsx)\"",
+    "lint:fix": "eslint \"src/**/*.+(ts|js|tsx)\" --fix",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
+    "format:ci": "prettier --list-different .",
+    "postinstall": "husky",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "./src/**/*.{ts,js,jsx,tsx}": [
+      "eslint \"src/**/*.+(ts|js|tsx)\" --fix",
+      "prettier . --write"
+    ]
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
@@ -78,5 +90,12 @@
     "typescript": "5.2.2",
     "zod": "^3.22.4",
     "zustand": "^4.4.3"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.5",
+    "prettier": "^3.6.2"
   }
 }

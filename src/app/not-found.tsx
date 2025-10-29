@@ -45,10 +45,10 @@ export default function NotFound() {
   // Hide any potential interfering navigation elements
   useEffect(() => {
     // Add a class to body to potentially hide interfering elements
-    document.body.classList.add('not-found-page');
-    
+    document.body.classList.add("not-found-page");
+
     return () => {
-      document.body.classList.remove('not-found-page');
+      document.body.classList.remove("not-found-page");
     };
   }, []);
 
@@ -77,7 +77,9 @@ export default function NotFound() {
             <div className="relative mx-auto w-80 h-80 mb-8">
               {/* You can replace this with an actual image or illustration */}
               <div className="w-full h-full bg-gradient-to-r from-[#c7cc3f] to-[#bf8c13] rounded-full flex items-center justify-center relative overflow-hidden">
-                <span className="text-8xl font-bold text-white opacity-20">404</span>
+                <span className="text-8xl font-bold text-white opacity-20">
+                  404
+                </span>
                 <div className="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                   <Search className="w-20 h-20 text-white/80" />
@@ -95,8 +97,9 @@ export default function NotFound() {
               Oops! Page Not Found
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-              The page you're looking for seems to have wandered off into the digital wilderness. 
-              Don't worry though - let's get you back on track to continue your learning journey!
+              The page you're looking for seems to have wandered off into the
+              digital wilderness. Don't worry though - let's get you back on
+              track to continue your learning journey!
             </p>
           </motion.div>
 

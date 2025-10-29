@@ -1,7 +1,14 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { Briefcase, MapPin, Clock, ArrowRight, Users, Star } from "lucide-react";
+import {
+  Briefcase,
+  MapPin,
+  Clock,
+  ArrowRight,
+  Users,
+  Star,
+} from "lucide-react";
 import Link from "next/link";
 
 const containerVariants = {
@@ -30,24 +37,41 @@ export default function Careers() {
       department: "Engineering",
       location: "Addis Ababa, Ethiopia",
       type: "Full-time",
-      description: "Join our team to build the next generation of educational technology platforms.",
-      requirements: ["React/Next.js", "TypeScript", "Tailwind CSS", "3+ years experience"],
+      description:
+        "Join our team to build the next generation of educational technology platforms.",
+      requirements: [
+        "React/Next.js",
+        "TypeScript",
+        "Tailwind CSS",
+        "3+ years experience",
+      ],
     },
     {
       title: "Content Creator - Education",
       department: "Content",
       location: "Remote/Hybrid",
       type: "Full-time",
-      description: "Create engaging educational content for our students across various subjects.",
-      requirements: ["Educational background", "Content creation experience", "Video production skills"],
+      description:
+        "Create engaging educational content for our students across various subjects.",
+      requirements: [
+        "Educational background",
+        "Content creation experience",
+        "Video production skills",
+      ],
     },
     {
       title: "Marketing Specialist",
       department: "Marketing",
       location: "Addis Ababa, Ethiopia",
       type: "Full-time",
-      description: "Help us reach more students and grow our educational impact across Ethiopia.",
-      requirements: ["Digital marketing", "Social media", "Analytics", "Creative thinking"],
+      description:
+        "Help us reach more students and grow our educational impact across Ethiopia.",
+      requirements: [
+        "Digital marketing",
+        "Social media",
+        "Analytics",
+        "Creative thinking",
+      ],
     },
   ];
 
@@ -94,8 +118,9 @@ export default function Careers() {
             variants={itemVariants}
             className="text-lg text-gray-600 max-w-2xl mx-auto"
           >
-            Help us transform education in Ethiopia. We're looking for passionate individuals 
-            who want to make a real impact on students' lives.
+            Help us transform education in Ethiopia. We&apos;re looking for
+            passionate individuals who want to make a real impact on
+            students&apos; lives.
           </motion.p>
         </motion.div>
 
@@ -145,7 +170,7 @@ export default function Careers() {
           >
             Current Openings
           </motion.h2>
-          
+
           {jobOpenings.length === 0 ? (
             <motion.div
               variants={itemVariants}
@@ -155,7 +180,8 @@ export default function Careers() {
                 No Current Openings
               </h3>
               <p className="text-gray-600 mb-6">
-                We don't have any open positions right now, but we're always looking for talented individuals.
+                We don&apos;t have any open positions right now, but we&apos;re
+                always looking for talented individuals.
               </p>
               <p className="text-gray-600">
                 Send us your resume at{" "}
@@ -186,7 +212,7 @@ export default function Careers() {
                           {job.department}
                         </span>
                       </div>
-                      
+
                       <div className="flex flex-wrap items-center gap-4 text-gray-600 mb-4">
                         <div className="flex items-center gap-1">
                           <MapPin className="w-4 h-4" />
@@ -197,11 +223,13 @@ export default function Careers() {
                           <span>{job.type}</span>
                         </div>
                       </div>
-                      
+
                       <p className="text-gray-700 mb-4">{job.description}</p>
-                      
+
                       <div>
-                        <h4 className="font-semibold text-gray-900 mb-2">Requirements:</h4>
+                        <h4 className="font-semibold text-gray-900 mb-2">
+                          Requirements:
+                        </h4>
                         <ul className="list-disc list-inside text-gray-600">
                           {job.requirements.map((req, reqIndex) => (
                             <li key={reqIndex}>{req}</li>
@@ -209,7 +237,7 @@ export default function Careers() {
                         </ul>
                       </div>
                     </div>
-                    
+
                     <div className="mt-6 lg:mt-0 lg:ml-8">
                       <button className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#c7cc3f] to-[#bf8c13] text-white font-semibold rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-200">
                         Apply Now
@@ -234,14 +262,11 @@ export default function Careers() {
             variants={itemVariants}
             className="text-3xl font-bold mb-4"
           >
-            Don't See Your Role?
+            Don&apos;t See Your Role?
           </motion.h2>
-          <motion.p
-            variants={itemVariants}
-            className="text-lg mb-8 opacity-90"
-          >
-            We're always interested in hearing from talented individuals who share our passion 
-            for education and technology.
+          <motion.p variants={itemVariants} className="text-lg mb-8 opacity-90">
+            We&apos;re always interested in hearing from talented individuals
+            who share our passion for education and technology.
           </motion.p>
           <motion.div
             variants={itemVariants}

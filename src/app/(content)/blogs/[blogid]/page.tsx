@@ -16,7 +16,11 @@ interface BlogData {
   readTime?: string;
 }
 
-export default function BlogDetails({ params }: { params: { blogid: string } }) {
+export default function BlogDetails({
+  params,
+}: {
+  params: { blogid: string };
+}) {
   const [data, setData] = useState<BlogData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -66,7 +70,10 @@ export default function BlogDetails({ params }: { params: { blogid: string } }) 
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
         <h1 className="text-2xl font-semibold text-gray-900">Blog not found</h1>
-        <Link href="/blogs" className="text-primaryColor hover:underline mt-4 inline-block">
+        <Link
+          href="/blogs"
+          className="text-primaryColor hover:underline mt-4 inline-block"
+        >
           Return to blogs
         </Link>
       </div>
@@ -84,7 +91,7 @@ export default function BlogDetails({ params }: { params: { blogid: string } }) 
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent z-20" />
-        
+
         <div className="absolute inset-x-0 bottom-0 z-30">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <motion.div
@@ -92,7 +99,7 @@ export default function BlogDetails({ params }: { params: { blogid: string } }) 
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <Link 
+              <Link
                 href="/blogs"
                 className="inline-flex items-center text-white/90 hover:text-white mb-4 group"
               >
@@ -103,9 +110,7 @@ export default function BlogDetails({ params }: { params: { blogid: string } }) 
                 {data.title}
               </h1>
               {data.subTitle && (
-                <p className="text-xl text-white/90 mb-6">
-                  {data.subTitle}
-                </p>
+                <p className="text-xl text-white/90 mb-6">{data.subTitle}</p>
               )}
               <div className="flex flex-wrap items-center gap-6 text-white/80">
                 <div className="flex items-center gap-2">
@@ -135,7 +140,7 @@ export default function BlogDetails({ params }: { params: { blogid: string } }) 
           className="prose prose-lg max-w-none"
         >
           <div className="text-gray-700 leading-relaxed space-y-6">
-            {data.text.split('\n').map((paragraph, index) => (
+            {data.text.split("\n").map((paragraph, index) => (
               <p key={index}>{paragraph}</p>
             ))}
           </div>
@@ -150,11 +155,13 @@ export default function BlogDetails({ params }: { params: { blogid: string } }) 
         >
           <button
             onClick={() => {
-              navigator.share({
-                title: data.title,
-                text: data.subTitle || data.text.substring(0, 100) + '...',
-                url: window.location.href,
-              }).catch(console.error);
+              navigator
+                .share({
+                  title: data.title,
+                  text: data.subTitle || data.text.substring(0, 100) + "...",
+                  url: window.location.href,
+                })
+                .catch(console.error);
             }}
             className="inline-flex items-center px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors duration-200"
           >

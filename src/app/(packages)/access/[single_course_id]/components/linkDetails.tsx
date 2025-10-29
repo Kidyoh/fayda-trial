@@ -45,9 +45,7 @@ export default function LinkDetails({ link_id, student_id }: any) {
         <h1 className="text-2xl font-semibold text-gray-900">
           {data?.link?.title}
         </h1>
-        <p className="text-gray-500 text-sm">
-          {data?.link?.fileDescription}
-        </p>
+        <p className="text-gray-500 text-sm">{data?.link?.fileDescription}</p>
       </div>
 
       <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
@@ -57,7 +55,7 @@ export default function LinkDetails({ link_id, student_id }: any) {
               <iframe
                 className="w-full h-full"
                 src={`https://www.youtube.com/embed/${getVideoId(
-                  data?.link?.location
+                  data?.link?.location,
                 )}`}
                 title="YouTube Video"
                 frameBorder="0"
@@ -67,14 +65,27 @@ export default function LinkDetails({ link_id, student_id }: any) {
             </div>
             <div className="p-6 border-t border-gray-200 bg-gray-50">
               <div className="flex justify-between items-center">
-                <p className="text-sm text-gray-500">Want to view on YouTube?</p>
+                <p className="text-sm text-gray-500">
+                  Want to view on YouTube?
+                </p>
                 <a
                   href={data?.link?.location}
                   target="_blank"
                   className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primaryColor hover:bg-primaryColor/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primaryColor transition-colors"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 mr-2"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                    />
                   </svg>
                   Open in YouTube
                 </a>

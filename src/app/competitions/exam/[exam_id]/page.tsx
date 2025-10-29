@@ -1,21 +1,28 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { useRouter, useParams } from 'next/navigation';
-import { CompetitionAPI, ExamDetails, Question, ExamSubmissionRequest, Answer, handleApiError } from '@/lib/competitionAPI';
-import { getAccessToken } from '@/lib/tokenManager';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { 
-  ArrowLeft, 
-  ArrowRight, 
-  Clock, 
-  CheckCircle, 
+import React, { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
+import {
+  CompetitionAPI,
+  ExamDetails,
+  Question,
+  ExamSubmissionRequest,
+  Answer,
+  handleApiError,
+} from "@/lib/competitionAPI";
+import { getAccessToken } from "@/lib/tokenManager";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Clock,
+  CheckCircle,
   AlertCircle,
-  Send
-} from 'lucide-react';
+  Send,
+} from "lucide-react";
 
 const ExamInterfacePage: React.FC = () => {
   const router = useRouter();
@@ -41,7 +48,7 @@ const ExamInterfacePage: React.FC = () => {
     }
 
     const timer = setInterval(() => {
-      setTimeLeft(prev => prev - 1);
+      setTimeLeft((prev) => prev - 1);
     }, 1000);
 
     return () => clearInterval(timer);
@@ -54,24 +61,24 @@ const ExamInterfacePage: React.FC = () => {
 
       const token = getAccessToken();
       if (!token) {
-        router.push('/login');
+        router.push("/login");
         return;
       }
 
-      console.log('Fetching exam details for:', examId);
-      console.log('Using token:', token ? 'Token present' : 'No token');
+      console.log("Fetching exam details for:", examId);
+      console.log("Using token:", token ? "Token present" : "No token");
 
       const response = await CompetitionAPI.getExamDetails(examId, token);
 
       if (response.success) {
-        console.log('Exam data received:', response.exam);
+        console.log("Exam data received:", response.exam);
         setExam(response.exam);
         setTimeLeft(response.exam.timeRemaining);
       } else {
-        setError('Failed to fetch exam details');
+        setError("Failed to fetch exam details");
       }
     } catch (err) {
-      console.error('Error fetching exam details:', err);
+      console.error("Error fetching exam details:", err);
       setError(handleApiError(err));
     } finally {
       setLoading(false);
@@ -79,9 +86,9 @@ const ExamInterfacePage: React.FC = () => {
   };
 
   const handleAnswerChange = (questionId: string, choice: string) => {
-    setAnswers(prev => ({
+    setAnswers((prev) => ({
       ...prev,
-      [questionId]: choice
+      [questionId]: choice,
     }));
   };
 
@@ -91,43 +98,52 @@ const ExamInterfacePage: React.FC = () => {
     try {
       setSubmitting(true);
       const token = getAccessToken();
-      
+
       if (!token) {
-        router.push('/login');
+        router.push("/login");
         return;
       }
 
       // First check if user has access to this exam
-      console.log('Checking exam access for:', examId);
+      console.log("Checking exam access for:", examId);
       const accessCheck = await CompetitionAPI.checkExamAccess(examId, token);
-      console.log('Exam access check result:', accessCheck);
+      console.log("Exam access check result:", accessCheck);
 
       if (!accessCheck.success || !accessCheck.hasAccess) {
-        setError(accessCheck.message || 'You do not have access to this exam. Please make sure you are registered for the competition.');
+        setError(
+          accessCheck.message ||
+            "You do not have access to this exam. Please make sure you are registered for the competition.",
+        );
         return;
       }
 
-      const answerArray: Answer[] = exam.questions.map(q => ({
+      const answerArray: Answer[] = exam.questions.map((q) => ({
         questionId: q.id,
-        selectedChoice: answers[q.id] || '',
-        timeSpent: 0 // Calculate per question if needed
+        selectedChoice: answers[q.id] || "",
+        timeSpent: 0, // Calculate per question if needed
       }));
 
       const submissionData: ExamSubmissionRequest = {
         examIdCode: examId,
         timeSpent: exam.duration * 60 - timeLeft,
-        answers: answerArray
+        answers: answerArray,
       };
 
-      console.log('Submitting exam with data:', {
+      console.log("Submitting exam with data:", {
         examId,
         submissionData,
-        token: token ? `Token present (${token.substring(0, 20)}...)` : 'No token'
+        token: token
+          ? `Token present (${token.substring(0, 20)}...)`
+          : "No token",
       });
 
-      const response = await CompetitionAPI.submitExamAnswers(examId, submissionData, token);
+      const response = await CompetitionAPI.submitExamAnswers(
+        examId,
+        submissionData,
+        token,
+      );
 
-      console.log('Submit response:', response);
+      console.log("Submit response:", response);
 
       if (response.success) {
         router.push(`/competitions/exam/${examId}/results`);
@@ -135,7 +151,7 @@ const ExamInterfacePage: React.FC = () => {
         setError(response.message);
       }
     } catch (err) {
-      console.error('Error submitting exam:', err);
+      console.error("Error submitting exam:", err);
       setError(handleApiError(err));
     } finally {
       setSubmitting(false);
@@ -145,15 +161,15 @@ const ExamInterfacePage: React.FC = () => {
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${minutes}:${secs.toString().padStart(2, '0')}`;
+    return `${minutes}:${secs.toString().padStart(2, "0")}`;
   };
 
   const getAnsweredCount = () => {
-    return Object.values(answers).filter(answer => answer !== '').length;
+    return Object.values(answers).filter((answer) => answer !== "").length;
   };
 
   const isQuestionAnswered = (questionId: string) => {
-    return answers[questionId] && answers[questionId] !== '';
+    return answers[questionId] && answers[questionId] !== "";
   };
 
   if (loading) {
@@ -177,9 +193,9 @@ const ExamInterfacePage: React.FC = () => {
           <div className="text-center">
             <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md mx-auto">
               <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-              <p className="text-red-800 mb-4">{error || 'Exam not found'}</p>
-              <Button 
-                onClick={() => router.push('/competitions')}
+              <p className="text-red-800 mb-4">{error || "Exam not found"}</p>
+              <Button
+                onClick={() => router.push("/competitions")}
                 variant="outline"
                 className="border-red-300 text-red-700 hover:bg-red-50"
               >
@@ -216,11 +232,13 @@ const ExamInterfacePage: React.FC = () => {
           {/* Progress Bar */}
           <div className="mb-4">
             <div className="flex justify-between text-sm text-gray-600 mb-2">
-              <span>Question {currentQuestion + 1} of {exam.totalQuestions}</span>
+              <span>
+                Question {currentQuestion + 1} of {exam.totalQuestions}
+              </span>
               <span>{getAnsweredCount()} answered</span>
             </div>
-            <Progress 
-              value={((currentQuestion + 1) / exam.totalQuestions) * 100} 
+            <Progress
+              value={((currentQuestion + 1) / exam.totalQuestions) * 100}
               className="h-2"
             />
           </div>
@@ -231,11 +249,11 @@ const ExamInterfacePage: React.FC = () => {
               <button
                 key={index}
                 className={`w-8 h-8 rounded-full text-sm font-medium transition-colors ${
-                  index === currentQuestion 
-                    ? 'bg-blue-500 text-white' 
+                  index === currentQuestion
+                    ? "bg-blue-500 text-white"
                     : isQuestionAnswered(exam.questions[index].id)
-                    ? 'bg-green-500 text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      ? "bg-green-500 text-white"
+                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                 }`}
                 onClick={() => setCurrentQuestion(index)}
               >
@@ -256,11 +274,13 @@ const ExamInterfacePage: React.FC = () => {
             <div className="space-y-6">
               {/* Question Text */}
               <div>
-                <p className="text-lg text-gray-900 mb-4">{currentQ.question}</p>
+                <p className="text-lg text-gray-900 mb-4">
+                  {currentQ.question}
+                </p>
                 {currentQ.questionImage && (
-                  <img 
-                    src={currentQ.questionImage} 
-                    alt="Question" 
+                  <img
+                    src={currentQ.questionImage}
+                    alt="Question"
                     className="max-w-full h-auto rounded-lg border"
                   />
                 )}
@@ -268,13 +288,13 @@ const ExamInterfacePage: React.FC = () => {
 
               {/* Answer Choices */}
               <div className="space-y-3">
-                {['A', 'B', 'C', 'D'].map(choice => (
-                  <label 
-                    key={choice} 
+                {["A", "B", "C", "D"].map((choice) => (
+                  <label
+                    key={choice}
                     className={`flex items-center p-4 border rounded-lg cursor-pointer transition-colors ${
                       answers[currentQ.id] === choice
-                        ? 'border-blue-500 bg-blue-50'
-                        : 'border-gray-200 hover:border-gray-300'
+                        ? "border-blue-500 bg-blue-50"
+                        : "border-gray-200 hover:border-gray-300"
                     }`}
                   >
                     <input
@@ -285,18 +305,24 @@ const ExamInterfacePage: React.FC = () => {
                       onChange={() => handleAnswerChange(currentQ.id, choice)}
                       className="sr-only"
                     />
-                    <div className={`w-6 h-6 rounded-full border-2 mr-4 flex items-center justify-center ${
-                      answers[currentQ.id] === choice
-                        ? 'border-blue-500 bg-blue-500'
-                        : 'border-gray-300'
-                    }`}>
+                    <div
+                      className={`w-6 h-6 rounded-full border-2 mr-4 flex items-center justify-center ${
+                        answers[currentQ.id] === choice
+                          ? "border-blue-500 bg-blue-500"
+                          : "border-gray-300"
+                      }`}
+                    >
                       {answers[currentQ.id] === choice && (
                         <CheckCircle className="w-4 h-4 text-white" />
                       )}
                     </div>
                     <div>
-                      <span className="font-medium text-gray-700">{choice}.</span>
-                      <span className="ml-2 text-gray-900">{currentQ[`choice${choice}` as keyof Question]}</span>
+                      <span className="font-medium text-gray-700">
+                        {choice}.
+                      </span>
+                      <span className="ml-2 text-gray-900">
+                        {currentQ[`choice${choice}` as keyof Question]}
+                      </span>
                     </div>
                   </label>
                 ))}
@@ -307,9 +333,9 @@ const ExamInterfacePage: React.FC = () => {
 
         {/* Navigation Buttons */}
         <div className="flex justify-between items-center">
-          <Button 
+          <Button
             variant="outline"
-            onClick={() => setCurrentQuestion(prev => Math.max(0, prev - 1))}
+            onClick={() => setCurrentQuestion((prev) => Math.max(0, prev - 1))}
             disabled={currentQuestion === 0}
             className="flex items-center gap-2"
           >
@@ -319,21 +345,21 @@ const ExamInterfacePage: React.FC = () => {
 
           <div className="flex gap-2">
             {currentQuestion < exam.questions.length - 1 ? (
-              <Button 
-                onClick={() => setCurrentQuestion(prev => prev + 1)}
+              <Button
+                onClick={() => setCurrentQuestion((prev) => prev + 1)}
                 className="flex items-center gap-2"
               >
                 Next
                 <ArrowRight className="w-4 h-4" />
               </Button>
             ) : (
-              <Button 
+              <Button
                 onClick={handleSubmit}
                 disabled={submitting}
                 className="bg-green-500 hover:bg-green-600 text-white flex items-center gap-2"
               >
                 <Send className="w-4 h-4" />
-                {submitting ? 'Submitting...' : 'Submit Exam'}
+                {submitting ? "Submitting..." : "Submit Exam"}
               </Button>
             )}
           </div>
@@ -343,8 +369,8 @@ const ExamInterfacePage: React.FC = () => {
         <Alert className="mt-6 border-yellow-200 bg-yellow-50">
           <AlertCircle className="h-4 w-4 text-yellow-600" />
           <AlertDescription className="text-yellow-800">
-            <strong>Important:</strong> Make sure to answer all questions before submitting. 
-            Once submitted, you cannot change your answers.
+            <strong>Important:</strong> Make sure to answer all questions before
+            submitting. Once submitted, you cannot change your answers.
           </AlertDescription>
         </Alert>
       </div>

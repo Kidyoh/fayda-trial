@@ -52,9 +52,7 @@ export default function VideoDetial({ video_id, student_id }: any) {
         <h1 className="text-2xl font-semibold text-gray-900">
           {data?.video?.vidTitle}
         </h1>
-        <p className="text-gray-500 text-sm">
-          {data?.video?.vidDescription}
-        </p>
+        <p className="text-gray-500 text-sm">{data?.video?.vidDescription}</p>
       </div>
 
       <div className="relative w-full aspect-video border border-primaryColor/10 bg-gray-100 rounded-lg overflow-hidden">
@@ -66,10 +64,7 @@ export default function VideoDetial({ video_id, student_id }: any) {
             controlsList="nodownload"
             contextMenu="return false"
           >
-            <source
-              src={data?.videoUrl}
-              type="video/mp4"
-            />
+            <source src={data?.videoUrl} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         ) : (

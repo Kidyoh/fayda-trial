@@ -14,7 +14,7 @@ export default function CoursesList() {
           `${apiUrl}/purchaselist/specificStudentCourses`,
           {
             credentials: "include",
-          }
+          },
         );
 
         const jsonData = await response.json();

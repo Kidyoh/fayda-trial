@@ -17,43 +17,27 @@ import axios from "axios";
 export default function PackageDiscountSlider() {
   const [data, setData] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch(`${apiUrl}/packages/slider`, {
-  //         credentials: "include",
-  //       });
-
-  //       const jsonData = await response.json();
-  //       setData(jsonData);
-  //       console.log("first");
-  //       console.log("Data: ", jsonData);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
+  const hasFetched = React.useRef(false);
 
   useEffect(() => {
+    // Prevent duplicate fetches in React Strict Mode
+    if (hasFetched.current) {
+      return;
+    }
+
     const fetchData = async () => {
       try {
+        hasFetched.current = true;
         const response = await axios.get(`${apiUrl}/packages/slider`, {
           withCredentials: true, // Equivalent to "credentials: 'include'"
         });
 
         const jsonData = response.data;
         setData(jsonData);
-        console.log("first");
-
-        console.log("Datass: ", jsonData);
+        console.log("Discount slider data:", jsonData);
       } catch (error) {
         // Handle errors appropriately, e.g., display an error message or retry the request
-        console.error("Error fetching data:", error);
+        console.error("Error fetching slider data:", error);
       } finally {
         setIsLoading(false); // Always set loading to false even if there's an error
       }

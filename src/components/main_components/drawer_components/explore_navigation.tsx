@@ -1,6 +1,14 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { ChevronRight, BookOpen, Package, Book, Trophy, Info, Bot } from "lucide-react";
+import {
+  ChevronRight,
+  BookOpen,
+  Package,
+  Book,
+  Trophy,
+  Info,
+  Bot,
+} from "lucide-react";
 import Link from "next/link";
 import { apiUrl } from "@/apiConfig";
 import CheckPhoneNumber from "@/app/(exams)/mock/mock_package_components/checkphonenumber";
@@ -38,7 +46,9 @@ export default function ExploreNavigation() {
     <div className="w-full">
       <div className="grid grid-cols-4 md:w-[800px]">
         <div className="col-span-1 bg-gray-50 p-6">
-          <h1 className="text-lg font-semibold text-gray-800 mb-6">Categories</h1>
+          <h1 className="text-lg font-semibold text-gray-800 mb-6">
+            Categories
+          </h1>
           <div className="space-y-4">
             <div
               onMouseEnter={() => handleMouseEnter("carricular")}
@@ -109,7 +119,9 @@ export default function ExploreNavigation() {
         <div className="col-span-3 bg-white p-6">
           {slectedMenu === "carricular" && (
             <div>
-              <h1 className="text-xl font-semibold text-gray-800 mb-6">Academic Categories</h1>
+              <h1 className="text-xl font-semibold text-gray-800 mb-6">
+                Academic Categories
+              </h1>
               <div className="grid grid-cols-2 gap-4">
                 <Link
                   href={`/filter_packages/grade9`}
@@ -118,7 +130,9 @@ export default function ExploreNavigation() {
                   <h2 className="text-lg font-medium text-gray-800 group-hover:text-primaryColor transition-colors duration-200">
                     Grade 9
                   </h2>
-                  <p className="text-sm text-gray-500 mt-1">Explore Grade 9 materials</p>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Explore Grade 9 materials
+                  </p>
                 </Link>
 
                 <Link
@@ -128,7 +142,9 @@ export default function ExploreNavigation() {
                   <h2 className="text-lg font-medium text-gray-800 group-hover:text-primaryColor transition-colors duration-200">
                     Grade 10
                   </h2>
-                  <p className="text-sm text-gray-500 mt-1">Explore Grade 10 materials</p>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Explore Grade 10 materials
+                  </p>
                 </Link>
 
                 <Link
@@ -138,7 +154,9 @@ export default function ExploreNavigation() {
                   <h2 className="text-lg font-medium text-gray-800 group-hover:text-primaryColor transition-colors duration-200">
                     Grade 11
                   </h2>
-                  <p className="text-sm text-gray-500 mt-1">Explore Grade 11 materials</p>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Explore Grade 11 materials
+                  </p>
                 </Link>
 
                 <Link
@@ -148,7 +166,9 @@ export default function ExploreNavigation() {
                   <h2 className="text-lg font-medium text-gray-800 group-hover:text-primaryColor transition-colors duration-200">
                     Grade 12
                   </h2>
-                  <p className="text-sm text-gray-500 mt-1">Explore Grade 12 materials</p>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Explore Grade 12 materials
+                  </p>
                 </Link>
               </div>
             </div>
@@ -156,7 +176,9 @@ export default function ExploreNavigation() {
 
           {slectedMenu === "extracarricular" && (
             <div>
-              <h1 className="text-xl font-semibold text-gray-800 mb-6">Multidisciplinary Skills</h1>
+              <h1 className="text-xl font-semibold text-gray-800 mb-6">
+                Multidisciplinary Skills
+              </h1>
               <div className="grid grid-cols-2 gap-4">
                 <Link
                   href={`/filter_packages/computer`}
@@ -165,7 +187,9 @@ export default function ExploreNavigation() {
                   <h2 className="text-lg font-medium text-gray-800 group-hover:text-primaryColor transition-colors duration-200">
                     Computer
                   </h2>
-                  <p className="text-sm text-gray-500 mt-1">Computer skills and programming</p>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Computer skills and programming
+                  </p>
                 </Link>
 
                 <Link
@@ -175,7 +199,9 @@ export default function ExploreNavigation() {
                   <h2 className="text-lg font-medium text-gray-800 group-hover:text-primaryColor transition-colors duration-200">
                     Language
                   </h2>
-                  <p className="text-sm text-gray-500 mt-1">Language learning resources</p>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Language learning resources
+                  </p>
                 </Link>
 
                 <Link
@@ -185,7 +211,9 @@ export default function ExploreNavigation() {
                   <h2 className="text-lg font-medium text-gray-800 group-hover:text-primaryColor transition-colors duration-200">
                     Art and Literature
                   </h2>
-                  <p className="text-sm text-gray-500 mt-1">Creative arts and literature</p>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Creative arts and literature
+                  </p>
                 </Link>
 
                 <Link
@@ -195,7 +223,9 @@ export default function ExploreNavigation() {
                   <h2 className="text-lg font-medium text-gray-800 group-hover:text-primaryColor transition-colors duration-200">
                     Others
                   </h2>
-                  <p className="text-sm text-gray-500 mt-1">Additional skill categories</p>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Additional skill categories
+                  </p>
                 </Link>
               </div>
             </div>
@@ -204,8 +234,12 @@ export default function ExploreNavigation() {
           {slectedMenu === "" && (
             <div className="flex items-center justify-center h-full">
               <div className="text-center">
-                <h2 className="text-xl font-medium text-gray-600">Select a category to explore</h2>
-                <p className="text-gray-500 mt-2">Choose from the menu on the left to get started</p>
+                <h2 className="text-xl font-medium text-gray-600">
+                  Select a category to explore
+                </h2>
+                <p className="text-gray-500 mt-2">
+                  Choose from the menu on the left to get started
+                </p>
               </div>
             </div>
           )}

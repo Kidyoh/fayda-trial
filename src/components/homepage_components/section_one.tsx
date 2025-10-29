@@ -1,15 +1,17 @@
 "use client";
 import React from "react";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 import { BookOpen, Target, Smartphone } from "lucide-react";
 import { motion } from "framer-motion";
 import animationOne from "../../../public/lottie_files/lottie_one.json";
-import { useLanguage } from '@/lib/language-context';
+import { useLanguage } from "@/lib/language-context";
 
 // Dynamically import Lottie to avoid SSR issues
-const Lottie = dynamic(() => import('lottie-react'), { 
+const Lottie = dynamic(() => import("lottie-react"), {
   ssr: false,
-  loading: () => <div className="w-full h-96 bg-gray-100 animate-pulse rounded-lg"></div>
+  loading: () => (
+    <div className="w-full h-96 bg-gray-100 animate-pulse rounded-lg"></div>
+  ),
 });
 
 const containerVariants = {
@@ -35,22 +37,22 @@ const itemVariants = {
 
 export default function SectionOne() {
   const { t } = useLanguage();
-  
+
   const features = [
     {
       icon: BookOpen,
-      title: t('home.feature1.title'),
-      description: t('home.feature1.desc'),
+      title: t("home.feature1.title"),
+      description: t("home.feature1.desc"),
     },
     {
       icon: Target,
-      title: t('home.feature2.title'),
-      description: t('home.feature2.desc'),
+      title: t("home.feature2.title"),
+      description: t("home.feature2.desc"),
     },
     {
       icon: Smartphone,
-      title: t('home.feature3.title'),
-      description: t('home.feature3.desc'),
+      title: t("home.feature3.title"),
+      description: t("home.feature3.desc"),
     },
   ];
 
@@ -66,10 +68,10 @@ export default function SectionOne() {
             className="relative"
           >
             <div className="relative z-10 rounded-3xl overflow-hidden bg-gradient-to-br from-primaryColor/5 to-transparent p-8">
-              <Lottie 
-                animationData={animationOne} 
-                autoplay 
-                loop 
+              <Lottie
+                animationData={animationOne}
+                autoplay
+                loop
                 className="w-full h-full"
               />
             </div>
@@ -87,10 +89,10 @@ export default function SectionOne() {
               className="text-center lg:text-left mb-12"
             >
               <h2 className="text-4xl font-bold text-gray-900">
-                {t('home.section.title')}
+                {t("home.section.title")}
               </h2>
               <p className="mt-4 text-lg text-gray-600">
-                {t('home.section.subtitle')}
+                {t("home.section.subtitle")}
               </p>
             </motion.div>
 
@@ -108,7 +110,9 @@ export default function SectionOne() {
                 >
                   <div className="flex-shrink-0">
                     <div className="p-3 rounded-2xl bg-gradient-to-br from-primaryColor/10 to-thirdColor/10 group-hover:from-primaryColor/20 group-hover:to-thirdColor/20 transition-all duration-300">
-                      {React.createElement(feature.icon, { className: "w-6 h-6 text-primaryColor" })}
+                      {React.createElement(feature.icon, {
+                        className: "w-6 h-6 text-primaryColor",
+                      })}
                     </div>
                   </div>
                   <div>

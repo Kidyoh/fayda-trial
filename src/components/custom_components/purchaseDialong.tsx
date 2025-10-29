@@ -14,16 +14,18 @@ import {
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { toast } from "../ui/use-toast";
-import { setAccessToken, getAccessToken, clearAccessToken } from "../../lib/tokenManager";
+import {
+  setAccessToken,
+  getAccessToken,
+  clearAccessToken,
+} from "../../lib/tokenManager";
 import { ProceedPayment } from "./proceed_payment";
-
 
 export function PurchaseDialogCustom(props: any) {
   const PackageId = props.packageId;
   const Price = props.price;
   const Price2 = props.price2;
   const Price3 = props.price3;
-
 
   const accessToken = getAccessToken();
 
@@ -59,7 +61,7 @@ export function PurchaseDialogCustom(props: any) {
 
   const handleSelectPaymentOption = (
     paymentOptionRecived: any,
-    accountNumberRecived: any
+    accountNumberRecived: any,
   ) => {
     setSelectedPaymentOption(paymentOptionRecived);
     setAccountNumber(accountNumberRecived);
@@ -100,10 +102,10 @@ export function PurchaseDialogCustom(props: any) {
     // Perform the POST request here
     fetch(`${apiUrl}/purchaselist`, {
       method: "POST",
-     // credentials: "include",
+      // credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`, 
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify(updatedFormData),
     })
@@ -151,10 +153,9 @@ export function PurchaseDialogCustom(props: any) {
         console.error("Error:", error);
       });
   };
-//{/* <ProceedPayment packageId={PackageId} price={selectedPrice}/> */}
+  //{/* <ProceedPayment packageId={PackageId} price={selectedPrice}/> */}
   return (
-
- <ProceedPayment packageId={PackageId} price={selectedPrice}/> 
+    <ProceedPayment packageId={PackageId} price={selectedPrice} />
 
     // <AlertDialog>
     //   <AlertDialogTrigger asChild>

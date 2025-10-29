@@ -1,7 +1,15 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { Users, BookOpen, Star, DollarSign, Clock, Award, ArrowRight } from "lucide-react";
+import {
+  Users,
+  BookOpen,
+  Star,
+  DollarSign,
+  Clock,
+  Award,
+  ArrowRight,
+} from "lucide-react";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -27,23 +35,24 @@ export default function Teach() {
     {
       icon: Users,
       title: "Reach Thousands",
-      description: "Share your knowledge with students across Ethiopia and beyond"
+      description:
+        "Share your knowledge with students across Ethiopia and beyond",
     },
     {
       icon: DollarSign,
       title: "Earn Income",
-      description: "Generate revenue from your expertise and teaching skills"
+      description: "Generate revenue from your expertise and teaching skills",
     },
     {
       icon: Clock,
       title: "Flexible Schedule",
-      description: "Create and teach on your own schedule, at your own pace"
+      description: "Create and teach on your own schedule, at your own pace",
     },
     {
       icon: Award,
       title: "Build Your Brand",
-      description: "Establish yourself as an expert in your field"
-    }
+      description: "Establish yourself as an expert in your field",
+    },
   ];
 
   const requirements = [
@@ -52,30 +61,32 @@ export default function Teach() {
     "Good communication skills",
     "Ability to create engaging content",
     "Basic technical skills for recording videos",
-    "Commitment to student success"
+    "Commitment to student success",
   ];
 
   const steps = [
     {
       step: "1",
       title: "Apply",
-      description: "Submit your application with your background and teaching interests"
+      description:
+        "Submit your application with your background and teaching interests",
     },
     {
       step: "2",
       title: "Review",
-      description: "Our team reviews your application and expertise"
+      description: "Our team reviews your application and expertise",
     },
     {
       step: "3",
       title: "Training",
-      description: "Get onboarded with our platform and teaching best practices"
+      description:
+        "Get onboarded with our platform and teaching best practices",
     },
     {
       step: "4",
       title: "Create",
-      description: "Start creating and publishing your courses"
-    }
+      description: "Start creating and publishing your courses",
+    },
   ];
 
   return (
@@ -98,8 +109,9 @@ export default function Teach() {
             variants={itemVariants}
             className="text-xl text-gray-600 max-w-3xl mx-auto mb-8"
           >
-            Share your expertise with thousands of eager learners. Join our community of 
-            passionate educators and make a real impact on Ethiopian education.
+            Share your expertise with thousands of eager learners. Join our
+            community of passionate educators and make a real impact on
+            Ethiopian education.
           </motion.p>
           <motion.div variants={itemVariants}>
             <a
@@ -139,9 +151,7 @@ export default function Teach() {
                 <h3 className="text-xl font-semibold text-gray-900 mb-4">
                   {benefit.title}
                 </h3>
-                <p className="text-gray-600">
-                  {benefit.description}
-                </p>
+                <p className="text-gray-600">{benefit.description}</p>
               </motion.div>
             ))}
           </div>
@@ -169,14 +179,14 @@ export default function Teach() {
               >
                 <div className="bg-white rounded-2xl p-8 shadow-lg text-center relative z-10">
                   <div className="w-12 h-12 bg-gradient-to-r from-[#c7cc3f] to-[#bf8c13] rounded-full flex items-center justify-center mx-auto mb-6">
-                    <span className="text-white font-bold text-lg">{step.step}</span>
+                    <span className="text-white font-bold text-lg">
+                      {step.step}
+                    </span>
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-4">
                     {step.title}
                   </h3>
-                  <p className="text-gray-600">
-                    {step.description}
-                  </p>
+                  <p className="text-gray-600">{step.description}</p>
                 </div>
                 {index < steps.length - 1 && (
                   <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-0">
@@ -211,15 +221,16 @@ export default function Teach() {
                 ))}
               </ul>
             </motion.div>
-            
+
             <motion.div
               variants={itemVariants}
               className="bg-gradient-to-r from-[#c7cc3f] to-[#bf8c13] rounded-2xl p-8 text-white"
             >
               <h3 className="text-2xl font-bold mb-6">Ready to Get Started?</h3>
               <p className="text-lg mb-8 opacity-90">
-                Join our community of expert instructors and start making an impact today. 
-                We provide all the tools and support you need to succeed.
+                Join our community of expert instructors and start making an
+                impact today. We provide all the tools and support you need to
+                succeed.
               </p>
               <div className="space-y-4">
                 <a
@@ -254,7 +265,9 @@ export default function Teach() {
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <motion.div variants={itemVariants}>
-              <div className="text-4xl font-bold text-[#c7cc3f] mb-2">10,000+</div>
+              <div className="text-4xl font-bold text-[#c7cc3f] mb-2">
+                10,000+
+              </div>
               <div className="text-gray-600">Active Students</div>
             </motion.div>
             <motion.div variants={itemVariants}>

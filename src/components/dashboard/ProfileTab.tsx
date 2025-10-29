@@ -1,6 +1,17 @@
 "use client";
 import { useState } from "react";
-import { Edit, Save, X, Trophy, User, Mail, Phone, GraduationCap, MapPin, Calendar } from "lucide-react";
+import {
+  Edit,
+  Save,
+  X,
+  Trophy,
+  User,
+  Mail,
+  Phone,
+  GraduationCap,
+  MapPin,
+  Calendar,
+} from "lucide-react";
 import { apiUrl } from "@/apiConfig";
 import { getAccessToken } from "@/lib/tokenManager";
 
@@ -9,7 +20,10 @@ interface ProfileTabProps {
   onUserDataUpdate: (newData: any) => void;
 }
 
-export default function ProfileTab({ userData, onUserDataUpdate }: ProfileTabProps) {
+export default function ProfileTab({
+  userData,
+  onUserDataUpdate,
+}: ProfileTabProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
@@ -27,7 +41,7 @@ export default function ProfileTab({ userData, onUserDataUpdate }: ProfileTabPro
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -75,8 +89,12 @@ export default function ProfileTab({ userData, onUserDataUpdate }: ProfileTabPro
   return (
     <div className="space-y-8">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-sendako font-bold text-[#07705d] mb-2">Profile Management</h2>
-        <p className="text-gray-600">Manage your personal information and preferences</p>
+        <h2 className="text-3xl font-sendako font-bold text-[#07705d] mb-2">
+          Profile Management
+        </h2>
+        <p className="text-gray-600">
+          Manage your personal information and preferences
+        </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -96,7 +114,7 @@ export default function ProfileTab({ userData, onUserDataUpdate }: ProfileTabPro
               )}
               <div className="absolute -bottom-1 -right-1 bg-green-500 w-6 h-6 rounded-full border-2 border-white"></div>
             </div>
-            
+
             <h3 className="text-xl font-sendako font-bold text-[#07705d] mb-1">
               {userData?.firstName} {userData?.lastName}
             </h3>
@@ -104,17 +122,19 @@ export default function ProfileTab({ userData, onUserDataUpdate }: ProfileTabPro
             <div className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-100 text-green-700 mb-4">
               Active Account
             </div>
-            
+
             {userData?.points && (
               <div className="bg-gradient-to-r from-[#bf8c13]/10 to-[#c7cc3f]/10 rounded-lg p-4 mb-4">
                 <div className="flex items-center justify-center space-x-2 text-[#07705d]">
                   <Trophy className="w-5 h-5" />
                   <span className="font-bold">Points Scored</span>
                 </div>
-                <div className="text-2xl font-bold text-[#bf8c13] mt-1">{userData.points}</div>
+                <div className="text-2xl font-bold text-[#bf8c13] mt-1">
+                  {userData.points}
+                </div>
               </div>
             )}
-            
+
             <button className="w-full bg-[#07705d] text-white py-2 px-4 rounded-lg hover:bg-[#07705d]/90 transition-colors">
               Check Available Prizes
             </button>
@@ -125,7 +145,9 @@ export default function ProfileTab({ userData, onUserDataUpdate }: ProfileTabPro
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="bg-white rounded-lg border-2 border-[#07705d]/20 p-6">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-sendako font-bold text-[#07705d]">Personal Information</h3>
+                <h3 className="text-xl font-sendako font-bold text-[#07705d]">
+                  Personal Information
+                </h3>
                 {!isEditing ? (
                   <button
                     type="button"
@@ -159,7 +181,9 @@ export default function ProfileTab({ userData, onUserDataUpdate }: ProfileTabPro
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    First Name
+                  </label>
                   {isEditing ? (
                     <input
                       type="text"
@@ -169,12 +193,16 @@ export default function ProfileTab({ userData, onUserDataUpdate }: ProfileTabPro
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#07705d]/20 focus:border-[#07705d]"
                     />
                   ) : (
-                    <div className="bg-gray-50 px-3 py-2 rounded-lg">{userData?.firstName}</div>
+                    <div className="bg-gray-50 px-3 py-2 rounded-lg">
+                      {userData?.firstName}
+                    </div>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Last Name
+                  </label>
                   {isEditing ? (
                     <input
                       type="text"
@@ -184,12 +212,16 @@ export default function ProfileTab({ userData, onUserDataUpdate }: ProfileTabPro
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#07705d]/20 focus:border-[#07705d]"
                     />
                   ) : (
-                    <div className="bg-gray-50 px-3 py-2 rounded-lg">{userData?.lastName}</div>
+                    <div className="bg-gray-50 px-3 py-2 rounded-lg">
+                      {userData?.lastName}
+                    </div>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Grand Name</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Grand Name
+                  </label>
                   {isEditing ? (
                     <input
                       type="text"
@@ -199,12 +231,16 @@ export default function ProfileTab({ userData, onUserDataUpdate }: ProfileTabPro
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#07705d]/20 focus:border-[#07705d]"
                     />
                   ) : (
-                    <div className="bg-gray-50 px-3 py-2 rounded-lg">{userData?.grandName}</div>
+                    <div className="bg-gray-50 px-3 py-2 rounded-lg">
+                      {userData?.grandName}
+                    </div>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Age</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Age
+                  </label>
                   {isEditing ? (
                     <input
                       type="number"
@@ -214,18 +250,24 @@ export default function ProfileTab({ userData, onUserDataUpdate }: ProfileTabPro
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#07705d]/20 focus:border-[#07705d]"
                     />
                   ) : (
-                    <div className="bg-gray-50 px-3 py-2 rounded-lg">{userData?.age}</div>
+                    <div className="bg-gray-50 px-3 py-2 rounded-lg">
+                      {userData?.age}
+                    </div>
                   )}
                 </div>
               </div>
             </div>
 
             <div className="bg-white rounded-lg border-2 border-[#bf8c13]/20 p-6">
-              <h3 className="text-xl font-sendako font-bold text-[#bf8c13] mb-6">Account Settings</h3>
-              
+              <h3 className="text-xl font-sendako font-bold text-[#bf8c13] mb-6">
+                Account Settings
+              </h3>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Email
+                  </label>
                   {isEditing ? (
                     <input
                       type="email"
@@ -235,12 +277,16 @@ export default function ProfileTab({ userData, onUserDataUpdate }: ProfileTabPro
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#07705d]/20 focus:border-[#07705d]"
                     />
                   ) : (
-                    <div className="bg-gray-50 px-3 py-2 rounded-lg">{userData?.email}</div>
+                    <div className="bg-gray-50 px-3 py-2 rounded-lg">
+                      {userData?.email}
+                    </div>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Grade</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Grade
+                  </label>
                   {isEditing ? (
                     <input
                       type="text"
@@ -250,12 +296,16 @@ export default function ProfileTab({ userData, onUserDataUpdate }: ProfileTabPro
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#07705d]/20 focus:border-[#07705d]"
                     />
                   ) : (
-                    <div className="bg-gray-50 px-3 py-2 rounded-lg">{userData?.gread}</div>
+                    <div className="bg-gray-50 px-3 py-2 rounded-lg">
+                      {userData?.gread}
+                    </div>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Phone Number
+                  </label>
                   {isEditing ? (
                     <input
                       type="tel"
@@ -265,12 +315,16 @@ export default function ProfileTab({ userData, onUserDataUpdate }: ProfileTabPro
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#07705d]/20 focus:border-[#07705d]"
                     />
                   ) : (
-                    <div className="bg-gray-50 px-3 py-2 rounded-lg">{userData?.phoneNumber || "Not Set"}</div>
+                    <div className="bg-gray-50 px-3 py-2 rounded-lg">
+                      {userData?.phoneNumber || "Not Set"}
+                    </div>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">School Name</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    School Name
+                  </label>
                   {isEditing ? (
                     <input
                       type="text"
@@ -280,12 +334,16 @@ export default function ProfileTab({ userData, onUserDataUpdate }: ProfileTabPro
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#07705d]/20 focus:border-[#07705d]"
                     />
                   ) : (
-                    <div className="bg-gray-50 px-3 py-2 rounded-lg">{userData?.schoolName}</div>
+                    <div className="bg-gray-50 px-3 py-2 rounded-lg">
+                      {userData?.schoolName}
+                    </div>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">City</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    City
+                  </label>
                   {isEditing ? (
                     <input
                       type="text"
@@ -295,12 +353,16 @@ export default function ProfileTab({ userData, onUserDataUpdate }: ProfileTabPro
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#07705d]/20 focus:border-[#07705d]"
                     />
                   ) : (
-                    <div className="bg-gray-50 px-3 py-2 rounded-lg">{userData?.city}</div>
+                    <div className="bg-gray-50 px-3 py-2 rounded-lg">
+                      {userData?.city}
+                    </div>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Region</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Region
+                  </label>
                   {isEditing ? (
                     <input
                       type="text"
@@ -310,14 +372,18 @@ export default function ProfileTab({ userData, onUserDataUpdate }: ProfileTabPro
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#07705d]/20 focus:border-[#07705d]"
                     />
                   ) : (
-                    <div className="bg-gray-50 px-3 py-2 rounded-lg">{userData?.region}</div>
+                    <div className="bg-gray-50 px-3 py-2 rounded-lg">
+                      {userData?.region}
+                    </div>
                   )}
                 </div>
               </div>
             </div>
 
             <div className="bg-white rounded-lg border-2 border-[#c7cc3f]/20 p-6">
-              <h3 className="text-xl font-sendako font-bold text-[#c7cc3f] mb-6">Security</h3>
+              <h3 className="text-xl font-sendako font-bold text-[#c7cc3f] mb-6">
+                Security
+              </h3>
               <button
                 type="button"
                 className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"

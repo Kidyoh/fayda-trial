@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getAccessToken, setAccessToken } from "../../lib/tokenManager";
 import { Home, LayoutGrid, BookOpen, User, LogOut, Trophy } from "lucide-react";
- 
+
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
@@ -23,31 +23,43 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   useEffect(() => {
     if (pathname.includes("/dashboard/courses")) setActiveTab("mycourse");
-    else if (pathname.includes("/dashboard/packages")) setActiveTab("mypackage");
+    else if (pathname.includes("/dashboard/packages"))
+      setActiveTab("mypackage");
     else setActiveTab("dashboard");
   }, [pathname]);
 
   useEffect(() => {
     const accessToken = getAccessToken();
-    
+
     const fetchProfile = async () => {
       try {
+        // Add timeout to prevent infinite loading
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
         const response = await fetch(`${apiUrl}/newlogin/profile`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
+          signal: controller.signal,
         });
-        
-        if (!response.ok) throw new Error("Failed to fetch profile");
-        
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch profile");
+        }
+
         const data = await response.json();
         setUserData(data);
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching profile:", error);
         setIsLoading(false);
+        // If there's an error, still allow the component to render
+        setUserData(null);
       }
     };
 
@@ -60,7 +72,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       // Don't navigate for profile, just set the active tab
       return;
     }
-    
+
     switch (tab) {
       case "dashboard":
         router.push("/dashboard");
@@ -91,7 +103,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       <div className="w-full h-screen flex items-center justify-center">
         <div className="relative">
           <div className="animate-spin rounded-full h-16 w-16 border-4 border-transparent border-t-[#07705d] border-r-[#bf8c13]"></div>
-          <div className="absolute inset-2 animate-spin rounded-full h-12 w-12 border-4 border-transparent border-b-[#c7cc3f] border-l-[#07705d]" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }}></div>
+          <div
+            className="absolute inset-2 animate-spin rounded-full h-12 w-12 border-4 border-transparent border-b-[#c7cc3f] border-l-[#07705d]"
+            style={{ animationDirection: "reverse", animationDuration: "1.5s" }}
+          ></div>
         </div>
       </div>
     );
@@ -102,12 +117,27 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       <div className="absolute inset-0 opacity-5 pointer-events-none">
         <svg width="100%" height="100%">
           <defs>
-            <pattern id="dashboard-pattern" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
-              <polygon points="30,5 55,30 30,55 5,30" fill="#07705d" opacity="0.3"/>
-              <polygon points="30,15 45,30 30,45 15,30" fill="#bf8c13" opacity="0.2"/>
+            <pattern
+              id="dashboard-pattern"
+              x="0"
+              y="0"
+              width="60"
+              height="60"
+              patternUnits="userSpaceOnUse"
+            >
+              <polygon
+                points="30,5 55,30 30,55 5,30"
+                fill="#07705d"
+                opacity="0.3"
+              />
+              <polygon
+                points="30,15 45,30 30,45 15,30"
+                fill="#bf8c13"
+                opacity="0.2"
+              />
             </pattern>
           </defs>
-          <rect width="100%" height="100%" fill="url(#dashboard-pattern)"/>
+          <rect width="100%" height="100%" fill="url(#dashboard-pattern)" />
         </svg>
       </div>
 
@@ -178,7 +208,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="relative">
             {activeTab === "profile" ? (
-              <ProfileTab userData={userData} onUserDataUpdate={handleUserDataUpdate} />
+              <ProfileTab
+                userData={userData}
+                onUserDataUpdate={handleUserDataUpdate}
+              />
             ) : (
               children
             )}
@@ -187,4 +220,4 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       </div>
     </div>
   );
-} 
+}

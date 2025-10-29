@@ -1,28 +1,21 @@
-'use client';
-import AdSlider from "@/components/homepage_components/ad_slider";
-import Blog from "@/components/homepage_components/blog";
+import AdSliderServer from "@/components/homepage_components/ad_slider_server";
+import BlogServer from "@/components/homepage_components/blog_server";
 import CourseGrid from "@/components/homepage_components/courses";
-import CoverHome from "@/components/homepage_components/cover_home";
-import Info from "@/components/homepage_components/info";
+import CoverHomeServer from "@/components/homepage_components/cover_home_server";
 import Marquee from "@/components/homepage_components/marquee";
-import PackageCards from "@/components/homepage_components/package_cards";
+import PackageCardsServer from "@/components/homepage_components/package_cards_server";
 import PackageDiscountSlider from "@/components/homepage_components/package_discount_slider";
-import Testimonials from "@/components/homepage_components/testimony";
-import WelcomeSection from "@/components/homepage_components/welcomesection";
-import WhatWeOffer from "@/components/homepage_components/what_we_offer";
-import { useLanguage } from "@/lib/language-context";
+import TestimonialsServer from "@/components/homepage_components/testimony_server";
+import WelcomeSection from "@/components/homepage_components/welcome_section";
+import WhatWeOfferServer from "@/components/homepage_components/what_we_offer_server";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 
 export default function Home() {
-  const { t } = useLanguage();
-
   return (
     <>
-      <CoverHome />
-      <Info />
+      <CoverHomeServer />
       <WelcomeSection />
-      <AdSlider/>
+      <AdSliderServer />
       <div className="relative overflow-hidden">
         <div className="w-[150vw] h-[250vh] absolute left-[45%] opacity-10 -z-10 -translate-x-1/2">
           <Image
@@ -33,7 +26,7 @@ export default function Home() {
             className="w-full h-full object-cover"
           />
         </div>
-        <PackageCards />
+        <PackageCardsServer />
         <CourseGrid />
       </div>
       <div className="relative overflow-hidden">
@@ -46,11 +39,11 @@ export default function Home() {
             className="w-full h-full absolute opacity-100 rotate- -z-10 object-cover"
           />
         </div>
-        <WhatWeOffer />
+        <WhatWeOfferServer />
         <PackageDiscountSlider />
-        <Testimonials />
+        <TestimonialsServer />
       </div>
-      <Blog />
+      <BlogServer />
       {/* <Marquee /> */}
     </>
   );

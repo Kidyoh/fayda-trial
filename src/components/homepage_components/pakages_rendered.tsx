@@ -99,7 +99,7 @@ export default function PackagesRenderd() {
                       </div>
                     </Link>
                   </SwiperSlide>
-                )
+                ),
             )}
           </div>
 
@@ -109,7 +109,7 @@ export default function PackagesRenderd() {
 
       <div className="w-full py-5">
         <div className="mx-auto w-fit border-2 border-primaryColor px-2 py-1 rounded-xl hover:scale-105 duration-300 hover:bg-primaryColor hover:text-white">
-          <Link href={"/explore"}>
+          <Link href={"/packages"}>
             {" "}
             <h1>Explore Packages</h1>
           </Link>

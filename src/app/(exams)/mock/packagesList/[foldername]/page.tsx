@@ -13,17 +13,17 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1
-    }
-  }
+      staggerChildren: 0.1,
+    },
+  },
 };
 
 const itemVariants = {
   hidden: { y: 20, opacity: 0 },
   visible: {
     y: 0,
-    opacity: 1
-  }
+    opacity: 1,
+  },
 };
 
 export default function MockPackage({ params }: any) {
@@ -32,7 +32,7 @@ export default function MockPackage({ params }: any) {
   const [isLoading, setIsLoading] = useState(true);
 
   const setSelectedMockPackage = useSelectedMockPackageStore(
-    (state) => state.setMockPackage
+    (state) => state.setMockPackage,
   );
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export default function MockPackage({ params }: any) {
           `${apiUrl}/mockexampackage/tostudentselectmain/${FolderName}`,
           {
             credentials: "include",
-          }
+          },
         );
 
         const jsonData = await response.json();
@@ -86,8 +86,12 @@ export default function MockPackage({ params }: any) {
       <div className="min-h-[60vh] flex items-center justify-center">
         <div className="text-center">
           <Book className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-xl font-medium text-gray-900 mb-2">No Mock Packages Available</h3>
-          <p className="text-gray-500">Check back later for new mock exam packages.</p>
+          <h3 className="text-xl font-medium text-gray-900 mb-2">
+            No Mock Packages Available
+          </h3>
+          <p className="text-gray-500">
+            Check back later for new mock exam packages.
+          </p>
         </div>
       </div>
     );
@@ -103,8 +107,9 @@ export default function MockPackage({ params }: any) {
             Mock Exam Packages
           </h1>
           <p className="text-lg text-gray-600 max-w-3xl">
-            Choose from our selection of mock exam packages designed to help you prepare effectively.
-            Each package contains carefully curated questions to test your knowledge.
+            Choose from our selection of mock exam packages designed to help you
+            prepare effectively. Each package contains carefully curated
+            questions to test your knowledge.
           </p>
         </div>
 

@@ -11,17 +11,17 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1
-    }
-  }
+      staggerChildren: 0.1,
+    },
+  },
 };
 
 const itemVariants = {
   hidden: { y: 20, opacity: 0 },
   visible: {
     y: 0,
-    opacity: 1
-  }
+    opacity: 1,
+  },
 };
 
 export default function FreeMockPackageDetails() {
@@ -64,7 +64,9 @@ export default function FreeMockPackageDetails() {
       <div className="min-h-[60vh] flex items-center justify-center">
         <div className="text-center">
           <AlertCircle className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-xl font-medium text-gray-900 mb-2">No Exams Available</h3>
+          <h3 className="text-xl font-medium text-gray-900 mb-2">
+            No Exams Available
+          </h3>
           <p className="text-gray-500">This package currently has no exams.</p>
         </div>
       </div>
@@ -81,7 +83,8 @@ export default function FreeMockPackageDetails() {
             {MockPackage.title || "Mock Package Details"}
           </h1>
           <p className="text-lg text-gray-600 max-w-3xl">
-            {MockPackage.description || "Select an exam from the list below to begin your practice session."}
+            {MockPackage.description ||
+              "Select an exam from the list below to begin your practice session."}
           </p>
         </div>
 
@@ -108,7 +111,8 @@ export default function FreeMockPackageDetails() {
                         {exam?.assesmentTitle}
                       </h3>
                       <p className="text-sm text-gray-600 max-w-2xl">
-                        {exam?.assesmentDescription || "No description available"}
+                        {exam?.assesmentDescription ||
+                          "No description available"}
                       </p>
                     </div>
 

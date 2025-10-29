@@ -71,7 +71,7 @@ export default function Test() {
         //console.log(response.json());
         // }
         throw new Error(
-          "Error: " //response.status
+          "Error: ", //response.status
         );
       })
       .then((responseData) => {
@@ -102,7 +102,7 @@ export default function Test() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ code: code, email: usedEmail }),
-        }
+        },
       )
         .then((response) => {
           console.log("first");
@@ -129,7 +129,7 @@ export default function Test() {
           //console.log(response.json());
           // }
           throw new Error(
-            "Error: " //response.status
+            "Error: ", //response.status
           );
         })
 

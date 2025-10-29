@@ -14,11 +14,19 @@ export default function PackagesList() {
           credentials: "include",
         });
         const jsonData = await response.json();
-        setData(jsonData);
-        console.log("first");
-        console.log(jsonData);
+
+        // Ensure data is always an array
+        const dataArray = Array.isArray(jsonData)
+          ? jsonData
+          : jsonData?.data && Array.isArray(jsonData.data)
+            ? jsonData.data
+            : [];
+
+        setData(dataArray);
+        console.log("Packages fetched:", dataArray);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setData([]); // Set empty array on error
       } finally {
         setIsLoading(false);
       }
@@ -36,7 +44,35 @@ export default function PackagesList() {
         Packages
       </h1>
 
-      {data != null && (
+      {Array.isArray(data) && data.length === 0 && (
+        <div className="text-center py-12">
+          <div className="mb-4">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full">
+              <svg
+                className="w-8 h-8 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+                />
+              </svg>
+            </div>
+          </div>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">
+            No Packages Found
+          </h3>
+          <p className="text-gray-600">
+            You haven't purchased any packages yet.
+          </p>
+        </div>
+      )}
+
+      {Array.isArray(data) && data.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {data.map((item, index: number) => (
             <Link key={index} href={`/package/${item?.packagesId}`}>
@@ -75,12 +111,12 @@ export default function PackagesList() {
                         {Math.ceil(
                           (new Date(item.expiryDate).getTime() -
                             new Date().getTime()) /
-                            (1000 * 60 * 60 * 24)
+                            (1000 * 60 * 60 * 24),
                         ) > 0
                           ? Math.ceil(
                               (new Date(item.expiryDate).getTime() -
                                 new Date().getTime()) /
-                                (1000 * 60 * 60 * 24)
+                                (1000 * 60 * 60 * 24),
                             )
                           : "Expired"}
                       </span>

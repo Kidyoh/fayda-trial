@@ -1,11 +1,9 @@
-import ContactUs from "@/components/custom_components/contactUs";
-// import Footer from "@/components/main_components/footer";
-import React from "react";
+import ContactServer from "@/components/contact/contact_server";
 
+/**
+ * Contact Page
+ * Displays contact information, social media links, and map
+ */
 export default function ContactUsRoute() {
-  return (
-    <div className="w-full">
-      <ContactUs />
-    </div>
-  );
+  return <ContactServer />;
 }

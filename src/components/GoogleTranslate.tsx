@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { Languages } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { useEffect, useState } from "react";
+import { Languages } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 declare global {
   interface Window {
@@ -20,31 +20,36 @@ const GoogleTranslate = () => {
     window.googleTranslateElementInit = () => {
       new window.google.translate.TranslateElement(
         {
-          pageLanguage: 'en',
-          includedLanguages: 'en,am,om,ti',
+          pageLanguage: "en",
+          includedLanguages: "en,am,om,ti",
           layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
           autoDisplay: false,
         },
-        'google_translate_element'
+        "google_translate_element",
       );
       setIsLoaded(true);
     };
 
     // Load the Google Translate script
-    const script = document.createElement('script');
-    script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    const script = document.createElement("script");
+    script.src =
+      "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
     script.async = true;
     document.head.appendChild(script);
 
     // Cleanup
     return () => {
-      const existingScript = document.querySelector('script[src*="translate.google.com"]');
+      const existingScript = document.querySelector(
+        'script[src*="translate.google.com"]',
+      );
       if (existingScript) {
         document.head.removeChild(existingScript);
       }
-      const translateElement = document.getElementById('google_translate_element');
+      const translateElement = document.getElementById(
+        "google_translate_element",
+      );
       if (translateElement) {
-        translateElement.innerHTML = '';
+        translateElement.innerHTML = "";
       }
     };
   }, []);

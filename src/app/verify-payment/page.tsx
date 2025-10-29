@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
-import { apiUrl } from '@/apiConfig';
+import { useState, useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { apiUrl } from "@/apiConfig";
 
 interface PaymentData {
   student_name: string;
@@ -11,7 +11,7 @@ interface PaymentData {
 }
 
 interface PaymentResponse {
-  status: 'loading' | 'pending' | 'completed' | 'failed' | 'error';
+  status: "loading" | "pending" | "completed" | "failed" | "error";
   data?: PaymentData;
   error?: string;
 }
@@ -19,15 +19,20 @@ interface PaymentResponse {
 export default function VerifyPaymentPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [paymentStatus, setPaymentStatus] = useState<PaymentResponse>({ status: 'loading' });
+  const [paymentStatus, setPaymentStatus] = useState<PaymentResponse>({
+    status: "loading",
+  });
   const [isPolling, setIsPolling] = useState(false);
 
-  const tx_ref = searchParams.get('tx_ref');
+  const tx_ref = searchParams.get("tx_ref");
 
   useEffect(() => {
-    if (!tx_ref || !tx_ref.startsWith('bulk-')) {
-      setPaymentStatus({ status: 'error', error: 'Invalid transaction reference' });
-      setTimeout(() => router.push('/courses'), 5000);
+    if (!tx_ref || !tx_ref.startsWith("bulk-")) {
+      setPaymentStatus({
+        status: "error",
+        error: "Invalid transaction reference",
+      });
+      setTimeout(() => router.push("/courses"), 5000);
       return;
     }
 
@@ -36,16 +41,22 @@ export default function VerifyPaymentPage() {
 
     // Start polling if pending
     const interval = setInterval(() => {
-      if (paymentStatus.status === 'pending') {
+      if (paymentStatus.status === "pending") {
         checkPaymentStatus();
       }
     }, 3000);
 
     // Timeout after 5 minutes
-    const timeout = setTimeout(() => {
-      setPaymentStatus({ status: 'error', error: 'Payment verification timeout' });
-      setIsPolling(false);
-    }, 5 * 60 * 1000);
+    const timeout = setTimeout(
+      () => {
+        setPaymentStatus({
+          status: "error",
+          error: "Payment verification timeout",
+        });
+        setIsPolling(false);
+      },
+      5 * 60 * 1000,
+    );
 
     return () => {
       clearInterval(interval);
@@ -55,14 +66,19 @@ export default function VerifyPaymentPage() {
 
   const checkPaymentStatus = async () => {
     try {
-      const response = await fetch(`${apiUrl}/inforeciver/payment-status/${tx_ref}`);
+      const response = await fetch(
+        `${apiUrl}/inforeciver/payment-status/${tx_ref}`,
+      );
       if (!response.ok) {
         if (response.status === 400) {
-          setPaymentStatus({ status: 'error', error: 'Invalid transaction reference' });
+          setPaymentStatus({
+            status: "error",
+            error: "Invalid transaction reference",
+          });
         } else if (response.status === 404) {
-          setPaymentStatus({ status: 'error', error: 'Transaction not found' });
+          setPaymentStatus({ status: "error", error: "Transaction not found" });
         } else {
-          setPaymentStatus({ status: 'error', error: 'Server error' });
+          setPaymentStatus({ status: "error", error: "Server error" });
         }
         return;
       }
@@ -70,13 +86,13 @@ export default function VerifyPaymentPage() {
       const data = await response.json();
       setPaymentStatus({ status: data.status, data: data.data });
 
-      if (data.status === 'completed' || data.status === 'failed') {
+      if (data.status === "completed" || data.status === "failed") {
         setIsPolling(false);
-      } else if (data.status === 'pending') {
+      } else if (data.status === "pending") {
         setIsPolling(true);
       }
     } catch (error) {
-      setPaymentStatus({ status: 'error', error: 'Network error' });
+      setPaymentStatus({ status: "error", error: "Network error" });
     }
   };
 
@@ -90,7 +106,7 @@ export default function VerifyPaymentPage() {
 
   const renderContent = () => {
     switch (paymentStatus.status) {
-      case 'loading':
+      case "loading":
         return (
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
@@ -98,16 +114,18 @@ export default function VerifyPaymentPage() {
           </div>
         );
 
-      case 'pending':
+      case "pending":
         return (
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500 mx-auto"></div>
             <p className="mt-4">Payment is being processed...</p>
-            <p className="text-sm text-gray-600">Checking status every 3 seconds</p>
+            <p className="text-sm text-gray-600">
+              Checking status every 3 seconds
+            </p>
           </div>
         );
 
-      case 'completed':
+      case "completed":
         return (
           <div className="text-center">
             <div className="text-green-600 text-2xl mb-4">✓</div>
@@ -121,13 +139,13 @@ export default function VerifyPaymentPage() {
             )}
             <div className="space-x-4">
               <button
-                onClick={() => handleNavigate('/courses')}
+                onClick={() => handleNavigate("/courses")}
                 className="bg-blue-500 text-white px-4 py-2 rounded"
               >
                 Go to Courses
               </button>
               <button
-                onClick={() => handleNavigate('/dashboard')}
+                onClick={() => handleNavigate("/dashboard")}
                 className="bg-gray-500 text-white px-4 py-2 rounded"
               >
                 Go to Dashboard
@@ -136,7 +154,7 @@ export default function VerifyPaymentPage() {
           </div>
         );
 
-      case 'failed':
+      case "failed":
         return (
           <div className="text-center">
             <div className="text-red-600 text-2xl mb-4">✗</div>
@@ -144,13 +162,13 @@ export default function VerifyPaymentPage() {
             <p className="mb-4">Your payment could not be processed.</p>
             <div className="space-x-4">
               <button
-                onClick={() => handleNavigate('/cart')}
+                onClick={() => handleNavigate("/cart")}
                 className="bg-blue-500 text-white px-4 py-2 rounded"
               >
                 Back to Cart
               </button>
               <button
-                onClick={() => handleNavigate('/support')}
+                onClick={() => handleNavigate("/support")}
                 className="bg-gray-500 text-white px-4 py-2 rounded"
               >
                 Contact Support
@@ -159,7 +177,7 @@ export default function VerifyPaymentPage() {
           </div>
         );
 
-      case 'error':
+      case "error":
         return (
           <div className="text-center">
             <div className="text-red-600 text-2xl mb-4">!</div>
@@ -173,7 +191,7 @@ export default function VerifyPaymentPage() {
                 Retry
               </button>
               <button
-                onClick={() => handleNavigate('/support')}
+                onClick={() => handleNavigate("/support")}
                 className="bg-gray-500 text-white px-4 py-2 rounded"
               >
                 Contact Support
@@ -190,7 +208,9 @@ export default function VerifyPaymentPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold text-center mb-6">Payment Verification</h1>
+        <h1 className="text-2xl font-bold text-center mb-6">
+          Payment Verification
+        </h1>
         {renderContent()}
       </div>
     </div>
