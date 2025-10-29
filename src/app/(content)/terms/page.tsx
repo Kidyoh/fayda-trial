@@ -1,4 +1,4 @@
-import Footer from "@/components/main_components/footer";
+import FooterServer from "@/components/main_components/footer_server";
 import React from "react";
 
 export default function TermsOfService() {
@@ -111,7 +111,7 @@ export default function TermsOfService() {
         </div>
       </div>
 
-      <Footer />
+      <FooterServer />
     </div>
   );
 }

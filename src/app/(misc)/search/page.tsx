@@ -3,7 +3,7 @@ import { apiUrl } from "@/apiConfig";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import {
-  Search,
+  Search as SearchIcon,
   Filter,
   BookOpen as Book,
   ChevronRight,
@@ -243,7 +243,7 @@ export default function Search() {
             </p>
 
             <div className="bg-white rounded-2xl shadow-lg p-3 flex items-center">
-              <Search className="ml-3 text-[#07705d]" size={20} />
+              <SearchIcon className="ml-3 text-[#07705d] w-5 h-5" />
               <input
                 type="text"
                 placeholder="Search for packages..."
@@ -440,7 +440,7 @@ export default function Search() {
             ) : filteredPackages.length === 0 ? (
               <div className="bg-white rounded-2xl p-12 text-center shadow-lg border border-[#c7cc3f]/30">
                 <div className="mx-auto w-16 h-16 rounded-full bg-[#c7cc3f]/20 flex items-center justify-center mb-4">
-                  <Search className="text-[#bf8c13]" size={24} />
+                  <SearchIcon className="text-[#bf8c13] w-6 h-6" />
                 </div>
                 <h3 className="text-xl font-medium text-[#07705d] mb-2">
                   No packages found
