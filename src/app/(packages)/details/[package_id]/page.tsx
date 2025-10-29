@@ -1,6 +1,6 @@
 import React from "react";
 import PackageDetailsRendered from "../package_details_rendered";
-import Footer from "@/components/main_components/footer";
+import FooterServer from "@/components/main_components/footer_server";
 
 export default function PackageDetails({ params }: any) {
   const PackageId = params.package_id;
@@ -9,7 +9,7 @@ export default function PackageDetails({ params }: any) {
     <div className="">
       <PackageDetailsRendered className="" package_id={PackageId} />
       {/* <div className="h-screen mt-12 flex flex-col justify-end">
-        <Footer />
+        <FooterServer />
       </div> */}
     </div>
   );

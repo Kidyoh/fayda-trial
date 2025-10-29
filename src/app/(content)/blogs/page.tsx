@@ -5,7 +5,9 @@ interface Blog {
   id: string;
   title: string;
   text: string;
-  imgUrl: string;
+  subTitle?: string;
+  imgUrl: string | string[];
+  writtenBy?: string;
   createdAt: string;
   readTime?: string;
   category?: string;
@@ -19,17 +21,32 @@ export default async function Blogs() {
   let blogs: Blog[] = [];
 
   try {
-    const response = await fetch(`${apiUrl}/blogs/displayhome`, {
+    const response = await fetch(`${apiUrl}/blogs`, {
       cache: "no-store",
     });
 
     if (response.ok) {
       const jsonData = await response.json();
-      // Ensure data is always an array
-      const blogsArray = Array.isArray(jsonData) ? jsonData : [];
 
-      blogs = blogsArray.map((blog: Blog) => ({
-        ...blog,
+      // Extract data array from response
+      const blogsArray =
+        jsonData?.data && Array.isArray(jsonData.data)
+          ? jsonData.data
+          : Array.isArray(jsonData)
+            ? jsonData
+            : [];
+
+      blogs = blogsArray.map((blog: any) => ({
+        id: blog.id,
+        title: blog.title,
+        text: blog.text,
+        subTitle: blog.subTitle,
+        imgUrl:
+          Array.isArray(blog.imgUrl) && blog.imgUrl.length > 0
+            ? blog.imgUrl[0]
+            : blog.imgUrl || blog.image || "",
+        writtenBy: blog.writtenBy,
+        createdAt: blog.createdAt,
         readTime: `${Math.floor(Math.random() * 10) + 2} min read`,
         category: ["Technology", "Education", "Tips", "News"][
           Math.floor(Math.random() * 4)

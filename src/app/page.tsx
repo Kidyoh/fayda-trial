@@ -1,6 +1,6 @@
 import AdSliderServer from "@/components/homepage_components/ad_slider_server";
 import BlogServer from "@/components/homepage_components/blog_server";
-import CourseGrid from "@/components/homepage_components/courses";
+import CourseGridServer from "@/components/homepage_components/course_grid_server";
 import CoverHomeServer from "@/components/homepage_components/cover_home_server";
 import Marquee from "@/components/homepage_components/marquee";
 import PackageCardsServer from "@/components/homepage_components/package_cards_server";
@@ -27,7 +27,7 @@ export default function Home() {
           />
         </div>
         <PackageCardsServer />
-        <CourseGrid />
+        <CourseGridServer />
       </div>
       <div className="relative overflow-hidden">
         <div className="w-[150vw] h-[250vh] absolute top-0 left-[44.5%] opacity-20 -z-10 -translate-x-1/2">

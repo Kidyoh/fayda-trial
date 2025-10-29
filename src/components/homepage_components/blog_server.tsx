@@ -6,7 +6,9 @@ interface Blog {
   id: string;
   title: string;
   text: string;
-  imgUrl: string;
+  subTitle?: string;
+  imgUrl: string | string[];
+  writtenBy?: string;
   createdAt: string;
   readTime?: string;
   category?: string;
@@ -27,12 +29,26 @@ export default async function BlogServer() {
     if (response.ok) {
       const jsonData = await response.json();
 
-      // Ensure data is always an array
-      const blogsArray = Array.isArray(jsonData) ? jsonData : [];
+      // Extract data array from response
+      const blogsArray =
+        jsonData?.data && Array.isArray(jsonData.data)
+          ? jsonData.data
+          : Array.isArray(jsonData)
+            ? jsonData
+            : [];
 
       // Enhance data with additional properties
-      blogs = blogsArray.map((blog: Blog, index: number) => ({
-        ...blog,
+      blogs = blogsArray.map((blog: any, index: number) => ({
+        id: blog.id,
+        title: blog.title,
+        text: blog.text,
+        subTitle: blog.subTitle,
+        imgUrl:
+          Array.isArray(blog.imgUrl) && blog.imgUrl.length > 0
+            ? blog.imgUrl[0]
+            : blog.imgUrl || blog.image || "",
+        writtenBy: blog.writtenBy,
+        createdAt: blog.createdAt,
         readTime: `${Math.floor(Math.random() * 10) + 2} min read`,
         category: [
           "Education",
