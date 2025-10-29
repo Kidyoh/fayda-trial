@@ -8,7 +8,9 @@ interface Blog {
   id: string;
   title: string;
   text: string;
-  imgUrl: string;
+  subTitle?: string;
+  imgUrl: string | string[];
+  writtenBy?: string;
   createdAt: string;
   readTime?: string;
   category?: string;
@@ -95,19 +97,23 @@ export default function BlogsClient({ blogs }: BlogsClientProps) {
             >
               {/* Image Container */}
               <div className="relative h-48 overflow-hidden">
-                {blog.imgUrl ? (
-                  <img
-                    src={blog.imgUrl}
-                    alt={blog.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = "none";
-                      const fallback = target.nextElementSibling as HTMLElement;
-                      if (fallback) fallback.style.display = "flex";
-                    }}
-                  />
-                ) : null}
+                <img
+                  src={
+                    Array.isArray(blog.imgUrl) && blog.imgUrl.length > 0
+                      ? blog.imgUrl[0]
+                      : typeof blog.imgUrl === "string"
+                        ? blog.imgUrl
+                        : "/common_files/main/cover.jpg"
+                  }
+                  alt={blog.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = "none";
+                    const fallback = target.nextElementSibling as HTMLElement;
+                    if (fallback) fallback.style.display = "flex";
+                  }}
+                />
                 <div
                   className="absolute inset-0 bg-gradient-to-br from-[#07705d]/20 to-[#c7cc3f]/20 flex items-center justify-center"
                   style={{ display: blog.imgUrl ? "none" : "flex" }}

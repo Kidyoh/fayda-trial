@@ -8,7 +8,9 @@ interface Blog {
   id: string;
   title: string;
   text: string;
-  imgUrl: string;
+  subTitle?: string;
+  imgUrl: string | string[];
+  writtenBy?: string;
   createdAt: string;
   readTime?: string;
   category?: string;
@@ -84,31 +86,29 @@ export default function BlogClient({ blogs }: BlogClientProps) {
               isHovered ? "scale-105" : "scale-100"
             }`}
           >
-            {post.imgUrl ? (
-              <>
-                <img
-                  src={post.imgUrl}
-                  alt={post.title}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = "none";
-                    const fallback = target.nextElementSibling as HTMLElement;
-                    if (fallback) fallback.style.display = "flex";
-                  }}
-                />
-                <div
-                  className="w-full h-full bg-gradient-to-br from-[#07705d]/20 to-[#c7cc3f]/20 flex items-center justify-center"
-                  style={{ display: "none" }}
-                >
-                  <span className="text-4xl">📝</span>
-                </div>
-              </>
-            ) : (
-              <div className="w-full h-full bg-gradient-to-br from-[#07705d]/20 to-[#c7cc3f]/20 flex items-center justify-center">
-                <span className="text-4xl">📝</span>
-              </div>
-            )}
+            <img
+              src={
+                Array.isArray(post.imgUrl) && post.imgUrl.length > 0
+                  ? post.imgUrl[0]
+                  : typeof post.imgUrl === "string"
+                    ? post.imgUrl
+                    : "/common_files/main/cover.jpg"
+              }
+              alt={post.title}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = "none";
+                const fallback = target.nextElementSibling as HTMLElement;
+                if (fallback) fallback.style.display = "flex";
+              }}
+            />
+            <div
+              className="w-full h-full bg-gradient-to-br from-[#07705d]/20 to-[#c7cc3f]/20 flex items-center justify-center"
+              style={{ display: "none" }}
+            >
+              <span className="text-4xl">📝</span>
+            </div>
           </div>
 
           {/* Gradient Overlay */}

@@ -37,8 +37,13 @@ export async function fetchPublicCourses(
     ? `${apiUrl}/courses/public?${queryString}`
     : `${apiUrl}/courses/public`;
 
-  const apiCourses = await fetchJson<any[]>(url, { method: "GET" });
-  return apiCourses.map(transformCourseData);
+  const apiCourses = await fetchJson<any>(url, { method: "GET" });
+  const list: any[] = Array.isArray(apiCourses)
+    ? apiCourses
+    : Array.isArray(apiCourses?.data)
+      ? apiCourses.data
+      : [];
+  return list.map(transformCourseData);
 }
 
 /**
